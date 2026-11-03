@@ -1,0 +1,363 @@
+/* ============================================================
+   Brief deck — slide layouts
+   ----------------------------------------------------------
+   Each .slide is 1280x720 inside <deck-stage>. The host scales.
+
+   This deck uses a brief-specific palette that overrides the
+   system tokens — distinct from both the dark-tactical and
+   light-paper modes. It is the original Zenoh-brief scheme:
+   near-black cool background with warm-cream ink, pale-blue
+   accent (not green), and salmon for warn.
+   ============================================================ */
+
+/* -------- Brief-only token overrides ----------------------- */
+deck-stage,
+deck-stage * {
+  /* Surfaces — cool near-black */
+  --bg-page:      #161819;   /* paper */
+  --bg-surface:   #1d2022;   /* paper-soft */
+  --bg-panel:     #1d2022;
+  --bg-card:      #23272a;
+  --bg-well:      #2a2e32;
+  --bg-hover:     #21252800;
+  --bg-active:    #282c30;
+
+  /* Foreground — warm cream */
+  --fg-primary:   #ecead0;   /* ink */
+  --fg-body:      #c0bca8;   /* ink-soft */
+  --fg-muted:     #8c8778;   /* ink-mute */
+  --fg-faint:     #6e6a5b;
+  --fg-disabled:  #55514500;
+  --fg-on-accent: #161819;
+
+  /* Accent — pale blue, NOT green */
+  --accent:        #93c0e0;
+  --accent-soft:   #5a7c95;
+  --accent-hi:     #b0d4ee;
+  --accent-flare:  #c8e2f3;
+  --accent-deep:   #1f3a4e;
+  --fg-accent:     #93c0e0;
+  --fg-link:       #93c0e0;
+
+  /* Rule */
+  --c-line:    #3a3e42;
+  --c-line-2:  #4a4e54;
+  --c-line-3:  #93c0e0;
+
+  /* Warn */
+  --warn:      #d6826a;
+
+  /* Disable green glow in brief context */
+  --glow-accent: 0 0 0 1px #93c0e0, 0 0 12px -2px rgba(147, 192, 224, 0.4);
+  --glow-soft:   0 0 14px -4px rgba(147, 192, 224, 0.25);
+  --glow-text:   0 0 6px rgba(147, 192, 224, 0.35);
+
+  color-scheme: dark;
+}
+
+deck-stage {
+  background: var(--bg-page);
+}
+
+.slide {
+  position: relative;
+  width: 1280px;
+  height: 720px;
+  box-sizing: border-box;
+  padding: 64px 88px;
+  background: var(--bg-page);
+  color: var(--fg-primary);
+  font-family: var(--font-sans);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* No overlay on slides — clean paper bg. */
+.slide::after { content: none; }
+
+/* Slide chrome — top eyebrow, bottom page meta */
+.slide__chrome-top,
+.slide__chrome-bot {
+  position: absolute;
+  left: 88px;
+  right: 88px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--fg-faint);
+  z-index: 2;
+}
+.slide__chrome-top { top: 28px; }
+.slide__chrome-bot { bottom: 28px; }
+.slide__chrome-top .brand { color: var(--fg-accent); }
+.slide__chrome-bot .num { color: var(--fg-muted); font-variant-numeric: tabular-nums; }
+
+.slide > * { position: relative; z-index: 1; }
+.slide > .slide__chrome-top,
+.slide > .slide__chrome-bot { position: absolute; z-index: 2; }
+
+/* -------- Title slide -------------------------------------- */
+.slide--title { padding: 88px; justify-content: center; }
+.slide--title::after { display: none; }
+.slide--title .mark {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 56px;
+}
+.slide--title .mark .mark-img {
+  height: 40px;
+  width: auto;
+  /* Mark stays green per brand; soft neutral glow rather than tinted */
+  filter: brightness(1.05) saturate(1.1) drop-shadow(0 0 14px rgba(147, 192, 224, 0.15));
+}
+.slide--title .mark .word {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 17px;
+  letter-spacing: -0.01em;
+  color: var(--fg-primary);
+}
+.slide--title .mark .word i { font-style: normal; color: var(--fg-accent); text-shadow: var(--glow-text); }
+.slide--title h1 {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 84px;
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  color: var(--fg-primary);
+  margin: 0 0 32px 0;
+  max-width: 1000px;
+}
+.slide--title .sub {
+  font-family: var(--font-sans);
+  font-size: 24px;
+  line-height: 1.45;
+  color: var(--fg-body);
+  max-width: 920px;
+  margin: 0;
+}
+.slide--title .meta {
+  position: absolute;
+  bottom: 88px;
+  left: 88px;
+  right: 88px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.slide--title .meta .eyebrow { color: var(--fg-accent); }
+.slide--title .meta .right { color: var(--fg-faint); }
+
+/* -------- Section break ----------------------------------- */
+.slide--section { justify-content: center; padding: 88px; }
+.slide--section::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: var(--accent);
+  z-index: 2;
+}
+.slide--section .eyebrow {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--fg-accent);
+  margin-bottom: 28px;
+}
+.slide--section h1 {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 64px;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  color: var(--fg-primary);
+  margin: 0 0 24px 0;
+  max-width: 1000px;
+}
+.slide--section .sub {
+  font-family: var(--font-sans);
+  font-size: 22px;
+  line-height: 1.45;
+  color: var(--fg-body);
+  max-width: 880px;
+  margin: 0;
+}
+
+/* -------- Standard slide head ----------------------------- */
+.slide__head {
+  margin-top: 24px;
+  margin-bottom: 36px;
+}
+.slide__eyebrow {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--fg-accent);
+  margin-bottom: 12px;
+}
+.slide__title {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 44px;
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+  color: var(--fg-primary);
+  margin: 0;
+  max-width: 1100px;
+}
+
+/* -------- Two-column -------------------------------------- */
+.slide--two-col .body {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  gap: 64px;
+  align-items: center;
+  min-height: 0;
+}
+.slide--two-col .diagram-frame {
+  background: var(--bg-card);
+  border: 1px solid var(--c-line);
+  padding: 24px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.slide--two-col .diagram-frame img {
+  width: 100%;
+  height: auto;
+  max-height: 420px;
+  object-fit: contain;
+  /* Diagrams from the brief are dark-blue strokes on paper.
+     Inverting + hue-rotating preserves semantic colors against
+     the brief's dark background. */
+  filter: invert(1) hue-rotate(180deg) brightness(0.95);
+}
+.slide--two-col ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-sans);
+  font-size: 22px;
+  line-height: 1.42;
+  color: var(--fg-body);
+}
+.slide--two-col li {
+  position: relative;
+  padding-left: 22px;
+  margin-bottom: 24px;
+}
+.slide--two-col li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 14px;
+  width: 8px;
+  height: 1px;
+  background: var(--fg-accent);
+}
+.slide--two-col li b,
+.slide--two-col li strong {
+  color: var(--fg-accent);
+  font-weight: 600;
+}
+.slide--two-col li code {
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+  padding: 1px 6px;
+  background: var(--bg-well);
+  border: 1px solid var(--c-line);
+  color: var(--fg-primary);
+}
+
+/* -------- Stat slide -------------------------------------- */
+.slide--stat { justify-content: center; padding: 88px; }
+.slide--stat .stat-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--fg-accent);
+  margin-bottom: 20px;
+}
+.slide--stat .stat-number {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 220px;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--fg-primary);
+  font-variant-numeric: tabular-nums;
+  margin: 0 0 24px 0;
+}
+.slide--stat .stat-number .arrow { color: var(--fg-accent); font-weight: 300; padding: 0 18px; }
+.slide--stat .stat-caption {
+  font-family: var(--font-sans);
+  font-size: 28px;
+  line-height: 1.35;
+  color: var(--fg-body);
+  max-width: 900px;
+  margin: 0;
+}
+.slide--stat .stat-caption b { color: var(--fg-primary); font-weight: 500; }
+
+/* -------- Quote slide ------------------------------------- */
+.slide--quote { justify-content: center; padding: 88px 120px; }
+.slide--quote blockquote {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 56px;
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+  color: var(--fg-primary);
+  margin: 0 0 32px 0;
+}
+.slide--quote blockquote::before {
+  content: "";
+  display: block;
+  width: 48px;
+  height: 3px;
+  background: var(--accent);
+  margin-bottom: 36px;
+}
+.slide--quote .attrib {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--fg-muted);
+}
+
+/* -------- Code / specimen slide --------------------------- */
+.slide--code .specimen {
+  flex: 1;
+  background: var(--bg-surface);
+  border: 1px solid var(--c-line);
+  padding: 40px 48px;
+  margin-top: 16px;
+  font-family: var(--font-mono);
+  font-size: 22px;
+  line-height: 1.55;
+  color: var(--fg-body);
+  overflow: hidden;
+  white-space: pre;
+}
+.slide--code .specimen .c-prompt  { color: var(--fg-accent); }
+.slide--code .specimen .c-comment { color: var(--fg-faint); font-style: italic; }
+.slide--code .specimen .c-key     { color: var(--fg-primary); }
+.slide--code .specimen .c-str     { color: #f4c860; }
+.slide--code .specimen .c-flag    { color: var(--fg-accent); }

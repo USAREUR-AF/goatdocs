@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1280" />
+  <title>GOAT-Net · Console</title>
+  <link rel="stylesheet" href="../../colors_and_type.css" />
+  <link rel="stylesheet" href="../../components.css" />
+  <link rel="stylesheet" href="console.css" />
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+  <script src="data.js"></script>
+  <script type="text/babel" src="Icon.jsx"></script>
+  <script type="text/babel" src="ChipDot.jsx"></script>
+  <script type="text/babel" src="TopBar.jsx"></script>
+  <script type="text/babel" src="SideNav.jsx"></script>
+  <script type="text/babel" src="CatalogTable.jsx"></script>
+  <script type="text/babel" src="PeerDetail.jsx"></script>
+</head>
+<body>
+  <div id="app"></div>
+
+  <script type="text/babel" data-presets="env,react">
+    const { useState, useEffect, useMemo } = React;
+
+    const App = () => {
+      const data = window.MESH_DATA;
+      const [view, setView]         = useState('catalog');
+      const [filter, setFilter]     = useState('all');
+      const [selectedId, setSel]    = useState('acme-radar-04');
+      const [cmdkOpen, setCmdkOpen] = useState(false);
+      const [sector]                = useState(data.sector);
+
+      // Keyboard: ⌘K / Ctrl+K opens palette; Esc closes drawer + palette
+      useEffect(() => {
+        const onKey = (e) => {
+          if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+            e.preventDefault();
+            setCmdkOpen(o => !o);
+          } else if (e.key === 'Escape') {
+            if (cmdkOpen) setCmdkOpen(false);
+            else if (selectedId) setSel(null);
+          }
+        };
+        window.addEventListener('keydown', onKey);
+        return () => window.removeEventListener('keydown', onKey);
+      }, [cmdkOpen, selectedId]);
+
+      const counts = useMemo(() => ({
+        peers:     data.peers.length,
+        pubs:      Object.values(data.publications).reduce((n, arr) => n + arr.length, 0),
+        enrolling: data.peers.filter(p => p.state === 'enrolling').length,
+      }), [data]);
+
+      const selectedPeer = data.peers.find(p => p.id === selectedId);
+      const selectedPubs = selectedPeer ? (data.publications[selectedPeer.id] || []) : [];
+      const showDrawer = view === 'catalog' && !!selectedPeer;
+
+      return (
+        <>
+          <window.TopBar
+            sector={sector}
+            onCmdK={() => setCmdkOpen(true)}
+            status={`${data.peers.filter(p=>p.state==='online').length} of ${data.peers.length} peers reporting`}
+          />
+
+          <div className={`body ${showDrawer ? 'has-drawer' : ''}`}>
+            <window.SideNav view={view} onChange={setView} counts={counts} />
+
+            {view === 'catalog' && (
+              <window.CatalogTable
+                peers={data.peers}
+                selectedId={selectedId}
+                onSelect={setSel}
+                filter={filter}
+                onFilter={setFilter}
+              />
+            )}
+
+            {view === 'topology' && (
+              <div className="main">
+                <header className="main__header">
+                  <div className="main__title-row">
+                    <div className="main__eyebrow">topology · live</div>
+                    <div className="main__title">Who is talking to whom</div>
+                    <div className="main__meta">
+                      <div>tick · <b>04:21:18Z</b></div>
+                    </div>
+                  </div>
+                </header>
+                <div className="topology-placeholder">
+                  <window.Icon name="network" size={48} color="var(--c-green-mid)" />
+                  <div style={{marginTop:14, fontFamily:'var(--font-sans)', fontSize:16, color:'var(--fg-primary)'}}><b>Topology view</b></div>
+                  <div style={{marginTop:4, maxWidth:480}}>
+                    Live graph of peer-to-peer conversations across the mesh, updated as it
+                    happens. Not implemented in this kit — render target is a force-directed
+                    graph keyed by publication, not geography.
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {view === 'publications' && (
+              <div className="main">
+                <header className="main__header">
+                  <div className="main__title-row">
+                    <div className="main__eyebrow">catalog</div>
+                    <div className="main__title">Every publication on the bus</div>
+                  </div>
+                </header>
+                <div className="tablewrap">
+                  <table className="peers">
+                    <thead>
+                      <tr><th>topic</th><th>shape</th><th>peer</th><th className="num">hz</th></tr>
+                    </thead>
+                    <tbody>
+                      {Object.entries(data.publications).flatMap(([peerId, list]) =>
+                        list.map(pub => (
+                          <tr key={`${peerId}/${pub.topic}`} onClick={() => { setView('catalog'); setSel(peerId); }}>
+                            <td><span className="peerid">{pub.topic}</span></td>
+                            <td className="dim">{pub.shape}</td>
+                            <td>{peerId}</td>
+                            <td className="num">{pub.rate.toFixed(1)}</td>
+                          </tr>
+                        ))
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
+
+            {(view === 'enrollment' || view === 'policy' || view === 'audit' || view === 'shell') && (
+              <div className="main">
+                <header className="main__header">
+                  <div className="main__title-row">
+                    <div className="main__eyebrow">{view}</div>
+                    <div className="main__title">{view.charAt(0).toUpperCase() + view.slice(1)}</div>
+                  </div>
+                </header>
+                <div className="empty">
+                  Not in this kit. Render target: see README.md for proposed shape.
+                </div>
+              </div>
+            )}
+
+            {showDrawer && (
+              <window.PeerDetail
+                peer={selectedPeer}
+                publications={selectedPubs}
+                onClose={() => setSel(null)}
+              />
+            )}
+          </div>
+
+          {cmdkOpen && (
+            <div className="cmdk-scrim" onMouseDown={(e) => { if (e.target === e.currentTarget) setCmdkOpen(false); }}>
+              <div className="cmdk" onMouseDown={(e) => e.stopPropagation()}>
+                <input className="cmdk__input" autoFocus placeholder="Run command, jump to peer or publication…" />
+                <div className="cmdk__list">
+                  <div className="cmdk__row is-active">
+                    <span className="glyph">›</span><span>Jump to peer · <span style={{color:'var(--fg-link)'}}>relay-01</span></span><span className="hint">enter</span>
+                  </div>
+                  <div className="cmdk__row">
+                    <span className="glyph">›</span><span>Filter by · degraded</span><span className="hint">tab</span>
+                  </div>
+                  <div className="cmdk__row">
+                    <span className="glyph">$</span><span>Enroll new peer from CBOR bundle</span><span className="hint">e n</span>
+                  </div>
+                  <div className="cmdk__row">
+                    <span className="glyph">$</span><span>Open audit log · last 1 h</span><span className="hint">a l</span>
+                  </div>
+                  <div className="cmdk__row">
+                    <span className="glyph">$</span><span>Tail bus · acme/radar/tracks</span><span className="hint">t t</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </>
+      );
+    };
+
+    ReactDOM.createRoot(document.getElementById('app')).render(<App />);
+  </script>
+</body>
+</html>

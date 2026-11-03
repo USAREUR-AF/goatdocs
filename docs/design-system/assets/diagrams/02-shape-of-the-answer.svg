@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 280" preserveAspectRatio="xMidYMid meet" width="1440">
+  
+  
+            <title id="answer-fig-title">Six systems point-to-point producing fifteen wires, versus six systems on one shared bus producing six attachments.</title>
+            
+            <g>
+              <line class="edge" x1="170" y1="70" x2="230.6" y2="105"></line>
+              <line class="edge" x1="170" y1="70" x2="230.6" y2="175"></line>
+              <line class="edge" x1="170" y1="70" x2="170" y2="210"></line>
+              <line class="edge" x1="170" y1="70" x2="109.4" y2="175"></line>
+              <line class="edge" x1="170" y1="70" x2="109.4" y2="105"></line>
+              <line class="edge" x1="230.6" y1="105" x2="230.6" y2="175"></line>
+              <line class="edge" x1="230.6" y1="105" x2="170" y2="210"></line>
+              <line class="edge" x1="230.6" y1="105" x2="109.4" y2="175"></line>
+              <line class="edge" x1="230.6" y1="105" x2="109.4" y2="105"></line>
+              <line class="edge" x1="230.6" y1="175" x2="170" y2="210"></line>
+              <line class="edge" x1="230.6" y1="175" x2="109.4" y2="175"></line>
+              <line class="edge" x1="230.6" y1="175" x2="109.4" y2="105"></line>
+              <line class="edge" x1="170" y1="210" x2="109.4" y2="175"></line>
+              <line class="edge" x1="170" y1="210" x2="109.4" y2="105"></line>
+              <line class="edge" x1="109.4" y1="175" x2="109.4" y2="105"></line>
+              <circle class="node-fill" cx="170" cy="70" r="10"></circle>
+              <rect class="node-fill" x="220.6" y="95" width="20" height="20"></rect>
+              <polygon class="node-fill" points="230.6,165 240.6,175 230.6,185 220.6,175"></polygon>
+              <polygon class="node-fill" points="170,200 178,215 162,215"></polygon>
+              <circle class="node-fill" cx="109.4" cy="175" r="10"></circle>
+              <rect class="node-fill" x="99.4" y="95" width="20" height="20"></rect>
+              <text class="count" x="170" y="258">15 separate connections</text>
+            </g>
+            
+            <line class="rule" x1="370" y1="50" x2="370" y2="230" stroke-dasharray="3,5"></line>
+            
+            <g>
+              <line x1="425" y1="140" x2="705" y2="140" stroke="#1a4b6e" stroke-width="2.4" fill="none"></line>
+              <text class="annot" x="415" y="128" fill="#1a4b6e">shared bus</text>
+              <line class="edge" x1="475" y1="105" x2="475" y2="140"></line>
+              <line class="edge" x1="565" y1="105" x2="565" y2="140"></line>
+              <line class="edge" x1="655" y1="105" x2="655" y2="140"></line>
+              <line class="edge" x1="475" y1="140" x2="475" y2="175"></line>
+              <line class="edge" x1="565" y1="140" x2="565" y2="175"></line>
+              <line class="edge" x1="655" y1="140" x2="655" y2="175"></line>
+              <circle class="node-fill" cx="475" cy="95" r="10"></circle>
+              <rect class="node-fill" x="555" y="85" width="20" height="20"></rect>
+              <polygon class="node-fill" points="655,85 665,95 655,105 645,95"></polygon>
+              <polygon class="node-fill" points="475,175 483,190 467,190"></polygon>
+              <circle class="node-fill" cx="565" cy="185" r="10"></circle>
+              <rect class="node-fill" x="645" y="175" width="20" height="20"></rect>
+              <text class="count" x="565" y="258">6 attachments to one bus</text>
+            </g>
+          
+</svg>

@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 240" preserveAspectRatio="xMidYMid meet" width="1440">
+  
+  
+            <title id="catalog-fig-title">A mockup of the registry catalog: a tabular phone book of every system on the bus. Names shown are illustrative.</title>
+            
+            
+            <rect class="cat-frame" x="20" y="20" width="680" height="200" rx="4" ry="4"></rect>
+            
+            <rect class="cat-bar" x="20" y="20" width="680" height="34"></rect>
+            <text class="cat-title" x="35" y="42">registry · catalog of systems on the bus</text>
+            <text class="cat-live" x="685" y="42" text-anchor="end">live</text>
+            
+            <text class="cat-head" x="35" y="80">name</text>
+            <text class="cat-head" x="295" y="80">what it publishes</text>
+            <text class="cat-head" x="565" y="80">format</text>
+            <line class="rule" x1="20" y1="90" x2="700" y2="90"></line>
+            
+            <text class="cat-name" x="35" y="124">foglight/radar/tracks</text>
+            <text class="cat-cell" x="295" y="124">radar track updates</text>
+            <text class="cat-cell" x="565" y="124">protobuf</text>
+            <line class="cat-rule" x1="35" y1="138" x2="685" y2="138"></line>
+            
+            <text class="cat-name" x="35" y="164">saltspring/optic/feeds</text>
+            <text class="cat-cell" x="295" y="164">electro-optical imagery</text>
+            <text class="cat-cell" x="565" y="164">h264</text>
+            <line class="cat-rule" x1="35" y1="178" x2="685" y2="178"></line>
+            
+            <text class="cat-name" x="35" y="204">ironforge/decision/threats</text>
+            <text class="cat-cell" x="295" y="204">threat reports</text>
+            <text class="cat-cell" x="565" y="204">protobuf</text>
+          
+</svg>

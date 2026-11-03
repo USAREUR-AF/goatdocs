@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>How GOAT-Net uses Zenoh — brief</title>
+  <link rel="stylesheet" href="../../colors_and_type.css" />
+  <link rel="stylesheet" href="../../components.css" />
+  <link rel="stylesheet" href="brief.css" />
+  <script src="deck-stage.js"></script>
+</head>
+<body>
+<deck-stage width="1280" height="720">
+
+  <!-- 01 · Title ----------------------------------------- -->
+  <section class="slide slide--title">
+    <div class="mark">
+      <img src="../../assets/goat-logo.svg" alt="GOAT-Net" class="mark-img" />
+      <div class="word">GOAT<i>-</i>Net</div>
+    </div>
+    <h1>How GOAT-Net uses Zenoh.</h1>
+    <p class="sub">A shared data network for military systems built by many different companies. Zenoh is the protocol underneath.</p>
+    <div class="meta">
+      <div class="eyebrow">brief · companion to the full essay</div>
+      <div class="right">legacy.example · pre-1.0</div>
+    </div>
+  </section>
+
+  <!-- 02 · The problem (two-col, stat-as-diagram) -------- -->
+  <section class="slide slide--two-col">
+    <div class="slide__chrome-top"><span class="brand">GOAT-Net</span><span>How GOAT-Net uses Zenoh</span></div>
+    <div class="slide__chrome-bot"><span>the problem</span><span class="num">02 / 09</span></div>
+    <div class="slide__head">
+      <div class="slide__eyebrow">the problem</div>
+      <h2 class="slide__title">Every new system adds n − 1 connections.</h2>
+    </div>
+    <div class="body">
+      <div class="diagram-frame">
+        <img src="../../assets/diagrams/01b-connectivity-problem.svg" alt="Fully-meshed bilateral connections — 45 for 10 systems" />
+      </div>
+      <ul>
+        <li><b>10 systems → 45</b> bilateral connections to build, debug, maintain.</li>
+        <li><b>50 systems → 1,225</b> — does not scale.</li>
+        <li>Most systems sit in isolated pockets long before they fail at scale. No path, no shared vocabulary.</li>
+        <li>The arrangement breaks the moment one piece changes.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 03 · Stat — the shape of the answer ---------------- -->
+  <section class="slide slide--stat">
+    <div class="slide__chrome-top"><span class="brand">GOAT-Net</span><span>How GOAT-Net uses Zenoh</span></div>
+    <div class="slide__chrome-bot"><span>the shape of the answer</span><span class="num">03 / 09</span></div>
+    <div class="stat-eyebrow">switchboard · vs · radio</div>
+    <div class="stat-number">15 <span class="arrow">→</span> 6</div>
+    <div class="stat-caption">Patching every call by hand does not scale. <b>Announce on a named channel; anyone tunes in.</b> Each system connects once to a shared bus and publishes under a clear name like <code style="font-family:var(--font-mono);font-size:0.85em;padding:2px 8px;background:var(--bg-well);border:1px solid var(--c-line-2);color:var(--fg-link)">acme/radar/tracks</code>.</div>
+  </section>
+
+  <!-- 04 · Section break ---------------------------------- -->
+  <section class="slide slide--section">
+    <div class="slide__chrome-top"><span class="brand">GOAT-Net</span><span>How GOAT-Net uses Zenoh</span></div>
+    <div class="slide__chrome-bot"><span>section</span><span class="num">04 / 09</span></div>
+    <div class="eyebrow">PART II · the substrate</div>
+    <h1>A network turns into an ecosystem.</h1>
+    <p class="sub">A handful of giant programs becomes a wide field of small specialists, each free to improve on its own clock.</p>
+  </section>
+
+  <!-- 05 · Splitting things up (two-col) ----------------- -->
+  <section class="slide slide--two-col">
+    <div class="slide__chrome-top"><span class="brand">GOAT-Net</span><span>How GOAT-Net uses Zenoh</span></div>
+    <div class="slide__chrome-bot"><span>why splitting things up matters</span><span class="num">05 / 09</span></div>
+    <div class="slide__head">
+      <div class="slide__eyebrow">why splitting things up matters</div>
+      <h2 class="slide__title">One monolith → four specialists.</h2>
+    </div>
+    <div class="body">
+      <div class="diagram-frame">
+        <img src="../../assets/diagrams/03-splitting-things-up.svg" alt="Monolith broken into small specialists on a bus" />
+      </div>
+      <ul>
+        <li>Traditional C2: one system did everything — <b>single point of failure</b>.</li>
+        <li>Shared bus splits the jobs apart — each piece small, replaceable, doing one thing well.</li>
+        <li>A new entrant does not rebuild the world. Shows up, does its one thing, plugs in.</li>
+        <li>The thing that gathers data isn't the thing that decides who sees it.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 06 · Fits into GOAT-Net (two-col) ------------------ -->
+  <section class="slide slide--two-col">
+    <div class="slide__chrome-top"><span class="brand">GOAT-Net</span><span>How GOAT-Net uses Zenoh</span></div>
+    <div class="slide__chrome-bot"><span>how it fits into goat-net</span><span class="num">06 / 09</span></div>
+    <div class="slide__head">
+      <div class="slide__eyebrow">how it fits into goat-net</div>
+      <h2 class="slide__title">Bus inside the envelope. Identity at the door.</h2>
+    </div>
+    <div class="body">
+      <div class="diagram-frame">
+        <img src="../../assets/diagrams/06-fits-into-goat-net.svg" alt="Zenoh bus inside the encrypted WireGuard envelope, each peer carrying an identity badge" />
+      </div>
+      <ul>
+        <li>Bus runs <b>inside the private, encrypted network</b>. Network handles secrecy; Zenoh handles the data.</li>
+        <li>Every connecting system carries a unique digital identity — a passport.</li>
+        <li>Identity says which names it can publish under and receive on.</li>
+        <li>A vendor publishes only under their own area. Operators control who reads what.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 07 · Quote ----------------------------------------- -->
+  <section class="slide slide--quote">
+    <div class="slide__chrome-top"><span class="brand">GOAT-Net</span><span>How GOAT-Net uses Zenoh</span></div>
+    <div class="slide__chrome-bot"><span>position</span><span class="num">07 / 09</span></div>
+    <blockquote>"A vendor-owned bus is a gilded cage — not the pattern."</blockquote>
+    <div class="attrib">manifesto · anti-platform.md</div>
+  </section>
+
+  <!-- 08 · Code / specimen ------------------------------ -->
+  <section class="slide slide--code">
+    <div class="slide__chrome-top"><span class="brand">GOAT-Net</span><span>How GOAT-Net uses Zenoh</span></div>
+    <div class="slide__chrome-bot"><span>join an existing mesh</span><span class="num">08 / 09</span></div>
+    <div class="slide__head">
+      <div class="slide__eyebrow">enrollment · pre-block-22</div>
+      <h2 class="slide__title">Join an existing mesh.</h2>
+    </div>
+    <div class="specimen"><span class="c-comment"># One-line install. Pre-Block-22 path.</span>
+<span class="c-prompt">$</span> <span class="c-key">curl</span> -fsSL https://pkgs.netbird.io/install.sh | <span class="c-key">sudo</span> bash
+<span class="c-prompt">$</span> <span class="c-key">sudo</span> netbird up \
+    <span class="c-flag">--management-url</span> https://netbird.legacy.example \
+    <span class="c-flag">--setup-key</span> <span class="c-str">&lt;KEY&gt;</span>
+
+<span class="c-comment"># After Block 22 ships: CBOR bundle from the offline CA on a YubiKey.</span>
+<span class="c-comment"># No public-internet management URL. The wg-cp0 listener is silent</span>
+<span class="c-comment"># under unauthenticated handshakes by WireGuard's protocol property.</span></div>
+  </section>
+
+  <!-- 09 · Closing section break ------------------------ -->
+  <section class="slide slide--section">
+    <div class="slide__chrome-top"><span class="brand">GOAT-Net</span><span>How GOAT-Net uses Zenoh</span></div>
+    <div class="slide__chrome-bot"><span>a call to industry</span><span class="num">09 / 09</span></div>
+    <div class="eyebrow">a call to industry</div>
+    <h1>Drop the proprietary lock-ins.</h1>
+    <p class="sub">Build the right patterns into your products. Learn how fast the integration can go when you do.</p>
+  </section>
+
+</deck-stage>
+</body>
+</html>

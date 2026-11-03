@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 220" preserveAspectRatio="xMidYMid meet" width="1440">
+  
+  
+            <title id="problem-reality-fig-title">Reality: systems sit in isolated pockets with no network path or common vocabulary to reach each other. They fail alone where they could have succeeded together.</title>
+            
+            
+            <g>
+              <ellipse cx="90" cy="115" rx="60" ry="50" fill="none" stroke="#1f1d1a" stroke-width="1.8" stroke-dasharray="5,4"></ellipse>
+              <circle class="node-fill" cx="90" cy="92" r="9"></circle>
+              <rect class="node-fill" x="59" y="116" width="18" height="18"></rect>
+              <polygon class="node-fill" points="103,114 121,114 112,134"></polygon>
+              <line class="edge" x1="90" y1="92" x2="68" y2="124"></line>
+              <line class="edge" x1="90" y1="92" x2="112" y2="123"></line>
+              <line class="edge" x1="68" y1="124" x2="112" y2="123"></line>
+            </g>
+            
+            <g>
+              <line x1="160" y1="115" x2="190" y2="115" stroke="#8a2e1f" stroke-width="1.4" stroke-dasharray="3,3" opacity="0.65"></line>
+              <g transform="translate(175, 115)" stroke="#8a2e1f" stroke-width="1.6">
+                <line x1="-5" y1="-5" x2="5" y2="5"></line>
+                <line x1="-5" y1="5" x2="5" y2="-5"></line>
+              </g>
+            </g>
+            
+            <g>
+              <ellipse cx="270" cy="115" rx="60" ry="50" fill="none" stroke="#1f1d1a" stroke-width="1.8" stroke-dasharray="5,4"></ellipse>
+              <polygon class="node-fill" points="270,84 282,104 258,104"></polygon>
+              <circle class="node-fill" cx="246" cy="130" r="9"></circle>
+              <rect class="node-fill" x="283" y="120" width="18" height="18"></rect>
+              <line class="edge" x1="270" y1="98" x2="246" y2="130"></line>
+              <line class="edge" x1="270" y1="98" x2="292" y2="129"></line>
+              <line class="edge" x1="246" y1="130" x2="292" y2="129"></line>
+            </g>
+            
+            <g>
+              <line x1="340" y1="115" x2="370" y2="115" stroke="#8a2e1f" stroke-width="1.4" stroke-dasharray="3,3" opacity="0.65"></line>
+              <g transform="translate(355, 115)" stroke="#8a2e1f" stroke-width="1.6">
+                <line x1="-5" y1="-5" x2="5" y2="5"></line>
+                <line x1="-5" y1="5" x2="5" y2="-5"></line>
+              </g>
+            </g>
+            
+            <g>
+              <ellipse cx="450" cy="115" rx="60" ry="50" fill="none" stroke="#1f1d1a" stroke-width="1.8" stroke-dasharray="5,4"></ellipse>
+              <rect class="node-fill" x="441" y="84" width="18" height="18"></rect>
+              <polygon class="node-fill" points="427,124 441,142 415,142"></polygon>
+              <circle class="node-fill" cx="478" cy="130" r="9"></circle>
+              <line class="edge" x1="450" y1="93" x2="428" y2="131"></line>
+              <line class="edge" x1="450" y1="93" x2="478" y2="130"></line>
+              <line class="edge" x1="428" y1="131" x2="478" y2="130"></line>
+            </g>
+            
+            <g>
+              <line x1="520" y1="115" x2="550" y2="115" stroke="#8a2e1f" stroke-width="1.4" stroke-dasharray="3,3" opacity="0.65"></line>
+              <g transform="translate(535, 115)" stroke="#8a2e1f" stroke-width="1.6">
+                <line x1="-5" y1="-5" x2="5" y2="5"></line>
+                <line x1="-5" y1="5" x2="5" y2="-5"></line>
+              </g>
+            </g>
+            
+            <g>
+              <ellipse cx="630" cy="115" rx="60" ry="50" fill="none" stroke="#1f1d1a" stroke-width="1.8" stroke-dasharray="5,4"></ellipse>
+              <circle class="node-fill" cx="630" cy="92" r="9"></circle>
+              <polygon class="node-fill" points="612,116 624,130 600,130"></polygon>
+              <rect class="node-fill" x="644" y="118" width="18" height="18"></rect>
+              <line class="edge" x1="630" y1="92" x2="612" y2="123"></line>
+              <line class="edge" x1="630" y1="92" x2="653" y2="127"></line>
+              <line class="edge" x1="612" y1="123" x2="653" y2="127"></line>
+            </g>
+            
+            <text class="count" x="360" y="200">no shared data layer · pockets succeed alone, fail alone</text>
+          
+</svg>

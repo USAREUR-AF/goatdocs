@@ -1,0 +1,24 @@
+/* Shared shell for preview cards. Sized to fit a 700×~150 cell;
+   most cards just lay tokens out flat with no chrome. */
+@import url('../colors_and_type.css');
+
+html, body { background: var(--bg-page); }
+body {
+  margin: 0;
+  padding: 16px 20px;
+  font-family: var(--font-sans);
+  color: var(--fg-body);
+  box-sizing: border-box;
+}
+.row { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.col { display: flex; flex-direction: column; gap: 8px; }
+.grid { display: grid; gap: 8px; }
+.stack { display: flex; flex-direction: column; gap: 12px; }
+.muted { color: var(--fg-muted); }
+.tag-meta {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--fg-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}

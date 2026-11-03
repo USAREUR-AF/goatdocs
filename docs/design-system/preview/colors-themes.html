@@ -1,0 +1,79 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="_card.css"><link rel="stylesheet" href="../components.css">
+<style>
+  body { padding: 0; margin: 0; background: transparent; min-height: 220px; }
+  .panes { display: grid; grid-template-columns: 1fr 1fr; min-height: 220px; }
+  .pane {
+    padding: 18px 22px;
+    background: var(--bg-page);
+    color: var(--fg-body);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .pane h4 {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--fg-muted);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .pane h4 .dot { width: 8px; height: 8px; background: var(--c-green-hi); border-radius: 50%; box-shadow: var(--glow-text); }
+  .swatch-row { display: flex; gap: 4px; }
+  .sw { flex: 1; height: 18px; border: 1px solid var(--c-line); }
+  .demo-card {
+    padding: 10px 12px;
+    background: var(--bg-card);
+    border: 1px solid var(--c-line);
+  }
+  .demo-card .label { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--fg-muted); }
+  .demo-card .val { font-family: var(--font-mono); font-size: 13px; color: var(--fg-primary); margin-top: 2px; font-variant-numeric: tabular-nums; }
+  .chip-row { display: flex; gap: 6px; flex-wrap: wrap; }
+  .pane[data-theme="light"] .border-line { border-top: 1px solid var(--c-line-2); }
+</style>
+</head><body>
+  <div class="panes">
+    <!-- DARK -->
+    <div class="pane">
+      <h4><span class="dot"></span>Dark · default</h4>
+      <div class="swatch-row">
+        <div class="sw" style="background:var(--bg-page)"></div>
+        <div class="sw" style="background:var(--bg-surface)"></div>
+        <div class="sw" style="background:var(--bg-panel)"></div>
+        <div class="sw" style="background:var(--bg-card)"></div>
+        <div class="sw" style="background:var(--bg-well)"></div>
+      </div>
+      <div class="demo-card">
+        <div class="label">peer</div>
+        <div class="val">relay-01 · 38 ms</div>
+      </div>
+      <div class="chip-row">
+        <span class="chip chip--ok"><span class="chip__dot"></span>online</span>
+        <span class="chip chip--warn"><span class="chip__dot"></span>degraded</span>
+        <span class="chip chip--err"><span class="chip__dot"></span>offline</span>
+      </div>
+    </div>
+    <!-- LIGHT -->
+    <div class="pane" data-theme="light">
+      <h4 style="color:var(--c-green-mid)"><span class="dot" style="background:var(--c-green-mid);box-shadow:none"></span>Light · paper-warm</h4>
+      <div class="swatch-row">
+        <div class="sw" style="background:var(--bg-page)"></div>
+        <div class="sw" style="background:var(--bg-surface)"></div>
+        <div class="sw" style="background:var(--bg-panel)"></div>
+        <div class="sw" style="background:var(--bg-card)"></div>
+        <div class="sw" style="background:var(--bg-well)"></div>
+      </div>
+      <div class="demo-card">
+        <div class="label">peer</div>
+        <div class="val">relay-01 · 38 ms</div>
+      </div>
+      <div class="chip-row">
+        <span class="chip chip--ok"><span class="chip__dot"></span>online</span>
+        <span class="chip chip--warn"><span class="chip__dot"></span>degraded</span>
+        <span class="chip chip--err"><span class="chip__dot"></span>offline</span>
+      </div>
+    </div>
+  </div>
+</body></html>
