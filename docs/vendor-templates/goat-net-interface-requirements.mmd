@@ -1,0 +1,40 @@
+%%{init: {'theme': 'base', 'themeVariables': {'fontSize': '15px', 'lineColor': '#444'}, 'flowchart': {'curve': 'basis', 'nodeSpacing': 55, 'rankSpacing': 60, 'wrappingWidth': 320}}}%%
+flowchart TD
+  START(["Vendor system to be integrated with GOAT-Net"])
+  START --> GATE
+
+  GATE["<b>BASELINE — REQUIREMENT 4</b><br/>Enroll as a peer on the GOAT-Net<br/>peer-to-peer WireGuard mesh via Netbird,<br/>operating over colorless transport.<br/><i>Required of every vendor — precondition to Req 1–3.</i>"]
+  GATE --> ASK
+
+  ASK{"What does the system exchange<br/>over GOAT-Net?<br/><i>(a system may do more than one)</i>"}
+
+  ASK -->|"PRODUCES event-driven data<br/>e.g. radar tracks, sensor detections"| PUB
+  ASK -->|"CONSUMES event-driven data<br/>e.g. a C2 system ingesting tracks"| SUB
+  ASK -->|"EXCHANGES discrete control commands<br/>e.g. mode / state change"| CMD
+
+  PUB["<b>REQUIREMENT 1 — PUBLISH</b><br/>Publish to GOAT-Net as a<br/>Zenoh publisher on a<br/>vendor-scoped topic key."]
+  SUB["<b>REQUIREMENT 2 — SUBSCRIBE</b><br/>Subscribe via GOAT-Net as a<br/>Zenoh subscriber under an<br/>identity-bound access policy."]
+  CMD["<b>REQUIREMENT 3 — COMMAND</b><br/>Expose or consume a<br/>REST API or gRPC<br/>request / response interface."]
+
+  PUB --> BROKER
+  SUB --> BROKER
+  CMD -.->|"point-to-point,<br/>not via the broker"| BUS
+
+  BROKER["<b>Zenoh</b> — event-driven data broker<br/>publish / subscribe data plane"]
+  BROKER --> BUS
+
+  BUS(["All interfaces operate peer-to-peer over the Netbird / WireGuard mesh"])
+
+  classDef gate fill:#ede7f6,stroke:#5e35b1,stroke-width:2px,color:#000
+  classDef pub fill:#e3f2fd,stroke:#1565c0,stroke-width:1.5px,color:#000
+  classDef sub fill:#e8f5e9,stroke:#2e7d32,stroke-width:1.5px,color:#000
+  classDef cmd fill:#fff3e0,stroke:#ef6c00,stroke-width:1.5px,color:#000
+  classDef broker fill:#e1f5fe,stroke:#0277bd,stroke-width:1.5px,color:#000
+  classDef ep fill:#f5f5f5,stroke:#616161,stroke-width:1.5px,color:#000
+
+  class GATE gate
+  class PUB pub
+  class SUB sub
+  class CMD cmd
+  class BROKER broker
+  class START,BUS ep
