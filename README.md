@@ -9,7 +9,7 @@
 </p>
 
 > [!NOTE]
-> goat is pre-1.0. Until goatcore's first tag, `goatcore/v0.1.0`, this repository is regenerated from its source tree and `main` may be replaced; clone again rather than pull.
+> goat is pre-1.0: interfaces can still change between releases. This repository is generated from goat's source tree; each update arrives as a new commit on `main`.
 
 The explanatory corpus for goat — the design documents, reference material, design system, positions and templates that explain the system and the thinking behind it, as distinct from the component documentation that lives beside the code in [`goatcore`](https://github.com/usareur-af/goatcore).
 
