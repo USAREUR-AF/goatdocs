@@ -168,7 +168,7 @@ Entries are grouped by layer, top-to-bottom: change management → infrastructur
 
 **Why:** LTS releases get five years of security updates. Boring distros have the largest operator pool and the deepest tooling ecosystem.
 
-**Read more:** os-baseline-and-luks.md, [orin-os-decision.md](https://github.com/usareur-af/goatcore/blob/main/docs/design/orin-os-decision.md).
+**Read more:** [os-baseline-and-luks.md](https://github.com/usareur-af/goatcore/blob/main/docs/design/os-baseline-and-luks.md), [orin-os-decision.md](https://github.com/usareur-af/goatcore/blob/main/docs/design/orin-os-decision.md).
 
 ### 5.2 systemd unit wrappers around Compose stacks
 
@@ -324,7 +324,7 @@ Entries are grouped by layer, top-to-bottom: change management → infrastructur
 
 **Why:** Standard data-at-rest protection. A stolen drive is useless without the unsealed key.
 
-**Read more:** os-baseline-and-luks.md.
+**Read more:** [os-baseline-and-luks.md](https://github.com/usareur-af/goatcore/blob/main/docs/design/os-baseline-and-luks.md).
 
 ### 10.2 Fail-closed firewall posture
 

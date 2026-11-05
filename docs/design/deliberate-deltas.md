@@ -272,7 +272,7 @@ If a topic is not in the sections below, default behavior applies. In particular
 
 **Why:** FIPS 140-3 + DISA STIG are hard compliance requirements. Kairos was evaluated and dropped — could not deliver FIPS + STIG.
 
-**Read more:** os-baseline-and-luks.md.
+**Read more:** [os-baseline-and-luks.md](https://github.com/usareur-af/goatcore/blob/main/docs/design/os-baseline-and-luks.md).
 
 ### 8.2 Chainguard-first containers; Iron Bank is not a standalone trust signal
 
