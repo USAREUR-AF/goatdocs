@@ -48,7 +48,7 @@ Entries are grouped by layer, top-to-bottom: change management → infrastructur
 
 **Why:** Surface regressions before they reach `main`. Cheaper to catch in CI than in a soak.
 
-**Read more:** [.github/workflows/](https://github.com/usareur-af/goatcore/tree/main/.github/workflows), [adr/0703-pinned-digests-and-pin-regression-ci.md](https://github.com/usareur-af/goatcore/blob/main/docs/adr/0703-pinned-digests-and-pin-regression-ci.md).
+**Read more:** [.github/workflows/](../../.github/workflows/), [adr/0703-pinned-digests-and-pin-regression-ci.md](https://github.com/usareur-af/goatcore/blob/main/docs/adr/0703-pinned-digests-and-pin-regression-ci.md).
 
 ---
 
