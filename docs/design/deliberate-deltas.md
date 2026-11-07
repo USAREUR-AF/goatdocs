@@ -274,13 +274,13 @@ If a topic is not in the sections below, default behavior applies. In particular
 
 **Read more:** [os-baseline-and-luks.md](https://github.com/usareur-af/goatcore/blob/main/docs/design/os-baseline-and-luks.md).
 
-### 8.2 Chainguard-first containers in the team's goatnets, redistributable bases in public; Iron Bank is not a standalone trust signal
+### 8.2 Chainguard-first containers; base images by role; Iron Bank is not a standalone trust signal
 
-**Choice:** The goat team's goatnets run third-party containers from Chainguard where an equivalent exists, and build goat's own images on Chainguard bases. Iron Bank presence is used only after per-image audit when Chainguard has no equivalent. The public repositories build on base images anyone may redistribute (Debian official images, distroless Debian 13), named by role; an environment's overlay names its own images for those roles, which is how the team's goatnets get Chainguard.
+**Choice:** The goat team's goatnets run third-party containers from Chainguard where an equivalent exists, and build goat's own images on Chainguard bases. Iron Bank presence is used only after per-image audit when Chainguard has no equivalent. Base images are named by role. The public repositories default to Chainguard's free catalogue, pinned by digest; an environment's overlay names its own images for those roles, which is where a private Chainguard catalogue (versioned tags, FIPS variants) belongs.
 
 **Vanilla:** Pull from Docker Hub.
 
-**Why:** Supply-chain provenance is a Block 13 requirement. Iron Bank hosts many insecure containers — its catalog presence is not a security guarantee. Public images cannot carry a paid catalogue's layers, and naming bases by role lets any environment choose its own without forking a Dockerfile.
+**Why:** Supply-chain provenance is a Block 13 requirement. Iron Bank hosts many insecure containers — its catalog presence is not a security guarantee. A private catalogue's images cannot appear in the public tree, and naming bases by role lets any environment choose its own without forking a Dockerfile.
 
 **Read more:** [ADR 0700](https://github.com/usareur-af/goatcore/blob/main/docs/adr/0700-chainguard-first.md), [ADR 1220](https://github.com/usareur-af/goatcore/blob/main/docs/adr/1220-public-base-images-by-role-overlay-supplies-its-own.md), [base images by role](https://github.com/usareur-af/goatcore/blob/main/docs/design/base-images.md), [build goat images on your own base images](https://github.com/usareur-af/goatcore/blob/main/docs/operations/build-on-your-own-base-images.md).
 
