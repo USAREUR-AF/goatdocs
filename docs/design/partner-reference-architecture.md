@@ -1,10 +1,13 @@
 # Partner Reference Architecture (PRA) — minimal Zenoh-on-ZTOL recipe
 
+> **Scope: a nation's own environment is the operational path.** Operationally, each nation runs its own environment and shares only by release across boundary nodes that federate the environments ([ADR 1157](https://github.com/usareur-af/goatcore/blob/main/docs/adr/1157-cross-sovereign-federation-edge-terminated.md), [ADR 1208](https://github.com/usareur-af/goatcore/blob/main/docs/adr/1208-sovereign-environments-release-namespaces-and-grant-encryption.md)). This recipe is a minimal stack for such an environment. Tier-0 below is the moon pod, a learning tool for the exercise environment, not the operational path.
+
+
 | Field | Value |
 |---|---|
 | Status | Draft (Phase 2D-late / Phase 3 commitment); recommendation, not requirement |
 | ADR anchor | [`../adr/0821-mission-partner-sharing-pattern.md`](https://github.com/usareur-af/goatcore/blob/main/docs/adr/0821-mission-partner-sharing-pattern.md) §"Partner Reference Architecture" |
-| Companions | [`mission-partner-sharing.md`](https://github.com/usareur-af/goatcore/blob/main/docs/design/mission-partner-sharing.md), [`partner-receiver-requirements.md`](https://github.com/usareur-af/goatcore/blob/main/docs/design/partner-receiver-requirements.md), [`goat-moon-pod.md`](https://github.com/usareur-af/goatstuff/blob/main/docs/design/goat-moon-pod.md), [`../partner-templates/data-sharing-charter.md`](../partner-templates/data-sharing-charter.md) |
+| Companions | [`mission-partner-sharing.md`](https://github.com/usareur-af/goatcore/blob/main/docs/design/mission-partner-sharing.md), [`moon-pod-conformance.md`](https://github.com/usareur-af/goatstuff/blob/main/docs/design/moon-pod-conformance.md), [`goat-moon-pod.md`](https://github.com/usareur-af/goatstuff/blob/main/docs/design/goat-moon-pod.md), [`../partner-templates/data-sharing-charter.md`](../partner-templates/data-sharing-charter.md) |
 
 ## What this is
 
@@ -14,7 +17,7 @@ A **recommended-not-required** minimal Zenoh-on-ZTOL stack a mission partner can
 
 The PRA presumes a partner with engineering capacity to stand up zenohd + WireGuard + an OIDC IdP + an audit sink. Many plausible mission partners do not have that capacity in any reasonable timeframe.
 
-For those partners, **Tier-0** is a turnkey pattern: the partner runs a `goat-moon-pod` — a containerized appliance that bundles all six required pieces and deploys in 24 hours by a non-engineer. The contract any moon-pod must meet is at [`partner-receiver-requirements.md`](https://github.com/usareur-af/goatcore/blob/main/docs/design/partner-receiver-requirements.md) (the seven requirements). The architectural shape is at [`goat-moon-pod.md`](https://github.com/usareur-af/goatstuff/blob/main/docs/design/goat-moon-pod.md). Our reference implementation is at `moon-pod` (separate repo, Apache 2.0 — private during MVP, public at GA, per [ADR 0223](https://github.com/usareur-af/goatcore/blob/main/docs/adr/0223-goat-moon-pod-repo-containment.md)).
+For those partners, **Tier-0** is a turnkey pattern: the partner runs a `goat-moon-pod` — a containerized appliance that bundles all six required pieces and deploys in 24 hours by a non-engineer. The contract any moon-pod must meet is at [`moon-pod-conformance.md`](https://github.com/usareur-af/goatstuff/blob/main/docs/design/moon-pod-conformance.md) (the seven requirements). The architectural shape is at [`goat-moon-pod.md`](https://github.com/usareur-af/goatstuff/blob/main/docs/design/goat-moon-pod.md). Our reference implementation is at `moon-pod` (separate repo, Apache 2.0 — private during MVP, public at GA, per [ADR 0223](https://github.com/usareur-af/goatcore/blob/main/docs/adr/0223-goat-moon-pod-repo-containment.md)).
 
 Vendor moon-pods are explicitly invited; per-vendor cookbooks live at `../integrations/moon-pods/`. Builder guide for vendors at [`goat-moon-pod-builder-guide.md`](https://github.com/usareur-af/goatstuff/blob/main/docs/design/goat-moon-pod-builder-guide.md).
 
@@ -193,7 +196,7 @@ The PRA scales gracefully because it doesn't lock in opinionated choices.
 - ADR [`0821`](https://github.com/usareur-af/goatcore/blob/main/docs/adr/0821-mission-partner-sharing-pattern.md) — anchor decision
 - ADR [`0223`](https://github.com/usareur-af/goatcore/blob/main/docs/adr/0223-goat-moon-pod-repo-containment.md) — goat-moon-pod repo-containment + naming-pattern decision
 - [`mission-partner-sharing.md`](https://github.com/usareur-af/goatcore/blob/main/docs/design/mission-partner-sharing.md) — design companion
-- [`partner-receiver-requirements.md`](https://github.com/usareur-af/goatcore/blob/main/docs/design/partner-receiver-requirements.md) — Tier-0 seven-requirement contract
+- [`moon-pod-conformance.md`](https://github.com/usareur-af/goatstuff/blob/main/docs/design/moon-pod-conformance.md) — Tier-0 seven-requirement contract
 - [`goat-moon-pod.md`](https://github.com/usareur-af/goatstuff/blob/main/docs/design/goat-moon-pod.md) — abstract spec for moon-pods
 - [`goat-moon-pod-builder-guide.md`](https://github.com/usareur-af/goatstuff/blob/main/docs/design/goat-moon-pod-builder-guide.md) — for vendors building their own moon-pods
 - [`../partner-templates/data-sharing-charter.md`](../partner-templates/data-sharing-charter.md) — formal memo
