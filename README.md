@@ -23,7 +23,7 @@ The explanatory corpus for goat — the design documents, reference material, de
 
 Where a document here cites code, it cites `goatcore` by path; where it describes a component, the component's own design document in `goatcore/docs/design/` is canonical and this corpus links to it.
 
-Start at [docs/INDEX.md](docs/INDEX.md).
+Start at [docs/INDEX.md](docs/INDEX.md). The same documents are published as a website at <https://usareur-af.github.io/goatdocs/>, built from `main` by [`.github/workflows/pages.yml`](.github/workflows/pages.yml) with MkDocs ([`mkdocs.yml`](mkdocs.yml)). Preview it locally with `pip install -r .github/pages/requirements.txt && mkdocs serve`.
 
 ## Contributing and licence
 
