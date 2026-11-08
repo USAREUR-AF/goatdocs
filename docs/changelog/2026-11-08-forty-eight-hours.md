@@ -21,7 +21,7 @@ This page lists what changed, why it matters to someone who runs or contributes 
 
 Commits per repository in the window: goatcore 99, goatstuff 18, goatrodeo 11, hello-galaxy-goatenv 8, saltlick 6, goatdocs 5, goatenv 4, hello-galaxy-cross-env-federation 2, hello-galaxy-partner-data-sharing 1. Over the same window the maintainers' private overlay took 116 commits. Those commits hold their goatnets' configuration and pin moves, and are described below only as process.
 
-Outside contributors whose work merged in the window, by GitHub login: `0mlml` (relay and portal, section 7), `deepschiff` (licensing, section 9), `joshkor1982` (security reporting text, and co-author of two ported fixes), and `slybay`, `tfm4` and `HaterAndrew` (co-authors of ported fixes, section 8).
+Each pull request's page names its author and any co-authors.
 
 ---
 
@@ -216,7 +216,7 @@ Report a vulnerability privately through the repository's *Security* tab, never 
 | What they receive | read access to a private repository holding the advisory text, the fix as a patch and fixed images and binaries, plus an e-mail per notice |
 | What they may do | deploy the fix to the deployments they operate and tell those deployments' operators. They may not discuss it publicly or share the patch or artifacts beyond those deployments |
 
-Source: [`SECURITY.md`](https://github.com/USAREUR-AF/goatcore/blob/main/SECURITY.md) (goatcore [#20](https://github.com/USAREUR-AF/goatcore/pull/20)). The `SECURITY.md` of goatdocs, goatstuff and hello-galaxy-goatenv now points to the private reporting form (`joshkor1982`, goatdocs [#2](https://github.com/USAREUR-AF/goatdocs/pull/2)). The maintainers' decision record for this process is ADR 1217. It lives with their overlay, which is why 1217 is absent from the public register.
+Source: [`SECURITY.md`](https://github.com/USAREUR-AF/goatcore/blob/main/SECURITY.md) (goatcore [#20](https://github.com/USAREUR-AF/goatcore/pull/20)). The `SECURITY.md` of goatdocs, goatstuff and hello-galaxy-goatenv now points to the private reporting form (goatdocs [#2](https://github.com/USAREUR-AF/goatdocs/pull/2)). The maintainers' decision record for this process is ADR 1217. It lives with their overlay, which is why 1217 is absent from the public register.
 
 ### Pre-disclosure patches in an assembled tree
 
@@ -258,16 +258,16 @@ Three fixes from `0mlml` close load and correctness gaps in the relay and the po
 | flashlight on a passive node | runs with no local router or portal | goatstuff [#17](https://github.com/USAREUR-AF/goatstuff/pull/17) |
 | Raspberry Pi image scripts | run on Linux as well as macOS | [#43](https://github.com/USAREUR-AF/goatcore/pull/43) |
 
-**Ported from the frozen repository.** Six pull requests that were open when the monorepo froze were re-landed in goatcore with their authors as co-authors:
+**Ported from the frozen repository.** Six pull requests that were open when the monorepo froze were re-landed in goatcore with their authors as co-authors, named on each pull request:
 
-| PR | Change | Co-author |
-|---|---|---|
-| [#40](https://github.com/USAREUR-AF/goatcore/pull/40) | FIFO-eviction service for the audit bucket | `joshkor1982` |
-| [#38](https://github.com/USAREUR-AF/goatcore/pull/38) | restore audit scrape inputs and remote producer checks | `joshkor1982` |
-| [#41](https://github.com/USAREUR-AF/goatcore/pull/41) | validate an optional GitHub username at intake | `slybay` |
-| [#39](https://github.com/USAREUR-AF/goatcore/pull/39) | Onboarded and Enrolled tabs stay responsive | `tfm4` |
-| [#37](https://github.com/USAREUR-AF/goatcore/pull/37) | external-service refuses withdrawn proposals | `HaterAndrew` |
-| [#35](https://github.com/USAREUR-AF/goatcore/pull/35) | machine-provenance reads warrant's declared hosts and holds | |
+| PR | Change |
+|---|---|
+| [#40](https://github.com/USAREUR-AF/goatcore/pull/40) | FIFO-eviction service for the audit bucket |
+| [#38](https://github.com/USAREUR-AF/goatcore/pull/38) | restore audit scrape inputs and remote producer checks |
+| [#41](https://github.com/USAREUR-AF/goatcore/pull/41) | validate an optional GitHub username at intake |
+| [#39](https://github.com/USAREUR-AF/goatcore/pull/39) | Onboarded and Enrolled tabs stay responsive |
+| [#37](https://github.com/USAREUR-AF/goatcore/pull/37) | external-service refuses withdrawn proposals |
+| [#35](https://github.com/USAREUR-AF/goatcore/pull/35) | machine-provenance reads warrant's declared hosts and holds |
 
 ---
 
@@ -275,7 +275,7 @@ Three fixes from `0mlml` close load and correctness gaps in the relay and the po
 
 [goatrodeo](https://github.com/USAREUR-AF/goatrodeo) is a new public repository for games that run on a goat fabric. It starts with airdefenders: the game server, its Zenoh event schemas, an Ansible role and an image at `ghcr.io/usareur-af/airdefenders` ([9900c5e](https://github.com/USAREUR-AF/goatrodeo/commit/9900c5e)). It is the third public layer of an assembled tree. Fixes: a host is refused before its ledger row is written ([#1](https://github.com/USAREUR-AF/goatrodeo/pull/1)), and a deployment keeps its game directory and owner ([#2](https://github.com/USAREUR-AF/goatrodeo/pull/2)). goatcore and goatstuff call the game by its name again ([#29](https://github.com/USAREUR-AF/goatcore/pull/29), goatstuff [#13](https://github.com/USAREUR-AF/goatstuff/pull/13)).
 
-Licensing follows the Code.mil guidance: public domain in the U.S., Apache-2.0 where copyright is recognized, and a DCO sign-off on every commit. `deepschiff` aligned LICENSE, NOTICE, INTENT.md, CONTRIBUTING.md and GOVERNANCE.md in saltlick [#6](https://github.com/USAREUR-AF/saltlick/pull/6), hello-galaxy-cross-env-federation [#2](https://github.com/USAREUR-AF/hello-galaxy-cross-env-federation/pull/2), hello-galaxy-partner-data-sharing [#2](https://github.com/USAREUR-AF/hello-galaxy-partner-data-sharing/pull/2) and goatrodeo [#4](https://github.com/USAREUR-AF/goatrodeo/pull/4).
+Licensing follows the Code.mil guidance: public domain in the U.S., Apache-2.0 where copyright is recognized, and a DCO sign-off on every commit. LICENSE, NOTICE, INTENT.md, CONTRIBUTING.md and GOVERNANCE.md were aligned in saltlick [#6](https://github.com/USAREUR-AF/saltlick/pull/6), hello-galaxy-cross-env-federation [#2](https://github.com/USAREUR-AF/hello-galaxy-cross-env-federation/pull/2), hello-galaxy-partner-data-sharing [#2](https://github.com/USAREUR-AF/hello-galaxy-partner-data-sharing/pull/2) and goatrodeo [#4](https://github.com/USAREUR-AF/goatrodeo/pull/4).
 
 ---
 
@@ -294,7 +294,7 @@ These areas are moving now. Build against them knowing their interfaces and docs
 | Deployment values out of the binaries | open: `goat acl`, `goatbuilder update` and id-console take the deployment's values; "one build serves every deployment" in AGENTS.md | goatcore [#178](https://github.com/USAREUR-AF/goatcore/pull/178), [#180](https://github.com/USAREUR-AF/goatcore/pull/180) |
 | Release ladder on door goatnets; ledger rows | open | goatcore [#173](https://github.com/USAREUR-AF/goatcore/pull/173), [#145](https://github.com/USAREUR-AF/goatcore/pull/145) |
 | oauth2-proxy cookie secrets | open: every fence asserts a 16, 24 or 32 character secret | goatcore [#176](https://github.com/USAREUR-AF/goatcore/pull/176), goatstuff [#28](https://github.com/USAREUR-AF/goatstuff/pull/28) |
-| Azure | open: relays and certificates on Azure (`kananmuna26`), with the standup fixes split into drafts by `joshkor1982` | goatcore [#12](https://github.com/USAREUR-AF/goatcore/pull/12), [#111](https://github.com/USAREUR-AF/goatcore/pull/111)–[#122](https://github.com/USAREUR-AF/goatcore/pull/122) |
+| Azure | open: relays and certificates on Azure, with the standup fixes split into drafts | goatcore [#12](https://github.com/USAREUR-AF/goatcore/pull/12), [#111](https://github.com/USAREUR-AF/goatcore/pull/111)–[#122](https://github.com/USAREUR-AF/goatcore/pull/122) |
 | Portal performance and resilience | open (`0mlml`): roster parsed once per change; panicking requests access-logged | goatcore [#76](https://github.com/USAREUR-AF/goatcore/pull/76), [#75](https://github.com/USAREUR-AF/goatcore/pull/75) |
 | Code-scanning and session hardening | drafts | goatcore [#7](https://github.com/USAREUR-AF/goatcore/pull/7), [#130](https://github.com/USAREUR-AF/goatcore/pull/130); trivy reporting [#9](https://github.com/USAREUR-AF/goatcore/pull/9) |
 | Object store | ADR 1222 **proposed**: move the S3 store from MinIO to RustFS | goatcore [#48](https://github.com/USAREUR-AF/goatcore/pull/48) |
@@ -304,4 +304,4 @@ These areas are moving now. Build against them knowing their interfaces and docs
 | goatbuilder speed | **built; the hour not yet measured on hardware** | [`goatbuilder-speed.md`](https://github.com/USAREUR-AF/goatcore/blob/main/docs/design/goatbuilder-speed.md) |
 | Public core, private overlay | ADR 1197 **proposed**. The assembled tree of section 1 is how it runs today | [ADR 1197](https://github.com/USAREUR-AF/goatcore/blob/main/docs/adr/1197-public-core-versioned-dependency-private-overlay-repo.md) |
 
-The full list of open pull requests is on each repository's *Pull requests* tab. [`RELEASE-CONTENTS.md`](https://github.com/USAREUR-AF/goatcore/blob/main/docs/RELEASE-CONTENTS.md) grades every goatcore component Tested in CI, Built, Not run or WIP.
+The maintainers' public roadmap, [github.com/orgs/USAREUR-AF/projects/8](https://github.com/orgs/USAREUR-AF/projects/8), lists these and the other open issues and pull requests by status. The full list of open pull requests is on each repository's *Pull requests* tab. [`RELEASE-CONTENTS.md`](https://github.com/USAREUR-AF/goatcore/blob/main/docs/RELEASE-CONTENTS.md) grades every goatcore component Tested in CI, Built, Not run or WIP.
