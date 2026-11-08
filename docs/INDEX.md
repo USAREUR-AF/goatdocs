@@ -10,5 +10,6 @@ The explanatory corpus for goat. Component documentation lives beside the code i
 | [reference/](reference/) | Reference material and comparative tables |
 | [design-system/](design-system/README.md) | The design system every goat surface renders with |
 | [manifesto/](manifesto/README.md) | Position papers |
+| [changelog/](changelog/INDEX.md) | What changed across the goat repositories, window by window |
 | [partner-templates/](partner-templates/) | Documents a partner is handed |
 | [vendor-templates/](vendor-templates/) | Documents a vendor is handed |
