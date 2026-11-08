@@ -8,6 +8,7 @@ The explanatory corpus for goat. Component documentation lives beside the code i
 | [design/architecture-spine.md](design/architecture-spine.md) | The architecture in one read |
 | [operations/](operations/) | Procedures and method for working on goat |
 | [reference/](reference/) | Reference material and comparative tables |
+| [reference/built-with.md](reference/built-with.md) | The open-source projects goat runs on and builds with, with licences |
 | [design-system/](design-system/README.md) | The design system every goat surface renders with |
 | [manifesto/](manifesto/README.md) | Position papers |
 | [changelog/](changelog/INDEX.md) | What changed across the goat repositories, window by window |
