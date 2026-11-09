@@ -8,7 +8,7 @@ The licence-tier posture and the attribution and source-availability record are 
 
 | Project | Licence | What goat uses it for | Where |
 |---|---|---|---|
-| [Eclipse Zenoh](https://zenoh.io/) | EPL-2.0 or Apache-2.0 | The data fabric: the `zenohd` router on every site and the client library in goat's Rust services. goat builds `zenohd` 1.9.0 with a post-quantum TLS provider and a FIPS variant | `ops/zenoh/pqc-image/`, `ops/ansible/roles/zenoh/` |
+| [Eclipse Zenoh](https://zenoh.io/) | EPL-2.0 or Apache-2.0 | The data fabric: the `zenohd` router on every site and the client library in goat's Rust services. goat builds `zenohd` 1.9.0 with a post-quantum TLS provider | `ops/zenoh/pqc-image/`, `ops/ansible/roles/zenoh/` |
 | [NetBird](https://netbird.io/) | BSD-3-Clause (client); AGPL-3.0 (management, signal, relay) | The mesh control plane (management server, dashboard) and the agent on every host; goat runs a patched management build | `ops/netbird/`, `ops/ansible/roles/netbird-mgmt/`, `netbird-dashboard/`, `netbird-client-pin/` |
 | [WireGuard](https://www.wireguard.com/) | GPL-2.0 (kernel module, wireguard-tools) | Encrypted tunnels between peers, the outer control-plane tunnel, and peering links | `ops/ansible/roles/wireguard-kmod/`, `wg-cp0-server/`, `goat-peering-wg/` |
 | [Rosenpass](https://rosenpass.eu/) | MIT or Apache-2.0 | Post-quantum key exchange for WireGuard; built, off by default | `ops/ansible/group_vars/all.yml` |
@@ -56,7 +56,7 @@ The licence-tier posture and the attribution and source-availability record are 
 
 | Project | Licence | What goat uses it for | Where |
 |---|---|---|---|
-| [Ubuntu](https://ubuntu.com/) | Free software, mixed licences | Host operating system (24.04 LTS), with the FIPS and USG hardening roles | `ops/ansible/roles/ubuntu-pro-fips/`, `usg-stig/` |
+| [Ubuntu](https://ubuntu.com/) | Free software, mixed licences | Host operating system (24.04 LTS) | `ops/ansible/` |
 | [Ansible](https://www.ansible.com/) (ansible-core) | GPL-3.0 | Every host's configuration and every deployment | `ops/ansible/` |
 | [Docker Engine / Moby](https://mobyproject.org/) | Apache-2.0 | Container runtime on every host | `ops/ansible/roles/docker-engine/` |
 | [Tang](https://github.com/latchset/tang) and [Clevis](https://github.com/latchset/clevis) | GPL-3.0 | Unlocking LUKS-encrypted disks at boot when the host is on its own network | `ops/ansible/roles/tang-server/`, `luks-unlock/` |
@@ -69,7 +69,6 @@ The licence-tier posture and the attribution and source-availability record are 
 
 | Project | Licence | What goat uses it for | Where |
 |---|---|---|---|
-| [Chainguard Images / Wolfi](https://github.com/wolfi-dev) | Apache-2.0 (build definitions; packages keep their own licences) | Build and runtime base images for goat's own images | `ops/base-images/` |
 | [Distroless](https://github.com/GoogleContainerTools/distroless) | Apache-2.0 | Minimal runtime images for Go services | `signal-server/Dockerfile`, `ops/admit-audit/Dockerfile` |
 | [Debian](https://www.debian.org/), [Alpine Linux](https://alpinelinux.org/) | Free software, mixed licences | Build stages and a few runtime images | Dockerfiles under `ops/` |
 
@@ -80,7 +79,7 @@ The licence-tier posture and the attribution and source-availability record are 
 | [Rust](https://www.rust-lang.org/) | MIT or Apache-2.0 | The `goat` and `goatbuilder` CLIs, the relay, the fabric services and health publishers |
 | [Tokio](https://tokio.rs/) | MIT | Async runtime for every Rust service |
 | [rustls](https://github.com/rustls/rustls) | Apache-2.0, ISC or MIT | TLS in Rust services and in `zenohd` |
-| [AWS-LC](https://github.com/aws/aws-lc) and [aws-lc-rs](https://github.com/aws/aws-lc-rs) | Apache-2.0 and ISC | The FIPS-validated cryptographic module and post-quantum key exchange behind rustls |
+| [AWS-LC](https://github.com/aws/aws-lc) and [aws-lc-rs](https://github.com/aws/aws-lc-rs) | Apache-2.0 and ISC | The cryptographic library and post-quantum key exchange behind rustls |
 | [quinn](https://github.com/quinn-rs/quinn) | MIT or Apache-2.0 | QUIC in the relay |
 | [serde](https://serde.rs/), [clap](https://github.com/clap-rs/clap), [axum](https://github.com/tokio-rs/axum), [tracing](https://github.com/tokio-rs/tracing), [prost](https://github.com/tokio-rs/prost), [RustCrypto](https://github.com/RustCrypto) | MIT and/or Apache-2.0 | Serialisation, command lines, HTTP services, logging, protobuf, signatures |
 | [Project Fluent](https://projectfluent.org/) (`fluent`, `i18n-embed`) | Apache-2.0 or MIT | Translated CLI messages and error explanations |
