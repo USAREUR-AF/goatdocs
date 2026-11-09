@@ -1,0 +1,70 @@
+# The goatdocs website, built with MkDocs and the Material theme.
+# Build locally: pip install -r .github/pages/requirements.txt && mkdocs serve
+# CI: .github/workflows/pages.yml builds on every pull request and deploys main.
+site_name: goatdocs
+site_description: Architecture, strategy, design system and integration guides for goat.
+site_url: https://usareur-af.github.io/goatdocs/
+repo_url: https://github.com/USAREUR-AF/goatdocs
+repo_name: USAREUR-AF/goatdocs
+edit_uri: edit/main/docs/
+copyright: Public domain in the U.S.; Apache License 2.0 elsewhere.
+
+docs_dir: docs
+site_dir: site
+
+# docs/INDEX.md and each directory's README.md are the landing pages.
+hooks:
+  - .github/pages/hooks.py
+
+# Re-added by the hook at <dir>/readme/, beside the kit's own index.html.
+exclude_docs: |
+  design-system/ui_kits/*/README.md
+
+theme:
+  name: material
+  logo: design-system/assets/goat-mark.svg
+  favicon: design-system/assets/goat-mark.svg
+  features:
+    - navigation.sections
+    - navigation.indexes
+    - navigation.top
+    - search.suggest
+    - content.code.copy
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Light mode
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - footnotes
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tasklist:
+      custom_checkbox: true
+
+validation:
+  links:
+    # Documents link to goatcore and to repository files outside docs/; those
+    # links are checked by goatcore's ops/ci/check-doc-links.py, not here.
+    not_found: info
+    unrecognized_links: info
+    absolute_links: info
