@@ -16,7 +16,7 @@ The explanatory corpus for goat — the design documents, reference material, de
 | Directory | What |
 |---|---|
 | `docs/design/` | architecture overviews, strategy, technology evaluations, engineering baselines, patterns — the designs that are not one component's |
-| `docs/reference/` | reference material: glossaries, lexicons, comparative tables |
+| `docs/reference/` | reference material: glossaries, lexicons, comparative tables, and [the open-source projects goat is built with](docs/reference/built-with.md) |
 | `docs/design-system/` | the design system every goat surface renders with |
 | `docs/manifesto/` | positions: phoenix-native peers, queryable by default, the licence-tier posture, substrate not platform |
 | `docs/partner-templates/`, `docs/vendor-templates/` | the documents a partner or vendor is handed |
@@ -24,6 +24,10 @@ The explanatory corpus for goat — the design documents, reference material, de
 Where a document here cites code, it cites `goatcore` by path; where it describes a component, the component's own design document in `goatcore/docs/design/` is canonical and this corpus links to it.
 
 Start at [docs/INDEX.md](docs/INDEX.md). The same documents are published as a website at <https://usareur-af.github.io/goatdocs/>, built from `main` by [`.github/workflows/pages.yml`](.github/workflows/pages.yml) with MkDocs ([`mkdocs.yml`](mkdocs.yml)). Preview it locally with `pip install -r .github/pages/requirements.txt && mkdocs serve`.
+
+## Built with
+
+goat runs on and builds with open-source projects including Eclipse Zenoh, NetBird, WireGuard, Ory, SPIFFE/SPIRE, PostgreSQL with pgEdge Spock, and Prometheus. The full list, with licences and what each is used for: [docs/reference/built-with.md](docs/reference/built-with.md).
 
 ## Contributing and licence
 
