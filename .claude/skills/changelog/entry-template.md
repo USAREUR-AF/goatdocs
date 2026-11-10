@@ -2,7 +2,7 @@
 
 <What is true now that was not before, in two or three sentences. No history, no counts.>
 
-This entry covers the public [USAREUR-AF](https://github.com/USAREUR-AF) repositories, because a change in one usually lands with matching changes in others. It follows [the entry for <previous window>](<previous-entry>.md).
+This entry covers all public [USAREUR-AF](https://github.com/USAREUR-AF) repositories, because a change in one usually lands with matching changes in others. It follows [the entry for <previous window>](<previous-entry>.md).
 
 ## In short
 
@@ -57,6 +57,6 @@ These areas are moving now. Status words are the ones the repositories use.
 
 ## About this entry
 
-- **Window.** Pull requests merged from <start> to <end, UTC>, in the public USAREUR-AF repositories.
+- **Window.** Pull requests merged from <start> to <end, UTC>, in every public USAREUR-AF repository.
 - **What "merged" means here.** A change is described as part of goat only when it merged into a repository's default branch. A pull request merged into any other branch is reported as in review.
 - **The weekly listing.** [`weekly/`](weekly/INDEX.md) lists every merged pull request by kind, one page per ISO week, generated with no person or model in the loop. Written entries explain; the weekly listing is the complete record.

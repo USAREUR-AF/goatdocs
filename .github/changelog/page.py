@@ -61,6 +61,22 @@ figure { margin:0; overflow-x:auto; }
 figure svg { display:block; width:100%; min-width:560px; height:auto; }
 footer { color:var(--quiet); font-size:.86rem; border-top:1px solid var(--rule); padding-top:14px; margin-top:20px; }
 @media (prefers-reduced-motion: no-preference) { html { scroll-behavior:smooth; } }
+@page { size: letter; margin: 16mm 15mm; }
+@media print {
+  /* System faces in print: a variable web font is embedded as Type 3, whose text copies out unreadable. */
+  body { padding:0; font-size:10.5pt; font-family:"Helvetica Neue", Helvetica, Arial, sans-serif; }
+  code, h1 .when { font-family:Menlo, Consolas, "Courier New", monospace; }
+  main { max-width:none; gap:11pt; }
+  h2 { break-after:avoid; margin-top:10pt; padding-top:10pt; }
+  h3 { break-after:avoid; }
+  .tw { overflow:visible; }
+  table { font-size:8.6pt; }
+  th { white-space:normal; }
+  tr, figure, .short li { break-inside:avoid; }
+  figure { overflow:visible; }
+  figure svg { min-width:0; }
+  a { text-decoration:none; }
+}
 """
 
 

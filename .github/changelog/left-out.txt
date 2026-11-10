@@ -6,4 +6,5 @@
 # A repository belongs here when the leak gate refuses its name in this
 # repository's files. The id lets the collector skip it without this file
 # stating the name. An owner removes the line when the name may be written.
-aad244e30529
+#
+# No repository is left out today.

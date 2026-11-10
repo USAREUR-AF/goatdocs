@@ -30,8 +30,8 @@ Someone who runs a goatnet, federates with one, or contributes code, and who was
 6. **Name the real thing.** A file path, a command, a variable, an ADR number, a version, and a link to the pull request. Never "the config" or "some fixes".
 7. **Status words mean what the repositories mean:** built, measured, designed, proposed, WIP (with its gate), in review, open. A proposed ADR is proposed. Something not built is stated as designed.
 8. **Nothing of a real deployment.** The leak gate refuses hostnames, domains, addresses, people, places and organizations of any real goatnet. Describe the maintainers' own environments only as "the maintainers' environments". Use the example goatnet `zagros`.
-9. **Credit by handle, on the change.** Name an outside contributor by GitHub handle next to their pull request. Do not write a thanks section. The leak gate refuses the handle of one of the maintainers' own people: leave that handle out and let the pull request's page name its author. Never exempt it.
-10. **The leak gate decides what may be named.** When it refuses a line, rename or remove the thing. `oss-allow` is not for changelogs. A repository whose own name it refuses is left out of every changelog by its id in `.github/changelog/left-out.txt`; an owner decides when that changes.
+9. **Credit by handle, on the change.** Name a contributor by GitHub handle next to their pull request. Do not write a thanks section.
+10. **The leak gate decides what may be named, and a changelog never exempts a line.** `oss-allow` is not for changelogs. When the gate refuses a name that is public by the project's own act (a public repository's name, a contributor's handle), an owner takes it off the private scan list; until then leave the handle out, and skip a repository whose name is refused by adding its id to `.github/changelog/left-out.txt`. When the gate refuses anything else, the entry is naming something of a real deployment: rename or remove it.
 
 ## Steps
 
