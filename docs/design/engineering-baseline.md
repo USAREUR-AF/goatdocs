@@ -392,7 +392,7 @@ Entries are grouped by layer, top-to-bottom: change management → infrastructur
 
 ### 12.1 Right tool for the job
 
-**Practice:** Go for control-plane services and HTTP APIs. Python for Ansible + scripts + ad-hoc data work. TypeScript for browser SPAs and small UI work. Rust for new data-services / high-perf network work. Terraform + Ansible for infra.
+**Practice:** Go for control-plane services and HTTP APIs. Python for Ansible + scripts + ad-hoc data work. Plain JavaScript with no build step for browser pages (see 12.4). Rust for new data-services / high-perf network work. Terraform + Ansible for infra.
 
 **Why:** Match the tool to the workload, not to fashion. Polyglot stacks are fine when each language is doing what it's best at.
 
@@ -413,6 +413,21 @@ Entries are grouped by layer, top-to-bottom: change management → infrastructur
 **Why:** Standard immutable-infra discipline. Hand-edits decay; git history doesn't.
 
 **Read more:** onboarding/README.md §"The golden rule", onboarding/01-concepts.md.
+
+### 12.4 Languages, frameworks and package managers
+
+**Practice:** A new language, framework or package manager needs a written reason and a named owner before it lands.
+
+- **Frontends** are hand-written ES modules and HTML templates served as static files by the service: no bundler, no transpiler, no framework. goat-id-console (`ops/goat-id-console/web/`) and goat-zenoh-portal (`ops/goat-zenoh-portal/web/`) in goatcore are the reference.
+- **A third-party browser library** that is genuinely needed is one vendored file committed in the tree, with its version and license noted beside it. Nothing is installed from npm at build time.
+- **npm** is allowed for Playwright test harnesses, with every dependency pinned to an exact version (`1.60.0`, never `^1.60.0`).
+- **Rust, Go and Python** keep the roles [ADR 0112](https://github.com/USAREUR-AF/goatcore/blob/main/docs/adr/0112-tech-strategy-workload-shape-language-boundary.md) gives them. This rule does not revisit them.
+
+CI enforces it in goatcore and goatstuff. `ops/ci/check-manifest-allowlist.py` (workflow `manifest-allowlist`) refuses any build or package manifest (`package.json`, a lockfile, `Cargo.toml`, `go.mod`, `pyproject.toml`, `requirements*.txt` and the rest) that `ops/ci/manifest-allowlist.txt` does not list with an owner and a reason, and any `package.json` dependency that is not an exact version unless `ops/ci/manifest-version-exceptions.txt` lists it. Both lists only shrink: a line whose manifest is gone, or whose dependency is now exact, fails the check.
+
+**Why:** Each framework is one more thing to maintain and one more security surface. The npm ecosystem in particular carries supply-chain risk in every transitive dependency of a build. A frontend with no build step has no build-time dependencies to audit.
+
+**Read more:** `ops/ci/manifest-allowlist.txt` in goatcore and goatstuff; [ADR 0112](https://github.com/USAREUR-AF/goatcore/blob/main/docs/adr/0112-tech-strategy-workload-shape-language-boundary.md).
 
 ---
 
