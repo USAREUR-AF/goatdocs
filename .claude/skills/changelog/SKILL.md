@@ -108,7 +108,8 @@ Then read the entry from the top as someone who was not there:
 - Add a row to `docs/changelog/INDEX.md`: the file, and one line naming the window and the main changes.
 - One pull request, title `docs(changelog): <window>, <the main change>`. Every commit signed off and signed.
 - Before pushing, run the documentation checks from a goatcore checkout beside this one (`AGENTS.md`, "Before you push").
-- If a page version is wanted for sharing, build it from the same Markdown and the same figure files, so the two never disagree.
+- **The repository holds text only:** the Markdown entry and its SVG figures. Never commit a PDF, an HTML page, a screenshot or any other binary or built file for a changelog.
+- When a page or a PDF is wanted for sharing, build it from the same Markdown and figure files with `python3 .github/changelog/page.py <entry> --out <file>.html` (needs `pip install markdown`) and print that page to PDF. It is an output to send, kept outside the repository.
 
 ## The weekly listing
 
