@@ -15,14 +15,18 @@
 # Run it by hand for any week: Actions > changelog-weekly > Run workflow, with
 # a week such as 2026-W45.
 #
-# Token. With the default GITHUB_TOKEN the pull request opens, but GitHub does
-# not start workflows for events that token causes, so the required checks do
-# not report until an owner closes and reopens the pull request. Set the
-# repository secret CHANGELOG_TOKEN (a GitHub App installation token or a
-# fine-grained token with contents and pull-requests write on this repository)
-# and the checks start by themselves. Opening a pull request with the default
-# token also needs "Allow GitHub Actions to create and approve pull requests"
-# switched on for the organization.
+# Who opens the pull request. The workflow always commits the page to the branch
+# changelog/weekly-<week>. Then, with the default GITHUB_TOKEN:
+#   - where the organization lets Actions open pull requests, it opens one, and
+#     an owner closes and reopens it once so the required checks run (GitHub
+#     starts no workflows for events the default token causes);
+#   - where the organization does not, it opens an issue carrying the link an
+#     owner clicks to open the pull request. A pull request a person opens
+#     runs its checks at once.
+# Set the repository secret CHANGELOG_TOKEN (a GitHub App installation token,
+# or a fine-grained token with contents and pull-requests write on this
+# repository) and the workflow opens the pull request itself with its checks
+# running, in either kind of organization.
 name: changelog-weekly
 
 on:
@@ -50,6 +54,7 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
+      issues: write
     env:
       GH_TOKEN: ${{ secrets.CHANGELOG_TOKEN || github.token }}
       WEEK: ${{ inputs.week || 'last' }}

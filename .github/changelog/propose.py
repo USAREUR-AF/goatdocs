@@ -12,6 +12,9 @@ committed with git, and no signing key is needed in the workflow.
 
 It does nothing, and exits 0, when every file already has this content on the
 default branch, or when a pull request for the branch is already open.
+
+Where the organization does not let a workflow open a pull request, it opens
+an issue that carries the link an owner clicks to open it.
 """
 from __future__ import annotations
 
@@ -95,9 +98,27 @@ def main() -> int:
     print("propose: committed", commit["data"]["createCommitOnBranch"]["commit"]["url"])
 
     pull = gh("pr", "create", "-R", args.repo, "--base", default, "--head", args.branch,
-              "--title", args.title, "--body-file", args.body_file)
-    print("propose: opened", pull.stdout.strip())
-    return 0
+              "--title", args.title, "--body-file", args.body_file, check=False)
+    if pull.returncode == 0:
+        print("propose: opened", pull.stdout.strip())
+        return 0
+    # The organization may not let a workflow open a pull request. The branch and its signed
+    # commit exist, so hand an owner the link: a pull request a person opens also starts the
+    # required checks, which one opened by the workflow's own token does not.
+    print("propose: could not open the pull request:", pull.stderr.strip())
+    compare = f"https://github.com/{args.repo}/compare/{default}...{args.branch}?expand=1"
+    with open(args.body_file, encoding="utf-8") as handle:
+        body = handle.read()
+    body = (f"The branch `{args.branch}` holds this change, committed and signed through the GitHub API. "
+            f"This workflow is not allowed to open the pull request, so an owner opens it:\n\n{compare}\n\n"
+            "Close this issue when the pull request is open.\n\n---\n\n" + body)
+    issue = gh("issue", "create", "-R", args.repo, "--title", args.title, "--body", body, check=False)
+    if issue.returncode == 0:
+        print("propose: opened an issue with the link:", issue.stdout.strip())
+        return 0
+    print("propose: could not open an issue either:", issue.stderr.strip())
+    print("propose: open the pull request by hand:", compare)
+    return 1
 
 
 if __name__ == "__main__":
