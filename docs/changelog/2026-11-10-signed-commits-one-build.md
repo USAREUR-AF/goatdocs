@@ -2,7 +2,7 @@
 
 Two rules now hold in every public goat repository: each commit in a pull request must carry a signature GitHub verifies, and an outside contribution needs a known author or a recorded security review. In the same two days the tools stopped carrying any one deployment's values inside the build, federation gained fixes found by people running it, and work began to make federation one `goatbuilder` command.
 
-This entry covers all 26 public [USAREUR-AF](https://github.com/USAREUR-AF) repositories, because a change in one usually lands with matching changes in others. It follows [the entry for 6 to 8 November](2026-11-08-forty-eight-hours.md).
+This entry covers the public [USAREUR-AF](https://github.com/USAREUR-AF) repositories together, because a change in one usually lands with matching changes in others. It follows [the entry for 6 to 8 November](2026-11-08-forty-eight-hours.md).
 
 ## In short
 
@@ -69,7 +69,7 @@ A pull request now passes two checks before an owner's review counts. Every comm
 | `goatbuilder update` | a repository name was compiled in | the release signer comes from `repo.release_source`, else `repo.source`; `gen-config.py` carries the key from `project.yml` | goatcore [#178](https://github.com/USAREUR-AF/goatcore/pull/178), [#227](https://github.com/USAREUR-AF/goatcore/pull/227) |
 | netvis | the image compiled in one deployment's ACL files and rule intents | read at start from `NETVIS_ACL_DECLARATION_DIR` and `NETVIS_RULE_INTENTS_FILE`; the role mounts the goatnet's files read-only | goatstuff [#29](https://github.com/USAREUR-AF/goatstuff/pull/29) |
 | snitch, netbird-mgmt, panoscope, trust-sandbox | deployment values as defaults | every such value from configuration; public defaults unchanged. `SNITCH_SATLINK_NAME` lets a collector keep reading history written under another table name | goatcore [#181](https://github.com/USAREUR-AF/goatcore/pull/181), goatstuff [#29](https://github.com/USAREUR-AF/goatstuff/pull/29) |
-| onboarding acceptance check | searched the `goat` binary for the goatnet's name | reads the default profile inside the running onboard-runner, so a new goatnet needs nothing compiled into goat-cli | goatcore [#135](https://github.com/USAREUR-AF/goatcore/pull/135) (`joshkor1982`), [#175](https://github.com/USAREUR-AF/goatcore/pull/175); hello-galaxy-goatenv [#12](https://github.com/USAREUR-AF/hello-galaxy-goatenv/pull/12) |
+| onboarding acceptance check | searched the `goat` binary for the goatnet's name | reads the default profile inside the running onboard-runner, so a new goatnet needs nothing compiled into goat-cli | goatcore [#135](https://github.com/USAREUR-AF/goatcore/pull/135), [#175](https://github.com/USAREUR-AF/goatcore/pull/175); hello-galaxy-goatenv [#12](https://github.com/USAREUR-AF/hello-galaxy-goatenv/pull/12) |
 
 ### Releases
 
@@ -93,10 +93,10 @@ Three things happened to federation. The procedure on `main` received fixes from
 | The directory carries the SPIFFE trust bundle | Phase 5 uploads your bundle and fetches your partner's, and places it only when the upload's signature checks against the key your partner read aloud. Nobody hands a bundle over by file | goatcore [#172](https://github.com/USAREUR-AF/goatcore/pull/172) |
 | https only | `directory.py` refuses a directory that is not https. A private CA is trusted through `SSL_CERT_FILE` | goatcore [#172](https://github.com/USAREUR-AF/goatcore/pull/172) |
 | The end-to-end test uses a real directory | `ops/federation-e2e/run.sh` runs saltlick v0.4.0, pinned by digest, behind a TLS front, and exchanges each side's package, CA and bundle through it | goatcore [#172](https://github.com/USAREUR-AF/goatcore/pull/172), [#142](https://github.com/USAREUR-AF/goatcore/pull/142) |
-| One receive store per partner | The core router keeps a persistent store scoped to each configured peer. A single store on `from/**` could be connected and still retain nothing | goatcore [#235](https://github.com/USAREUR-AF/goatcore/pull/235) (`joshkor1982`) |
+| One receive store per partner | The core router keeps a persistent store scoped to each configured peer. A single store on `from/**` could be connected and still retain nothing | goatcore [#235](https://github.com/USAREUR-AF/goatcore/pull/235) |
 | The edge checks those stores | Before it admits a partner, the edge checks the core for a receive store matching every admitted scope, and accepts older history beside the scoped stores | goatcore [#237](https://github.com/USAREUR-AF/goatcore/pull/237) (`pbolduc-rhc`) |
-| Certificates are reused on a rerun | Phase 8 validates the peering certificates it finds and reuses them. It mints only a missing pair, and replaces one only with `--rotate`. An ordinary rerun does not need the offline CA key | goatcore [#236](https://github.com/USAREUR-AF/goatcore/pull/236) (`joshkor1982`) |
-| `goat federate init` finds the core router | It discovers one running core by role label or by the standard and older names, accepts `FED_ROUTER_CONTAINER`, and refuses a missing, stopped or ambiguous target | goatcore [#239](https://github.com/USAREUR-AF/goatcore/pull/239) (`joshkor1982`, reported by `philosoma`) |
+| Certificates are reused on a rerun | Phase 8 validates the peering certificates it finds and reuses them. It mints only a missing pair, and replaces one only with `--rotate`. An ordinary rerun does not need the offline CA key | goatcore [#236](https://github.com/USAREUR-AF/goatcore/pull/236) |
+| `goat federate init` finds the core router | It discovers one running core by role label or by the standard and older names, accepts `FED_ROUTER_CONTAINER`, and refuses a missing, stopped or ambiguous target | goatcore [#239](https://github.com/USAREUR-AF/goatcore/pull/239) (reported by `philosoma`) |
 
 ### Decisions about sharing between nations
 
@@ -151,7 +151,7 @@ The deploy preflight refuses more mistakes before it changes a host, and a host'
 | Onboarding honors the configured transport | The delegate's SSH settings and the resolved management URL are passed through | goatcore [#115](https://github.com/USAREUR-AF/goatcore/pull/115) |
 | Controller-side API calls do not use sudo | Remote host operations keep their privilege requirements | goatcore [#120](https://github.com/USAREUR-AF/goatcore/pull/120) |
 
-Pull requests #115 to #121 and #230 are from `joshkor1982`; #115 to #121 were extracted from `kananmuna26`'s Azure pull request (goatcore [#12](https://github.com/USAREUR-AF/goatcore/pull/12)) so each could be reviewed alone.
+Pull requests #115 to #121 were extracted from `kananmuna26`'s Azure pull request (goatcore [#12](https://github.com/USAREUR-AF/goatcore/pull/12)) so each could be reviewed alone.
 
 ## 5. A first goatnet (goatlite)
 
@@ -180,11 +180,10 @@ Newly readable in public:
 
 | Repository | Change | PR |
 |---|---|---|
-| goatcore | The portal and snitch web pages no longer keep an API key in browser storage. A key is exchanged for an opaque eight-hour server session, the underlying credential and role are checked on every request, and cookie-authenticated writes need an exact Origin. Bearer API clients are unchanged | [#7](https://github.com/USAREUR-AF/goatcore/pull/7) (`joshkor1982`) |
+| goatcore | The portal and snitch web pages no longer keep an API key in browser storage. A key is exchanged for an opaque eight-hour server session, the underlying credential and role are checked on every request, and cookie-authenticated writes need an exact Origin. Bearer API clients are unchanged | [#7](https://github.com/USAREUR-AF/goatcore/pull/7) |
 | goatcore | HTTPS service checks verify certificate chains and hostnames, with optional `ca_file` trust roots; Python TLS contexts have a TLS 1.2 floor | [#7](https://github.com/USAREUR-AF/goatcore/pull/7) |
-| goatcore | Ten Python code-scanning findings resolved with no change in behavior | [#130](https://github.com/USAREUR-AF/goatcore/pull/130) (`joshkor1982`) |
-| open-billie | 18 dependency advisories resolved: Vitest, Vite and esbuild upgraded, and CI's Ansible Core pinned | [#21](https://github.com/USAREUR-AF/open-billie/pull/21) (`joshkor1982`) |
-| octo-pod | Uninstall keeps identity, keys, retained data and the running mesh agent unless `--purge-data` is given, and no longer reports success after a failed cleanup | [#17](https://github.com/USAREUR-AF/octo-pod/pull/17), [#16](https://github.com/USAREUR-AF/octo-pod/pull/16), [#18](https://github.com/USAREUR-AF/octo-pod/pull/18) (`joshkor1982`) |
+| goatcore | Ten Python code-scanning findings resolved with no change in behavior | [#130](https://github.com/USAREUR-AF/goatcore/pull/130) |
+| octo-pod | Uninstall keeps identity, keys, retained data and the running mesh agent unless `--purge-data` is given, and no longer reports success after a failed cleanup | [#17](https://github.com/USAREUR-AF/octo-pod/pull/17), [#16](https://github.com/USAREUR-AF/octo-pod/pull/16), [#18](https://github.com/USAREUR-AF/octo-pod/pull/18) |
 | goat-client | The trust-root loader returns walk and read errors where it returned none | [#1](https://github.com/USAREUR-AF/goat-client/pull/1) |
 | goatrodeo | Air Defenders runs its game step on a fixed 60 Hz clock, so its speed no longer follows the display's refresh rate | [#13](https://github.com/USAREUR-AF/goatrodeo/pull/13) (`philosoma`), [#14](https://github.com/USAREUR-AF/goatrodeo/pull/14) |
 
@@ -203,14 +202,13 @@ These areas are moving now. Status words are the ones the repositories use.
 | Azure | **Open**: relays and certificates on Azure, with the standup fixes split into drafts | goatcore [#12](https://github.com/USAREUR-AF/goatcore/pull/12), [#111](https://github.com/USAREUR-AF/goatcore/pull/111) to [#122](https://github.com/USAREUR-AF/goatcore/pull/122) |
 | Contribution standards | **Drafts** in most repositories: pinned action revisions, restricted workflow defaults, DCO and supply-chain checks | goatcore [#127](https://github.com/USAREUR-AF/goatcore/pull/127), [#128](https://github.com/USAREUR-AF/goatcore/pull/128) and siblings |
 | Portal performance and resilience | **Open** (`0mlml`): the roster parsed once per change; panicking requests access-logged | goatcore [#76](https://github.com/USAREUR-AF/goatcore/pull/76), [#75](https://github.com/USAREUR-AF/goatcore/pull/75) |
-| Dependency and image pins | **Open** (`HaterAndrew`, Dependabot): Go and Rust dependency updates, pinned base images | goatcore [#308](https://github.com/USAREUR-AF/goatcore/pull/308), [#312](https://github.com/USAREUR-AF/goatcore/pull/312), [#294](https://github.com/USAREUR-AF/goatcore/pull/294); goatstuff [#42](https://github.com/USAREUR-AF/goatstuff/pull/42), [#44](https://github.com/USAREUR-AF/goatstuff/pull/44); zagros-moon-pod [#9](https://github.com/USAREUR-AF/zagros-moon-pod/pull/9) |
-| open-billie setup wizard and networking | **Open** (`GoldCoin1987`) | open-billie [#19](https://github.com/USAREUR-AF/open-billie/pull/19) |
+| Dependency and image pins | **Open**: Go and Rust dependency updates, pinned base images | goatcore [#308](https://github.com/USAREUR-AF/goatcore/pull/308), [#312](https://github.com/USAREUR-AF/goatcore/pull/312), [#294](https://github.com/USAREUR-AF/goatcore/pull/294); goatstuff [#42](https://github.com/USAREUR-AF/goatstuff/pull/42), [#44](https://github.com/USAREUR-AF/goatstuff/pull/44); zagros-moon-pod [#9](https://github.com/USAREUR-AF/zagros-moon-pod/pull/9) |
 
 The maintainers' public roadmap, [github.com/orgs/USAREUR-AF/projects/8](https://github.com/orgs/USAREUR-AF/projects/8), lists open issues and pull requests by status.
 
 ## About this entry
 
-- **Window.** Pull requests merged from 8 November 2026, after the previous entry was written, to 10 November 2026 05:00 UTC, in every public USAREUR-AF repository.
+- **Window.** Pull requests merged from 8 November 2026, after the previous entry was written, to 10 November 2026 05:00 UTC, in the public USAREUR-AF repositories.
 - **What "merged" means here.** A change is described as part of goat only when it merged into a repository's default branch. A pull request merged into any other branch is reported as in review.
 - **The weekly listing.** From this week, [`weekly/`](weekly/INDEX.md) holds a page per ISO week that lists every merged pull request by kind. A scheduled workflow generates it from pull request titles with no person or model in the loop (`.github/workflows/changelog-weekly.yml`). Written entries like this one explain; the weekly listing is the complete record.
 - **How entries are written.** `.claude/skills/changelog/` holds the method, the template and the checks this entry was made with.

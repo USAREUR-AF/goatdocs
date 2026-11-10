@@ -12,7 +12,8 @@ entries a person (or their coding agent) authors from the same facts.
 
 It reads through the GitHub CLI (`gh`), so it uses whatever token `gh` has:
 GH_TOKEN in a workflow, your own login on a laptop. Only public repositories
-are read, so a changelog can never describe a private one.
+are read, so a changelog can never describe a private one. A repository whose
+id is in left-out.txt is skipped: the leak gate refuses its name here.
 
 What it records, per window [since, until):
   merged    every merged pull request, with its base branch and whether that
@@ -27,13 +28,28 @@ from __future__ import annotations
 
 import argparse
 import datetime as dt
+import hashlib
 import json
+import os
 import re
 import subprocess
 import sys
 
 TITLE = re.compile(r"^(?P<type>[a-z]+)(?:\((?P<scope>[^)]+)\))?(?P<bang>!)?:\s*(?P<text>.+)$")
 PULL_LINK = re.compile(r"github\.com/(?P<org>[\w.-]+)/(?P<repo>[\w.-]+)/pull/(?P<number>\d+)")
+
+
+def left_out() -> set[str]:
+    """Ids of repositories the changelog never names (see left-out.txt)."""
+    path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "left-out.txt")
+    if not os.path.exists(path):
+        return set()
+    with open(path, encoding="utf-8") as handle:
+        return {text.strip() for text in handle if text.strip() and not text.startswith("#")}
+
+
+def repo_id(name: str) -> str:
+    return hashlib.sha256(name.lower().encode("utf-8")).hexdigest()[:12]
 
 
 def gh(*args: str) -> object:
@@ -95,7 +111,8 @@ def cited_pulls(org: str, paths: list[str]) -> set[tuple[str, int]]:
 def collect(org: str, since: dt.datetime, until: dt.datetime, bodies: bool, cited: set) -> dict:
     repos = gh("repo", "list", org, "--visibility", "public", "--no-archived", "--limit", "500",
                "--json", "name,defaultBranchRef")
-    repos = sorted(repos, key=lambda repo: repo["name"].lower())
+    skip = left_out()
+    repos = sorted((repo for repo in repos if repo_id(repo["name"]) not in skip), key=lambda repo: repo["name"].lower())
     fields = "number,title,author,mergedAt,baseRefName,url" + (",body" if bodies else "")
     merged, still_open, releases = [], [], []
     for repo in repos:

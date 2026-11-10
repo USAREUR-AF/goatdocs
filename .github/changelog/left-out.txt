@@ -1,0 +1,9 @@
+# Repositories the changelog leaves out, one id per line.
+#
+# An id is the first 12 hex characters of the sha256 of the repository's
+# lower-cased name:  printf '%s' '<name>' | shasum -a 256 | cut -c1-12
+#
+# A repository belongs here when the leak gate refuses its name in this
+# repository's files. The id lets the collector skip it without this file
+# stating the name. An owner removes the line when the name may be written.
+aad244e30529
