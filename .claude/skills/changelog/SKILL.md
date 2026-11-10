@@ -113,7 +113,7 @@ Then read the entry from the top as someone who was not there:
 
 ## The weekly listing
 
-`.github/workflows/changelog-weekly.yml` runs every Monday at 06:17 UTC. It reads every public repository for the last full ISO week, renders `docs/changelog/weekly/<year>-W<week>.md`, and opens a pull request that adds it. No model takes part, and nobody edits the page.
+`.github/workflows/changelog-weekly.yml` runs every Monday at 06:17 UTC. It reads every public repository for the last full ISO week, renders `docs/changelog/weekly/<year>-W<week>.md`, and opens a pull request that adds it. No model takes part, and nobody edits the page. Where the organization does not let a workflow open a pull request, it commits the page to the branch `changelog/weekly-<week>` and opens an issue with the link an owner clicks to open it.
 
 | File | Job |
 |---|---|
