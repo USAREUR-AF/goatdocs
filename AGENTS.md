@@ -16,6 +16,7 @@ It sits beside [goatcore](https://github.com/usareur-af/goatcore), which builds 
 | `docs/design/` | designs that are not one component's: architecture, strategy, engineering baselines, patterns |
 | `docs/design-system/` | the CSS and rules every goat surface renders with |
 | `docs/operations/`, `docs/reference/` | procedures and reference material |
+| `docs/changelog/` | written changelog entries across every public repository, and `weekly/`, the listing generated each Monday by `.github/workflows/changelog-weekly.yml`; method and checks in `.claude/skills/changelog/` |
 | `docs/partner-templates/`, `docs/vendor-templates/` | documents handed to a partner or vendor |
 
 ## Rules CI enforces

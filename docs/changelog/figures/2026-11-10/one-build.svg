@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="viz" viewBox="0 0 760 210" role="img" aria-label="Before, three tools carried one deployment&#x27;s values inside the build: the ACL tables in goat, a repository name in goatbuilder, and one deployment&#x27;s rules in the netvis image. Now each reads those values from configuration when it runs, and stops with a named error when they are missing">
+<title>One build now serves every deployment</title>
+<desc>Before, three tools carried one deployment&#x27;s values inside the build: the ACL tables in goat, a repository name in goatbuilder, and one deployment&#x27;s rules in the netvis image. Now each reads those values from configuration when it runs, and stops with a named error when they are missing</desc>
+<style>
+/* Figure styles for changelog figures: the goat design system's colors (docs/design-system/colors_and_type.css)
+   as figure roles, light and dark, then the classes figures draw with. Every role pair meets WCAG AA
+   (4.5:1 text, 3:1 graphics) in both themes. figure.py embeds this file into each standalone SVG. */
+:root { --font:"Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif; --mono:Menlo, Consolas, "Courier New", monospace; --ink:#1f1d1a; --quiet:#4a4744; --rule:#d4cab2; --line:#807c76; --paper:#fbf8f3; --panel:#f0eade; --accent:#176e3a; --accent-soft:#d6efde; --on-accent:#fbf8f3; --good:#176e3a; --good-bg:#d6efde; --warn:#8a5f12; --warn-bg:#f5e6c8; --info:#245f8c; --info-bg:#d8eaf2; --crit:#a83b2a; --crit-bg:#f5d8d2; --mute:#5d5953; --mute-bg:#ebe3cc; color-scheme: light; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --ink:#e8ece9; --quiet:#b9c2bd; --rule:#28333a; --line:#8a958f; --paper:#0b0f0e; --panel:#11171a; --accent:#34d97e; --accent-soft:#0c2e1c; --on-accent:#06120a; --good:#34d97e; --good-bg:#0c2e1c; --warn:#f4c860; --warn-bg:#2a2110; --info:#7ed1f0; --info-bg:#0e1f28; --crit:#ff7c69; --crit-bg:#2a1410; --mute:#8a958f; --mute-bg:#161e22; color-scheme: dark; }
+}
+[data-theme="light"] { --ink:#1f1d1a; --quiet:#4a4744; --rule:#d4cab2; --line:#807c76; --paper:#fbf8f3; --panel:#f0eade; --accent:#176e3a; --accent-soft:#d6efde; --on-accent:#fbf8f3; --good:#176e3a; --good-bg:#d6efde; --warn:#8a5f12; --warn-bg:#f5e6c8; --info:#245f8c; --info-bg:#d8eaf2; --crit:#a83b2a; --crit-bg:#f5d8d2; --mute:#5d5953; --mute-bg:#ebe3cc; color-scheme: light; }
+:root[data-theme="dark"], [data-theme="dark"] { --ink:#e8ece9; --quiet:#b9c2bd; --rule:#28333a; --line:#8a958f; --paper:#0b0f0e; --panel:#11171a; --accent:#34d97e; --accent-soft:#0c2e1c; --on-accent:#06120a; --good:#34d97e; --good-bg:#0c2e1c; --warn:#f4c860; --warn-bg:#2a2110; --info:#7ed1f0; --info-bg:#0e1f28; --crit:#ff7c69; --crit-bg:#2a1410; --mute:#8a958f; --mute-bg:#161e22; color-scheme: dark; }
+@media print {
+  :root, :root:not([data-theme]), [data-theme] { --ink:#1f1d1a; --quiet:#4a4744; --rule:#d4cab2; --line:#807c76; --paper:#fbf8f3; --panel:#f0eade; --accent:#176e3a; --accent-soft:#d6efde; --on-accent:#fbf8f3; --good:#176e3a; --good-bg:#d6efde; --warn:#8a5f12; --warn-bg:#f5e6c8; --info:#245f8c; --info-bg:#d8eaf2; --crit:#a83b2a; --crit-bg:#f5d8d2; --mute:#5d5953; --mute-bg:#ebe3cc; color-scheme: light; }
+}
+svg.viz { font-family: var(--font); }
+/* Figures */
+figure { margin:24px 0 30px; }
+figure .fig { border:1px solid var(--rule); border-radius:12px; padding:10px; background:var(--paper); }
+figure svg, svg.viz { display:block; width:100%; height:auto; font-family:var(--font); }
+figcaption { font-size:14.5px; color:var(--quiet); margin-top:8px; }
+/* A figure that must keep its type size on a phone scrolls sideways instead of shrinking (record F6). */
+.fig.scroll { overflow-x:auto; } .fig.scroll svg { min-width:680px; }
+
+/* Figure classes (grammar: references/figure-grammar.md). Text fills: */
+svg .t { fill:var(--ink); } svg .tq { fill:var(--quiet); } svg .ta { fill:var(--accent); } svg .tg { fill:var(--good); }
+svg .tw { fill:var(--warn); } svg .ti { fill:var(--info); } svg .tc { fill:var(--crit); } svg .tm { fill:var(--mute); }
+svg .ton { fill:var(--on-accent); }
+/* Boxes: */
+svg .bx { fill:var(--paper); stroke:var(--line); stroke-width:1.25; } svg .bxp { fill:var(--panel); stroke:var(--rule); stroke-width:1.25; }
+svg .bxa { fill:var(--accent-soft); stroke:var(--accent); stroke-width:1.25; } svg .bxg { fill:var(--good-bg); stroke:var(--good); stroke-width:1.25; }
+svg .bxw { fill:var(--warn-bg); stroke:var(--warn); stroke-width:1.25; } svg .bxi { fill:var(--info-bg); stroke:var(--info); stroke-width:1.25; }
+svg .bxc { fill:var(--crit-bg); stroke:var(--crit); stroke-width:1.25; } svg .bxm { fill:var(--mute-bg); stroke:var(--mute); stroke-width:1.25; }
+svg .bxd { fill:var(--paper); stroke:var(--line); stroke-width:1.25; stroke-dasharray:5 4; }
+/* Lines: */
+svg .ln { stroke:var(--line); stroke-width:1.25; fill:none; } svg .lna { stroke:var(--accent); stroke-width:2; fill:none; }
+svg .lng { stroke:var(--good); stroke-width:2; fill:none; } svg .lnw { stroke:var(--warn); stroke-width:2; fill:none; }
+svg .lnd { stroke:var(--line); stroke-width:1.25; fill:none; stroke-dasharray:6 5; }
+svg .lno { stroke:var(--good); stroke-width:2; fill:none; stroke-dasharray:2 5; stroke-linecap:round; }
+svg .lnr { stroke:var(--rule); stroke-width:1; fill:none; }
+svg .lnx { stroke:var(--crit); stroke-width:2; fill:none; stroke-dasharray:3 6; }
+/* Fills (arrowheads, discs, bars): */
+svg .fa { fill:var(--accent); } svg .fg { fill:var(--good); } svg .fl { fill:var(--line); } svg .fw { fill:var(--warn); }
+svg .fi { fill:var(--info); } svg .fc { fill:var(--crit); } svg .fm { fill:var(--mute); } svg .fp { fill:var(--panel); }
+svg .fs { fill:var(--accent-soft); }
+svg path, svg line, svg polyline { stroke-linejoin:round; }
+/* Halo: a label legible where a line passes behind it, without moving the line (record W7). */
+svg .halo { paint-order:stroke fill; stroke:var(--paper); stroke-width:4px; stroke-linejoin:round; }
+svg .halo.on-panel { stroke:var(--panel); }
+
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition:none !important; animation:none !important; scroll-behavior:auto !important; } }
+@media (max-width: 640px) { h1 { font-size:28px; } }
+@page { size: Letter; margin: 0.6in 0.65in 0.7in; }
+@media print {
+  html, body { font-size:14px; }
+  main { padding:0; max-width:none; }
+  h2 { break-after:avoid; }
+  figure, .callout, tr { break-inside:avoid; }
+  .no-print { display:none !important; }
+}
+</style>
+<rect x="0.5" y="0.5" width="759" height="209" rx="10" style="fill:var(--paper);stroke:var(--rule)"/>
+
+<text x="20" y="36" class="t" font-size="18" font-weight="700" data-role="title">One build now serves every deployment</text>
+<rect x="20" y="56" width="328" height="134" rx="8" class="bxw"/>
+<text x="36" y="82" class="tw" font-size="15" font-weight="700">Compiled in</text>
+<circle cx="39" cy="102.32" r="2.6" class="fw"/>
+<text x="50" y="106.8" class="t" font-size="14">ACL tables inside goat</text>
+<circle cx="39" cy="124.88" r="2.6" class="fw"/>
+<text x="50" y="129.36" class="t" font-size="14">a repository name inside goatbuilder</text>
+<circle cx="39" cy="147.44" r="2.6" class="fw"/>
+<text x="50" y="151.92" class="t" font-size="14">one deployment&#x27;s rules</text>
+<text x="50" y="171.92" class="t" font-size="14">in the netvis image</text>
+<rect x="412" y="56" width="328" height="134" rx="8" class="bxg"/>
+<text x="428" y="82" class="tg" font-size="15" font-weight="700">Read from configuration</text>
+<circle cx="431" cy="102.32" r="2.6" class="fg"/>
+<text x="442" y="106.8" class="t" font-size="14">goat acl reads the declaration directory</text>
+<circle cx="431" cy="124.88" r="2.6" class="fg"/>
+<text x="442" y="129.36" class="t" font-size="14">goatbuilder update reads</text>
+<text x="442" y="149.36" class="t" font-size="14">repo.release_source</text>
+<circle cx="431" cy="167.44" r="2.6" class="fg"/>
+<text x="442" y="171.92" class="t" font-size="14">netvis reads its rules at start</text>
+<path d="M348 100L402.25 100" class="lna"/><path d="M411.25 100L401.25 105L401.25 95z" class="fa"/>
+<text x="380" y="87" text-anchor="middle" class="ta" font-size="13" font-weight="700">now</text>
+</svg>
