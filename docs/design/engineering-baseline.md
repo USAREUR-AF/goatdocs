@@ -418,9 +418,11 @@ Entries are grouped by layer, top-to-bottom: change management → infrastructur
 
 **Practice:** A new language, framework or package manager needs a written reason and a named owner before it lands.
 
-- **Frontends** are hand-written ES modules and HTML templates served as static files by the service: no bundler, no transpiler, no framework. goat-id-console (`ops/goat-id-console/web/`) and goat-zenoh-portal (`ops/goat-zenoh-portal/web/`) in goatcore are the reference.
-- **A third-party browser library** that is genuinely needed is one vendored file committed in the tree, with its version and license noted beside it. Nothing is installed from npm at build time.
-- **npm** is allowed for Playwright test harnesses, with every dependency pinned to an exact version (`1.60.0`, never `^1.60.0`).
+- **Frontends** are, by default, hand-written ES modules and HTML templates served as static files by the service: no bundler, no transpiler, no framework. goat-id-console (`ops/goat-id-console/web/`) and goat-zenoh-portal (`ops/goat-zenoh-portal/web/`) in goatcore are the reference.
+- **Load-bearing services avoid complex frontends.** A service that other parts of a goatnet depend on keeps its browser interface small enough for the default.
+- **A third-party browser library** that is genuinely needed is one vendored file committed in the tree, with its version and license noted beside it. A default frontend installs nothing from npm at build time.
+- **TypeScript** is allowed in three places: a frontend too complex for the default, a library that other teams consume from TypeScript, and Playwright tests. A TypeScript frontend or library is listed in the allowlist with a named owner and a written reason, and commits its lockfile.
+- **npm** is allowed for Playwright test harnesses and for an allowlisted TypeScript frontend or library, with every dependency pinned to an exact version (`1.60.0`, never `^1.60.0`).
 - **Rust, Go and Python** keep the roles [ADR 0112](https://github.com/USAREUR-AF/goatcore/blob/main/docs/adr/0112-tech-strategy-workload-shape-language-boundary.md) gives them. This rule does not revisit them.
 
 CI enforces it in goatcore and goatstuff. `ops/ci/check-manifest-allowlist.py` (workflow `manifest-allowlist`) refuses any build or package manifest (`package.json`, a lockfile, `Cargo.toml`, `go.mod`, `pyproject.toml`, `requirements*.txt` and the rest) that `ops/ci/manifest-allowlist.txt` does not list with an owner and a reason, and any `package.json` dependency that is not an exact version unless `ops/ci/manifest-version-exceptions.txt` lists it. Both lists only shrink: a line whose manifest is gone, or whose dependency is now exact, fails the check.
