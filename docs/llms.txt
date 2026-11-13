@@ -1,0 +1,32 @@
+# goat
+
+> goat is a self-hosted, open-source data fabric. It joins people, machines and services across sites into one encrypted network and lets them publish and subscribe to data, with access decided by identity instead of network location. A site that loses its uplink keeps working. It is built from WireGuard managed by NetBird, Eclipse Zenoh publish/subscribe with a router at every site and no central broker, Ory for people, SPIFFE/SPIRE for workloads, and PostgreSQL replicated between sites. Public domain in the U.S., Apache License 2.0 elsewhere.
+
+goat is pre-1.0. The code is in the goatcore repository; this site holds the explanatory documents.
+
+## Start here
+
+- [goatcore README](https://github.com/USAREUR-AF/goatcore/blob/main/README.md): what goat is, what you can rely on, and a laptop rehearsal that needs no network
+- [Your first goatnet](https://github.com/USAREUR-AF/goatcore/blob/main/docs/tutorials/00-goatlite.md): a real environment on one Ubuntu 24.04 host from one short file
+- [The architecture in one read](https://usareur-af.github.io/goatdocs/design/architecture-spine/)
+- [Documentation index](https://usareur-af.github.io/goatdocs/)
+
+## Design
+
+- [What having no central broker costs](https://github.com/USAREUR-AF/goatcore/blob/main/docs/design/zenoh-brokerless-consequences.md): quality of service, retries, dead-lettering and access denial without a broker
+- [Federated trust model](https://github.com/USAREUR-AF/goatcore/blob/main/docs/design/federated-trust-model.md): recognizing a partner environment without authorizing it
+- [Post-quantum hybrid TLS for Zenoh](https://github.com/USAREUR-AF/goatcore/blob/main/docs/design/zenoh-pqc-tls.md): X25519MLKEM768, with measured overhead
+- [Decision record](https://github.com/USAREUR-AF/goatcore/blob/main/docs/adr/INDEX.md)
+
+## Reference
+
+- [What keeps working when links fail](https://usareur-af.github.io/goatdocs/reference/resilience/)
+- [Mesh technology comparison](https://usareur-af.github.io/goatdocs/reference/mesh-technology-comparison/)
+- [The open-source projects goat is built with](https://usareur-af.github.io/goatdocs/reference/built-with/)
+
+## Repositories
+
+- [goatcore](https://github.com/USAREUR-AF/goatcore): the system: the goat and goatbuilder command-line tools, services, deployment roles, tutorials and design record
+- [goatstuff](https://github.com/USAREUR-AF/goatstuff): inspection tools and demonstration applications
+- [goatenv](https://github.com/USAREUR-AF/goatenv): a complete example environment
+- [All repositories](https://github.com/USAREUR-AF)

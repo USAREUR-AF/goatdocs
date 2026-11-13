@@ -1,8 +1,11 @@
 # The goatdocs website, built with MkDocs and the Material theme.
 # Build locally: pip install -r .github/pages/requirements.txt && mkdocs serve
 # CI: .github/workflows/pages.yml builds on every pull request and deploys main.
-site_name: goatdocs
-site_description: Architecture, strategy, design system and integration guides for goat.
+site_name: goat data fabric docs
+site_description: >-
+  Documentation for goat, a self-hosted open-source data fabric: a WireGuard mesh
+  managed by NetBird, Eclipse Zenoh publish/subscribe with no central broker, and
+  identity-based access that keeps working when network links fail.
 site_url: https://usareur-af.github.io/goatdocs/
 repo_url: https://github.com/USAREUR-AF/goatdocs
 repo_name: USAREUR-AF/goatdocs
