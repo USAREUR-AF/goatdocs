@@ -113,13 +113,13 @@ Then read the entry from the top as someone who was not there:
 
 ## The weekly listing
 
-`.github/workflows/changelog-weekly.yml` runs every Monday at 06:17 UTC. It reads every public repository for the last full ISO week, renders `docs/changelog/weekly/<year>-W<week>.md`, and opens a pull request that adds it. No model takes part, and nobody edits the page. Where the organization does not let a workflow open a pull request, it commits the page to the branch `changelog/weekly-<week>` and opens an issue with the link an owner clicks to open it.
+`.github/workflows/changelog-weekly.yml` runs every Monday at 06:17 UTC. It reads every public repository for the last full ISO week, renders `docs/changelog/weekly/<year>-W<week>.md`, and opens a pull request that adds it. No model takes part, and nobody edits the page. With the repository secret `CHANGELOG_TOKEN` set, the run opens the pull request with that token, waits for every check, and squash-merges it when all of them passed; a failed check leaves it open and fails the run. Without the secret, where the organization does not let a workflow open a pull request, it commits the page to the branch `changelog/weekly-<week>` and opens an issue with the link an owner clicks to open it.
 
 | File | Job |
 |---|---|
 | `.github/changelog/collect.py` | reads the repositories through `gh`; the same collector this skill uses |
 | `.github/changelog/weekly.py` | renders the page from pull request titles; the same input always gives the same page |
-| `.github/changelog/propose.py` | commits through the GitHub API, so GitHub signs the commit, and opens the pull request |
+| `.github/changelog/propose.py` | commits through the GitHub API, so GitHub signs the commit, opens the pull request, and with `--merge-on-green` merges it when every check passed |
 | `.github/changelog/tests/` | `python3 -m unittest discover -s .github/changelog/tests` |
 
 To generate a week by hand: Actions, `changelog-weekly`, Run workflow, with a week such as `2026-W45`. Locally:

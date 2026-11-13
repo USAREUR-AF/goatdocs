@@ -3,8 +3,9 @@
 # Every Monday this reads the pull requests merged in every public repository
 # of the organization during the last full ISO week (Monday 00:00 UTC to the
 # next Monday 00:00 UTC), renders docs/changelog/weekly/<year>-W<week>.md from
-# their titles, and opens a pull request that adds the page. An owner reviews
-# and merges it like any other change.
+# their titles, and opens a pull request that adds the page. With the secret
+# CHANGELOG_TOKEN set, the run merges it when every check has passed; without
+# it, an owner opens or merges it.
 #
 #   .github/changelog/collect.py   reads the repositories (through gh)
 #   .github/changelog/weekly.py    renders the page; the same input always
@@ -25,8 +26,11 @@
 #     runs its checks at once.
 # Set the repository secret CHANGELOG_TOKEN (a GitHub App installation token,
 # or a fine-grained token with contents and pull-requests write on this
-# repository) and the workflow opens the pull request itself with its checks
-# running, in either kind of organization.
+# repository) and the run needs nobody: the workflow commits the page with its
+# own token, opens the pull request with CHANGELOG_TOKEN so the required checks
+# start, waits for every check, and squash-merges when all of them passed. A
+# failed check leaves the pull request open and fails the run. Without the
+# secret, the two cases above apply.
 name: changelog-weekly
 
 on:
@@ -50,13 +54,13 @@ jobs:
   weekly:
     name: weekly changelog
     runs-on: ubuntu-24.04
-    timeout-minutes: 20
+    timeout-minutes: 30
     permissions:
       contents: write
       pull-requests: write
       issues: write
     env:
-      GH_TOKEN: ${{ secrets.CHANGELOG_TOKEN || github.token }}
+      GH_TOKEN: ${{ github.token }}
       WEEK: ${{ inputs.week || 'last' }}
       CHANGELOG_SIGNOFF: "github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>"
     steps:
@@ -85,6 +89,7 @@ jobs:
 
       - name: open the pull request
         env:
+          CHANGELOG_PR_TOKEN: ${{ secrets.CHANGELOG_TOKEN }}
           PAGE: ${{ steps.render.outputs.page }}
           LABEL: ${{ steps.render.outputs.label }}
         run: |
@@ -97,4 +102,5 @@ jobs:
             --branch "changelog/weekly-${LABEL}" \
             --title "docs(changelog): weekly changelog ${LABEL}" \
             --body-file "${RUNNER_TEMP}/body.md" \
+            --merge-on-green \
             "${PAGE}" docs/changelog/weekly/INDEX.md

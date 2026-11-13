@@ -8,6 +8,7 @@ import unittest
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 import collect  # noqa: E402
+import propose  # noqa: E402
 import weekly  # noqa: E402
 
 
@@ -91,6 +92,25 @@ class Windows(unittest.TestCase):
     def test_titles_parse(self):
         self.assertEqual(collect.parse_title("feat(x)!: do it")["breaking"], True)
         self.assertEqual(collect.parse_title("No type here")["type"], "")
+
+
+class MergeOnGreen(unittest.TestCase):
+    def checks(self, *buckets):
+        return [{"name": f"check-{i}", "bucket": bucket} for i, bucket in enumerate(buckets)]
+
+    def test_green_needs_every_check_passed_or_skipped(self):
+        self.assertEqual(propose.verdict(self.checks("pass", "pass", "skipping", "pass"), 4), "green")
+
+    def test_a_pending_check_waits(self):
+        self.assertEqual(propose.verdict(self.checks("pass", "pass", "pass", "pending"), 4), "waiting")
+
+    def test_too_few_checks_wait_even_when_all_passed(self):
+        self.assertEqual(propose.verdict(self.checks("pass", "pass"), 4), "waiting")
+        self.assertEqual(propose.verdict([], 4), "waiting")
+
+    def test_a_failed_or_cancelled_check_never_merges(self):
+        self.assertEqual(propose.verdict(self.checks("pass", "fail", "pass", "pending"), 4), "failed")
+        self.assertEqual(propose.verdict(self.checks("pass", "cancel", "pass", "pass"), 4), "failed")
 
 
 if __name__ == "__main__":
