@@ -11,10 +11,18 @@ signs it and the pull request passes the verified-commits check. Nothing is
 committed with git, and no signing key is needed in the workflow.
 
 It does nothing, and exits 0, when every file already has this content on the
-default branch, or when a pull request for the branch is already open.
+default branch. When a pull request for the branch is already open it commits
+nothing and opens nothing.
 
 Where the organization does not let a workflow open a pull request, it opens
 an issue that carries the link an owner clicks to open it.
+
+With CHANGELOG_PR_TOKEN set (a token of a person or an app that may open and
+merge pull requests here), the pull request is opened with that token, so its
+required checks start. With --merge-on-green as well, the script then waits
+for every check and squash-merges the pull request when all of them passed.
+A failed check, or checks that do not finish in time, leave the pull request
+open and exit 1. The commit is always made with the workflow's own token.
 """
 from __future__ import annotations
 
@@ -24,6 +32,7 @@ import json
 import os
 import subprocess
 import sys
+import time
 
 
 def gh(*args: str, check: bool = True, stdin: str | None = None) -> subprocess.CompletedProcess:
@@ -31,6 +40,53 @@ def gh(*args: str, check: bool = True, stdin: str | None = None) -> subprocess.C
     if check and run.returncode != 0:
         raise SystemExit(f"propose: gh {' '.join(args[:3])} failed: {run.stderr.strip()}")
     return run
+
+
+GREEN = {"pass", "skipping"}
+
+
+def verdict(checks: list[dict], least: int) -> str:
+    """'green', 'failed' or 'waiting' for a pull request's checks (gh pr checks --json name,bucket)."""
+    buckets = [check.get("bucket") for check in checks]
+    if any(bucket in ("fail", "cancel") for bucket in buckets):
+        return "failed"
+    if len(buckets) < least or any(bucket not in GREEN for bucket in buckets):
+        return "waiting"
+    return "green"
+
+
+def merge_on_green(repo: str, number: str, token: str, least: int, minutes: float, pause: float = 30) -> int:
+    """Wait for the pull request's checks, then squash-merge it. Green must be seen twice on one head."""
+    env = {**os.environ, "GH_TOKEN": token}
+    deadline = time.monotonic() + minutes * 60
+    seen = None
+    while True:
+        run = subprocess.run(["gh", "pr", "view", number, "-R", repo, "--json", "headRefOid,state"],
+                             capture_output=True, text=True, env=env)
+        checks = subprocess.run(["gh", "pr", "checks", number, "-R", repo, "--json", "name,bucket"],
+                                capture_output=True, text=True, env=env)
+        if run.returncode == 0 and checks.stdout.strip().startswith("["):
+            view = json.loads(run.stdout)
+            if view["state"] != "OPEN":
+                print(f"propose: pull request #{number} is {view['state']}; nothing to merge")
+                return 0
+            result = verdict(json.loads(checks.stdout), least)
+            if result == "failed":
+                print(f"propose: a check failed on #{number}; it stays open for an owner")
+                return 1
+            if result == "green" and seen == view["headRefOid"]:
+                merged = subprocess.run(["gh", "pr", "merge", number, "-R", repo, "--squash", "--delete-branch",
+                                         "--match-head-commit", seen], capture_output=True, text=True, env=env)
+                if merged.returncode == 0:
+                    print(f"propose: merged #{number}")
+                    return 0
+                print(f"propose: could not merge #{number}: {merged.stderr.strip()}")
+                return 1
+            seen = view["headRefOid"] if result == "green" else None
+        if time.monotonic() > deadline:
+            print(f"propose: the checks on #{number} did not finish in {minutes:g} minutes; it stays open")
+            return 1
+        time.sleep(pause)
 
 
 def remote_text(repo: str, path: str, ref: str) -> str | None:
@@ -46,6 +102,11 @@ def main() -> int:
     parser.add_argument("--body-file", required=True)
     parser.add_argument("--signoff", default=os.environ.get("CHANGELOG_SIGNOFF", ""),
                         help="'Name <email>' for the DCO Signed-off-by line")
+    parser.add_argument("--merge-on-green", action="store_true",
+                        help="with CHANGELOG_PR_TOKEN set: wait for the checks and squash-merge")
+    parser.add_argument("--least-checks", type=int, default=4,
+                        help="fewest checks that must have reported before green counts")
+    parser.add_argument("--wait-minutes", type=float, default=15)
     parser.add_argument("files", nargs="+")
     args = parser.parse_args()
     if not args.repo:
@@ -63,9 +124,12 @@ def main() -> int:
         return 0
     open_pulls = json.loads(gh("pr", "list", "-R", args.repo, "--head", args.branch, "--state", "open",
                                "--json", "number").stdout)
+    pr_token = os.environ.get("CHANGELOG_PR_TOKEN", "")
+    finish = args.merge_on_green and bool(pr_token)
     if open_pulls:
-        print(f"propose: pull request #{open_pulls[0]['number']} for {args.branch} is already open; nothing to do")
-        return 0
+        number = str(open_pulls[0]["number"])
+        print(f"propose: pull request #{number} for {args.branch} is already open; nothing to commit")
+        return merge_on_green(args.repo, number, pr_token, args.least_checks, args.wait_minutes) if finish else 0
 
     head = json.loads(gh("api", f"repos/{args.repo}/git/ref/heads/{default}").stdout)["object"]["sha"]
     made = gh("api", "-X", "POST", f"repos/{args.repo}/git/refs", "-f", f"ref=refs/heads/{args.branch}",
@@ -97,10 +161,15 @@ def main() -> int:
         raise SystemExit(f"propose: the commit was refused: {commit['errors']}")
     print("propose: committed", commit["data"]["createCommitOnBranch"]["commit"]["url"])
 
-    pull = gh("pr", "create", "-R", args.repo, "--base", default, "--head", args.branch,
-              "--title", args.title, "--body-file", args.body_file, check=False)
+    pull = subprocess.run(["gh", "pr", "create", "-R", args.repo, "--base", default, "--head", args.branch,
+                           "--title", args.title, "--body-file", args.body_file], capture_output=True, text=True,
+                          env={**os.environ, "GH_TOKEN": pr_token} if pr_token else None)
     if pull.returncode == 0:
-        print("propose: opened", pull.stdout.strip())
+        url = pull.stdout.strip()
+        print("propose: opened", url)
+        if finish:
+            return merge_on_green(args.repo, url.rstrip("/").rsplit("/", 1)[-1], pr_token,
+                                  args.least_checks, args.wait_minutes)
         return 0
     # The organization may not let a workflow open a pull request. The branch and its signed
     # commit exist, so hand an owner the link: a pull request a person opens also starts the
