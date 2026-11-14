@@ -1,6 +1,6 @@
 # goat
 
-> goat is a self-hosted, open-source data fabric. It joins people, machines and services across sites into one encrypted network and lets them publish and subscribe to data, with access decided by identity instead of network location. A site that loses its uplink keeps working. It is built from WireGuard managed by NetBird, Eclipse Zenoh publish/subscribe with a router at every site and no central broker, Ory for people, SPIFFE/SPIRE for workloads, and PostgreSQL replicated between sites. Public domain in the U.S., Apache License 2.0 elsewhere.
+> goat is a self-hosted, open-source data fabric. It joins people, machines and services across sites into one encrypted network and lets them publish and subscribe to data, with access decided by identity instead of network location. A site that loses its uplink keeps working. It is built from WireGuard managed by NetBird, Eclipse Zenoh publish/subscribe, peer to peer by protocol with no central broker, Ory for people, SPIFFE/SPIRE for workloads, and PostgreSQL replicated between sites. Public domain in the U.S., Apache License 2.0 elsewhere.
 
 goat is pre-1.0. The code is in the goatcore repository; this site holds the explanatory documents.
 
