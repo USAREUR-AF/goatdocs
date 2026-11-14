@@ -5,6 +5,11 @@
 # docs/, built with MkDocs and the Material theme at the versions in
 # .github/pages/requirements.txt. Deploying needs Settings > Pages > Source set
 # to "GitHub Actions".
+#
+# The build also serves goatcore's generated error-code pages, one per code, at
+# reference/errors/<CODE>/: it checks out goatcore's main (docs/reference only)
+# and .github/pages/import-error-pages.py copies them into docs/ for this build.
+# They are as current as the last build of this site.
 name: pages
 
 on:
@@ -41,8 +46,22 @@ jobs:
           cache: pip
           cache-dependency-path: .github/pages/requirements.txt
 
+      - name: check out goatcore's generated error reference
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: USAREUR-AF/goatcore
+          ref: main
+          path: _goatcore
+          sparse-checkout: docs/reference
+          persist-credentials: false
+
       - name: install MkDocs
         run: python -m pip install --quiet -r .github/pages/requirements.txt
+
+      - name: copy the error-code pages into the site
+        run: |
+          python .github/pages/import-error-pages.py --self-test
+          python .github/pages/import-error-pages.py _goatcore
 
       - name: build the site
         env:
