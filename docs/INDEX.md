@@ -9,6 +9,7 @@ The explanatory corpus for goat. Component documentation lives beside the code i
 | [operations/](operations/) | Procedures and method for working on goat |
 | [questions/](questions/README.md) | Pages titled with a question, answered in general terms first and then for goat |
 | [reference/](reference/) | Reference material and comparative tables |
+| [Error codes](https://usareur-af.github.io/goatdocs/reference/errors/) | One page per error code of `goat` and `goatbuilder`: what it means, why it happens, what to do. Generated in goatcore from its error catalog |
 | [reference/built-with.md](reference/built-with.md) | The open-source projects goat runs on and builds with, with licences |
 | [design-system/](design-system/README.md) | The design system every goat surface renders with |
 | [manifesto/](manifesto/README.md) | Position papers |

@@ -19,6 +19,9 @@ site_dir: site
 hooks:
   - .github/pages/hooks.py
 
+# docs/reference/errors/ is not in this repository: the Pages build copies
+# goatcore's generated error-code pages there (.github/pages/import-error-pages.py).
+
 # Re-added by the hook at <dir>/readme/, beside the kit's own index.html.
 exclude_docs: |
   design-system/ui_kits/*/README.md
