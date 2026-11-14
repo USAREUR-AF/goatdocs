@@ -239,17 +239,14 @@ This charter is amended only by a written amendment signed by both parties. Appe
 
 ### B.5. Tier and reference architecture adoption
 
-Pick exactly one path:
+Pick exactly one path. A moon pod (Tier-0) is not offered under this charter: it is a learning tool, not used for operations, and not a sovereignty guarantee ([its position](../design/partner-reference-architecture.md#tier-0-the-moon-pod)).
 
 - [ ] **PRA tier** — Party B adopts the Partner Reference Architecture as published at [`../design/partner-reference-architecture.md`](../design/partner-reference-architecture.md). Party B operates the full eight-piece minimal stack on Party-B-controlled infrastructure.
-- [ ] **Tier-0: `goat-moon-open-pod`** — Party B operates the reference moon-pod implementation at `moon-pod` on Party-B-controlled infrastructure. Conformance per [goatstuff `moon-pod-conformance.md`](https://github.com/usareur-af/goatstuff/blob/main/docs/design/moon-pod-conformance.md).
-- [ ] **Tier-0: vendor moon-pod** — Party B operates a `goat-moon-<product>-pod` from a third-party vendor (a commercial C2 or data platform). Vendor product: ____________________. Conformance per [goatstuff `moon-pod-conformance.md`](https://github.com/usareur-af/goatstuff/blob/main/docs/design/moon-pod-conformance.md); Party A runs [`../../tests/moon-pod-conformance/`](https://github.com/usareur-af/goatcore/tree/main/tests/moon-pod-conformance) at onboarding to validate.
-- [ ] **Tier-0: partner-built moon-pod** — Party B has built their own conformant moon-pod. Conformance per [goatstuff `moon-pod-conformance.md`](https://github.com/usareur-af/goatstuff/blob/main/docs/design/moon-pod-conformance.md); Party A runs the conformance suite at onboarding.
-- [ ] **Other** — Party B operates a different architecture meeting the four-facet expectations and (if Tier-0-class) the seven requirements; described in B.6 below.
+- [ ] **Other** — Party B operates a different architecture meeting the four-facet expectations; described in B.6 below.
 
-### B.6. Partner architecture description (if not adopting PRA or a moon-pod)
+### B.6. Partner architecture description (if not adopting the PRA)
 
-[Brief description of partner-side architecture as it relates to the four-facet expectations. Sufficient detail for Party A to understand the boundary; not exhaustive. If claiming Tier-0 conformance under requirements at [goatstuff `moon-pod-conformance.md`](https://github.com/usareur-af/goatstuff/blob/main/docs/design/moon-pod-conformance.md), include conformance smoke-test results.]
+[Brief description of partner-side architecture as it relates to the four-facet expectations. Sufficient detail for Party A to understand the boundary; not exhaustive.]
 
 ---
 

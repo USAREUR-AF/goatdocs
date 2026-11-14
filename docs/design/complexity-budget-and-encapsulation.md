@@ -168,7 +168,7 @@ Each was the correct decision at the time it was made. The cumulative weight —
 
 - **Make-it-work foundation** exists in pieces. Block 29 (OSS go-open) names a `git clone && docker compose up` 5-min demo as the deliverable. Block 22L ships a turnkey profile-aware [`site-bootstrap.yml`](https://github.com/usareur-af/goatcore/blob/main/ops/ansible/site-bootstrap.yml). Block 68 commits to a 1-hour rapid-bringup shot clock with an automated harness. Block 76 ships goat-client as the non-engineer-facing surface.
 - **Make-it-true foundation** exists in pieces. [`docs/design/architecture-spine.md`](architecture-spine.md) is a one-page orientation pointing at fifteen architectural themes. The integration matrix is the runtime-dependency view. The findings register ([ADR 1011](https://github.com/usareur-af/goatcore/blob/main/docs/adr/1011-findings-register.md)) catalogs interaction bugs. The deltas + baseline pair ([`deliberate-deltas.md`](deliberate-deltas.md) + [`engineering-baseline.md`](engineering-baseline.md)) explains why each substrate is the way it is.
-- **Make-it-yours foundation** exists in pieces. Block 60 goat-moon-pod specifies a 7-requirement conformance contract that any partner can implement instead of adopting the reference. The [Vendor Data Services Provider Charter](../vendor-templates/data-services-provider-charter.md) defines partner-provided-substrate expectations.
+- **Make-it-yours foundation** exists in pieces. Block 60 goat-moon-pod specifies a 7-requirement conformance contract. A moon pod is a learning tool today, not an operational path for a partner and not a sovereignty guarantee ([its position](partner-reference-architecture.md#tier-0-the-moon-pod)). The [Vendor Data Services Provider Charter](../vendor-templates/data-services-provider-charter.md) defines partner-provided-substrate expectations.
 
 **What goat is missing is the spine** — a single program that ties these bones into a coherent complexity-budget posture, with a written bar, a layer inventory, a leak register, and a quarterly review. That spine is Block 81 in the implementation plan, with this design doc as its anchor.
 
@@ -187,7 +187,7 @@ Goat-specific first deliverables:
 - [`engineering-health-assessment.md`](engineering-health-assessment.md) — engineering health asks "is the foundation sound?"; complexity budget asks "is the foundation adoptable?" Both feed the OSS publication readiness criteria.
 - Block 29 — OSS go-open execution; the 5-min demo is no longer just a marketing artifact but the load-bearing measurement of whether the budget is being held.
 - Block 32 — engineering-health scorecard; quarterly cadence runs alongside, sharing scope and reporting surface.
-- Block 60 — goat-moon-pod 7-requirement conformance contract; the contract is one instance of the make-it-yours layer for partners.
+- Block 60 — goat-moon-pod 7-requirement conformance contract; the contract is one instance of the make-it-yours layer, used today only to learn ([its position](partner-reference-architecture.md#tier-0-the-moon-pod)).
 - Block 68 — rapid-bringup shot clock; the shot clock IS the 30-min / 1-day path measurement.
 - Block 76 — goat-client; the non-engineer-facing surface that the 5-min path produces for desktop operators.
 - [ADR 1011](https://github.com/usareur-af/goatcore/blob/main/docs/adr/1011-findings-register.md) — findings register pattern; the leak register reuses the discipline.
