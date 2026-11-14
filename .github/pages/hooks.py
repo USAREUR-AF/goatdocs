@@ -13,6 +13,9 @@ build time only and changes no source file.
    does not drop it with a warning first.
 4. A link to a directory points at that directory's landing page, and a link
    to a repository file outside ``docs/`` points at the file on GitHub.
+5. ``llms-full.txt`` at the site root holds every page's Markdown in one file,
+   for language models and the indexes that feed them (https://llmstxt.org/).
+   It is written by the build and is never committed.
 """
 
 from __future__ import annotations
@@ -32,6 +35,8 @@ _LINK = re.compile(r"\]\((?P<target>[^)\s]+)(?P<rest>(?:\s+\"[^\"]*\")?)\)")
 
 # Directory (relative to docs_dir) -> the src_uri of its landing page.
 _landing: dict[str, str] = {}
+# src_uri -> (page URL, page Markdown with absolute links), for llms-full.txt.
+_full: dict[str, tuple[str, str]] = {}
 
 
 def _title(file: File) -> str:
@@ -69,6 +74,7 @@ def on_files(files: Files, config) -> Files:
                 by_dir.setdefault(parent, [])
 
     _landing.clear()
+    _full.clear()
 
     # 1. Home page.
     home = files.get_file_from_path("INDEX.md")
@@ -145,4 +151,41 @@ def on_page_markdown(markdown: str, page, config, files: Files) -> str:
             return match.group(0)
         return f"]({new}{sep}{anchor}{match.group('rest')})"
 
-    return _LINK.sub(rewrite, markdown)
+    markdown = _LINK.sub(rewrite, markdown)
+    _full[page.file.src_uri] = (_absolute(page.file.url, config), _LINK.sub(
+        lambda m: _absolute_link(m, here, files, config), markdown))
+    return markdown
+
+
+def _absolute(url: str, config) -> str:
+    site = (config.get("site_url") or "").rstrip("/") + "/"
+    return site + ("" if url in (".", "./") else url)
+
+
+def _absolute_link(match: re.Match, here: str, files: Files, config) -> str:
+    """A relative link to another page or file of the site, as its full URL.
+
+    In llms-full.txt every page sits in one file, so a relative link has
+    nothing to be relative to.
+    """
+    target = match.group("target")
+    if re.match(r"^[a-z][a-z0-9+.-]*:|^#|^/", target, re.IGNORECASE):
+        return match.group(0)
+    path, sep, anchor = target.partition("#")
+    linked = files.get_file_from_path(posixpath.normpath(posixpath.join(here, path)))
+    if linked is None:
+        return match.group(0)
+    return f"]({_absolute(linked.url, config)}{sep}{anchor}{match.group('rest')})"
+
+
+def on_post_build(config) -> None:
+    """Write llms-full.txt: the home page first, then every page by path."""
+    home = _landing.get("", "")
+    parts = [f"# {config['site_name']}", ""]
+    if config.get("site_description"):
+        parts += [f"> {config['site_description']}", ""]
+    for src_uri in sorted(_full, key=lambda uri: (uri != home, uri)):
+        url, markdown = _full[src_uri]
+        parts += ["---", "", f"Source: {url}", "", markdown.strip(), ""]
+    with open(os.path.join(config["site_dir"], "llms-full.txt"), "w", encoding="utf-8") as out:
+        out.write("\n".join(parts))
