@@ -1,6 +1,6 @@
 # Partner Reference Architecture (PRA) — minimal Zenoh-on-ZTOL recipe
 
-> **Scope: a nation's own environment is the operational path.** Operationally, each nation runs its own environment and shares only by release across boundary nodes that federate the environments ([ADR 1157](https://github.com/usareur-af/goatcore/blob/main/docs/adr/1157-cross-sovereign-federation-edge-terminated.md), [ADR 1208](https://github.com/usareur-af/goatcore/blob/main/docs/adr/1208-sovereign-environments-release-namespaces-and-grant-encryption.md)). This recipe is a minimal stack for such an environment. Tier-0 below is the moon pod, a learning tool for the exercise environment, not the operational path.
+> **Scope: a nation's own environment is the operational path.** Operationally, each nation runs its own environment and shares only by release across boundary nodes that federate the environments ([ADR 1157](https://github.com/usareur-af/goatcore/blob/main/docs/adr/1157-cross-sovereign-federation-edge-terminated.md), [ADR 1208](https://github.com/usareur-af/goatcore/blob/main/docs/adr/1208-sovereign-environments-release-namespaces-and-grant-encryption.md)). This recipe is a minimal stack for such an environment. Tier-0 below is the moon pod, a learning tool, not the operational path; that section states its position.
 
 
 | Field | Value |
@@ -13,15 +13,18 @@
 
 A **recommended-not-required** minimal Zenoh-on-ZTOL stack a mission partner can stand up in days to interop cleanly with **GOAT-Net** (the project's externally-facing data backbone — the substrate name goat realizes). The PRA is deliberately stripped of everything in our stack that exists for *our* reasons (active-active multi-site, island-mode-by-construction, paired pgBackRest, three-tier NTP, phoenix-native rebuild discipline, FIPS PQC boundary node). Partners adopting the PRA get a clean interop starting point; partners with a more elaborate stack adopt as little or as much as they want; partners with no fabric infrastructure get a working baseline.
 
-## Tier-0 partner integration (added 2026-05-04)
+## Tier-0: the moon pod
 
-The PRA presumes a partner with engineering capacity to stand up zenohd + WireGuard + an OIDC IdP + an audit sink. Many plausible mission partners do not have that capacity in any reasonable timeframe.
+The PRA presumes a partner with the engineering capacity to stand up zenohd, WireGuard, an OIDC IdP and an audit sink. Tier-0 was proposed for a partner without it: a `goat-moon-pod`, a containerized appliance that bundles the six required pieces. The contract a moon pod meets is [`moon-pod-conformance.md`](https://github.com/usareur-af/goatstuff/blob/main/docs/design/moon-pod-conformance.md) (seven requirements), its shape is [`goat-moon-pod.md`](https://github.com/usareur-af/goatstuff/blob/main/docs/design/goat-moon-pod.md), and the guide for building one is [`goat-moon-pod-builder-guide.md`](https://github.com/usareur-af/goatstuff/blob/main/docs/design/goat-moon-pod-builder-guide.md). The repository decision is [ADR 0223](https://github.com/usareur-af/goatcore/blob/main/docs/adr/0223-goat-moon-pod-repo-containment.md).
 
-For those partners, **Tier-0** is a turnkey pattern: the partner runs a `goat-moon-pod` — a containerized appliance that bundles all six required pieces and deploys in 24 hours by a non-engineer. The contract any moon-pod must meet is at [`moon-pod-conformance.md`](https://github.com/usareur-af/goatstuff/blob/main/docs/design/moon-pod-conformance.md) (the seven requirements). The architectural shape is at [`goat-moon-pod.md`](https://github.com/usareur-af/goatstuff/blob/main/docs/design/goat-moon-pod.md). Our reference implementation is at `moon-pod` (separate repo, Apache 2.0 — private during MVP, public at GA, per [ADR 0223](https://github.com/usareur-af/goatcore/blob/main/docs/adr/0223-goat-moon-pod-repo-containment.md)).
+**The moon pod's position.** This is the one statement of it in goatdocs; other documents point here.
 
-Vendor moon-pods are explicitly invited; per-vendor cookbooks live at `../integrations/moon-pods/`. Builder guide for vendors at [`goat-moon-pod-builder-guide.md`](https://github.com/usareur-af/goatstuff/blob/main/docs/design/goat-moon-pod-builder-guide.md).
+- **It is a learning tool.** A moon pod is used today only to learn: it is rung 2 of the learner ladder. It is not in operational use.
+- **It is not a sovereignty guarantee.** A pod joins an environment someone else runs, and that environment's owner controls enrolment, the access rules, and what data may leave the pod.
+- **It could become a real capability on one condition:** the pod's operator treats the environment owner as trusted, and as the authority over the pod's ability to move data outside the pod.
+- **A party that needs sovereignty runs its own environment** and federates across a boundary, as the scope note above describes. That is a different thing from a pod, and it is the path this recipe serves.
 
-**The PRA is Tier-0-aligned.** Both paths conform to the same seven-requirement contract; the PRA is a partner-side-deeper-engagement variant, the moon-pod is the easy-button variant. A partner can transition between them without re-onboarding (requirement 7 — reversibility).
+The PRA and a moon pod meet the same seven-requirement contract, but they are not two variants of one operational path: the PRA is a minimal stack for a partner's own environment, and a moon pod is for learning.
 
 ## Maturity caveat
 
