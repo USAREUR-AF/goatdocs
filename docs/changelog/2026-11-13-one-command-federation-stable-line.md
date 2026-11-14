@@ -1,16 +1,18 @@
 # Changelog, 10 to 13 November 2026: federation is one goatbuilder command, and a stable line follows releases
 
-Federating two goatnets is now one command, `goatbuilder federate <partner>`, released in goatbuilder 0.5.1 and 0.5.3. All work still lands on `main`, and a branch named `stable` is set up to follow whole-tree releases, so people who build on goat have a fixed line while `main` keeps moving. goatbuilder also has a written gate for version 1.0, with compatibility checked on every pull request.
+Federating two goatnets is now one command, `goatbuilder federate <partner>`, released in goatbuilder 0.5.1 and 0.5.3. goatbuilder 0.6.0 followed on 13 November: it names every command before it runs and keeps a record of every run. All work still lands on `main`, and a branch named `stable` is set up to follow whole-tree releases, so people who build on goat have a fixed line while `main` keeps moving. goatbuilder also has a written gate for version 1.0, with compatibility checked on every pull request.
 
 This entry covers all 26 public [USAREUR-AF](https://github.com/USAREUR-AF) repositories, because a change in one usually lands with matching changes in others. It follows [the entry for 8 to 10 November](2026-11-10-signed-commits-one-build.md).
 
+**Since this entry's window closed.** goatbuilder 0.6.1, published on 14 November, fixes the one known issue in 0.6.0. The first whole-tree tag, `goatcore/v0.6.1`, was cut the same day, and the branch `stable` now points at it. The next entry covers both.
+
 ## In short
 
-- **Contribute to `main`; build on a release.** A signed tag `goatcore/vX.Y.Z` marks a release of the whole repository, and the branch `stable` will point at the newest one. The workflow is built and first runs when the next such tag is cut ([section 1](#1-contributing-one-development-branch-and-a-stable-line)).
+- **Contribute to `main`; build on a release.** A signed tag `goatcore/vX.Y.Z` marks a release of the whole repository, and the branch `stable` points at the newest one. The first such tag is `goatcore/v0.6.1` ([section 1](#1-contributing-one-development-branch-and-a-stable-line)).
 - **Outside pull requests are labeled `community`,** and `CONTRIBUTING.md` says what a contributor can expect from the maintainers ([section 1](#1-contributing-one-development-branch-and-a-stable-line)).
-- **Federate with `goatbuilder federate <partner>`.** One run does all fourteen phases and stops only where a person must look. Use goatbuilder 0.5.3 ([section 2](#2-federation-is-one-goatbuilder-command)).
+- **Federate with `goatbuilder federate <partner>`.** One run does all fourteen phases and stops only where a person must look. Use the newest goatbuilder release ([section 2](#2-federation-is-one-goatbuilder-command)).
 - **Two peerings on one edge and core are kept apart.** goat 0.5.19 grants each partner only the release sets agreed with it ([section 2](#2-federation-is-one-goatbuilder-command)).
-- **A run shows what it does.** On `main`, every command is named before it runs and every run leaves a record. This ships in goatbuilder 0.6.0, which is in review ([section 3](#3-a-run-shows-what-it-does)).
+- **A run shows what it does.** From goatbuilder 0.6.0, every command is named before it runs and every run leaves a record ([section 3](#3-a-run-shows-what-it-does)).
 - **goatbuilder 1.0 has a gate and a deprecation rule.** A deprecated command, flag or field keeps working for at least two minor releases and 90 days, and only a major release removes it ([section 4](#4-what-goatbuilder-10-will-promise)).
 - **Browser interfaces are plain JavaScript with no build step,** and a new build or package manifest needs an owner and a reason ([section 6](#6-browser-interfaces-without-a-build-step)).
 
@@ -19,8 +21,8 @@ This entry covers all 26 public [USAREUR-AF](https://github.com/USAREUR-AF) repo
 | If you | Do this | Why |
 |---|---|---|
 | contribute to any repository | Open your pull request against `main`, as before. Never against `stable`: a pull request there is closed with a pointer to `main` | [ADR 1231](https://github.com/USAREUR-AF/goatcore/blob/main/docs/adr/1231-one-development-branch-and-a-stable-line-that-follows-releases.md) (goatcore [#581](https://github.com/USAREUR-AF/goatcore/pull/581)) |
-| build on goat and want a fixed reference | Pin a release tag. When the first `goatcore/v` tag of the new line is cut, `stable` names the newest one | the same ADR; today the newest released tool versions are goatbuilder 0.5.3 and goat 0.5.19 |
-| federate, or plan to | Install goatbuilder 0.5.3 and run `goatbuilder federate <partner>`. `goat federate <verb>` still runs and prints the goatbuilder command | [ADR 1225](https://github.com/USAREUR-AF/goatcore/blob/main/docs/adr/1225-federation-belongs-to-goatbuilder-one-command-one-decision.md) (goatcore [#343](https://github.com/USAREUR-AF/goatcore/pull/343), [#395](https://github.com/USAREUR-AF/goatcore/pull/395)) |
+| build on goat and want a fixed reference | Pin a release tag, or follow `stable`, which names the newest `goatcore/v` tag | the same ADR; the newest released tool versions are goatbuilder 0.6.1 and goat 0.5.19 |
+| federate, or plan to | Install the newest goatbuilder release and run `goatbuilder federate <partner>`. `goat federate <verb>` still runs and prints the goatbuilder command | [ADR 1225](https://github.com/USAREUR-AF/goatcore/blob/main/docs/adr/1225-federation-belongs-to-goatbuilder-one-command-one-decision.md) (goatcore [#343](https://github.com/USAREUR-AF/goatcore/pull/343), [#395](https://github.com/USAREUR-AF/goatcore/pull/395)) |
 | run, or plan, a second peering on the same edge and core hosts | Use goat 0.5.19 and render the edge and core again. Move your peering directory to saltlick v0.5.0 before the second peering | Outward grants were the whole wire name `from/<us>/**`, so one partner's edge could read a set agreed only with another (goatcore [#267](https://github.com/USAREUR-AF/goatcore/pull/267), [#272](https://github.com/USAREUR-AF/goatcore/pull/272)); an older directory holds one package for every partner |
 | script around federation acceptance | Treat exit status 3 as incomplete: acceptance exits 3 when any check was skipped | A skip is no longer a pass (goatcore [#343](https://github.com/USAREUR-AF/goatcore/pull/343)) |
 | add a build or package manifest, such as a `package.json` | List it in `ops/ci/manifest-allowlist.txt` with an owner and a one-line reason, and pin every `package.json` dependency to an exact version | The check `manifest-allowlist` refuses it otherwise (goatcore [#326](https://github.com/USAREUR-AF/goatcore/pull/326), goatstuff [#49](https://github.com/USAREUR-AF/goatstuff/pull/49)) |
@@ -54,7 +56,7 @@ Every change still lands on `main`, many times a day. What is new is a fixed lin
 
 | Change | What you see | PR |
 |---|---|---|
-| The stable line ([ADR 1231](https://github.com/USAREUR-AF/goatcore/blob/main/docs/adr/1231-one-development-branch-and-a-stable-line-that-follows-releases.md), accepted) | `.github/workflows/stable.yml` moves `stable` when a `goatcore/v` tag is pushed, and only after `ops/release/stable.py check` confirms the tag is on `main` and shares its commit with `goatbuilder/v` of the same version. The release page lists the tool versions that go together. **Built; it first runs when the next `goatcore/v` tag is cut** | goatcore [#581](https://github.com/USAREUR-AF/goatcore/pull/581) |
+| The stable line ([ADR 1231](https://github.com/USAREUR-AF/goatcore/blob/main/docs/adr/1231-one-development-branch-and-a-stable-line-that-follows-releases.md), accepted) | `.github/workflows/stable.yml` moves `stable` when a `goatcore/v` tag is pushed, and only after `ops/release/stable.py check` confirms the tag is on `main` and shares its commit with `goatbuilder/v` of the same version. The release page lists the tool versions that go together. **Built.** It first ran on 14 November, after this window, for `goatcore/v0.6.1` | goatcore [#581](https://github.com/USAREUR-AF/goatcore/pull/581) |
 | `stable` takes no direct work | A pull request against `stable` is closed with a comment that points to `main`. A push to it that is not a tagged release fails `stable-guard`, and a ruleset refuses deleting it or moving it backward | goatcore [#581](https://github.com/USAREUR-AF/goatcore/pull/581) |
 | Outside pull requests are labeled | `contributor-trust` adds the label `community` to a pull request whose author is not a member of the organization, so the maintainers can list them | goatcore [#582](https://github.com/USAREUR-AF/goatcore/pull/582) |
 | What a contributor can expect | `CONTRIBUTING.md` has a section for it. Once you are validated, the maintainers aim to reply within one working day. It is an aim, not a guarantee. You are validated when you are registered in a goat community environment with a linked GitHub account, or have an earlier merged pull request | goatcore [#581](https://github.com/USAREUR-AF/goatcore/pull/581), [#582](https://github.com/USAREUR-AF/goatcore/pull/582) |
@@ -89,9 +91,13 @@ The previous entry reported this work as in review on the branch `integration/fe
 | [goatbuilder/v0.5.1](https://github.com/USAREUR-AF/goatcore/releases/tag/goatbuilder/v0.5.1) | `goatbuilder federate` (goatcore [#424](https://github.com/USAREUR-AF/goatcore/pull/424)) |
 | [goatbuilder/v0.5.3](https://github.com/USAREUR-AF/goatcore/releases/tag/goatbuilder/v0.5.3) | the corrected federation documents, declared values passed to each phase as one word, `verify` reading a failed ledger read as unknown, private keys removed after an interrupted phase 8 (goatcore [#450](https://github.com/USAREUR-AF/goatcore/pull/450), [#509](https://github.com/USAREUR-AF/goatcore/pull/509)) |
 
-The tags `goatbuilder/v0.5.0` and `goatbuilder/v0.5.2` exist and have no published release. Install 0.5.3.
+| [goatbuilder/v0.6.0](https://github.com/USAREUR-AF/goatcore/releases/tag/goatbuilder/v0.6.0) | the changes in the table below and in [section 3](#3-a-run-shows-what-it-does) (goatcore [#589](https://github.com/USAREUR-AF/goatcore/pull/589)) |
 
-### On main, for goatbuilder 0.6.0
+The tags `goatbuilder/v0.5.0` and `goatbuilder/v0.5.2` exist and have no published release.
+
+**Known issue in 0.6.0.** A `goatbuilder federate` run killed in phase 11, after it wrote the WireGuard link's files and before it restarted the link, does not resume. A run that is not killed is not affected, and 0.5.3 has the same gap. [goatbuilder/v0.6.1](https://github.com/USAREUR-AF/goatcore/releases/tag/goatbuilder/v0.6.1) fixes it (goatcore [#597](https://github.com/USAREUR-AF/goatcore/pull/597)). Install 0.6.1.
+
+### In goatbuilder 0.6.0
 
 | Change | What you see | PR |
 |---|---|---|
@@ -104,7 +110,7 @@ The tags `goatbuilder/v0.5.0` and `goatbuilder/v0.5.2` exist and have no publish
 
 ## 3. A run shows what it does
 
-On `main`, goatbuilder names every command before it runs it and keeps a record of every run. These changes ship in goatbuilder 0.6.0, whose version pull request is open (goatcore [#589](https://github.com/USAREUR-AF/goatcore/pull/589)); no released binary has them yet.
+From 0.6.0, goatbuilder names every command before it runs it and keeps a record of every run.
 
 ![A dry run prints every command the real run will execute; during the run each command is named in a frame before it prints and its output is kept in a log; when the run ends a record is written, and the commands runs, show and runs diff read it later](figures/2026-11-13/run-record.svg)
 
@@ -180,12 +186,10 @@ Alerting now reports its own delivery failures, several roles run on more hosts,
 
 ## 8. Still in progress
 
-These areas are moving now. Status words are the ones the repositories use.
+These areas were moving when the window closed. Status words are the ones the repositories use.
 
 | Area | State | Watch |
 |---|---|---|
-| goatbuilder 0.6.0 | **In review**: the version pull request. It releases sections 2 and 3's "on main" changes | goatcore [#589](https://github.com/USAREUR-AF/goatcore/pull/589) |
-| The stable line | **Built, not yet run**: `stable` appears when the next `goatcore/v` tag is cut at a goatbuilder minor release | [`community-and-stable-line.md`](https://github.com/USAREUR-AF/goatcore/blob/main/docs/design/community-and-stable-line.md) |
 | Back-out of a peering | **Open**: probes that cannot tell report unknown, never absent; the driver backs out a core admission it placed. Back-out measured on running hosts is not in 0.6.0 | goatcore [#543](https://github.com/USAREUR-AF/goatcore/pull/543), [#530](https://github.com/USAREUR-AF/goatcore/pull/530) |
 | Compatibility baseline | **Open**: the baseline moves to the published 0.5.3; every refusal names its catalog code | goatcore [#561](https://github.com/USAREUR-AF/goatcore/pull/561), [#560](https://github.com/USAREUR-AF/goatcore/pull/560) |
 | Proposed decisions | [ADR 1229](https://github.com/USAREUR-AF/goatcore/blob/main/docs/adr/1229-a-partners-new-package-is-confirmed-within-confirmation-1.md) **proposed**: a partner's new package under the same key is confirmed within the first confirmation. ADR 1225 stays **proposed** | goatcore [#512](https://github.com/USAREUR-AF/goatcore/pull/512) |
@@ -202,6 +206,6 @@ The maintainers' public roadmap, [github.com/orgs/USAREUR-AF/projects/8](https:/
 
 ## About this entry
 
-- **Window.** Pull requests merged from 10 November 2026 05:00 UTC to 13 November 2026 16:10 UTC, in every public USAREUR-AF repository.
+- **Window.** Pull requests merged from 10 November 2026 05:00 UTC to 13 November 2026 16:10 UTC, in every public USAREUR-AF repository, and the goatbuilder 0.6.0 release, published at 17:34 UTC the same day.
 - **What "merged" means here.** A change is described as part of goat only when it merged into a repository's default branch. A pull request merged into any other branch is reported as in review.
 - **The weekly listing.** [`weekly/`](weekly/INDEX.md) lists every merged pull request by kind, one page per ISO week, generated with no person or model in the loop. Written entries explain; the weekly listing is the complete record.
