@@ -20,10 +20,12 @@ goat does not run SPIRE on multi-master replication.
 - goat replicates other databases between sites with Spock, whose default conflict rule is last write wins. The `spire` database is outside that replication set, by design.
 - The server's CA private key is on local disk and not in the database. A play stages an encrypted copy of it on the passive nodes, and a runbook promotes a passive node when the active one is lost, so the trust domain survives.
 - A SPIRE trust domain per site, so that a site cut off from the others keeps issuing identities, is recorded in ADR 1164 (status: Proposed; not built).
+- Two independent SPIRE servers at a site, each with its own datastore and signing keys, behind `spire-ha-agent`, are recorded in ADR 1236 (status: Proposed; not built). Adoption waits on a lab trial that passes six gates. Until then the promotion runbook stays the answer to a lost server.
 
 ## Read more
 
 - [Island mode, multi-writer: which stores replicate and how](https://github.com/USAREUR-AF/goatcore/blob/main/docs/design/island-mode-multi-writer.md)
 - [ADR 1164: a SPIRE trust domain per site](https://github.com/USAREUR-AF/goatcore/blob/main/docs/adr/1164-per-site-spire-trust-domains.md)
+- [ADR 1236: two independent SPIRE servers at a site, after a gated trial](https://github.com/USAREUR-AF/goatcore/blob/main/docs/adr/1236-a-sites-spire-server-is-made-redundant-by-two-independent-servers-after-a-gated-trial.md)
 - [Promoting the passive node to SPIRE server](https://github.com/USAREUR-AF/goatcore/blob/main/docs/operations/spire-failover-promotion.md)
 - [Federated trust model](https://github.com/USAREUR-AF/goatcore/blob/main/docs/design/federated-trust-model.md)
