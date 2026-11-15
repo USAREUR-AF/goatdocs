@@ -66,7 +66,6 @@ repositories = [
 ]
 
 [planned]
-first-bite-env = "Example first-bite environment: a public example of the private overlay a first-bite deployment keeps its dictionaries and configuration in, the first-bite counterpart of goatenv."
 
 [outside]
 # Public repositories of the organization that are not goat's.
