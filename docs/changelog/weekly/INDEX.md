@@ -1,6 +1,6 @@
 # Weekly changelog
 
-One page a week, generated from pull request titles across the public repositories by `.github/changelog/weekly.py`. For what a change means for you, read the [written entries](../INDEX.md).
+One page a week, generated from pull request titles across the public repositories by `.github/changelog/weekly.py`. A repository that does not build from goatcore has its own pages in a folder beside these, and each week's page links to them. For what a change means for you, read the [written entries](../INDEX.md).
 
 | Week | Covers |
 |---|---|
