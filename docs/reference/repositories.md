@@ -29,7 +29,7 @@ For equipment, sensors, partners and feeds that are not goat: each one brings da
 Environments, worked examples and demonstrations to copy or run. Each hello-galaxy repository teaches one capability with steps you run.
 
 - [goatenv](https://github.com/USAREUR-AF/goatenv): Example goat environment: one goatnet instantiation as an overlay repo consuming goatcore by pinned version.
-- **first-bite-env** (not public yet): Example first-bite environment: a public example of the private overlay a first-bite deployment keeps its dictionaries and configuration in, the first-bite counterpart of goatenv.
+- [first-bite-env](https://github.com/USAREUR-AF/first-bite-env): Example first-bite overlay: dictionaries and a site's configuration over first-bite at a pinned release. A template for a private overlay; every document, address and name is invented.
 - [goatrodeo](https://github.com/USAREUR-AF/goatrodeo): Games and toys that run on a goat data fabric; each one exercises Zenoh in public.
 - [hello-galaxy-access-mgmt](https://github.com/USAREUR-AF/hello-galaxy-access-mgmt): rotate a live actor in place and detect and revoke a flooding one on a real Zenoh fabric, using the pre-cut UUID slot pool.
 - [hello-galaxy-cross-env-federation](https://github.com/USAREUR-AF/hello-galaxy-cross-env-federation): end-to-end exercise of goat cross-environment federation, run against released artefacts.
