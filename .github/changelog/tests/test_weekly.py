@@ -79,6 +79,60 @@ class Weekly(unittest.TestCase):
         self.assertEqual(self.page, weekly.render(DATA))
 
 
+OWN = {**DATA, "repositories": ["alpha", "beta", "gamma", "quiet"],
+       "merged": DATA["merged"] + [
+           pull("gamma", 1, "feat(capture): read a second sensor"),
+           pull("gamma", 2, "fix(audit): keep the last line"),
+           pull("gamma", 3, "feat(release): gate by label"),
+           pull("gamma", 4, "feat(ui): a status page"),
+           pull("gamma", 5, "fix(deps): bump a crate (RUSTSEC-2026-0382)"),
+       ],
+       "releases": DATA["releases"] + [
+           {"repo": "gamma", "tag": "v0.3.0", "name": "v0.3.0", "publishedAt": "2026-11-06T09:00:00Z",
+            "prerelease": False, "url": "https://github.com/example/gamma/releases/tag/v0.3.0"}]}
+
+
+class OwnChangelog(unittest.TestCase):
+    def setUp(self):
+        self.main = weekly.render(OWN, ["gamma", "quiet", "not-a-repository"])
+        self.gamma = weekly.render(OWN, ["gamma", "quiet"], repo="gamma")
+
+    def test_the_main_page_gives_highlights_and_a_link_not_the_list(self):
+        self.assertIn("## Repositories with their own changelog", self.main)
+        self.assertIn("**[gamma](gamma/2026-W45.md)**", self.main)
+        self.assertIn("released [v0.3.0]", self.main)
+        self.assertNotIn("keep the last line", self.main)
+        self.assertNotIn("example/gamma/pull/2", self.main)
+
+    def test_highlights_are_few_and_say_when_there_are_more(self):
+        line = next(text for text in self.main.splitlines() if text.startswith("- **[gamma]"))
+        self.assertIn("more on its page", line)
+        self.assertNotIn("a status page", line)
+
+    def test_its_own_page_lists_only_its_pull_requests(self):
+        self.assertTrue(self.gamma.startswith("# gamma: weekly changelog, 2 to 8 November 2026 (2026-W45)"))
+        self.assertIn("keep the last line", self.gamma)
+        self.assertIn("(../2026-W45.md)", self.gamma)
+        self.assertNotIn("example/alpha/", self.gamma)
+
+    def test_every_repository_read_is_named_with_where_it_is_listed(self):
+        table = self.main.split("## Repositories read")[1]
+        for name in OWN["repositories"]:
+            self.assertIn(f"| {name} |", table)
+        self.assertIn("| alpha | listed on this page |", table)
+        self.assertIn("| gamma | [its own page](gamma/2026-W45.md) |", table)
+        self.assertIn("| quiet | nothing merged or opened |", table)
+
+    def test_with_no_list_every_repository_stays_on_the_main_page(self):
+        page = weekly.render(OWN)
+        self.assertIn("keep the last line", page)
+        self.assertNotIn("Repositories with their own changelog", page)
+
+    def test_the_listed_repositories_are_read_from_the_file(self):
+        self.assertEqual(weekly.own_changelog(), sorted(weekly.own_changelog(), key=str.lower))
+        self.assertTrue(all(re.fullmatch(r"[A-Za-z0-9._-]+", name) for name in weekly.own_changelog()))
+
+
 class Windows(unittest.TestCase):
     def test_last_is_the_last_full_iso_week(self):
         now = dt.datetime(2026, 11, 10, 5, 0, tzinfo=dt.timezone.utc)  # a Tuesday

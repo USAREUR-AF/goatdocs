@@ -1,0 +1,12 @@
+# Repositories that have their own weekly changelog, one name per line.
+#
+# A repository belongs here when it does not build from goatcore and goatcore
+# does not build from it: a product of its own that connects to a fabric. Its
+# pull requests are listed on docs/changelog/weekly/<repository>/<week>.md, and
+# the main weekly page carries only its highlights (releases, new capabilities,
+# security) with a link to that page.
+#
+# Every other public repository is part of one story with goatcore and stays on
+# the main page. An owner moves a repository by adding or removing its line.
+octo-pod
+open-billie
