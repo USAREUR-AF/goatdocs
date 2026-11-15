@@ -119,8 +119,11 @@ Then read the entry from the top as someone who was not there:
 |---|---|
 | `.github/changelog/collect.py` | reads the repositories through `gh`; the same collector this skill uses |
 | `.github/changelog/weekly.py` | renders the page from pull request titles; the same input always gives the same page |
+| `.github/changelog/own-changelog.txt` | the repositories that have their own weekly page, one name per line |
 | `.github/changelog/propose.py` | commits through the GitHub API, so GitHub signs the commit, opens the pull request, and with `--merge-on-green` merges it when every check passed |
 | `.github/changelog/tests/` | `python3 -m unittest discover -s .github/changelog/tests` |
+
+**Which repositories are on the main page.** The collector reads every public repository that is not archived, and the page ends with a table naming each one and where its changes are listed. A repository that builds from goatcore, or that goatcore builds from, is part of one story and stays on the main page. A repository that does neither, a product of its own that connects to a fabric, is named in `own-changelog.txt`: its pull requests go to `docs/changelog/weekly/<repository>/<week>.md`, and the main page carries a short line for it (releases, security fixes, new capabilities) with a link. A written entry follows the same rule: such a repository gets a few highlight lines and a link to its own page, not a section.
 
 To generate a week by hand: Actions, `changelog-weekly`, Run workflow, with a week such as `2026-W45`. Locally:
 
