@@ -1,0 +1,73 @@
+# Which section of docs/reference/repositories.md each public repository of
+# the organization is listed in. index.py reads this file and the GitHub API;
+# the page is generated from both and never edited by hand.
+#
+# A new public repository fails the check (.github/workflows/repositories.yml)
+# until it is named here: in a section, or in [outside] when it is not goat's.
+# Each line on the page is the repository's own GitHub description.
+#
+# [planned] holds a repository that is named in a section before it is
+# public: the page marks it "not public yet" with the description given here.
+# Remove its entry once the repository is public.
+
+[[section]]
+title = "The fabric and its tools"
+about = "goat itself: the mesh, identity and publish/subscribe fabric, the tools that build and run a goatnet, and the directory partners use to plan a link."
+repositories = [
+  "goatcore",
+  "goat-client",
+  "netbird",
+  "goatstuff",
+  "saltlick",
+]
+
+[[section]]
+title = "Ways onto the fabric"
+about = "For equipment, sensors, partners and feeds that are not goat: each one brings data onto a goatnet, or takes it off in a format another system reads."
+repositories = [
+  "zagros-moon-pod",
+  "octo-pod",
+  "open-billie",
+  "first-bite",
+  "open-entity-gateway",
+]
+
+[[section]]
+title = "Examples"
+about = "Environments, worked examples and demonstrations to copy or run. Each hello-galaxy repository teaches one capability with steps you run."
+repositories = [
+  "goatenv",
+  "first-bite-env",
+  "goatrodeo",
+  "hello-galaxy-access-mgmt",
+  "hello-galaxy-cross-env-federation",
+  "hello-galaxy-external-service",
+  "hello-galaxy-first-bite",
+  "hello-galaxy-goatenv",
+  "hello-galaxy-grant-encryption",
+  "hello-galaxy-human-machine-onboarding",
+  "hello-galaxy-legacy-feed",
+  "hello-galaxy-mesh-change-control",
+  "hello-galaxy-partner-data-sharing",
+  "hello-galaxy-record-consumers",
+  "hello-galaxy-spire-spiffe-patterns",
+  "hello-galaxy-time-hygiene",
+  "hello-galaxy-universal-id",
+  "hello-galaxy-zagros-pod",
+  "hello-galaxy-zenoh-patterns",
+]
+
+[[section]]
+title = "Documentation and community lists"
+about = "The documents that explain goat, and the list of work other people build on it."
+repositories = [
+  "goatdocs",
+  "awesome-goat",
+]
+
+[planned]
+first-bite-env = "Example first-bite environment: a public example of the private overlay a first-bite deployment keeps its dictionaries and configuration in, the first-bite counterpart of goatenv."
+
+[outside]
+# Public repositories of the organization that are not goat's.
+".github" = "the organization's shared issue and pull request templates"
