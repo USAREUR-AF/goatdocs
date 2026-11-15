@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" class="viz" viewBox="0 0 760 290" role="img" aria-label="The release plan to goatbuilder 1.0 has six steps: 0.5.3 made federation one command and 0.6.1 made runs show their work, and both are published; 0.7.0 completes federation and tests upgrades and its release change is merged but not tagged; 0.7.x lets a joined site run cut off; a 1.0.0 release candidate is proven on hardware and by people outside the team; 1.0.0 freezes the surfaces">
-<title>Two of the planned releases toward goatbuilder 1.0 are published</title>
-<desc>The release plan to goatbuilder 1.0 has six steps: 0.5.3 made federation one command and 0.6.1 made runs show their work, and both are published; 0.7.0 completes federation and tests upgrades and its release change is merged but not tagged; 0.7.x lets a joined site run cut off; a 1.0.0 release candidate is proven on hardware and by people outside the team; 1.0.0 freezes the surfaces</desc>
+<svg xmlns="http://www.w3.org/2000/svg" class="viz" viewBox="0 0 760 272" role="img" aria-label="The release plan to goatbuilder 1.0 has six steps: 0.5.3 made federation one command, 0.6.1 made runs show their work and 0.7.0 made join-node build a joining site, and all three are published; the 0.7.x releases, of which 0.7.1 is the first, let a joined site run cut off; a 1.0.0 release candidate is proven on hardware and by people outside the team; 1.0.0 freezes the surfaces">
+<title>Three of the planned releases toward goatbuilder 1.0 are published</title>
+<desc>The release plan to goatbuilder 1.0 has six steps: 0.5.3 made federation one command, 0.6.1 made runs show their work and 0.7.0 made join-node build a joining site, and all three are published; the 0.7.x releases, of which 0.7.1 is the first, let a joined site run cut off; a 1.0.0 release candidate is proven on hardware and by people outside the team; 1.0.0 freezes the surfaces</desc>
 <style>
 /* Figure styles for changelog figures: the goat design system's colors (docs/design-system/colors_and_type.css)
    as figure roles, light and dark, then the classes figures draw with. Every role pair meets WCAG AA
@@ -60,11 +60,11 @@ svg .halo.on-panel { stroke:var(--panel); }
   .no-print { display:none !important; }
 }
 </style>
-<rect x="0.5" y="0.5" width="759" height="289" rx="10" style="fill:var(--paper);stroke:var(--rule)"/>
+<rect x="0.5" y="0.5" width="759" height="271" rx="10" style="fill:var(--paper);stroke:var(--rule)"/>
 
-<text x="20" y="36" class="t" font-size="18" font-weight="700" data-role="title">Two of the planned releases toward goatbuilder 1.0 are published</text>
-<path d="M80 83L80 75L200 75L200 83" class="ln" data-lint="nohead"/>
-<text x="140" y="63" text-anchor="middle" class="ta" font-size="13" font-weight="700">published</text>
+<text x="20" y="36" class="t" font-size="18" font-weight="700" data-role="title">Three of the planned releases toward goatbuilder 1.0 are published</text>
+<path d="M80 83L80 75L320 75L320 83" class="ln" data-lint="nohead"/>
+<text x="200" y="63" text-anchor="middle" class="ta" font-size="13" font-weight="700">published</text>
 <path d="M101 102L175.5 102" class="ln"/><path d="M183.5 102L174.5 106.5L174.5 97.5z" class="fl"/>
 <path d="M221 102L295.5 102" class="ln"/><path d="M303.5 102L294.5 106.5L294.5 97.5z" class="fl"/>
 <path d="M341 102L415.5 102" class="ln"/><path d="M423.5 102L414.5 106.5L414.5 97.5z" class="fl"/>
@@ -83,9 +83,8 @@ svg .halo.on-panel { stroke:var(--panel); }
 <circle cx="320" cy="102" r="15" class="fa"/>
 <text x="320" y="106.6" text-anchor="middle" class="ton" font-size="13">3</text>
 <text x="320" y="143" text-anchor="middle" class="t" font-size="15" font-weight="700">0.7.0</text>
-<text x="320" y="165" text-anchor="middle" class="tq" font-size="13">federation</text>
-<text x="320" y="183" text-anchor="middle" class="tq" font-size="13">complete,</text>
-<text x="320" y="201" text-anchor="middle" class="tq" font-size="13">upgrades tested</text>
+<text x="320" y="165" text-anchor="middle" class="tq" font-size="13">join-node builds</text>
+<text x="320" y="183" text-anchor="middle" class="tq" font-size="13">a joining site</text>
 <circle cx="440" cy="102" r="15" class="fa"/>
 <text x="440" y="106.6" text-anchor="middle" class="ton" font-size="13">4</text>
 <text x="440" y="143" text-anchor="middle" class="t" font-size="15" font-weight="700">0.7.x</text>
@@ -101,7 +100,7 @@ svg .halo.on-panel { stroke:var(--panel); }
 <text x="680" y="143" text-anchor="middle" class="tg" font-size="15" font-weight="700">1.0.0</text>
 <text x="680" y="165" text-anchor="middle" class="tq" font-size="13">the surfaces</text>
 <text x="680" y="183" text-anchor="middle" class="tq" font-size="13">are frozen</text>
-<rect x="20" y="228.12" width="720" height="41" rx="8" class="bxp"/>
-<text x="36" y="252.54" class="t" font-size="15" font-weight="700">No dates.</text>
-<text x="128.74" y="252.54" class="t" font-size="14" data-role="statement">A release is cut when its gate rows pass.</text>
+<rect x="20" y="210.12" width="720" height="41" rx="8" class="bxp"/>
+<text x="36" y="234.54" class="t" font-size="15" font-weight="700">No dates.</text>
+<text x="128.74" y="234.54" class="t" font-size="14" data-role="statement">A release is cut when its gate rows pass.</text>
 </svg>
