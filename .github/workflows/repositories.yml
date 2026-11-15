@@ -1,0 +1,54 @@
+# The index of goat's public repositories, docs/reference/repositories.md.
+#
+# Fails when a public repository of the organization is not on the page, when
+# the page names a repository that is not public, or when the page differs
+# from what the generator writes (a repository's description changed). The fix
+# is always the same: name the repository in .github/repositories/sections.toml
+# if needed, then
+#
+#   python3 .github/repositories/index.py --write
+#
+# and commit the page. A new repository appears in the organization without a
+# pull request here, so the check also runs every day.
+name: repositories
+
+on:
+  pull_request:
+    paths:
+      - ".github/repositories/**"
+      - "docs/reference/repositories.md"
+      - ".github/workflows/repositories.yml"
+  push:
+    branches: [main]
+  schedule:
+    - cron: "41 5 * * *" # daily 05:41 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: repositories-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  index:
+    name: repository index
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.13"
+
+      - name: check the generator
+        run: python3 -m unittest discover -s .github/repositories/tests
+
+      - name: every public repository is on the page
+        run: python3 .github/repositories/index.py --org "${GITHUB_REPOSITORY_OWNER}" --check
