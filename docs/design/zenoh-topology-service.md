@@ -28,7 +28,7 @@ On the rig, with one router holding 541 subscriptions and 22 routers in its grou
 
 ### The routing graph
 
-![The topology graph of the rig: six reporting routers drawn as full circles with application counts, fourteen routers that send no report drawn as small dashed circles labeled with their mesh peer names and organizations, blue routed links and amber terminated links.](zenoh-topology-service/graph-dark.png)
+![The topology graph of the rig: six reporting routers drawn as full circles with application counts, fourteen routers that send no report drawn as small dashed circles labeled with a name derived from each router's ZID (no name file is configured), blue routed links and amber terminated links.](zenoh-topology-service/graph-dark.png)
 
 <details><summary>The same graph in the light theme</summary>
 
