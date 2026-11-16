@@ -6,7 +6,7 @@ This entry covers all 33 public [USAREUR-AF](https://github.com/USAREUR-AF) repo
 
 ## In short
 
-- **Install goatbuilder 0.7.2, and build on `goatcore/v0.7.1` or `stable`.** 0.7.0 gives every refusal a code and lets `join-node` build a joining site. 0.7.1 adds the site's mesh DNS, key rotation and both sides' acceptance. 0.7.2 adds `goatbuilder grow` and the rotation of an IPsec peering's credentials. Do not rotate a forwarder carrier key with 0.7.2 ([section 1](#1-releases)).
+- **Move to goatbuilder 0.7.2 with `goatbuilder update`, and build on `goatcore/v0.7.1` or `stable`.** 0.7.0 gives every refusal a code and lets `join-node` build a joining site. 0.7.1 adds the site's mesh DNS, key rotation and both sides' acceptance. 0.7.2 adds `goatbuilder grow` and the rotation of an IPsec peering's credentials. Do not rotate a forwarder carrier key with 0.7.2 ([section 1](#1-releases)).
 - **`goatbuilder join-node` builds a joining site, including its own mesh DNS.** Only reaching the node stops the run. The portal, the id console and the onboarding engine still run only at a goatnet's first site ([section 2](#2-one-command-builds-a-joining-site)).
 - **A running peering's leaves can be rotated, and one command completes both sides' acceptance.** `goatbuilder federate rotate <partner> leaves` and `goatbuilder federate test <partner> --bilateral` are in 0.7.1. Neither is measured yet on a peering between two standing goatnets ([section 3](#3-federation-acceptance-by-both-sides-key-rotation-two-drivers-and-back-out)).
 - **Backing a peering out removes the partner's data whole.** A partner's data lives in its own store, and the store is dropped when the peering ends. Where two peerings share an edge and a core, the back-out keeps what the other peering uses ([section 3](#3-federation-acceptance-by-both-sides-key-rotation-two-drivers-and-back-out)).
@@ -21,7 +21,8 @@ This entry covers all 33 public [USAREUR-AF](https://github.com/USAREUR-AF) repo
 
 | If you | Do this | Why |
 |---|---|---|
-| run goatbuilder 0.7.1 or older | Install [goatbuilder/v0.7.2](https://github.com/USAREUR-AF/goatcore/releases/tag/goatbuilder/v0.7.2) | It carries every change of 0.6.1, 0.7.0 and 0.7.1, among them the resume of a `federate` run killed in phase 11 (goatcore [#597](https://github.com/USAREUR-AF/goatcore/pull/597)) |
+| run goatbuilder 0.7.1 or older | Run `goatbuilder update`. It replaces the binary with the release your goatnet serves, after it verifies the release's signature and checksums. `goatbuilder update --check` shows the served version and changes nothing. With no goatnet to update from, download [goatbuilder/v0.7.2](https://github.com/USAREUR-AF/goatcore/releases/tag/goatbuilder/v0.7.2) | 0.7.2 carries every change of 0.6.1, 0.7.0 and 0.7.1, among them the resume of a `federate` run killed in phase 11 (goatcore [#597](https://github.com/USAREUR-AF/goatcore/pull/597)) |
+| run `goat` | Run `goat update`. It installs the goat release your goatnet serves, after it verifies the published checksum. `goat update --dry-run` shows the version first | The newest goat is 0.5.19. This window has no new goat release, and changes described as on `main` are not in 0.5.19 |
 | build on goat and want a fixed reference | Pin `goatcore/v0.7.1`, or follow the branch `stable` | `stable` points at it. It is the tree that goatbuilder 0.7.1 was released from |
 | plan to rotate a forwarder carrier key | Wait for the correction, which is in review (goatcore [#839](https://github.com/USAREUR-AF/goatcore/pull/839)). Do not run `goatbuilder federate rotate <partner> carrier` with 0.7.2 | In 0.7.2 the command does not complete a carrier rotation, and the partner's acceptance then fails. On a peering with no carrier it reports success and changes nothing |
 | want to check a downloaded release before installing it | `goatbuilder update verify-release <dir> --signer <owner>/<repo> --version <x.y.z>` | It makes the checks `goatbuilder update` makes, and installs nothing (goatcore [#655](https://github.com/USAREUR-AF/goatcore/pull/655)) |
@@ -53,7 +54,7 @@ Each pull request's page names its author and any co-authors.
 
 ## 1. Releases
 
-goatbuilder 0.7.0, 0.7.1 and 0.7.2 are published, and 0.7.2 is the release to install. `goatcore/v0.7.1` is the signed tag for the whole repository at the commit of goatbuilder 0.7.1, and the branch `stable` points at it.
+goatbuilder 0.7.0, 0.7.1 and 0.7.2 are published, and 0.7.2 is the release to run: `goatbuilder update` installs it from your goatnet, or download it from the release page. goat stays at 0.5.19, and `goat update` installs the goat your goatnet serves. `goatcore/v0.7.1` is the signed tag for the whole repository at the commit of goatbuilder 0.7.1, and the branch `stable` points at it.
 
 ![The release plan to goatbuilder 1.0 has six steps: 0.5.3 made federation one command, 0.6.1 made runs show their work and 0.7.0 made join-node build a joining site, and all three are published; the 0.7.x releases, of which 0.7.1 and 0.7.2 are published, let a joined site run cut off; a 1.0.0 release candidate is proven on hardware and by people outside the team; 1.0.0 freezes the surfaces](figures/2026-11-16/road-to-1-0.svg)
 
