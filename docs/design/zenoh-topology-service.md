@@ -2,7 +2,7 @@
 
 The topology service draws a Zenoh router fabric as a graph: every router, the routing group each link belongs to, which routers send no report of their own, who operates each router, and how many subscriptions, publishers and key expressions each one carries. Each router's own host reads that router and publishes what it finds; the page reads only those reports, so opening it sends no query to any router.
 
-**Status.** Built, in goatstuff `ops/goat-topology` (the graph, routers that send no report, names and owners, per-router counts, and the findings). Every image on this page is from a local test rig of 22 `zenohd` 1.9.0 routers with synthetic names, organizations, nations and ZIDs (measured 2026-11-16). The component's design document, which is canonical, is [`docs/design/zenoh-topology-surface.md`](https://github.com/usareur-af/goatstuff/blob/main/docs/design/zenoh-topology-surface.md) in goatstuff.
+**Status.** Built, in goatstuff `ops/goat-topology` (the graph, routers that send no report, names and owners, per-router counts, and the findings). Every image on this page is from a local test rig of 22 stock `eclipse/zenoh` 1.9.0 routers with generic names (`core-1`, `gateway-1`, `pod-1`, …) and synthetic ZIDs, run with no peer directory and no roster configured (measured 2026-11-16). The component's design document, which is canonical, is [`docs/design/zenoh-topology-surface.md`](https://github.com/usareur-af/goatstuff/blob/main/docs/design/zenoh-topology-surface.md) in goatstuff.
 
 <!-- Recording: the 90-second screen recording of the rig page (graph filling in, a router that sends no report, a router going quiet and T-006, the counts) goes on the line below once it is uploaded; see the pull request. -->
 
@@ -28,7 +28,7 @@ On the rig, with one router holding 541 subscriptions and 22 routers in its grou
 
 ### The routing graph
 
-![The topology graph of the rig: six reporting routers drawn as full circles with application counts, fourteen routers that send no report drawn as small dashed circles labeled with their mesh peer names and organizations, blue routed links and amber terminated links.](zenoh-topology-service/graph-dark.png)
+![The topology graph of the rig: six reporting routers (core-1 to core-3, gateway-1, pod-1, pod-2) drawn as full circles with application counts, fourteen routers that send no report drawn as small dashed circles labeled with names derived from their ZIDs, blue routed links and amber terminated links.](zenoh-topology-service/graph-dark.png)
 
 <details><summary>The same graph in the light theme</summary>
 
@@ -39,19 +39,11 @@ On the rig, with one router holding 541 subscriptions and 22 routers in its grou
 - **Reporting routers** are the full circles. The number inside is the count of sessions the router holds; the amber arc around it grows with that count and is full at 60.
 - **Routers that send no report** are the small dashed circles marked `?`. A router appears even when no publisher runs on its host, because the routers that do report list it in their link-state graphs. Its links are real. Its settings and load are unknown and are shown as blank, never as zero.
 - **Routed links** (blue) join two routers in the same routing group (`north`). **Terminated links** (amber) join a gateway to a router below it (`south:<id>:router`).
-- **Labels.** The first line is the router's name: its node name if it reports, otherwise the name of the mesh peer it connects from, otherwise a display name derived from its ZID (for example `coral-quarry (d2d2d2)`). A reporting router's second line is its site and role (`member` or `gateway`). The last line is the organization and that organization's nation, when the identity roster records them.
+- **Labels.** The first line is the router's name: its node name if it reports, otherwise the name of the mesh peer it connects from when a peer directory is configured, otherwise a display name derived from its ZID (for example `coral-quarry (d2d2d2)`). A reporting router's second line is its site and role (`member` or `gateway`). When a roster is configured, a last line gives the organization and that organization's nation.
 
 ### Who operates a router
 
-Selecting a router opens its detail.
-
-![The detail of a router that sends no report: its ZID, the display name derived from it, the mesh peer name, hostname and groups, the address it connects from, the organization and its nation, the individual, that person's nationality, how the owner was found, and the seven key expressions a reporting router attributes to it.](zenoh-topology-service/detail-not-reporting-dark.png)
-
-<details><summary>Light theme</summary>
-
-![The detail of a router that sends no report, light theme.](zenoh-topology-service/detail-not-reporting-light.png)
-
-</details>
+Selecting a router opens its detail. The owner fields described below come from two optional files on the surface's host, a peer directory and a roster. Built: without them, a router that sends no report keeps a name derived from its ZID. Designed, not built: with neither file configured, the page shows no owner column and no owner fields at all; today it still shows them empty.
 
 The surface finds the owner without asking the fabric or the mesh controller for anything:
 
@@ -65,13 +57,7 @@ A router stays unnamed in three cases, and its detail says which: no reporting r
 
 ### What each router carries
 
-![The routers table: for each router, its organization and nation, its mode, what it carries (subscriptions, publishers and topics for a reporting router; subscribed keys as a reporting router sees them for one that sends no report), its routing groups, its route entries and the age of its last report.](zenoh-topology-service/table-dark.png)
-
-<details><summary>Light theme</summary>
-
-![The routers table, light theme.](zenoh-topology-service/table-light.png)
-
-</details>
+The routers table lists every router with its mode, what it carries (subscriptions, publishers and topics for a reporting router; subscribed keys as a reporting router sees them for one that sends no report), its routing groups, its route entries and the age of its last report.
 
 The counts are declarations from each reporting router's own tables, not traffic. In the subscriber table, each entry is one key expression with the sources that declared it:
 
