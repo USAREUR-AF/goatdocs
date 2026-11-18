@@ -36,11 +36,11 @@ Each names where it already exists, so none of it has to be built from nothing.
 | 3 | **Numbered phases, each with a kind** | `step <n> <kind> <label>` — `GATE`/`A`/`T`/`MANUAL` | The kind tells the reader who acts. `MANUAL` stops and says how to resume |
 | 4 | **Every phase idempotent, resumable** | `--from N` | Re-running a phase is always safe, so a failure is recoverable without reverse-engineering |
 | 5 | **Plan mode** | `--plan` | Prints the whole path and executes nothing. This is how a reviewer sees the shape |
-| 6 | **Inputs derived, never typed** | `goat federate init` | Measure the running system. A value that cannot be derived **fails and names itself** rather than being defaulted |
+| 6 | **Inputs derived, never typed** | `goatbuilder federate init` (`goat federate init` during the transition) | Measure the running system. A value that cannot be derived **fails and names itself** rather than being defaulted |
 | 7 | **One artifact, exactly one writer** | the agreement digest; `apply --confirm` | Every other verb is read-only. Two consumers of one artifact cannot drift by being typed twice |
 | 8 | **Per-phase "worked when"** | the "The run" table in [goatnet-standup](https://github.com/usareur-af/goatcore/blob/main/docs/operations/goatnet-standup.md) | The end state, not "the command exited 0" |
 | 9 | **A terminal acceptance gate that runs** | `step 14 GATE "acceptance suite"` | Values derived from config; all applicable rows green. A gate nobody executes is a document |
-| 10 | **Negative acceptance — the refusals** | Step 5 of the [federation runbook](https://github.com/usareur-af/goatcore/blob/main/docs/operations/sovereign-federation-runbook.md); the conformance bundle's `refuse-*` fixtures | A check that cannot fail is not a check. Assert what must be refused, and assert it *alongside* a positive that proves the path was live |
+| 10 | **Negative acceptance — the refusals** | Step 7 of the [federation runbook](https://github.com/usareur-af/goatcore/blob/main/docs/operations/sovereign-federation-runbook.md); the conformance bundle's `refuse-*` fixtures | A check that cannot fail is not a check. Assert what must be refused, and assert it *alongside* a positive that proves the path was live |
 
 ## Acceptance criteria have four tiers, and most work ships with one
 
@@ -78,7 +78,7 @@ working reference implementation in one of the other rows.
 | Dimension | Driver today | Has | Missing |
 |---|---|---|---|
 | **Goatnet standup** | `ops/scripts/goat-standup.sh` | 1–6, 8–10 | 7 — the config surface has several writers, so two of its consumers can still disagree |
-| **Cross-sovereign federation** | `ops/scripts/peering-standup.sh` | all ten | — |
+| **Cross-sovereign federation** | `goatbuilder federate <partner>`; the script avenue `ops/scripts/peering-standup.sh` | all ten | — |
 | **Site node addition** (a node into a live goatnet) | none — `node-addition.md` is prose | a clear founder/joiner fork | 1, 3, 4, 5, 9, 10 |
 | **Tactical site standup** (four-node host site, ADR 1141) | none, and not built | — | all ten; design it into the build rather than after |
 | **New hosted service** | `ops/serve/services.yaml` → `generate.py` | 7 (one registry, one generator), part of 2 | 1, 3, 4, 5, 9, 10 |
@@ -113,6 +113,24 @@ terminal gate (`ops/scripts/peering-standup.sh`); standup gained negative accept
 other already had working, which is the argument for doing the same with the rows below. What
 remains is standup's element 7: its config surface has several writers, so two consumers of it
 can still drift — the failure federation's single agreement is built to make impossible.
+
+Federation is now also the reference for how few stops a driver needs. `goatbuilder federate
+<partner>` is becoming four stages of one command, each also runnable alone: `plan` validates and
+explains the bounded change, `deploy` carries out the approved plan, `test` runs a bilateral
+acceptance session, and `status` reports health and the age of the last evidence. A person makes
+one decision: the partner, and the release sets it receives, which the deployment's
+`federation.toml` owns and a peering entry may only narrow. Two confirmations stay human: the
+verifying keys and CA fingerprints read aloud with the counterparty and the agreement digest
+compared, and approval of what the core admits, including the reviewed configuration change, bound
+to the plan's hash. Live prerequisites are checked again just before any change. Acceptance checks
+read PASS, FAIL, BLOCKED, SKIP or NOT APPLICABLE, and a required check never passes on a skip; each
+side keeps its evidence in `<work>/evidence/acceptance/` and the two exchange result bundles by
+file. Publishing `exchanging` afterwards is a third deliberate act by both operators, through a
+reviewable change. A re-run resumes by inspecting actual state, guided by the run journal in the
+working directory, so a `MANUAL` stop no longer needs a `--from` number. Each stage arrives beside
+today's run, which stays the default and reachable until that stage's default switch lands.
+
+Status: WIP — gate: the federation end-to-end test drives both sides with goatbuilder federate alone.
 
 ## Applying it to something new
 
