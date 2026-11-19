@@ -5,7 +5,7 @@
   <img src="docs/figures/identity-at-the-boundary-light.svg" width="760" alt="Six systems attach to one shared bus inside a private, encrypted network, each through an identity check where it meets the bus; a system with no identity is refused at the boundary.">
 </picture>
 
-Architecture, strategy, design system and integration guides for goat: the documents that explain the system and the thinking behind it. The figure above is a diagram from the design system's library.
+Architecture, strategy, design system and integration guides for goat: the documents that explain the system and the thinking behind it.
 
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 
