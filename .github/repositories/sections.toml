@@ -12,13 +12,23 @@
 
 [[section]]
 title = "The fabric and its tools"
-about = "goat itself: the mesh, identity and publish/subscribe fabric, the tools that build and run a goatnet, and the directory partners use to plan a link."
+about = "goat itself: the mesh, identity and publish/subscribe fabric, the tools that build and run a goatnet, the directory partners use to plan a link, and the governance of the cloud accounts goatnets run in."
 repositories = [
   "goatcore",
+  "goat-cloud",
   "goat-client",
   "netbird",
   "goatstuff",
   "saltlick",
+]
+
+[[section]]
+title = "Translation and processing"
+about = "Working with the data on the fabric: converting messages between formats through one shared model, carrying the result to open-standard receivers, and correlating, fusing and checking the tracks it produces."
+repositories = [
+  "goat-transformers",
+  "goat-transformers-overlay-example",
+  "goat-processors",
 ]
 
 [[section]]
@@ -40,6 +50,7 @@ repositories = [
   "first-bite-env",
   "goatrodeo",
   "hello-galaxy-access-mgmt",
+  "hello-galaxy-coverage-options",
   "hello-galaxy-cross-env-federation",
   "hello-galaxy-external-service",
   "hello-galaxy-first-bite",
