@@ -1,12 +1,13 @@
-<h1 align="center">goatdocs</h1>
+# goatdocs
 
-<p align="center">
-  Architecture, strategy, design system and integration guides for goat.
-</p>
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/figures/identity-at-the-boundary-dark.svg">
+  <img src="docs/figures/identity-at-the-boundary-light.svg" width="760" alt="Six systems attach to one shared bus inside a private, encrypted network, each through an identity check where it meets the bus; a system with no identity is refused at the boundary.">
+</picture>
 
-<p align="center">
-  <a href="LICENSE"><img src="https://img.shields.io/badge/License-Apache_2.0-blue.svg" alt="License: Apache 2.0"></a>
-</p>
+Architecture, strategy, design system and integration guides for goat: the documents that explain the system and the thinking behind it.
+
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 
 > [!NOTE]
 > goat is pre-1.0: interfaces can still change between releases.
