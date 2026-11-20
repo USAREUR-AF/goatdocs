@@ -4,6 +4,7 @@ The explanatory corpus for goat. Component documentation lives beside the code i
 
 | Start here | What |
 |---|---|
+| [goat/](goat/index.html) | goat as one system on one page: what it is, the five repositories, the first hour, and the measured numbers with the command behind each |
 | [reference/repositories.md](reference/repositories.md) | Every public goat repository, grouped by what you come for: the fabric and its tools, ways onto the fabric, examples, documentation. Generated from GitHub |
 | [design/](design/) | Designs that are not one component's: architecture overviews, strategy, engineering baselines, patterns |
 | [design/architecture-spine.md](design/architecture-spine.md) | The architecture in one read |
