@@ -25,6 +25,7 @@ hooks:
 # Re-added by the hook at <dir>/readme/, beside the kit's own index.html.
 exclude_docs: |
   design-system/ui_kits/*/README.md
+  hello-galaxy/README.md
 
 theme:
   name: material

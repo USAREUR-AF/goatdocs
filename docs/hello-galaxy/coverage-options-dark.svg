@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="viz" viewBox="0 0 760 350" role="img" aria-label="A notional vendor and two notional nations each keep a store of system records with its own evidence (some of each store&#x27;s systems are shown); three site files say what is on hand; goat-options reads all of it at query time"><style>svg{--ink:#e7e9ec; --quiet:#a5acb7; --rule:#30363e; --line:#7b8592; --paper:#121417; --panel:#1a1d21; --accent:#6cc3da; --accent-soft:#14303a; --on-accent:#121417; --good:#6fc480; --good-bg:#1b2e20; --warn:#e2b04e; --warn-bg:#32291a; --info:#86b3ea; --info-bg:#1a2636; --crit:#f08b80; --crit-bg:#3a1f1f; --mute:#9ba2ac; --mute-bg:#24262b; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif}
+.t { fill:var(--ink); } .tq { fill:var(--quiet); } .ta { fill:var(--accent); } .tg { fill:var(--good); }
+.tw { fill:var(--warn); } .ti { fill:var(--info); } .tc { fill:var(--crit); } .tm { fill:var(--mute); }
+.ton { fill:var(--on-accent); }
+.bx { fill:var(--paper); stroke:var(--line); stroke-width:1.25; } .bxp { fill:var(--panel); stroke:var(--rule); stroke-width:1.25; }
+.bxa { fill:var(--accent-soft); stroke:var(--accent); stroke-width:1.25; } .bxg { fill:var(--good-bg); stroke:var(--good); stroke-width:1.25; }
+.bxw { fill:var(--warn-bg); stroke:var(--warn); stroke-width:1.25; } .bxi { fill:var(--info-bg); stroke:var(--info); stroke-width:1.25; }
+.bxc { fill:var(--crit-bg); stroke:var(--crit); stroke-width:1.25; } .bxm { fill:var(--mute-bg); stroke:var(--mute); stroke-width:1.25; }
+.bxd { fill:var(--paper); stroke:var(--line); stroke-width:1.25; stroke-dasharray:5 4; }
+.ln { stroke:var(--line); stroke-width:1.25; fill:none; } .lna { stroke:var(--accent); stroke-width:2; fill:none; }
+.lng { stroke:var(--good); stroke-width:2; fill:none; } .lnw { stroke:var(--warn); stroke-width:2; fill:none; }
+.lnd { stroke:var(--line); stroke-width:1.25; fill:none; stroke-dasharray:6 5; }
+.lno { stroke:var(--good); stroke-width:2; fill:none; stroke-dasharray:2 5; stroke-linecap:round; }
+.lnr { stroke:var(--rule); stroke-width:1; fill:none; }
+.lnx { stroke:var(--crit); stroke-width:2; fill:none; stroke-dasharray:3 6; }
+.fa { fill:var(--accent); } .fg { fill:var(--good); } .fl { fill:var(--line); } .fw { fill:var(--warn); }
+.fi { fill:var(--info); } .fc { fill:var(--crit); } .fm { fill:var(--mute); } .fp { fill:var(--panel); }
+.fs { fill:var(--accent-soft); }
+.halo { paint-order:stroke fill; stroke:var(--paper); stroke-width:4px; stroke-linejoin:round; }
+.halo.on-panel { stroke:var(--panel); }</style>
+<text x="20" y="36" class="t" font-size="18" font-weight="700" data-role="title">Three owners keep their own stores; one query reads them together</text>
+<rect x="20" y="56" width="720" height="64" rx="8" class="bx"/>
+<text x="36" y="80" class="t" font-size="15" font-weight="700">Tessaline,</text>
+<text x="36" y="100" class="t" font-size="15" font-weight="700">a vendor</text>
+<rect x="190" y="68" width="70.03" height="34" rx="6" class="bx"/>
+<text x="206" y="88.4" class="t" font-size="13">Radar</text>
+<rect x="268.03" y="68" width="81.28" height="34" rx="6" class="bx"/>
+<text x="284.03" y="88.4" class="t" font-size="13">Camera</text>
+<rect x="357.31" y="68" width="106.27" height="34" rx="6" class="bx"/>
+<text x="373.31" y="88.4" class="t" font-size="13">RF detector</text>
+<rect x="471.58" y="68" width="81.25" height="34" rx="6" class="bx"/>
+<text x="487.58" y="88.4" class="t" font-size="13">Effector</text>
+<rect x="20" y="128" width="720" height="64" rx="8" class="bxa"/>
+<text x="36" y="152" class="t" font-size="15" font-weight="700">Velmora, a nation</text>
+<rect x="190" y="140" width="111.14" height="34" rx="6" class="bx"/>
+<text x="206" y="160.4" class="t" font-size="13">Sensor node</text>
+<rect x="309.14" y="140" width="114.98" height="34" rx="6" class="bx"/>
+<text x="325.14" y="160.4" class="t" font-size="13">Air command</text>
+<rect x="432.12" y="140" width="150.18" height="34" rx="6" class="bx"/>
+<text x="448.12" y="160.4" class="t" font-size="13">Fabric applications</text>
+<rect x="20" y="200" width="720" height="64" rx="8" class="bx"/>
+<text x="36" y="224" class="t" font-size="15" font-weight="700">Kastreni, a nation</text>
+<rect x="190" y="212" width="172.65" height="34" rx="6" class="bx"/>
+<text x="206" y="232.4" class="t" font-size="13">Edge capture gateway</text>
+<rect x="370.65" y="212" width="126.7" height="34" rx="6" class="bx"/>
+<text x="386.65" y="232.4" class="t" font-size="13">Binary decoder</text>
+<rect x="505.35" y="212" width="140.49" height="34" rx="6" class="bx"/>
+<text x="521.35" y="232.4" class="t" font-size="13">Long-range radar</text>
+<rect x="20" y="272" width="720" height="58" rx="8" class="bxp"/>
+<text x="36" y="296" class="t" font-size="15" font-weight="700">Sites</text>
+<rect x="190" y="284" width="107.57" height="34" rx="6" class="bx"/>
+<text x="206" y="304.4" class="t" font-size="13">Ridge camp</text>
+<rect x="305.57" y="284" width="170.34" height="34" rx="6" class="bx"/>
+<text x="321.57" y="304.4" class="t" font-size="13">Harbor east, no library</text>
+<rect x="483.91" y="284" width="99.4" height="34" rx="6" class="bx"/>
+<text x="499.91" y="304.4" class="t" font-size="13">Depot lake</text>
+</svg>

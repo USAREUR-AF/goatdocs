@@ -4,6 +4,7 @@ The explanatory corpus for goat. Component documentation lives beside the code i
 
 | Start here | What |
 |---|---|
+| [hello-galaxy/](hello-galaxy/index.html) | The Hello Galaxy series on one page: each repository's figure, the question it answers and the command that runs it, grouped by theme |
 | [reference/repositories.md](reference/repositories.md) | Every public goat repository, grouped by what you come for: the fabric and its tools, ways onto the fabric, examples, documentation. Generated from GitHub |
 | [design/](design/) | Designs that are not one component's: architecture overviews, strategy, engineering baselines, patterns |
 | [design/architecture-spine.md](design/architecture-spine.md) | The architecture in one read |
