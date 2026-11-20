@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 460.9" width="880" height="460.9" role="img" aria-label="A producer's own root &lt;uuid&gt;/** stays private. To share, the producer publishes a copy into a release lane: release/&lt;bilateral-set&gt;/&lt;topic&gt; is read by exactly one partner (rel them), release/coalition/&lt;topic&gt; by every partner in the set (rel all). Writing needs the release-writer grant and reading needs the partner read grant. A partner that tries to read the producer's root is denied and receives nothing. The partner was given a certificate and reachability to the router, no account and no enclave."><title>A partner reads only what you released to it</title><style>svg{--ink:#e7e9ec; --quiet:#a5acb7; --rule:#30363e; --line:#7b8592; --paper:#121417; --panel:#1a1d21; --accent:#6cc3da; --accent-soft:#14303a; --on-accent:#121417; --good:#6fc480; --good-bg:#1b2e20; --warn:#e2b04e; --warn-bg:#32291a; --info:#86b3ea; --info-bg:#1a2636; --crit:#f08b80; --crit-bg:#3a1f1f; font-family:'Helvetica Neue', Helvetica, Arial, 'Liberation Sans', sans-serif}.t{fill:var(--ink)} .tq{fill:var(--quiet)} .ta{fill:var(--accent)} .tg{fill:var(--good)}
+.tw{fill:var(--warn)} .ti{fill:var(--info)} .tc{fill:var(--crit)} .ton{fill:var(--on-accent)}
+.bx{fill:var(--panel);stroke:var(--line);stroke-width:1.25} .bxa{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.5}
+.bxg{fill:var(--good-bg);stroke:var(--good);stroke-width:1.25} .bxc{fill:var(--crit-bg);stroke:var(--crit);stroke-width:1.25}
+.bxw{fill:var(--warn-bg);stroke:var(--warn);stroke-width:1.25} .bxi{fill:var(--info-bg);stroke:var(--info);stroke-width:1.25}
+.zone{fill:none;stroke:var(--line);stroke-width:1.25;stroke-dasharray:6 5}
+.ln{stroke:var(--line);stroke-width:1.5;fill:none} .lna{stroke:var(--accent);stroke-width:2.25;fill:none}
+.lng{stroke:var(--good);stroke-width:2;fill:none} .lnc{stroke:var(--crit);stroke-width:2;fill:none;stroke-dasharray:4 4}
+.lni{stroke:var(--info);stroke-width:2;fill:none} .lnr{stroke:var(--rule);stroke-width:1;fill:none}
+.fa{fill:var(--accent)} .fl{fill:var(--line)} .fg{fill:var(--good)} .fc{fill:var(--crit)} .fi{fill:var(--info)}
+.halo{paint-order:stroke fill;stroke:var(--paper);stroke-width:5px;stroke-linejoin:round}</style>
+<text x="24" y="38" class="t" font-size="20" font-weight="700" data-role="note">A partner reads only what you released to it</text>
+<text x="24" y="66" class="tq" font-size="15" data-role="note">The fabric is deny-by-default with one writer per root. You share by publishing a copy into a release lane; the lane's</text>
+<text x="24" y="87" class="tq" font-size="15" data-role="note">set decides who reads it.</text>
+<rect x="14" y="133" width="226" height="191.3" rx="12" class="zone"/>
+<text x="28" y="155" class="tq" font-size="14" font-weight="700">You, the producer</text>
+<rect x="24" y="167" width="206" height="107.3" rx="8" class="bx"/>
+<text x="36" y="194" class="t" font-size="15" font-weight="700">Your own root</text>
+<text x="36" y="212.7" class="tq" font-size="13" font-family="Menlo, Consolas, 'Liberation Mono', 'Courier New', monospace">&lt;uuid&gt;/**</text>
+<text x="36" y="236.6" class="tq" font-size="14">only you write it</text>
+<text x="36" y="261" class="tq" font-size="14">no partner can read it</text>
+<text x="24" y="304.3" class="ta" font-size="14" font-weight="700">publish a copy to share</text>
+<rect x="310" y="167" width="290" height="97" rx="8" class="bxa"/>
+<rect x="322" y="180.6" width="30" height="30" rx="15" class="fa"/>
+<text x="337" y="200.2" class="ton" font-size="13" text-anchor="middle" font-weight="700">A</text>
+<text x="360" y="201" class="t" font-size="15" font-weight="700">rel them</text>
+<text x="322" y="226.7" class="tq" font-size="13" font-family="Menlo, Consolas, 'Liberation Mono', 'Courier New', monospace">release/&lt;bilateral-set&gt;/&lt;topic&gt;</text>
+<text x="322" y="250.6" class="tq" font-size="14">one member: one partner reads it</text>
+<rect x="310" y="298" width="290" height="97" rx="8" class="bxa"/>
+<rect x="322" y="311.6" width="30" height="30" rx="15" class="fa"/>
+<text x="337" y="331.2" class="ton" font-size="13" text-anchor="middle" font-weight="700">B</text>
+<text x="360" y="332" class="t" font-size="15" font-weight="700">rel all</text>
+<text x="322" y="357.7" class="tq" font-size="13" font-family="Menlo, Consolas, 'Liberation Mono', 'Courier New', monospace">release/coalition/&lt;topic&gt;</text>
+<text x="322" y="381.6" class="tq" font-size="14">every partner in the set reads it</text>
+<rect x="680" y="167" width="176" height="60" rx="8" class="bx"/>
+<text x="692" y="194" class="t" font-size="15" font-weight="700">The one partner</text>
+<text x="692" y="213.7" class="tq" font-size="14">reads both lanes</text>
+<rect x="680" y="298" width="176" height="60" rx="8" class="bx"/>
+<text x="692" y="325" class="t" font-size="15" font-weight="700">Other partners</text>
+<text x="692" y="344.7" class="tq" font-size="14">in the coalition set</text>
+<path d="M232 197L268 197L268 197L308 197" class="lna"/>
+<path d="M308 197L298 202L298 192z" class="fa"/>
+<path d="M268 197L268 328L308 328" class="lna"/>
+<path d="M308 328L298 333L298 323z" class="fa"/>
+<text x="252" y="157" class="tq" font-size="14">write grant</text>
+<path d="M602 197L678 197" class="ln"/>
+<path d="M678 197L668 202L668 192z" class="fl"/>
+<path d="M602 328L678 328" class="ln"/>
+<path d="M678 328L668 333L668 323z" class="fl"/>
+<path d="M630 328L630 221L678 221" class="ln"/>
+<path d="M678 221L668 226L668 216z" class="fl"/>
+<text x="640" y="157" class="tq" font-size="14" text-anchor="middle">read grant</text>
+<path d="M768 165L768 115L495.5 115" class="lnc"/>
+<path d="M326 115L200 115L200 165" class="lnc"/>
+<path d="M200 165L195 155L205 155z" class="fc"/>
+<rect x="325" y="100" width="30" height="30" rx="15" class="fa"/>
+<text x="340" y="119.6" class="ton" font-size="13" text-anchor="middle" font-weight="700">C</text>
+<text x="360" y="120" class="tc" font-size="14" font-weight="700">denied: 0 samples</text>
+<rect x="24" y="423.9" width="30" height="30" rx="15" class="fa"/>
+<text x="39" y="443.5" class="ton" font-size="13" text-anchor="middle" font-weight="700">D</text>
+<text x="64" y="443.9" class="t" font-size="14" data-role="note">What the partner was given: a certificate and reachability to the router. No account, no enclave.</text>
+</svg>
