@@ -101,8 +101,8 @@ p { margin: 0; text-wrap: pretty; }
 .tabs { display: flex; gap: 2px; padding: 8px 8px 0; border-bottom: 1px solid #2a3060; overflow-x: auto; }
 .tabs button { font: 13px var(--mono); color: var(--term-dim); background: transparent; border: 0; border-bottom: 2px solid transparent; padding: 7px 10px; cursor: pointer; white-space: nowrap; }
 .tabs button[aria-selected="true"] { color: var(--term-fg); border-bottom-color: var(--term-head); }
-.term-cmd { padding: 12px 16px 0; font: 13.5px/1.5 var(--mono); color: var(--term-head); overflow-wrap: anywhere; }
-.term-out { margin: 0; padding: 8px 16px 14px; font: 13px/1.55 var(--mono); white-space: pre-wrap; overflow-wrap: anywhere; height: 352px; overflow: hidden; }
+.term-cmd { margin: 0; padding: 12px 16px 8px; border-bottom: 1px solid #2a3060; font: 13.5px/1.5 var(--mono); color: var(--term-head); overflow-wrap: anywhere; }
+.term-out { margin: 10px 0 0; padding: 0 16px 14px; font: 13px/1.55 var(--mono); white-space: pre-wrap; overflow-wrap: anywhere; height: 352px; overflow: hidden; }
 .term-out .h { color: var(--term-head); }
 .term-out .ok { color: var(--term-ok); }
 .term-out .dim { color: var(--term-dim); }
@@ -608,7 +608,7 @@ Scenario 5 — free-running together beats free-running apart
     if (still) { r.lines.forEach(put); return; }
     let n = 0;
     const step = () => {
-      if (n < r.lines.length) { put(r.lines[n++]); out.scrollTop = out.scrollHeight; timer = setTimeout(step, r.lines[n - 1].trim() ? 260 : 120); }
+      if (n < r.lines.length) { put(r.lines[n++]); while (out.scrollHeight > out.clientHeight && out.childNodes.length > 1) out.firstChild.remove(); timer = setTimeout(step, r.lines[n - 1].trim() ? 260 : 120); }
       else if (!user) timer = setTimeout(() => show((cur + 1) % runs.length, false), 3200);
     };
     timer = setTimeout(step, 400);
