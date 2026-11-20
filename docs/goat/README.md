@@ -1,6 +1,6 @@
 # The goat landing page
 
-`index.html` in this directory is the landing page for goat as one system: goatcore, goatstuff, open-billie, octo-pod and goatdocs. It is a single static file with inline CSS and SVG. It loads the two images beside it and makes no request to another host.
+`index.html` in this directory is the landing page for goat as one system: goatcore, goatstuff, open-billie, octo-pod and goatdocs. It is a single static file with inline CSS, SVG and script. The first screen animates a drawing of two sites whose direct tunnel keeps carrying messages while their cloud link is cut; with reduced motion it shows one still frame. It loads the two images beside it and makes no request to another host.
 
 The site build copies it as it is. MkDocs serves a hand-written `index.html` beside a `README.md` unchanged, and serves this file at `goat/readme/` (`.github/pages/hooks.py`, rule 3; `mkdocs.yml` excludes it under `exclude_docs`).
 
