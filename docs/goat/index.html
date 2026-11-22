@@ -68,7 +68,11 @@ p { margin: 0; text-wrap: pretty; }
 
 /* command line with a copy button */
 .cmd { display: flex; align-items: stretch; background: var(--term-bg); color: var(--term-fg); border-radius: 6px; min-width: 0; max-width: 100%; }
-.cmd pre { margin: 0; padding: 12px 14px; overflow-x: auto; font-size: 14.5px; line-height: 1.5; flex: 1; min-width: 0; white-space: pre; }
+.cmd pre { margin: 0; padding: 12px 14px; overflow-x: auto; font-size: 14.5px; line-height: 1.5; flex: 1; min-width: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+/* a command shows whole: it wraps at spaces, continuation lines hang two characters in */
+.cmd pre .ln { display: block; padding-left: 2ch; text-indent: -2ch; }
+/* a word with a hyphen or slash moves to the next line whole, and breaks only if it alone is wider than the box */
+pre .ln .w { display: inline-block; max-width: 100%; text-indent: 0; }
 .cmd code, .term code { background: none; padding: 0; border-radius: 0; color: inherit; font-size: inherit; }
 .cmd .prompt { color: var(--term-dim); user-select: none; }
 .copy { flex: none; border: 0; border-left: 1px solid #ffffff2b; background: transparent; color: var(--term-fg); font: 600 13px var(--mono); padding: 0 14px; cursor: pointer; border-radius: 0 6px 6px 0; min-width: 68px; }
@@ -159,11 +163,20 @@ td.how code { white-space: normal; overflow-wrap: anywhere; }
 .role { font: 600 12.5px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--mute); }
 .part p { font-size: 16px; }
 .part .shot { border: 1px solid var(--rule); border-radius: 6px; display: block; width: 100%; height: auto; }
+/* a capture of a web page, framed as a browser window */
+.browser { margin: 0; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: var(--panel); }
+.browser .bar { display: flex; align-items: center; gap: 6px; padding: 7px 10px; border-bottom: 1px solid var(--line); font: 12px/1.3 var(--mono); color: var(--quiet); min-width: 0; }
+.browser .bar i { flex: none; width: 9px; height: 9px; border-radius: 50%; border: 1px solid var(--line); }
+.browser .bar span { margin-left: 8px; padding: 2px 10px; border-radius: 4px; background: var(--paper); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.browser img { display: block; width: 100%; height: auto; }
 .part .links { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 15.5px; margin-top: auto; padding-top: 4px; }
 .split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: 22px; align-items: start; }
 .stack { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
 .term { background: var(--term-bg); color: var(--term-fg); border-radius: 6px; min-width: 0; }
-.term pre { margin: 0; padding: 14px; overflow-x: auto; font-size: 13px; line-height: 1.5; white-space: pre; }
+.term pre { margin: 0; padding: 14px; overflow-x: auto; font-size: 13px; line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere; }
+/* output wraps on a wide screen; on a narrow one it keeps its columns and scrolls inside its box */
+.term pre .ln { display: block; padding-left: var(--hang, 4ch); text-indent: calc(-1 * var(--hang, 4ch)); }
+@media (max-width: 860px) { .term pre { white-space: pre; overflow-wrap: normal; } .term pre .ln .w { display: inline; } }
 .term .c { color: var(--term-dim); }
 .term .ok { color: var(--term-ok); }
 .label { font: 600 12.5px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--quiet); }
@@ -326,7 +339,7 @@ ok    zagros/alpha/core/portal/publish                            serial 4: ghcr
           <a class="btn" href="../">Docs</a>
         </p>
         <div class="cmd" role="group" aria-label="Get the code">
-          <pre><span class="prompt">$ </span><code id="c-clone">git clone https://github.com/usareur-af/goatcore &amp;&amp; cd goatcore</code></pre>
+          <pre data-box="command"><span class="ln"><span class="prompt">$ </span><code id="c-clone">git clone <span class="w">https://github.com/usareur-af/goatcore</span> &amp;&amp; cd goatcore</code></span></pre>
           <button class="copy" type="button" data-copy="c-clone">Copy</button>
         </div>
         <p class="eyebrow">Open source · Apache-2.0 · pre-1.0</p>
@@ -484,12 +497,12 @@ ok    zagros/alpha/core/portal/publish                            serial 4: ghcr
           <div class="stack">
             <p>The code that builds and runs a goatnet: the mesh control plane, the Zenoh data fabric, identity, the <code>goat</code> and <code>goatbuilder</code> command-line tools, and the Ansible roles and Terraform modules that deploy them. Machines pull their configuration and report what they run; a deployment is finished when every report matches the declaration.</p>
             <p class="label">Start</p>
-            <div class="cmd"><pre><span class="prompt">$ </span><code id="c-core">git clone https://github.com/usareur-af/goatcore &amp;&amp; cd goatcore</code></pre><button class="copy" type="button" data-copy="c-core">Copy</button></div>
+            <div class="cmd"><pre data-box="command"><span class="ln"><span class="prompt">$ </span><code id="c-core">git clone <span class="w">https://github.com/usareur-af/goatcore</span> &amp;&amp; cd goatcore</code></span></pre><button class="copy" type="button" data-copy="c-core">Copy</button></div>
             <p class="links"><a href="https://github.com/USAREUR-AF/goatcore">Repository</a><a href="https://github.com/USAREUR-AF/goatcore/blob/main/docs/tutorials/00-goatlite.md">goatlite tutorial</a><a href="https://github.com/USAREUR-AF/goatcore/releases">Releases</a><a href="https://github.com/USAREUR-AF/goatcore/blob/main/docs/adr/INDEX.md">Decision record</a></p>
           </div>
           <div class="stack">
             <div class="term" role="img" aria-label="Terminal output of goatbuilder status for the example environment zagros: 5 components on 4 machines, 8 of 8 converged, 0 pending, 0 unknown">
-<pre><span class="c">$ ./goatbuilder status --env zagros --mock "$WORK"</span>
+<pre data-box="output"><span class="c">$ ./goatbuilder status --env zagros --mock "$WORK"</span>
 Status: zagros
 
 5 components on 4 machines. 8 of 8 converged, 0 pending, 0 unknown.
@@ -504,7 +517,7 @@ portal           alpha-core-2        converged  v1.4.0   v1.4.0
 zenoh-router     alpha-core-1        converged  v1.9.0   v1.9.0
 zenoh-router     alpha-core-2        converged  v1.9.0   v1.9.0</pre>
             </div>
-            <p class="caption">Real output of <code>goatbuilder status</code>, release 0.7.3, after the rehearsal in <a href="#first-hour">First hour</a>. <code>zagros</code> is the example goatnet in the repository.</p>
+            <p class="caption">Real output of <code>goatbuilder status</code>, release 0.7.3, after the rehearsal in <a href="#first-hour">First hour</a>. <code>zagros</code> is the example goatnet in the repository. <span class="scrollhint">The output scrolls sideways.</span></p>
           </div>
         </div>
       </article>
@@ -515,17 +528,23 @@ zenoh-router     alpha-core-2        converged  v1.9.0   v1.9.0</pre>
         <img class="shot" src="panoscope.png" width="960" height="540" loading="lazy" alt="panoscope showing 24 synthetic peers and 20 topics on a local Zenoh fabric as a graph, with the live stream of a newly published greeting topic on the right">
         <p class="caption">One frame of a real capture: panoscope on a laptop with synthetic data. <a href="https://github.com/USAREUR-AF/goatcore/blob/main/docs/assets/panoscope.gif">The full recording</a> is in goatcore.</p>
         <p class="label">Build every surface</p>
-        <div class="cmd"><pre><span class="prompt">$ </span><code id="c-stuff">cd crates &amp;&amp; cargo build --release</code></pre><button class="copy" type="button" data-copy="c-stuff">Copy</button></div>
+        <div class="cmd"><pre data-box="command"><span class="ln"><span class="prompt">$ </span><code id="c-stuff">cd crates &amp;&amp; cargo build <span class="w">--release</span></code></span></pre><button class="copy" type="button" data-copy="c-stuff">Copy</button></div>
         <p class="links"><a href="https://github.com/USAREUR-AF/goatstuff">Repository</a><a href="https://github.com/USAREUR-AF/goatstuff/blob/main/docs/RELEASE-CONTENTS.md">Status of each surface</a></p>
       </article>
 
       <article class="part" id="goatdocs" aria-labelledby="goatdocs-h">
         <header><h3 id="goatdocs-h">goatdocs</h3><span class="role">The explanation</span></header>
         <p>Architecture, strategy, the design system, reference tables and integration guides, published as this documentation site. It also serves one page per error code of <code>goat</code> and <code>goatbuilder</code>, generated from goatcore's error catalog. Every document states what is built, designed or not built.</p>
-        <img class="shot" src="goatdocs-error-page.png" width="1032" height="700" loading="lazy" alt="The documentation page for error code GB-001, unknown component, with sections What it means, Why it happens and What to do">
+        <figure class="browser">
+          <div class="bar"><i aria-hidden="true"></i><i aria-hidden="true"></i><i aria-hidden="true"></i><span>usareur-af.github.io/goatdocs/reference/errors/GB-001/</span></div>
+          <picture>
+            <source srcset="goatdocs-error-page-dark.png" media="(prefers-color-scheme: dark)">
+            <img src="goatdocs-error-page-light.png" width="1350" height="1064" loading="lazy" alt="The documentation page for error code GB-001, unknown component, with sections What it means, Why it happens and What to do">
+          </picture>
+        </figure>
         <p class="caption">A real capture of this site: the page for error code <code>GB-001</code>.</p>
         <p class="label">Preview the site</p>
-        <div class="cmd"><pre><span class="prompt">$ </span><code id="c-docs">pip install -r .github/pages/requirements.txt &amp;&amp; mkdocs serve</code></pre><button class="copy" type="button" data-copy="c-docs">Copy</button></div>
+        <div class="cmd"><pre data-box="command"><span class="ln"><span class="prompt">$ </span><code id="c-docs">pip install <span class="w">-r</span> <span class="w">.github/pages/requirements.txt</span> &amp;&amp; mkdocs serve</code></span></pre><button class="copy" type="button" data-copy="c-docs">Copy</button></div>
         <p class="links"><a href="https://github.com/USAREUR-AF/goatdocs">Repository</a><a href="../">Documentation index</a><a href="../reference/errors/">Error codes</a><a href="../reference/repositories/">Every repository</a></p>
       </article>
 
@@ -564,20 +583,20 @@ zenoh-router     alpha-core-2        converged  v1.9.0   v1.9.0</pre>
           <div class="stack">
             <p>A sensor-neutral platform for one node beside a sensor. A <strong>kid package</strong> holds one sensor's decoder, schema and mapping; the shared translator turns its records into Cursor-on-Target, ASTERIX CAT062 or SAPIENT and publishes them through Zenoh. The platform owns the fabric credentials, so a kid package needs none.</p>
             <p class="label">Start the guided setup</p>
-            <div class="cmd"><pre><span class="prompt">$ </span><code id="c-billie">bash tools/setup.sh</code></pre><button class="copy" type="button" data-copy="c-billie">Copy</button></div>
+            <div class="cmd"><pre data-box="command"><span class="ln"><span class="prompt">$ </span><code id="c-billie">bash <span class="w">tools/setup.sh</span></code></span></pre><button class="copy" type="button" data-copy="c-billie">Copy</button></div>
             <p class="links"><a href="https://github.com/USAREUR-AF/open-billie">Repository</a><a href="https://github.com/USAREUR-AF/open-billie/blob/main/deploy/README.md">Provisioning guide</a><a href="https://github.com/USAREUR-AF/open-billie/blob/main/docs/TESTING.md">Validation log</a></p>
           </div>
           <div class="stack">
             <div class="term" role="img" aria-label="Terminal output of billie kid scan on the public example package: one kid, oetf 0.2.0, with UDP and TCP inputs and three outputs: CoT, ASTERIX CAT062 and SAPIENT; it warns that the example image is a development placeholder">
-<pre><span class="c">$ bash deploy/bin/billie kid scan kids/examples</span>
-oetf@0.2.0: valid_with_warnings, image placeholder
-  source: …/kids/examples/oetf
-  schema: JSON decode schemas (3 files)
-  inputs: udp:5100, tcp:5100
-  outputs: tracks-cot:cot, tracks-cat062:asterix-cat062, tracks-sapient:sapient
-  WARNING: runtime.image is a development placeholder and is not deployable</pre>
+<pre style="--hang:4ch" data-box="output"><span class="ln"><span class="c">$ bash <span class="w">deploy/bin/billie</span> kid scan <span class="w">kids/examples</span></span>
+</span><span class="ln">oetf@0.2.0: valid_with_warnings, image placeholder
+</span><span class="ln">  source: <span class="w">…/kids/examples/oetf</span>
+</span><span class="ln">  schema: JSON decode schemas (3 files)
+</span><span class="ln">  inputs: udp:5100, tcp:5100
+</span><span class="ln">  outputs: <span class="w">tracks-cot:cot,</span> <span class="w">tracks-cat062:asterix-cat062,</span> <span class="w">tracks-sapient:sapient</span>
+</span><span class="ln">  WARNING: runtime.image is a development placeholder and is not deployable</span></pre>
             </div>
-            <p class="caption">Real output of the offline scan on the public example package, which uses synthetic data. The checkout path is shortened.</p>
+            <p class="caption">Real output of the offline scan on the public example package, which uses synthetic data. The checkout path is shortened. <span class="scrollhint">The output scrolls sideways.</span></p>
           </div>
         </div>
       </article>
@@ -607,22 +626,22 @@ oetf@0.2.0: valid_with_warnings, image placeholder
           <div class="stack">
             <p>An edge gateway appliance on one small computer where sensors live. It takes in their feeds, records and audits them locally, and releases only what you choose onto the fabric. Every feed gets its own certificate and a narrow set of keys. Nothing on the running pod changes until you <code>apply</code>.</p>
             <p class="label">Install release 0.6.0 from your laptop</p>
-            <div class="cmd"><pre><span class="prompt">$ </span><code id="c-pod">tools/install-to-pod.sh operator@192.0.2.10 --version 0.6.0 --with-images</code></pre><button class="copy" type="button" data-copy="c-pod">Copy</button></div>
+            <div class="cmd"><pre data-box="command"><span class="ln"><span class="prompt">$ </span><code id="c-pod"><span class="w">tools/install-to-pod.sh</span> operator@192.0.2.10 <span class="w">--version</span> 0.6.0 <span class="w">--with-images</span></code></span></pre><button class="copy" type="button" data-copy="c-pod">Copy</button></div>
             <p class="links"><a href="https://github.com/USAREUR-AF/octo-pod">Repository</a><a href="https://github.com/USAREUR-AF/octo-pod/blob/main/docs/deployment.md">Deployment</a><a href="https://github.com/USAREUR-AF/octo-pod/blob/main/docs/release-status.md">Release status</a></p>
           </div>
           <div class="stack">
             <div class="term" role="img" aria-label="Terminal output of octo-pod help: three steps in order, bootstrap, join or init, then apply">
-<pre><span class="c">$ octo-pod --help</span>
-octo-pod — three steps, in order.
-
-  1  octo-pod bootstrap          runtime checks, netbird agent, images     (once)
-  2  octo-pod join --setup-key … identity, mesh, local fabric              (once)
-     octo-pod init --pod &lt;name&gt;   ...or this, for a pod that joins nothing   (once)
-  3  octo-pod apply              converge after a change                   (any time)
-
-After step 2 the pod is joined and running. Step 3 is for what you change afterwards.</pre>
+<pre style="--hang:5ch" data-box="output"><span class="ln"><span class="c">$ <span class="w">octo-pod</span> <span class="w">--help</span></span>
+</span><span class="ln"><span class="w">octo-pod</span> — three steps, in order.
+</span><span class="ln">
+</span><span class="ln">  1  <span class="w">octo-pod</span> bootstrap          runtime checks, netbird agent, images     (once)
+</span><span class="ln">  2  <span class="w">octo-pod</span> join <span class="w">--setup-key</span> … identity, mesh, local fabric              (once)
+</span><span class="ln">     <span class="w">octo-pod</span> init <span class="w">--pod</span> &lt;name&gt;   ...or this, for a pod that joins nothing   (once)
+</span><span class="ln">  3  <span class="w">octo-pod</span> apply              converge after a change                   (any time)
+</span><span class="ln">
+</span><span class="ln">After step 2 the pod is joined and running. Step 3 is for what you change afterwards.</span></pre>
             </div>
-            <p class="caption">Real output: the first lines of <code>octo-pod --help</code>.</p>
+            <p class="caption">Real output: the first lines of <code>octo-pod --help</code>. <span class="scrollhint">The output scrolls sideways.</span></p>
           </div>
         </div>
       </article>
@@ -639,47 +658,47 @@ After step 2 the pod is joined and running. Step 3 is for what you change afterw
       <li><div class="body">
         <h3>Get the code and the builder</h3>
         <p>Clone goatcore and download <code>goatbuilder</code> for Linux or macOS. Each release lists a SHA-256 checksum per binary, signed with cosign.</p>
-        <div class="cmd"><pre id="c-get">git clone https://github.com/usareur-af/goatcore &amp;&amp; cd goatcore
-OS="$(uname -s | tr '[:upper:]' '[:lower:]')"; ARCH="$(uname -m | sed 's/x86_64/amd64/; s/aarch64/arm64/')"
-curl -fsSL -o goatbuilder "https://github.com/usareur-af/goatcore/releases/download/goatbuilder/v0.7.3/goatbuilder-$OS-$ARCH"
-chmod +x goatbuilder</pre><button class="copy" type="button" data-copy="c-get">Copy</button></div>
+        <div class="cmd"><pre id="c-get" data-box="command"><span class="ln">git clone <span class="w">https://github.com/usareur-af/goatcore</span> &amp;&amp; cd goatcore
+</span><span class="ln">OS="$(uname <span class="w">-s</span> | tr '[:upper:]' '[:lower:]')"; ARCH="$(uname <span class="w">-m</span> | sed <span class="w">'s/x86_64/amd64/;</span> <span class="w">s/aarch64/arm64/')"</span>
+</span><span class="ln">curl <span class="w">-fsSL</span> <span class="w">-o</span> goatbuilder <span class="w">"https://github.com/usareur-af/goatcore/releases/download/goatbuilder/v0.7.3/goatbuilder-$OS-$ARCH"</span>
+</span><span class="ln">chmod +x goatbuilder</span></pre><button class="copy" type="button" data-copy="c-get">Copy</button></div>
       </div></li>
       <li><div class="body">
         <h3>Rehearse a complete standup</h3>
         <p><code>goatbuilder</code> stands up the example goatnet <code>zagros</code> against a simulated set of machines: one site with two core machines, one monitoring machine and one recovery machine.</p>
-        <div class="cmd"><pre id="c-run">WORK="$(mktemp -d)/zagros"
-cp -R ops/goatbuilder/fixtures/goatnet-from-scratch/01-founder "$WORK"
-./goatbuilder standup zagros --site alpha --mock "$WORK" --ack "you" --yes
-./goatbuilder status --env zagros --mock "$WORK"</pre><button class="copy" type="button" data-copy="c-run">Copy</button></div>
+        <div class="cmd"><pre id="c-run" data-box="command"><span class="ln">WORK="$(mktemp <span class="w">-d)/zagros"</span>
+</span><span class="ln">cp <span class="w">-R</span> <span class="w">ops/goatbuilder/fixtures/goatnet-from-scratch/01-founder</span> "$WORK"
+</span><span class="ln"><span class="w">./goatbuilder</span> standup zagros <span class="w">--site</span> alpha <span class="w">--mock</span> "$WORK" <span class="w">--ack</span> "you" <span class="w">--yes</span>
+</span><span class="ln"><span class="w">./goatbuilder</span> status <span class="w">--env</span> zagros <span class="w">--mock</span> "$WORK"</span></pre><button class="copy" type="button" data-copy="c-run">Copy</button></div>
         <div class="term" role="img" aria-label="Terminal output of the rehearsal standup, ending: declared to verified, 5 components on 4 machines in 3 milliseconds, standup ok, 14 checks">
-<pre>Phase 5 · core · netbird-mgmt
-<span class="ok">ok</span>    zagros/alpha/core/netbird-mgmt/publish                      serial 1: ghcr.io/example-org/netbird-mgmt:v0.30.0@sha256:1a1a1a1a1a1a… by you
-<span class="ok">ok</span>    zagros/alpha/core/alpha-core-1/netbird-mgmt                 converged on ghcr.io/example-org/netbird-mgmt:v0.30.0@sha256:1a1a1a1a1a1a… after 2 observations
-<span class="ok">ok</span>    zagros/alpha/core/alpha-core-2/netbird-mgmt                 converged on ghcr.io/example-org/netbird-mgmt:v0.30.0@sha256:1a1a1a1a1a1a… after 2 observations
-
-Phase 9 · core · zenoh-router
-<span class="ok">ok</span>    zagros/alpha/core/zenoh-router/publish                      serial 2: ghcr.io/example-org/zenoh-router:v1.9.0@sha256:2b2b2b2b2b2b… by you
-<span class="ok">ok</span>    zagros/alpha/core/alpha-core-1/zenoh-router                 converged on ghcr.io/example-org/zenoh-router:v1.9.0@sha256:2b2b2b2b2b2b… after 1 observation
-<span class="ok">ok</span>    zagros/alpha/core/alpha-core-2/zenoh-router                 converged on ghcr.io/example-org/zenoh-router:v1.9.0@sha256:2b2b2b2b2b2b… after 1 observation
-<span class="c">… three more phases: obs-stack, portal, breakglass-node …</span>
-<span class="ok">ok</span>    measured                                                    declared → verified: 5 components on 4 machines in 3 ms — every record names its declared ref
-
-standup: ok (14 checks)</pre>
+<pre style="--hang:6ch" data-box="output"><span class="ln">Phase 5 · core · <span class="w">netbird-mgmt</span>
+</span><span class="ln"><span class="ok">ok</span>    <span class="w">zagros/alpha/core/netbird-mgmt/publish</span>                      serial 1: <span class="w">ghcr.io/example-org/netbird-mgmt:v0.30.0@sha256:1a1a1a1a1a1a…</span> by you
+</span><span class="ln"><span class="ok">ok</span>    <span class="w">zagros/alpha/core/alpha-core-1/netbird-mgmt</span>                 converged on <span class="w">ghcr.io/example-org/netbird-mgmt:v0.30.0@sha256:1a1a1a1a1a1a…</span> after 2 observations
+</span><span class="ln"><span class="ok">ok</span>    <span class="w">zagros/alpha/core/alpha-core-2/netbird-mgmt</span>                 converged on <span class="w">ghcr.io/example-org/netbird-mgmt:v0.30.0@sha256:1a1a1a1a1a1a…</span> after 2 observations
+</span><span class="ln">
+</span><span class="ln">Phase 9 · core · <span class="w">zenoh-router</span>
+</span><span class="ln"><span class="ok">ok</span>    <span class="w">zagros/alpha/core/zenoh-router/publish</span>                      serial 2: <span class="w">ghcr.io/example-org/zenoh-router:v1.9.0@sha256:2b2b2b2b2b2b…</span> by you
+</span><span class="ln"><span class="ok">ok</span>    <span class="w">zagros/alpha/core/alpha-core-1/zenoh-router</span>                 converged on <span class="w">ghcr.io/example-org/zenoh-router:v1.9.0@sha256:2b2b2b2b2b2b…</span> after 1 observation
+</span><span class="ln"><span class="ok">ok</span>    <span class="w">zagros/alpha/core/alpha-core-2/zenoh-router</span>                 converged on <span class="w">ghcr.io/example-org/zenoh-router:v1.9.0@sha256:2b2b2b2b2b2b…</span> after 1 observation
+</span><span class="ln"><span class="c">… three more phases: <span class="w">obs-stack,</span> portal, <span class="w">breakglass-node</span> …</span>
+</span><span class="ln"><span class="ok">ok</span>    measured                                                    declared → verified: 5 components on 4 machines in 3 ms — every record names its declared ref
+</span><span class="ln">
+</span><span class="ln">standup: ok (14 checks)</span></pre>
         </div>
-        <p class="caption">Real output of the <code>standup</code> line, release 0.7.3, shortened where marked. Long lines scroll sideways.</p>
+        <p class="caption">Real output of the <code>standup</code> line, release 0.7.3, shortened where marked. <span class="scrollhint">The output scrolls sideways.</span></p>
       </div></li>
       <li><div class="body">
         <h3>Stand up goatlite on one machine</h3>
         <p><strong>goatlite</strong> is a goatnet on one Ubuntu 24.04 host or virtual machine with 4 cores and 16 GB, with no outside account. You write one file of four facts (a name, the host, the SSH user, the administrator), check your laptop with the doctor, and run one command. It is for learning and first goatnets, not for production.</p>
-        <div class="cmd"><pre id="c-lite">goatbuilder doctor
-goatbuilder standup pasture</pre><button class="copy" type="button" data-copy="c-lite">Copy</button></div>
+        <div class="cmd"><pre id="c-lite" data-box="command"><span class="ln">goatbuilder doctor
+</span><span class="ln">goatbuilder standup pasture</span></pre><button class="copy" type="button" data-copy="c-lite">Copy</button></div>
         <p><a href="https://github.com/USAREUR-AF/goatcore/blob/main/docs/tutorials/00-goatlite.md">Tutorial 0: your first goatnet</a> explains each step. You finish by publishing a message and receiving it.</p>
       </div></li>
       <li><div class="body">
         <h3>Carry on</h3>
         <p><a href="https://github.com/USAREUR-AF/goatcore/blob/main/docs/tutorials/01-new-goatnet.md">A new environment</a> on real hardware, <a href="https://github.com/USAREUR-AF/goatcore/blob/main/docs/tutorials/02-first-federated-node.md">a second site</a>, and <a href="https://github.com/USAREUR-AF/goatcore/blob/main/docs/tutorials/03-boundary-node.md">sharing with a partner</a>. When a command fails, paste its output into <code>goat explain</code>.</p>
         <div class="term" role="img" aria-label="Terminal output of goatbuilder explain GB-001: unknown component, with what, why, fix, read and exit lines">
-<pre><span class="c">$ ./goatbuilder explain GB-001</span>
+<pre data-box="output"><span class="c">$ ./goatbuilder explain GB-001</span>
 GB-001 — unknown component
   what: the component named is not declared in ops/pins/fleet-pins.yaml (or, on a fixture, in goatbuilder.yaml).
   why:  a typo in the component name
@@ -689,7 +708,7 @@ GB-001 — unknown component
   read: docs/design/goatbuilder.md
   exit: 2</pre>
         </div>
-        <p class="caption">Real output of <code>goatbuilder explain GB-001</code>.</p>
+        <p class="caption">Real output of <code>goatbuilder explain GB-001</code>. <span class="scrollhint">The output scrolls sideways.</span></p>
       </div></li>
     </ol>
   </div>
