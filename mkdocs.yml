@@ -26,6 +26,7 @@ hooks:
 exclude_docs: |
   design-system/ui_kits/*/README.md
   goat/README.md
+  goat/fieldkit-feeds/README.md
   hello-galaxy/README.md
 
 theme:
