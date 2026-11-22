@@ -394,7 +394,7 @@ ok  	github.com/usareur-af/goatstuff/ops/serve/goat-feeds</pre>
     <ul class="numbers" aria-label="Four measured numbers">
       <li><b>7</b><span>actions on a feed: approve, decline, pause, resume, renew, remove, check. Fieldkit allows at most eight</span></li>
       <li><b>1</b><span>direct dependency, the Postgres driver; no JavaScript framework, no package manager, no build step for the page</span></li>
-      <li><b>10.7 MB</b><span>the static Linux arm64 binary, page included</span></li>
+      <li><b>2</b><span>static Linux binaries, x86-64 and arm64, page included: the hosts the fleet runs on</span></li>
       <li><b>813</b><span>lines of HTML, CSS and JavaScript in the whole page</span></li>
     </ul>
     <p class="source">Every figure is reproduced with a command in <a href="#numbers">Numbers</a>.</p>
@@ -507,9 +507,9 @@ ok  	github.com/usareur-af/goatstuff/ops/serve/goat-feeds</pre>
         <tbody>
           <tr><th scope="row">Actions on a feed</th><td class="n">7</td><td class="how"><code>grep 'allActions = ' policy.go</code> in <code>ops/serve/goat-feeds</code></td></tr>
           <tr><th scope="row">Direct dependencies</th><td class="n">1</td><td class="how">The first <code>require</code> line of <code>go.mod</code>: <code>github.com/jackc/pgx/v5</code></td></tr>
-          <tr><th scope="row">Static Linux arm64 binary</th><td class="n">10.7 MB</td><td class="how"><code>CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -trimpath -ldflags "-s -w" -o goat-feeds .</code>, then <code>ls -l goat-feeds</code>: 10,682,552 bytes. amd64: 11,227,320</td></tr>
+          <tr><th scope="row">Static Linux binaries (x86-64 for mini PCs and ZimaBoards, arm64 for Jetson Orin and Raspberry Pi)</th><td class="n">2</td><td class="how"><code>./build.sh</code> writes <code>dist/goat-feeds-&lt;version&gt;-linux-amd64</code> (11,227,320 bytes) and <code>-linux-arm64</code> (10,682,552 bytes) with <code>SHA256SUMS</code>; the deploy role installs the one matching each host</td></tr>
           <tr><th scope="row">Lines of the page</th><td class="n">813</td><td class="how"><code>wc -l web/app.js web/index.html web/style.css</code></td></tr>
-          <tr><th scope="row">Tests</th><td class="n">10</td><td class="how"><code>go test -v ./... | grep -c '^=== RUN'</code></td></tr>
+          <tr><th scope="row">Tests, run on every change</th><td class="n">49</td><td class="how">22 unit and 9 integration against a real Postgres (<code>go test -v ./...</code>, integration with <code>GOAT_FEEDS_TEST_DSN</code> set), 18 browser end-to-end in Playwright at 390 and 1440 px, light and dark (<code>e2e/</code>)</td></tr>
           <tr><th scope="row">Standards a site can receive, as configured for these screens</th><td class="n">4</td><td class="how">The <code>intake.formats</code> list of the site's config: MAVLink 2, ASTERIX CAT062, CoT XML, SAPIENT. A site lists any input format of the goat format library.</td></tr>
         </tbody>
       </table>
