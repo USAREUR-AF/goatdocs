@@ -90,7 +90,11 @@ p { margin: 0; text-wrap: pretty; }
 :root:not([data-theme="dark"]) .button.star { color: #1b1300; }
 .cmd { border: 1px solid var(--rule); background: var(--panel); border-radius: 3px; }
 .cmd-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 0 0 0 14px; border-bottom: 1px solid var(--rule); font: 12.5px var(--mono); color: var(--quiet); }
-.cmd pre { margin: 0; padding: 11px 14px; font-size: 13px; line-height: 1.6; overflow-x: auto; }
+.cmd pre { margin: 0; padding: 11px 14px; font-size: 13px; line-height: 1.6; overflow-x: auto; white-space: pre-wrap; overflow-wrap: anywhere; }
+/* a command shows whole: it wraps at spaces, continuation lines hang two characters in */
+.cmd pre .ln, .run .ln { display: block; padding-left: 2ch; text-indent: -2ch; }
+/* a word with a hyphen or slash moves to the next line whole, and breaks only if it alone is wider than the box */
+pre .ln .w { display: inline-block; max-width: 100%; text-indent: 0; }
 .cmd .pr, .run .pr { color: var(--accent); user-select: none; }
 .copy { font: 600 13px var(--mono); color: var(--accent); background: transparent; border: 0; border-left: 1px solid var(--rule); padding: 8px 16px; cursor: pointer; }
 .copy:hover { background: var(--accent-soft); }
@@ -224,16 +228,16 @@ hello-galaxy-coverage-options  $ bin/hello-options fetch &amp;&amp; bin/hello-op
       </p>
       <div class="cmd">
         <div class="cmd-head"><span>One repository, no goatnet needed</span><button class="copy" type="button" data-copy="first-run">Copy</button></div>
-        <pre id="first-run"><span class="pr" aria-hidden="true">$ </span>git clone https://github.com/USAREUR-AF/hello-galaxy-time-hygiene
-<span class="pr" aria-hidden="true">$ </span>cd hello-galaxy-time-hygiene
-<span class="pr" aria-hidden="true">$ </span>bin/hello-time offline</pre>
+        <pre id="first-run" data-box="command"><span class="ln"><span class="pr" aria-hidden="true">$ </span>git clone <span class="w">https://github.com/USAREUR-AF/hello-galaxy-time-hygiene</span>
+</span><span class="ln"><span class="pr" aria-hidden="true">$ </span>cd <span class="w">hello-galaxy-time-hygiene</span>
+</span><span class="ln"><span class="pr" aria-hidden="true">$ </span><span class="w">bin/hello-time</span> offline</span></pre>
       </div>
     </div>
 
     <figure class="term" aria-labelledby="term-cap" style="margin:0">
       <div class="tabs" role="tablist" aria-label="Recorded runs"></div>
       <p class="term-cmd" id="term-cmd">$ bin/hello-time offline</p>
-      <pre class="term-out" id="term-out" aria-live="off">Scenario 2 — absence of evidence is not evidence of health
+      <pre class="term-out" id="term-out" aria-live="off" data-box="output">Scenario 2 — absence of evidence is not evidence of health
 ...
    PASS  unattested → idle, stale → idle, empty → unmetered
 ...
@@ -288,7 +292,7 @@ Scenario 5 — free-running together beats free-running apart
           <h3><a href="https://github.com/USAREUR-AF/hello-galaxy-goatenv">Build a goat environment</a></h3>
           <p class="repo">hello-galaxy-goatenv</p>
           <p class="q">How is a goatnet built from goatcore, one verified step at a time, so you can diff your run against a known-good one?</p>
-          <pre class="run"><span class="pr" aria-hidden="true">$ </span>GOAT_REPO=../goatcore ./run</pre>
+          <pre class="run" data-box="command"><span class="ln"><span class="pr" aria-hidden="true">$ </span><span class="w">GOAT_REPO=../goatcore</span> <span class="w">./run</span></span></pre>
           <p class="needs">Needs goatbuilder and a goatcore checkout.</p>
         </div>
       </article>
@@ -301,7 +305,7 @@ Scenario 5 — free-running together beats free-running apart
           <h3><a href="https://github.com/USAREUR-AF/hello-galaxy-zagros-pod">A partner&#x27;s data pod</a></h3>
           <p class="repo">hello-galaxy-zagros-pod</p>
           <p class="q">How is a router&#x27;s configuration kept in one source of truth, and does data actually cross the peering, both ways?</p>
-          <pre class="run"><span class="pr" aria-hidden="true">$ </span>./run.sh</pre>
+          <pre class="run" data-box="command"><span class="ln"><span class="pr" aria-hidden="true">$ </span><span class="w">./run.sh</span></span></pre>
           <p class="needs">Needs Docker, openssl, python3, the goat CLI.</p>
         </div>
       </article>
@@ -314,7 +318,7 @@ Scenario 5 — free-running together beats free-running apart
           <h3><a href="https://github.com/USAREUR-AF/hello-galaxy-cross-env-federation">Cross-environment federation</a></h3>
           <p class="repo">hello-galaxy-cross-env-federation</p>
           <p class="q">Two organizations will not join each other&#x27;s networks or vouch for each other&#x27;s identities: how do they exchange data, and prove it?</p>
-          <pre class="run"><span class="pr" aria-hidden="true">$ </span>./run</pre>
+          <pre class="run" data-box="command"><span class="ln"><span class="pr" aria-hidden="true">$ </span><span class="w">./run</span></span></pre>
           <p class="needs">Needs the released goat CLI; stages 05 to 12 need a cloud tier or a goatnet.</p>
         </div>
       </article>
@@ -335,7 +339,7 @@ Scenario 5 — free-running together beats free-running apart
           <h3><a href="https://github.com/USAREUR-AF/hello-galaxy-human-machine-onboarding">People and machines</a></h3>
           <p class="repo">hello-galaxy-human-machine-onboarding</p>
           <p class="q">How does a goatnet onboard a person, then a machine, then a platform that splits into workloads, under one identity grammar?</p>
-          <pre class="run"><span class="pr" aria-hidden="true">$ </span>bin/hg-onboard all --offline</pre>
+          <pre class="run" data-box="command"><span class="ln"><span class="pr" aria-hidden="true">$ </span><span class="w">bin/hg-onboard</span> all <span class="w">--offline</span></span></pre>
           <p class="needs">Needs bash.</p>
         </div>
       </article>
@@ -348,7 +352,7 @@ Scenario 5 — free-running together beats free-running apart
           <h3><a href="https://github.com/USAREUR-AF/hello-galaxy-universal-id">Universal identity</a></h3>
           <p class="repo">hello-galaxy-universal-id</p>
           <p class="q">How do platforms that share nothing else agree on who an entity is, and whom it reported to on any date?</p>
-          <pre class="run"><span class="pr" aria-hidden="true">$ </span>python3 bin/demo</pre>
+          <pre class="run" data-box="command"><span class="ln"><span class="pr" aria-hidden="true">$ </span>python3 <span class="w">bin/demo</span></span></pre>
           <p class="needs">Needs python3 and openssl.</p>
         </div>
       </article>
@@ -361,7 +365,7 @@ Scenario 5 — free-running together beats free-running apart
           <h3><a href="https://github.com/USAREUR-AF/hello-galaxy-access-mgmt">Rotate and revoke</a></h3>
           <p class="repo">hello-galaxy-access-mgmt</p>
           <p class="q">How is a live actor&#x27;s credential rotated with no downtime, and a flooding actor found and revoked in seconds?</p>
-          <pre class="run"><span class="pr" aria-hidden="true">$ </span>local-fabric/up.sh &amp;&amp; bin/access-mgmt 00-orient</pre>
+          <pre class="run" data-box="command"><span class="ln"><span class="pr" aria-hidden="true">$ </span><span class="w">local-fabric/up.sh</span> &amp;&amp; <span class="w">bin/access-mgmt</span> <span class="w">00-orient</span></span></pre>
           <p class="needs">Needs Docker.</p>
         </div>
       </article>
@@ -374,7 +378,7 @@ Scenario 5 — free-running together beats free-running apart
           <h3><a href="https://github.com/USAREUR-AF/hello-galaxy-spire-spiffe-patterns">SPIRE federation</a></h3>
           <p class="repo">hello-galaxy-spire-spiffe-patterns</p>
           <p class="q">Is a workload in one SPIRE trust domain accepted by another only after the two exchange public bundles?</p>
-          <pre class="run"><span class="pr" aria-hidden="true">$ </span>bin/hello-spire all</pre>
+          <pre class="run" data-box="command"><span class="ln"><span class="pr" aria-hidden="true">$ </span><span class="w">bin/hello-spire</span> all</span></pre>
           <p class="needs">Needs Docker and openssl.</p>
         </div>
       </article>
@@ -387,7 +391,7 @@ Scenario 5 — free-running together beats free-running apart
           <h3><a href="https://github.com/USAREUR-AF/hello-galaxy-external-service">An external service</a></h3>
           <p class="repo">hello-galaxy-external-service</p>
           <p class="q">How does a service the goatnet does not run use its sign-in, decide who gets in, and leave nothing behind when withdrawn?</p>
-          <pre class="run"><span class="pr" aria-hidden="true">$ </span>bash scenarios/00-orient/run.sh</pre>
+          <pre class="run" data-box="command"><span class="ln"><span class="pr" aria-hidden="true">$ </span>bash <span class="w">scenarios/00-orient/run.sh</span></span></pre>
           <p class="needs">Needs python3 with PyJWT, cryptography and PyYAML.</p>
         </div>
       </article>
@@ -400,7 +404,7 @@ Scenario 5 — free-running together beats free-running apart
           <h3><a href="https://github.com/USAREUR-AF/hello-galaxy-mesh-change-control">Mesh change control</a></h3>
           <p class="repo">hello-galaxy-mesh-change-control</p>
           <p class="q">How does network access change on a governed goatnet, and which declarations does CI refuse, and why?</p>
-          <pre class="run"><span class="pr" aria-hidden="true">$ </span>bash scenarios/01-predict-the-plan/run.sh</pre>
+          <pre class="run" data-box="command"><span class="ln"><span class="pr" aria-hidden="true">$ </span>bash <span class="w">scenarios/01-predict-the-plan/run.sh</span></span></pre>
           <p class="needs">Needs python3 with PyYAML; scenario 04 reads a live goatnet.</p>
         </div>
       </article>
@@ -421,7 +425,7 @@ Scenario 5 — free-running together beats free-running apart
           <h3><a href="https://github.com/USAREUR-AF/hello-galaxy-zenoh-patterns">Zenoh key patterns</a></h3>
           <p class="repo">hello-galaxy-zenoh-patterns</p>
           <p class="q">How should Zenoh keys be shaped so data can be retrieved later, and when is one topic the right answer?</p>
-          <pre class="run"><span class="pr" aria-hidden="true">$ </span>bin/hello-zenoh all</pre>
+          <pre class="run" data-box="command"><span class="ln"><span class="pr" aria-hidden="true">$ </span><span class="w">bin/hello-zenoh</span> all</span></pre>
           <p class="needs">Needs the goat CLI and a running goat fabric.</p>
         </div>
       </article>
@@ -434,7 +438,7 @@ Scenario 5 — free-running together beats free-running apart
           <h3><a href="https://github.com/USAREUR-AF/hello-galaxy-partner-data-sharing">Share with a partner</a></h3>
           <p class="repo">hello-galaxy-partner-data-sharing</p>
           <p class="q">How do you release data so one partner, or a whole coalition, sees only what you released to them?</p>
-          <pre class="run"><span class="pr" aria-hidden="true">$ </span>bin/hello-zenoh all</pre>
+          <pre class="run" data-box="command"><span class="ln"><span class="pr" aria-hidden="true">$ </span><span class="w">bin/hello-zenoh</span> all</span></pre>
           <p class="needs">Needs the goat CLI and a running goat fabric.</p>
         </div>
       </article>
@@ -447,7 +451,7 @@ Scenario 5 — free-running together beats free-running apart
           <h3><a href="https://github.com/USAREUR-AF/hello-galaxy-grant-encryption">Grant-keyed encryption</a></h3>
           <p class="repo">hello-galaxy-grant-encryption</p>
           <p class="q">How does a data owner restrict a stream to its readers, with nothing in the read path that can decrypt it?</p>
-          <pre class="run"><span class="pr" aria-hidden="true">$ </span>./bin/grant-enc all</pre>
+          <pre class="run" data-box="command"><span class="ln"><span class="pr" aria-hidden="true">$ </span><span class="w">./bin/grant-enc</span> all</span></pre>
           <p class="needs">Needs python3 with cryptography.</p>
         </div>
       </article>
@@ -460,7 +464,7 @@ Scenario 5 — free-running together beats free-running apart
           <h3><a href="https://github.com/USAREUR-AF/hello-galaxy-time-hygiene">Time hygiene</a></h3>
           <p class="repo">hello-galaxy-time-hygiene</p>
           <p class="q">With satellite time jammed and the link out cut, how does a mesh keep its data in order and say when it does not know the time?</p>
-          <pre class="run"><span class="pr" aria-hidden="true">$ </span>bin/hello-time offline</pre>
+          <pre class="run" data-box="command"><span class="ln"><span class="pr" aria-hidden="true">$ </span><span class="w">bin/hello-time</span> offline</span></pre>
           <p class="needs">Needs python3 and openssl; scenario 1 reads a live goatnet.</p>
         </div>
       </article>
@@ -481,7 +485,7 @@ Scenario 5 — free-running together beats free-running apart
           <h3><a href="https://github.com/USAREUR-AF/hello-galaxy-first-bite">First bite</a></h3>
           <p class="repo">hello-galaxy-first-bite</p>
           <p class="q">Two systems exchange a binary format neither can change: how does what they say get onto a goatnet?</p>
-          <pre class="run"><span class="pr" aria-hidden="true">$ </span>bin/hello-bite build --goat &amp;&amp; bin/hello-bite all</pre>
+          <pre class="run" data-box="command"><span class="ln"><span class="pr" aria-hidden="true">$ </span><span class="w">bin/hello-bite</span> build <span class="w">--goat</span> &amp;&amp; <span class="w">bin/hello-bite</span> all</span></pre>
           <p class="needs">Needs Linux, bash and Docker.</p>
         </div>
       </article>
@@ -494,7 +498,7 @@ Scenario 5 — free-running together beats free-running apart
           <h3><a href="https://github.com/USAREUR-AF/hello-galaxy-legacy-feed">A legacy feed</a></h3>
           <p class="repo">hello-galaxy-legacy-feed</p>
           <p class="q">A radar that speaks ASTERIX arrives on a goatnet: carry it, mirror it, or decode it, and with which check?</p>
-          <pre class="run"><span class="pr" aria-hidden="true">$ </span>bin/hello-feed 0-carry</pre>
+          <pre class="run" data-box="command"><span class="ln"><span class="pr" aria-hidden="true">$ </span><span class="w">bin/hello-feed</span> <span class="w">0-carry</span></span></pre>
           <p class="needs">Needs python3; rung 1 needs a goatnet.</p>
         </div>
       </article>
@@ -507,7 +511,7 @@ Scenario 5 — free-running together beats free-running apart
           <h3><a href="https://github.com/USAREUR-AF/hello-galaxy-record-consumers">Record consumers</a></h3>
           <p class="repo">hello-galaxy-record-consumers</p>
           <p class="q">first-bite posts decoded records over HTTP: what receives them, and who may post and who may read?</p>
-          <pre class="run"><span class="pr" aria-hidden="true">$ </span>bin/hello-consumers build &amp;&amp; bin/hello-consumers all</pre>
+          <pre class="run" data-box="command"><span class="ln"><span class="pr" aria-hidden="true">$ </span><span class="w">bin/hello-consumers</span> build &amp;&amp; <span class="w">bin/hello-consumers</span> all</span></pre>
           <p class="needs">Needs Docker; step 3 needs Linux and kind.</p>
         </div>
       </article>
@@ -520,7 +524,7 @@ Scenario 5 — free-running together beats free-running apart
           <h3><a href="https://github.com/USAREUR-AF/hello-galaxy-coverage-options">Coverage options</a></h3>
           <p class="repo">hello-galaxy-coverage-options</p>
           <p class="q">A system produces data and another needs it: in which ways can it get there, and what is the evidence for each?</p>
-          <pre class="run"><span class="pr" aria-hidden="true">$ </span>bin/hello-options fetch &amp;&amp; bin/hello-options all</pre>
+          <pre class="run" data-box="command"><span class="ln"><span class="pr" aria-hidden="true">$ </span><span class="w">bin/hello-options</span> fetch &amp;&amp; <span class="w">bin/hello-options</span> all</span></pre>
           <p class="needs">Needs bash, git and Python 3.9 or later.</p>
         </div>
       </article>
@@ -573,7 +577,7 @@ Scenario 5 — free-running together beats free-running apart
   for (const b of document.querySelectorAll("[data-copy]")) {
     b.addEventListener("click", async () => {
       const src = document.getElementById(b.dataset.copy);
-      const text = [...src.childNodes].filter((n) => !(n.classList && n.classList.contains("pr"))).map((n) => n.textContent).join("");
+      const c = src.cloneNode(true); c.querySelectorAll(".pr").forEach((n) => n.remove()); const text = c.textContent;
       try { await navigator.clipboard.writeText(text); b.textContent = "Copied"; }
       catch { const r = document.createRange(); r.selectNodeContents(src); getSelection().removeAllRanges(); getSelection().addRange(r); b.textContent = "Selected"; }
       setTimeout(() => (b.textContent = "Copy"), 1600);
