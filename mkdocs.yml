@@ -27,6 +27,7 @@ exclude_docs: |
   design-system/ui_kits/*/README.md
   goat/README.md
   goat/fieldkit-feeds/README.md
+  goat/goatbuilder/README.md
   hello-galaxy/README.md
 
 theme:
