@@ -4,5 +4,6 @@ One page for each week in which open-billie changed, generated from its pull req
 
 | Week | Covers |
 |---|---|
+| [2026-W47](2026-W47.md) | 16 to 22 November 2026 |
 | [2026-W46](2026-W46.md) | 9 to 15 November 2026 |
 | [2026-W45](2026-W45.md) | 2 to 8 November 2026 |
