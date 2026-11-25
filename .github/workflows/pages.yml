@@ -83,7 +83,7 @@ jobs:
       # The hand-written landing pages: no command box is cut off at 1440 or
       # 390 px, and no output box at 1440 px (headless Chrome, on the runner).
       - name: check the landing pages' command boxes
-        run: python .github/pages/fitcheck.py site goat/index.html hello-galaxy/index.html goat/fieldkit-feeds/index.html goat/splash-page/index.html goat/pages/index.html goat/goatbuilder/index.html goat/goat-cli/index.html
+        run: python .github/pages/fitcheck.py site goat/index.html hello-galaxy/index.html goat/fieldkit-feeds/index.html goat/panoscope/index.html goat/splash-page/index.html goat/pages/index.html goat/goatbuilder/index.html goat/goat-cli/index.html
 
       - name: configure Pages
         if: github.event_name != 'pull_request'

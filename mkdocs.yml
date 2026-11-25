@@ -29,6 +29,9 @@ exclude_docs: |
   goat/fieldkit-feeds/README.md
   goat/goatbuilder/README.md
   goat/goat-cli/README.md
+  goat/panoscope/README.md
+  goat/panoscope/build.py
+  goat/panoscope/record.mjs
   goat/splash-page/README.md
   goat/splash-page/page.html
   goat/splash-page/build.py
