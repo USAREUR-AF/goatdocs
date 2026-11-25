@@ -20,7 +20,7 @@ catalogue of them, built from this list by goatdocs `docs/goat/pages/`. Read the
 | goat-cloud | https://usareur-af.github.io/goat-cloud/ | an ownership register: every cloud resource has an owner | smallest site: one `index.html` with styles inline, `fitcheck.py`, `README.md`; serif for statements, mono for what a machine reads |
 | goatrope | https://usareur-af.github.io/goatrope/ | a rope figure drawn by `build.py`, state drawn rather than colored | `page.html` → `index.html` with `build.py --check`; SPDX headers |
 | scapegoat | https://usareur-af.github.io/scapegoat/ | a real session against the toy simulator: the link established, lost and established again | `site/record.py` records the session; `build.py` checks the recording and the quoted event log against the tree |
-| goatstuff | https://usareur-af.github.io/goatstuff/ | real captures of the surfaces, one after another: panoscope, the playground, goat-topology, the trust sandbox, dataflows | a gallery card per surface whose status `build.py` checks against `docs/RELEASE-CONTENTS.md` |
+| goatstuff | https://usareur-af.github.io/goatstuff/ | real recordings of the surfaces, one after another: panoscope, flashlight, goat-map, the playground, goat-topology, dataflows | a gallery card per surface whose status `build.py` checks against `docs/RELEASE-CONTENTS.md` |
 
 ## Sub-pages in goatdocs (`docs/goat/<slug>/index.html`)
 
@@ -29,6 +29,7 @@ catalogue of them, built from this list by goatdocs `docs/goat/pages/`. Read the
 | https://usareur-af.github.io/goatdocs/goat/ | goat as one system | the parent every component sub-page links back to |
 | https://usareur-af.github.io/goatdocs/goat/goatbuilder/ | goatbuilder, the tool in goatcore that builds, releases and deploys every machine | a site plan of machine roles, each selectable, built or designed |
 | https://usareur-af.github.io/goatdocs/goat/goat-cli/ | goat, the command-line tool in goatcore that operates a goatnet | real output of the release binary: the sandbox, why a connection is blocked, an error explained |
+| https://usareur-af.github.io/goatdocs/goat/panoscope/ | panoscope, the live view of a goat fabric, in goatstuff | a replay of a real recording against the synthetic fleet: peers, topics and sampled messages moving |
 | https://usareur-af.github.io/goatdocs/goat/fieldkit-feeds/ | Fieldkit Feeds, a service inside goatstuff | captures in light and dark chosen by color scheme; event lines replay a real audit log; numbers each name their command |
 | https://usareur-af.github.io/goatdocs/hello-galaxy/ | the hello-galaxy worked examples | one page for a family of small repositories |
 

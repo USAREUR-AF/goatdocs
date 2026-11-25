@@ -215,6 +215,7 @@ open-entity-gateway   https://usareur-af.github.io/open-entity-gateway/
 goat-transformers     https://usareur-af.github.io/goat-transformers/
 goat-processors       https://usareur-af.github.io/goat-processors/
 goatstuff             https://usareur-af.github.io/goatstuff/
+panoscope             https://usareur-af.github.io/goatdocs/goat/panoscope/
 fieldkit-feeds        https://usareur-af.github.io/goatdocs/goat/fieldkit-feeds/
 goatrodeo             https://usareur-af.github.io/goatrodeo/
 goat-cloud            https://usareur-af.github.io/goat-cloud/
@@ -235,7 +236,7 @@ hello-galaxy          https://usareur-af.github.io/goatdocs/hello-galaxy/</pre>
     </div>
 
     <div class="stage" role="img" aria-label="The first screen of each goat landing page, shown one after another.">
-      <div class="stage-head"><span><b id="show-name">goat</b></span><span id="show-n">1 / 18</span></div>
+      <div class="stage-head"><span><b id="show-name">goat</b></span><span id="show-n">1 / 19</span></div>
       <a class="show" id="show" href="https://usareur-af.github.io/goatdocs/goat/"><picture id="show-pic"><source media="(prefers-color-scheme: dark)" srcset="shots/goat-dark.jpg"><img src="shots/goat-light.jpg" width="1080" height="675" alt=""></picture></a>
       <div class="stage-foot">First screens, captured from the live pages at 1440 px.</div>
     </div>
@@ -247,7 +248,7 @@ hello-galaxy          https://usareur-af.github.io/goatdocs/hello-galaxy/</pre>
   <div class="wrap">
     <h2>The pages</h2>
     <p class="sub">Each entry is the page's first screen and its own words, copied from the live page. The pages are grouped by what each one is for, in the order a deployment meets them.</p>
-    <nav class="groups" aria-label="Groups"><a href="#g-system">The system <span>3</span></a><a href="#g-join">Join a goat network <span>3</span></a><a href="#g-bring-in">Bring data in, connect other systems <span>5</span></a><a href="#g-work">Work on the data <span>2</span></a><a href="#g-use">Use the data <span>3</span></a><a href="#g-run">Run the estate <span>1</span></a><a href="#g-learn">Learn by running it <span>1</span></a></nav>
+    <nav class="groups" aria-label="Groups"><a href="#g-system">The system <span>3</span></a><a href="#g-join">Join a goat network <span>3</span></a><a href="#g-bring-in">Bring data in, connect other systems <span>5</span></a><a href="#g-work">Work on the data <span>2</span></a><a href="#g-use">Use the data <span>4</span></a><a href="#g-run">Run the estate <span>1</span></a><a href="#g-learn">Learn by running it <span>1</span></a></nav>
     <div class="group" id="g-system"><h3 class="gh">The system</h3><p class="gs">goat as a whole, and the two tools that build and operate it.</p></div>
     <article class="plate" id="goat" data-kind="subpage">
       <a class="print" href="https://usareur-af.github.io/goatdocs/goat/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/goat-dark.jpg"><img src="shots/goat-light.jpg" width="1080" height="675" loading="lazy" alt="The first screen of the goat landing page."></picture></a>
@@ -403,8 +404,19 @@ hello-galaxy          https://usareur-af.github.io/goatdocs/hello-galaxy/</pre>
         <h3><a href="https://usareur-af.github.io/goatstuff/">goatstuff</a></h3>
         <p class="tg">Tools that show what a goat data fabric is doing, and demos that teach it.</p>
         <p class="ld">The inspection surfaces, demos and example applications that run beside goatcore. They draw the fabric live, find routers that disagree, grade one topic, let a newcomer publish a message and watch it arrive, and stand in for sensors with synthetic publishers. None of them is needed to run a goatnet.</p>
-        <p class="fs"><b>First screen:</b> real captures of the surfaces, one after another: panoscope, the playground, goat-topology, the trust sandbox, dataflows</p>
+        <p class="fs"><b>First screen:</b> real recordings of the surfaces, one after another: panoscope, flashlight, goat-map, the playground, goat-topology, dataflows</p>
         <p class="go"><a href="https://usareur-af.github.io/goatstuff/">Open the page</a><a href="https://github.com/USAREUR-AF/goatstuff">Repository</a></p>
+      </div>
+    </article>
+    <article class="plate" id="panoscope" data-kind="subpage">
+      <a class="print" href="https://usareur-af.github.io/goatdocs/goat/panoscope/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/panoscope-dark.jpg"><img src="shots/panoscope-light.jpg" width="1080" height="675" loading="lazy" alt="The first screen of the panoscope landing page."></picture></a>
+      <div>
+        <span class="no">usareur-af.github.io/goatdocs/goat/panoscope/</span>
+        <h3><a href="https://usareur-af.github.io/goatdocs/goat/panoscope/">panoscope</a></h3>
+        <p class="tg">The whole goatnet at a glance: who publishes, who subscribes, and what is flowing now.</p>
+        <p class="ld">panoscope draws a goat data fabric as it runs. Every peer is a node, every topic sits between its publishers and its subscribers, and a dot crosses the graph for each sampled message. Select a peer or topic and the side panel streams its messages. panoscope only reads: it subscribes to the fabric and declares no publisher.</p>
+        <p class="fs"><b>First screen:</b> panoscope, the live view of a goat fabric, in goatstuff</p>
+        <p class="go"><a href="https://usareur-af.github.io/goatdocs/goat/panoscope/">Open the page</a><a href="https://github.com/USAREUR-AF/goatdocs">Repository</a></p>
       </div>
     </article>
     <article class="plate" id="fieldkit-feeds" data-kind="subpage">
@@ -472,7 +484,7 @@ hello-galaxy          https://usareur-af.github.io/goatdocs/hello-galaxy/</pre>
   </div>
 </footer>
 <script>
-const PAGES = [{"name": "goat", "url": "https://usareur-af.github.io/goatdocs/goat/", "slug": "goat"}, {"name": "goatbuilder", "url": "https://usareur-af.github.io/goatdocs/goat/goatbuilder/", "slug": "goatbuilder"}, {"name": "goat-cli", "url": "https://usareur-af.github.io/goatdocs/goat/goat-cli/", "slug": "goat-cli"}, {"name": "goat-client", "url": "https://usareur-af.github.io/goat-client/", "slug": "goat-client"}, {"name": "zagros-moon-pod", "url": "https://usareur-af.github.io/zagros-moon-pod/", "slug": "zagros-moon-pod"}, {"name": "saltlick", "url": "https://usareur-af.github.io/saltlick/", "slug": "saltlick"}, {"name": "open-billie", "url": "https://usareur-af.github.io/open-billie/", "slug": "open-billie"}, {"name": "first-bite", "url": "https://usareur-af.github.io/first-bite/", "slug": "first-bite"}, {"name": "goatrope", "url": "https://usareur-af.github.io/goatrope/", "slug": "goatrope"}, {"name": "scapegoat", "url": "https://usareur-af.github.io/scapegoat/", "slug": "scapegoat"}, {"name": "open-entity-gateway", "url": "https://usareur-af.github.io/open-entity-gateway/", "slug": "open-entity-gateway"}, {"name": "goat-transformers", "url": "https://usareur-af.github.io/goat-transformers/", "slug": "goat-transformers"}, {"name": "goat-processors", "url": "https://usareur-af.github.io/goat-processors/", "slug": "goat-processors"}, {"name": "goatstuff", "url": "https://usareur-af.github.io/goatstuff/", "slug": "goatstuff"}, {"name": "fieldkit-feeds", "url": "https://usareur-af.github.io/goatdocs/goat/fieldkit-feeds/", "slug": "fieldkit-feeds"}, {"name": "goatrodeo", "url": "https://usareur-af.github.io/goatrodeo/", "slug": "goatrodeo"}, {"name": "goat-cloud", "url": "https://usareur-af.github.io/goat-cloud/", "slug": "goat-cloud"}, {"name": "hello-galaxy", "url": "https://usareur-af.github.io/goatdocs/hello-galaxy/", "slug": "hello-galaxy"}];
+const PAGES = [{"name": "goat", "url": "https://usareur-af.github.io/goatdocs/goat/", "slug": "goat"}, {"name": "goatbuilder", "url": "https://usareur-af.github.io/goatdocs/goat/goatbuilder/", "slug": "goatbuilder"}, {"name": "goat-cli", "url": "https://usareur-af.github.io/goatdocs/goat/goat-cli/", "slug": "goat-cli"}, {"name": "goat-client", "url": "https://usareur-af.github.io/goat-client/", "slug": "goat-client"}, {"name": "zagros-moon-pod", "url": "https://usareur-af.github.io/zagros-moon-pod/", "slug": "zagros-moon-pod"}, {"name": "saltlick", "url": "https://usareur-af.github.io/saltlick/", "slug": "saltlick"}, {"name": "open-billie", "url": "https://usareur-af.github.io/open-billie/", "slug": "open-billie"}, {"name": "first-bite", "url": "https://usareur-af.github.io/first-bite/", "slug": "first-bite"}, {"name": "goatrope", "url": "https://usareur-af.github.io/goatrope/", "slug": "goatrope"}, {"name": "scapegoat", "url": "https://usareur-af.github.io/scapegoat/", "slug": "scapegoat"}, {"name": "open-entity-gateway", "url": "https://usareur-af.github.io/open-entity-gateway/", "slug": "open-entity-gateway"}, {"name": "goat-transformers", "url": "https://usareur-af.github.io/goat-transformers/", "slug": "goat-transformers"}, {"name": "goat-processors", "url": "https://usareur-af.github.io/goat-processors/", "slug": "goat-processors"}, {"name": "goatstuff", "url": "https://usareur-af.github.io/goatstuff/", "slug": "goatstuff"}, {"name": "panoscope", "url": "https://usareur-af.github.io/goatdocs/goat/panoscope/", "slug": "panoscope"}, {"name": "fieldkit-feeds", "url": "https://usareur-af.github.io/goatdocs/goat/fieldkit-feeds/", "slug": "fieldkit-feeds"}, {"name": "goatrodeo", "url": "https://usareur-af.github.io/goatrodeo/", "slug": "goatrodeo"}, {"name": "goat-cloud", "url": "https://usareur-af.github.io/goat-cloud/", "slug": "goat-cloud"}, {"name": "hello-galaxy", "url": "https://usareur-af.github.io/goatdocs/hello-galaxy/", "slug": "hello-galaxy"}];
 // Copy button; the first screen's slideshow of every page's real first screen.
 // Without JavaScript the first page's capture shows; every entry is listed either way.
 (function () {
