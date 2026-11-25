@@ -602,13 +602,17 @@ document.querySelectorAll("button.copy").forEach(function (b) {
   svg.querySelectorAll(".pe").forEach(function (n) { peEls[n.getAttribute("data-t")] = n; });
   function pad(n, w) { n = String(n); while (n.length < w) n = "0" + n; return n; }
   function stamp(ms) { var s = ms / 1000; return pad(Math.floor(s / 60), 2) + ":" + pad((s % 60).toFixed(1), 4); }
-  var lines = [];
+  // Text only: every value goes in through textContent, never as markup.
+  function span(cls, text) { var s = document.createElement(cls === "b" ? "b" : "span"); if (cls && cls !== "b") s.className = cls; s.textContent = text; return s; }
   function tick(e) {
-    var t = S.topics[e[1]];
-    lines.unshift('<span>' + stamp(e[0]) + '</span>  <span class="k">' + t.k + '</span>  <span class="r">' + e[2].toFixed(2) + '/s</span>');
-    if (lines.length > 3) lines.length = 3;
-    ticker.innerHTML = lines.join("\n");
-    if (t.b) bytes.innerHTML = '<b>' + t.s + '</b> ' + t.b.fmt + ' ' + t.b.size + ' B  ' + t.b.hex;
+    var t = S.topics[e[1]], line = document.createElement("span");
+    line.appendChild(span("", stamp(e[0]) + "  "));
+    line.appendChild(span("k", t.k));
+    line.appendChild(span("r", "  " + e[2].toFixed(2) + "/s"));
+    line.appendChild(document.createTextNode("\n"));
+    ticker.insertBefore(line, ticker.firstChild);
+    while (ticker.childNodes.length > 3) ticker.removeChild(ticker.lastChild);
+    if (t.b) { bytes.replaceChildren(span("b", t.s), document.createTextNode(" " + t.b.fmt + " " + t.b.size + " B  " + t.b.hex)); }
   }
   var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (reduce) { S.events.slice(0, 3).forEach(tick); return; }
