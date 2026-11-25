@@ -389,6 +389,19 @@
    "measured": 0
   },
   {
+   "name": "goatstuff",
+   "url": "https://usareur-af.github.io/goatstuff/",
+   "shows": "real captures of the surfaces, one after another: panoscope, the playground, goat-topology, the trust sandbox, dataflows",
+   "kind": "site",
+   "repo": "https://github.com/USAREUR-AF/goatstuff",
+   "slug": "goatstuff",
+   "title": "goatstuff",
+   "tagline": "Tools that show what a goat data fabric is doing, and demos that teach it.",
+   "lede": "The inspection surfaces, demos and example applications that run beside goatcore. They draw the fabric live, find routers that disagree, grade one topic, let a newcomer publish a message and watch it arrive, and stand in for sensors with synthetic publishers. None of them is needed to run a goatnet.",
+   "numbers": [],
+   "measured": 0
+  },
+  {
    "name": "goat",
    "url": "https://usareur-af.github.io/goatdocs/goat/",
    "shows": "goat as one system",
