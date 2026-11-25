@@ -383,72 +383,112 @@ ok    zagros/alpha/core/portal/publish                            serial 4: ghcr
 
 <div class="wrap">
   <figure class="system" aria-labelledby="sys-cap">
-    <div class="fig scroll"><svg id="fig-system" class="viz" viewBox="0 0 760 420" role="img" aria-label="Two sites, each running goatcore, joined by a direct encrypted tunnel; relays and a public DNS name in the cloud are used to enroll and to relay, and the sites keep talking when the cloud cannot be reached; an open-billie sensor node and an octo-pod gateway feed the data fabric from the edge; goatstuff shows it live and goatdocs explains it">
-<rect x="230" y="14" width="300" height="82" rx="12" class="bxp"/>
-<text x="246" y="38.4" class="tq" font-size="13" font-weight="700">Cloud</text>
-<rect x="246" y="50" width="110" height="36" rx="8" class="bx"/>
-<text x="301" y="72" text-anchor="middle" class="t" font-size="15" font-weight="700">Relays</text>
-<rect x="380" y="50" width="134" height="36" rx="8" class="bx"/>
-<text x="447" y="72" text-anchor="middle" class="t" font-size="15" font-weight="700">DNS name</text>
-<rect x="20" y="150" width="300" height="124" rx="12" class="bxp"/>
-<text x="36" y="174.4" class="tq" font-size="13" font-weight="700">Site alpha</text>
-<rect x="440" y="150" width="300" height="124" rx="12" class="bxp"/>
-<text x="456" y="174.4" class="tq" font-size="13" font-weight="700">Site bravo</text>
-<a href="#goatcore" tabindex="-1" aria-label="goatcore"><g id="lk-goatcore-a">
-<rect x="36" y="186" width="152" height="78" rx="8" class="bxa"/>
-<text x="52" y="209" class="t" font-size="15" font-weight="700">goatcore</text>
-<text x="52" y="231" class="tq" font-size="13">mesh, identity,</text>
-<text x="52" y="249" class="tq" font-size="13">data fabric</text>
-</g></a>
+    <div class="fig scroll"><svg id="fig-system" class="viz" viewBox="0 0 760 590" role="img" aria-label="Edge systems at three sites, such as sensors, cameras, weather stations, radios, machines, vehicles, drones, phones and laptops, join through an open-billie sensor node, an octo-pod site gateway or goat-client on the device. Each site runs goatcore, and the sites form one data fabric over direct tunnels with no central broker. Operations software, goatstuff live views, analytics and AI agents, and partners by release publish and subscribe on that fabric by identity. Cloud relays are used when a device enrolls and when two peers cannot reach each other directly; the sites keep working without them.">
+<rect x="20" y="14" width="720" height="112" rx="12" class="bxp"/>
+<text x="36" y="38" class="tq" font-size="13" font-weight="700">Systems that use the data</text>
+<rect x="36" y="54" width="160" height="56" rx="8" class="bx"/>
+<text x="50" y="77" class="t" font-size="15" font-weight="700">Operations</text>
+<text x="50" y="97" class="tq" font-size="13">one shared picture</text>
 <a href="#goatstuff" tabindex="-1" aria-label="goatstuff"><g id="lk-goatstuff">
-<rect x="200" y="186" width="104" height="60" rx="8" class="bx"/>
-<text x="216" y="209" class="t" font-size="15" font-weight="700">goatstuff</text>
-<text x="216" y="231" class="tq" font-size="13">live views</text>
+<rect x="212" y="54" width="160" height="56" rx="8" class="bx"/>
+<text x="226" y="77" class="t" font-size="15" font-weight="700">goatstuff</text>
+<text x="226" y="97" class="tq" font-size="13">live views</text>
+</g></a>
+<rect x="388" y="54" width="160" height="56" rx="8" class="bx"/>
+<text x="402" y="77" class="t" font-size="15" font-weight="700">Analytics</text>
+<text x="402" y="97" class="tq" font-size="13">and AI agents</text>
+<rect x="564" y="54" width="160" height="56" rx="8" class="bx"/>
+<text x="578" y="77" class="t" font-size="15" font-weight="700">Partners</text>
+<text x="578" y="97" class="tq" font-size="13">by release only</text>
+<rect x="20" y="162" width="720" height="176" rx="12" class="bxp"/>
+<text x="36" y="186" class="tq" font-size="13" font-weight="700">One data fabric: publish and subscribe by identity, no central broker</text>
+<a href="#goatcore" tabindex="-1" aria-label="goatcore"><g id="lk-goatcore-a">
+<rect x="36" y="202" width="180" height="60" rx="8" class="bxa"/>
+<text x="50" y="225" class="t" font-size="15" font-weight="700">goatcore</text>
+<text x="50" y="245" class="tq" font-size="13">site alpha</text>
 </g></a>
 <a href="#goatcore" tabindex="-1" aria-label="goatcore"><g id="lk-goatcore-b">
-<rect x="456" y="186" width="152" height="78" rx="8" class="bxa"/>
-<text x="472" y="209" class="t" font-size="15" font-weight="700">goatcore</text>
-<text x="472" y="231" class="tq" font-size="13">mesh, identity,</text>
-<text x="472" y="249" class="tq" font-size="13">data fabric</text>
+<rect x="290" y="202" width="180" height="60" rx="8" class="bxa"/>
+<text x="304" y="225" class="t" font-size="15" font-weight="700">goatcore</text>
+<text x="304" y="245" class="tq" font-size="13">site bravo</text>
 </g></a>
-<rect x="620" y="186" width="104" height="60" rx="8" class="bx"/>
-<text x="636" y="209" class="t" font-size="15" font-weight="700">Services</text>
-<text x="636" y="231" class="tq" font-size="13">your own</text>
-<path d="M320 212L440 212" class="lna" data-lint="nohead"/>
-<text x="380" y="198" text-anchor="middle" class="ta" font-size="13" font-weight="700">direct tunnel</text>
-<path d="M170 150L170 68L246 68" class="lnd" data-lint="nohead"/>
-<text x="178" y="122" class="tq" font-size="13" font-weight="700">enroll, relay</text>
-<path d="M590 150L590 124" class="lnd" data-lint="nohead"/>
-<path d="M590 100L590 68L514 68" class="lnd" data-lint="nohead"/>
-<path d="M582 104l16 16M598 104l-16 16" class="lnw" data-lint="strike"/>
-<text x="606" y="116" class="tw" font-size="13" font-weight="700">cloud unreachable</text>
-<rect x="20" y="340" width="96" height="38" rx="8" class="bxp"/>
-<text x="68" y="363" text-anchor="middle" class="t" font-size="15" font-weight="700">Sensor</text>
+<a href="#goatcore" tabindex="-1" aria-label="goatcore"><g id="lk-goatcore-c">
+<rect x="544" y="202" width="180" height="60" rx="8" class="bxa"/>
+<text x="558" y="225" class="t" font-size="15" font-weight="700">goatcore</text>
+<text x="558" y="245" class="tq" font-size="13">site charlie</text>
+</g></a>
+<path d="M216 232L290 232" class="lna" data-lint="nohead"/>
+<text x="253" y="224" text-anchor="middle" class="ta" font-size="13" font-weight="700">tunnel</text>
+<path d="M470 232L544 232" class="lna" data-lint="nohead"/>
+<text x="507" y="224" text-anchor="middle" class="ta" font-size="13" font-weight="700">tunnel</text>
+<path d="M116 110L116 162" class="lna" data-lint="nohead"/>
+<path d="M292 110L292 162" class="lna" data-lint="nohead"/>
+<path d="M468 110L468 162" class="lna" data-lint="nohead"/>
+<path d="M644 110L644 162" class="lna" data-lint="nohead"/>
+<rect x="172" y="288" width="160" height="48" rx="8" class="bx"/>
+<text x="186" y="309" class="t" font-size="15" font-weight="700">Cloud relays</text>
+<text x="186" y="327" class="tq" font-size="13">enroll and relay</text>
+<path d="M192 288L192 262" class="lnd" data-lint="nohead"/>
+<path d="M312 288L312 262" class="lnd" data-lint="nohead"/>
+<rect x="20" y="374" width="720" height="202" rx="12" class="bxp"/>
+<text x="36" y="562" class="tq" font-size="13" font-weight="700">Edge systems, many at each site</text>
 <a href="#open-billie" tabindex="-1" aria-label="open-billie"><g id="lk-open-billie">
-<rect x="146" y="340" width="150" height="60" rx="8" class="bx"/>
-<text x="162" y="363" class="t" font-size="15" font-weight="700">open-billie</text>
-<text x="162" y="385" class="tq" font-size="13">sensor node</text>
+<rect x="36" y="392" width="180" height="56" rx="8" class="bx"/>
+<text x="50" y="415" class="t" font-size="15" font-weight="700">open-billie</text>
+<text x="50" y="435" class="tq" font-size="13">sensor node</text>
 </g></a>
-<path d="M116 359L137.25 359" class="ln"/><path d="M145.25 359L136.25 363.5L136.25 354.5z" class="fl"/>
-<path d="M221 340L221 283.75" class="lna"/><path d="M221 274.75L226 284.75L216 284.75z" class="fa"/>
-<text x="231" y="312" class="tq" font-size="13" font-weight="700">tracks</text>
-<rect x="624" y="340" width="116" height="38" rx="8" class="bxp"/>
-<text x="682" y="363" text-anchor="middle" class="t" font-size="15" font-weight="700">Equipment</text>
+<path d="M126 392L126 271" class="lna"/>
+<path d="M126 262L131 272L121 272z" class="fa"/>
+<path d="M56 462L196 462" class="ln"/>
+<path d="M126 462L126 448" class="ln"/>
+<rect x="36" y="474" width="84" height="28" rx="14" class="bx"/>
+<text x="78" y="493" text-anchor="middle" class="t" font-size="13">Sensors</text>
+<path d="M78 474L78 462" class="ln"/>
+<rect x="132" y="474" width="84" height="28" rx="14" class="bx"/>
+<text x="174" y="493" text-anchor="middle" class="t" font-size="13">Cameras</text>
+<path d="M174 474L174 462" class="ln"/>
+<rect x="36" y="510" width="84" height="28" rx="14" class="bx"/>
+<text x="78" y="529" text-anchor="middle" class="t" font-size="13">Weather</text>
+<rect x="132" y="510" width="84" height="28" rx="14" class="bx"/>
+<text x="174" y="529" text-anchor="middle" class="t" font-size="13">Radios</text>
 <a href="#octo-pod" tabindex="-1" aria-label="octo-pod"><g id="lk-octo-pod">
-<rect x="444" y="340" width="150" height="60" rx="8" class="bx"/>
-<text x="460" y="363" class="t" font-size="15" font-weight="700">octo-pod</text>
-<text x="460" y="385" class="tq" font-size="13">site gateway</text>
+<rect x="290" y="392" width="180" height="56" rx="8" class="bx"/>
+<text x="304" y="415" class="t" font-size="15" font-weight="700">octo-pod</text>
+<text x="304" y="435" class="tq" font-size="13">site gateway</text>
 </g></a>
-<path d="M624 359L602.75 359" class="ln"/><path d="M594.75 359L603.75 354.5L603.75 363.5z" class="fl"/>
-<path d="M519 340L519 283.75" class="lna"/><path d="M519 274.75L524 284.75L514 284.75z" class="fa"/>
-<text x="529" y="312" class="tq" font-size="13" font-weight="700">released feeds</text>
-<a href="#goatdocs" tabindex="-1" aria-label="goatdocs"><g id="lk-goatdocs">
-<rect x="312" y="340" width="116" height="60" rx="8" class="bxm"/>
-<text x="328" y="363" class="tm" font-size="15" font-weight="700">goatdocs</text>
-<text x="328" y="385" class="tq" font-size="13">the guides</text>
-</g></a>
+<path d="M380 392L380 271" class="lna"/>
+<path d="M380 262L385 272L375 272z" class="fa"/>
+<path d="M310 462L450 462" class="ln"/>
+<path d="M380 462L380 448" class="ln"/>
+<rect x="290" y="474" width="84" height="28" rx="14" class="bx"/>
+<text x="332" y="493" text-anchor="middle" class="t" font-size="13">Machines</text>
+<path d="M332 474L332 462" class="ln"/>
+<rect x="386" y="474" width="84" height="28" rx="14" class="bx"/>
+<text x="428" y="493" text-anchor="middle" class="t" font-size="13">Vehicles</text>
+<path d="M428 474L428 462" class="ln"/>
+<rect x="290" y="510" width="84" height="28" rx="14" class="bx"/>
+<text x="332" y="529" text-anchor="middle" class="t" font-size="13">Drones</text>
+<rect x="386" y="510" width="84" height="28" rx="14" class="bx"/>
+<text x="428" y="529" text-anchor="middle" class="t" font-size="13">Equipment</text>
+<rect x="544" y="392" width="180" height="56" rx="8" class="bx"/>
+<text x="558" y="415" class="t" font-size="15" font-weight="700">goat-client</text>
+<text x="558" y="435" class="tq" font-size="13">on each device</text>
+<path d="M634 392L634 271" class="lna"/>
+<path d="M634 262L639 272L629 272z" class="fa"/>
+<path d="M564 462L704 462" class="ln"/>
+<path d="M634 462L634 448" class="ln"/>
+<rect x="544" y="474" width="84" height="28" rx="14" class="bx"/>
+<text x="586" y="493" text-anchor="middle" class="t" font-size="13">Phones</text>
+<path d="M586 474L586 462" class="ln"/>
+<rect x="640" y="474" width="84" height="28" rx="14" class="bx"/>
+<text x="682" y="493" text-anchor="middle" class="t" font-size="13">Laptops</text>
+<path d="M682 474L682 462" class="ln"/>
+<rect x="544" y="510" width="84" height="28" rx="14" class="bx"/>
+<text x="586" y="529" text-anchor="middle" class="t" font-size="13">Tablets</text>
+<rect x="640" y="510" width="84" height="28" rx="14" class="bx"/>
+<text x="682" y="529" text-anchor="middle" class="t" font-size="13">Field kits</text>
 </svg></div>
-    <figcaption id="sys-cap">The shape of a goat deployment, drawn from the goatcore README and the two edge repositories. Each site runs its own copy of the services. Relays and one public DNS name in the cloud are used when a device enrolls and when two peers cannot reach each other directly; peers that have joined keep their tunnels when the cloud cannot be reached. A diagram, not a capture. Select a part to read about its repository. <span class="scrollhint">The figure scrolls sideways.</span></figcaption>
+    <figcaption id="sys-cap">How a goat deployment carries an operation. Many edge systems at each site join through a sensor node, a site gateway or the client on the device. Each site runs its own goatcore, and the sites share one data fabric. The systems that use the data publish and subscribe on it by identity. Relays and one public DNS name in the cloud are used when a device enrolls and when two peers cannot reach each other directly; peers that have joined keep their tunnels when the cloud cannot be reached. A diagram, not a capture. Select a part to read about its repository. <span class="scrollhint">The figure scrolls sideways.</span></figcaption>
     <ul class="partnav" aria-label="The five repositories">
       <li><a href="#goatcore">goatcore</a></li>
       <li><a href="#goatstuff">goatstuff</a></li>
