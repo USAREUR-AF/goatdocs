@@ -121,18 +121,18 @@ marketplace, so the skill can be installed once per person and is then present i
 repository, including one that has no files yet:
 
 ```
-/plugin install goatdocs --marketplace USAREUR-AF/goatdocs
+/plugin install goat-skills --marketplace USAREUR-AF/goatdocs
 ```
 
 (Before Claude Code 2.1.275: `claude plugin marketplace add USAREUR-AF/goatdocs`, then
-`claude plugin install goatdocs@goatdocs --scope user`.)
+`claude plugin install goat-skills@goatdocs --scope user`.)
 
 A repository can ask for it on its own: its `.claude/settings.json` carries
 
 ```json
 {
   "extraKnownMarketplaces": { "goatdocs": { "source": { "source": "github", "repo": "USAREUR-AF/goatdocs" } } },
-  "enabledPlugins": { "goatdocs@goatdocs": true }
+  "enabledPlugins": { "goat-skills@goatdocs": true }
 }
 ```
 
