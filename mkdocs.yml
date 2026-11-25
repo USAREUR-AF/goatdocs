@@ -43,6 +43,8 @@ exclude_docs: |
   goat/pages/extra.css
   goat/pages/extra-tail.css
   goat/pages/icon.svg
+  goat/panoscope/README.md
+  goat/panoscope/check.py
   hello-galaxy/README.md
 
 theme:

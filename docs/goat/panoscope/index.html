@@ -1,0 +1,415 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>panoscope</title>
+<meta name="description" content="panoscope draws every peer, topic and flow on a goat Zenoh fabric, live in the browser. One rule on the server decides what fits on the screen, and any topic opens to its live bytes.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22 fill=%22none%22 stroke=%22%230d6646%22 stroke-width=%224%22 stroke-linejoin=%22round%22%3E%3Ccircle cx=%2232%22 cy=%2232%22 r=%2225%22/%3E%3Cpath d=%22M19 39L30 22L45 33%22/%3E%3Ccircle cx=%2219%22 cy=%2239%22 r=%223.5%22 fill=%22%230d6646%22/%3E%3Ccircle cx=%2230%22 cy=%2222%22 r=%223.5%22 fill=%22%230d6646%22/%3E%3Ccircle cx=%2245%22 cy=%2233%22 r=%223.5%22 fill=%22%230d6646%22/%3E%3C/svg%3E" type="image/svg+xml">
+<style>
+/* A scope's graticule: a fine measuring grid with a heavier center cross, the trace in
+   phosphor green. The captures are panoscope's own screen, which is dark in both schemes.
+   System fonts only. */
+:root {
+  --paper: #f3f5f2; --panel: #fbfcfa; --ink: #14201b; --quiet: #4a5852; --rule: #cbd5cf; --grid: #e2e8e4; --grid-major: #d3dcd6;
+  --accent: #0d6646; --accent-soft: #d6ebe1; --on-accent: #ffffff; --track: #1b5a85; --track-2: #4a5a6a;
+  --good: #1f7a3d; --bad: #8a2a1f; --code-bg: #eaefeb; --screen: #0b0d10;
+  --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #0b0f0e; --panel: #111818; --ink: #e3ece7; --quiet: #9db0a7; --rule: #2a3a34; --grid: #121c19; --grid-major: #1a2925;
+    --accent: #5fd3a0; --accent-soft: #143326; --on-accent: #06110c; --track: #8ec5ef; --track-2: #a9b6c3;
+    --good: #5fcf86; --bad: #ee9082; --code-bg: #070a09; --screen: #0b0d10;
+  }
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 17px/1.6 var(--sans); }
+a { color: var(--track); }
+a:focus-visible, button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+code, pre { font-family: var(--mono); }
+.wrap { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+@media (max-width: 600px) { .wrap { padding: 0 16px; } }
+
+/* top bar */
+.top { position: relative; z-index: 2; height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.brand { display: flex; align-items: center; gap: 10px; color: var(--ink); text-decoration: none; font: 700 16px var(--mono); }
+.brand svg { width: 28px; height: 28px; color: var(--accent); }
+.top nav { display: flex; gap: 22px; font: 15px var(--mono); }
+.top nav a { color: var(--quiet); text-decoration: none; }
+.top nav a:hover { color: var(--ink); }
+@media (max-width: 720px) { .top nav a:not(.gh) { display: none; } }
+
+/* hero: fills the first screen; the numbers strip sits at its bottom edge. The background is the graticule. */
+.hero { position: relative; overflow: hidden; min-height: calc(100svh - 64px); display: flex; flex-direction: column;
+  background-image:
+    linear-gradient(var(--grid-major) 1px, transparent 1px), linear-gradient(90deg, var(--grid-major) 1px, transparent 1px),
+    linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 160px 160px, 160px 160px, 32px 32px, 32px 32px; background-position: -1px -1px; }
+.bgcode { position: absolute; inset: 0 0 auto auto; width: 62%; margin: 0; padding: 40px 0 0; color: var(--ink); opacity: .07;
+  font: 15px/1.7 var(--mono); white-space: pre; pointer-events: none; user-select: none;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 30%); mask-image: linear-gradient(90deg, transparent, #000 30%); }
+.hero-grid { position: relative; flex: 1; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 40px; align-items: center; padding-top: 24px; padding-bottom: 28px; }
+.prompt { font: 600 16px var(--mono); color: var(--track); margin: 0 0 6px; }
+.prompt .cur { display: inline-block; width: .6em; height: 1.05em; vertical-align: -.15em; background: var(--accent); margin-left: 4px; animation: blink 1.1s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+.wordmark { font: 900 clamp(30px, 5.1vw, 80px)/1.02 var(--mono); letter-spacing: -0.04em; margin: 0; white-space: nowrap; }
+.tagline { font-weight: 700; font-size: clamp(19px, 1.9vw, 25px); line-height: 1.3; color: var(--accent); margin: 14px 0 10px; }
+.lede { color: var(--quiet); margin: 0 0 24px; max-width: 38em; }
+.buttons { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; }
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 18px; border: 1px solid var(--rule); background: var(--panel);
+  color: var(--ink); font: 700 16px var(--sans); text-decoration: none; border-radius: 3px; }
+.btn svg { width: 18px; height: 18px; }
+.btn.star { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.btn:hover { border-color: var(--ink); }
+.cmd { display: flex; align-items: stretch; border: 1px solid var(--rule); background: var(--panel); border-radius: 3px; max-width: 640px; }
+.cmd pre { flex: 1; margin: 0; padding: 12px 14px; font-size: 14px; overflow-x: auto; white-space: pre-wrap; overflow-wrap: anywhere; min-width: 0; }
+.cmd .dollar { color: var(--good); user-select: none; }
+.copy { border: 0; border-left: 1px solid var(--rule); background: none; color: var(--accent); font: 700 14px var(--mono); padding: 0 16px; cursor: pointer; }
+.needs { font-size: 14px; color: var(--quiet); margin: 8px 0 0; }
+
+/* numbers strip */
+.numbers { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--rule); background: var(--panel); margin-bottom: 8px; }
+.numbers > div { padding: 16px 20px; border-left: 1px solid var(--rule); min-width: 0; }
+.numbers > div:first-child { border-left: 0; }
+.numbers .n { display: block; font: 800 34px/1.1 var(--mono); color: var(--accent); }
+.numbers .l { display: block; font-weight: 700; }
+.numbers code { display: block; font-size: 11.5px; color: var(--quiet); overflow-wrap: anywhere; margin-top: 4px; }
+.numbers-note { font-size: 13px; color: var(--quiet); margin: 0 0 14px; }
+
+@media (max-width: 960px) {
+  .hero-grid { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  .bgcode { width: 100%; white-space: pre-wrap; overflow-wrap: anywhere; }
+  .numbers { grid-template-columns: repeat(2, 1fr); }
+  .numbers > div:nth-child(3) { border-left: 0; }
+  .numbers > div:nth-child(n+3) { border-top: 1px solid var(--rule); }
+}
+@media (max-width: 600px) {
+  .hero-grid { padding-top: 8px; }
+  .prompt { font-size: 14px; }
+  .bgcode { opacity: .045; }
+  .lede { font-size: 16px; margin-bottom: 18px; }
+  .btn { padding: 10px 14px; font-size: 15px; }
+  .cmd pre { font-size: 12.5px; }
+  .numbers .n { font-size: 26px; }
+  .numbers > div { padding: 12px 14px; }
+}
+
+/* sections */
+section.band { padding: 72px 0; border-top: 1px solid var(--rule); }
+h2 { font-size: clamp(26px, 3vw, 36px); line-height: 1.2; margin: 0 0 12px; letter-spacing: -0.01em; }
+h3 { font-size: 19px; margin: 0 0 6px; }
+.sub { color: var(--quiet); max-width: 46em; margin: 0 0 32px; }
+.cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.card { background: var(--panel); border: 1px solid var(--rule); border-top: 3px solid var(--accent); padding: 22px; border-radius: 3px; }
+.card p { margin: 0; color: var(--quiet); }
+.cards.four { grid-template-columns: repeat(4, 1fr); }
+@media (max-width: 1100px) { .cards.four { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 860px) { .cards, .cards.four { grid-template-columns: 1fr; } }
+.status { display: inline-block; font: 700 12px var(--mono); letter-spacing: .04em; text-transform: uppercase; color: var(--ink); border: 1px solid var(--quiet); border-radius: 2px; padding: 2px 7px; margin-bottom: 10px; }
+.status.designed { border-style: dashed; color: var(--quiet); }
+.feature { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr); gap: 40px; align-items: start; }
+.feature p { margin: 0 0 14px; }
+@media (max-width: 860px) { .feature { grid-template-columns: minmax(0, 1fr); } }
+figure { margin: 0; }
+figure img { width: 100%; height: auto; display: block; background: var(--screen); border: 1px solid var(--rule); border-radius: 3px; }
+figcaption { font-size: 14px; color: var(--quiet); margin-top: 8px; }
+.json { background: var(--code-bg); border: 1px solid var(--rule); padding: 12px 14px; font-size: 13px; overflow-x: auto; border-radius: 3px; white-space: pre-wrap; overflow-wrap: anywhere; margin: 0 0 14px; }
+.json .c { color: var(--quiet); }
+table { border-collapse: collapse; width: 100%; font-size: 15px; }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th { font-size: 13px; text-transform: uppercase; letter-spacing: .04em; color: var(--quiet); }
+td code { font-size: 13px; overflow-wrap: anywhere; }
+td.num { font-family: var(--mono); color: var(--accent); font-weight: 700; white-space: nowrap; }
+.scroll { overflow-x: auto; }
+pre.block { background: var(--code-bg); border: 1px solid var(--rule); padding: 14px; overflow-x: auto; font-size: 14px; border-radius: 3px; white-space: pre-wrap; overflow-wrap: anywhere; }
+/* a command shows whole: it wraps at spaces, continuation lines hang two characters in (more for an indented line) */
+.cmd pre .ln, pre.block .ln { display: block; padding-left: 2ch; text-indent: -2ch; }
+/* output wraps too, its continuation lines hang by --hang */
+.json .ln { display: block; padding-left: var(--hang, 2ch); text-indent: calc(-1 * var(--hang, 2ch)); }
+/* a word with a hyphen or slash moves to the next line whole, and breaks only if it alone is wider than the box */
+pre .ln .w { display: inline-block; max-width: 100%; text-indent: 0; }
+footer { border-top: 1px solid var(--rule); padding: 32px 0 48px; color: var(--quiet); font-size: 15px; }
+footer a { margin-right: 18px; }
+footer p + p a { margin-right: 0; }
+
+/* the first screen's stage: the real program, recorded and replayed */
+.stage { background: var(--panel); border: 1px solid var(--rule); border-radius: 4px; box-shadow: 0 1px 0 var(--rule); min-width: 0; }
+.stage-head { display: flex; justify-content: space-between; gap: 12px; padding: 8px 12px; border-bottom: 1px solid var(--rule); font: 13px var(--mono); color: var(--quiet); }
+.stage-head b { color: var(--ink); }
+.stage-head span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.shot { position: relative; aspect-ratio: 16 / 10; background: var(--screen); overflow: hidden; }
+.shot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; transition: opacity .45s; }
+.shot img.off { opacity: 0; }
+.stage-cap { margin: 0; padding: 8px 12px; font: 700 14px/1.4 var(--sans); color: var(--ink); border-top: 1px solid var(--rule); }
+.stage-lines { margin: 0; padding: 8px 12px; min-height: calc(3 * 1.6em + 16px); background: var(--code-bg); font: 12.5px/1.6 var(--mono); color: var(--quiet); white-space: pre-wrap; overflow-wrap: anywhere; }
+.stage-lines .ev { color: var(--accent); font-weight: 700; }
+.stage-lines .in { color: var(--ink); }
+.stage-foot { padding: 8px 12px; font-size: 13px; color: var(--quiet); border-top: 1px solid var(--rule); }
+@media (prefers-reduced-motion: reduce) { .prompt .cur { animation: none; } .shot img { transition: none; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="#top"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round" aria-hidden="true"><circle cx="32" cy="32" r="25"/><path d="M19 39L30 22L45 33"/><circle cx="19" cy="39" r="3.5" fill="currentColor"/><circle cx="30" cy="22" r="3.5" fill="currentColor"/><circle cx="45" cy="33" r="3.5" fill="currentColor"/></svg>panoscope</a>
+    <nav aria-label="Sections">
+      <a href="#what">What it is</a><a href="#rule">How it works</a><a href="#start">Start</a>
+      <a href="../">goat</a>
+      <a class="gh" href="https://github.com/USAREUR-AF/goatstuff/tree/main/ops/panoscope">GitHub</a>
+    </nav>
+  </header>
+</div>
+
+<main id="top">
+<section class="hero" aria-labelledby="name">
+<pre class="bgcode" aria-hidden="true">{
+  "endpoint": "tcp/panoscope-dev-zenoh:7447",
+  "peers": [
+    {
+      "personality": "tracks-demo",
+      "topic": "notional/tarsier/alpha-fob/contacts/v1",
+      "rate_hz": 1,
+      "peer_id": "tarsier-alpha",
+      "role_class": "sensor",
+      "site": "alpha-fob",
+      "logical_vendor": "notional"
+    },
+    {
+      "personality": "tracks-demo",
+      "topic": "notional/octopus/alpha-fob/tracks/v1",
+      "rate_hz": 1,
+      "peer_id": "octopus-alpha",
+      "role_class": "data-service",
+      "site": "alpha-fob",
+      "logical_vendor": "notional"
+    },</pre>
+  <div class="wrap hero-grid">
+    <div>
+      <p class="prompt">&gt;_ ./demo.sh open<span class="cur" aria-hidden="true"></span></p>
+      <h1 class="wordmark" id="name">panoscope</h1>
+      <p class="tagline">Every peer, topic and flow on a goat data fabric, drawn live in the browser.</p>
+      <p class="lede">panoscope watches a Zenoh fabric and publishes nothing. It draws peers as nodes, topics as pins and each sampled publish as a moving dot. One rule on the server decides what fits on the screen, and any topic opens to its live bytes.</p>
+      <div class="buttons">
+        <a class="btn star" href="https://github.com/USAREUR-AF/goatstuff"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M12 2.8l2.8 5.8 6.4.9-4.6 4.5 1.1 6.3L12 17.3l-5.7 3 1.1-6.3-4.6-4.5 6.4-.9z"/></svg>Star on GitHub</a>
+        <a class="btn" href="#start">Quick start</a>
+        <a class="btn" href="https://github.com/USAREUR-AF/goatstuff/blob/main/ops/panoscope/README.md">README</a>
+      </div>
+      <div class="cmd"><pre data-box="command"><span class="ln"><span class="dollar">$ </span><code id="c-start">git clone <span class="w">https://github.com/usareur-af/goatstuff</span> &amp;&amp; cd <span class="w">goatstuff/ops/panoscope</span> &amp;&amp; <span class="w">./demo.sh</span> up</code></span></pre><button class="copy" type="button" data-copy="c-start">Copy</button></div>
+      <p class="needs">Needs Docker. Then open <code>http://127.0.0.1:8080</code>.</p>
+    </div>
+
+    <div class="stage" role="img" aria-label="A recording of panoscope's COP page from the local demo in goatstuff, replayed in four frames. First, the whole notional fabric: 23 peers and 19 topics. Second, one topic opened, with its live bytes in the stream pane. Third, 120 more topics from one publisher, drawn as one family group. Fourth, every peer of the notional organization collapsed into one node. Under each frame, publish events that panoscope streamed to the page in the same run.">
+      <div class="stage-head"><span><b>panoscope</b> COP, local demo</span><span id="stage-step">frame 2 of 4</span></div>
+      <div class="shot" id="stage-shot">
+        <img src="cop-fabric.png" width="1920" height="1200" alt="" class="off" hidden>
+        <img src="cop-topic.png" width="1920" height="1200" alt="">
+        <img src="cop-family.png" width="1920" height="1200" alt="" class="off" hidden>
+        <img src="cop-collapsed.png" width="1920" height="1200" alt="" class="off" hidden>
+      </div>
+      <p class="stage-cap" id="stage-cap">One topic opened: its live bytes in the stream pane.</p>
+      <pre class="stage-lines" id="stage-lines" aria-hidden="true"><span>21:04:15.939  notional/tarsier/bravo-fob/contacts/v1</span>
+<span>21:04:15.987  notional/mantis/alpha-fob/imagery/v1</span>
+<span class="ev">21:04:16.442  notional/octopus/alpha-fob/tracks/v1</span></pre>
+      <div class="stage-foot">Captures of the real program on goatstuff <code>main</code>. The lines are <code>publish_sampled</code> events from its WebSocket in the same run, in order.</div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <!-- Four numbers that are facts about the product, each measured from goatstuff by check.py beside this page. -->
+    <div class="numbers">
+      <div><span class="n" data-measure="pages">4</span><span class="l">pages: COP, TOP, WHO, ACCESS</span><code>ls frontend/web/*.html | wc -l</code></div>
+      <div><span class="n" data-measure="max-elements">5,000</span><span class="l">elements at most on one canvas</span><code>grep -o 'MAX_ELEMENTS: usize = [0-9_]*' src/view/assemble.rs</code></div>
+      <div><span class="n" data-measure="vendored">1</span><span class="l">browser library, d3, vendored; no build step</span><code>ls frontend/web/vendor/*/*.js | wc -l</code></div>
+      <div><span class="n" data-measure="rust-tests">256</span><span class="l">Rust tests in the crate</span><code>grep -rE '#\[(tokio::)?test' src | wc -l</code></div>
+    </div>
+    <p class="numbers-note">Each command runs in <code>ops/panoscope</code> of goatstuff. Counted on <code>main</code> at commit <code>69e8165</code>.</p>
+  </div>
+</section>
+
+<section class="band" id="what">
+  <div class="wrap">
+    <h2>What it is</h2>
+    <p class="sub">panoscope is an inspection tool in <a href="https://github.com/USAREUR-AF/goatstuff">goatstuff</a> for a goat data fabric. It joins the fabric as a Zenoh client, keeps what it observes in memory, and serves four pages and an HTTP API. You do not need it to run a goatnet. It shows you what the goatnet is doing.</p>
+    <div class="cards">
+      <div class="card"><h3>It only reads</h3><p>It subscribes to <code>**</code> and queries the router's admin space. A token bucket per topic limits what it records, and nothing a viewer does adds load to the fabric. The source has no <code>put</code> and no publisher.</p></div>
+      <div class="card"><h3>The server decides what is drawn</h3><p>A background task rebuilds one model of the fabric. Each viewer's request applies scope, window, filters and one grouping rule to that model. The browser draws the elements it receives and folds nothing.</p></div>
+      <div class="card"><h3>One binary, pages inside</h3><p>The pages are plain HTML, CSS and JavaScript modules in <code>frontend/web/</code>, with d3 as one vendored file. <code>rust-embed</code> puts them in the binary at compile time, and the image runs on a distroless base.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="rule">
+  <div class="wrap feature">
+    <div>
+      <h2>One rule decides what fits on the screen</h2>
+      <p>A publisher's topics form a tree of key segments. When more than seven siblings have the same shape, they fold into one family. When a publisher still draws more than 40 units, whole subtrees fold, deepest first, until it fits. Above 5,000 elements in one view, every publisher is grouped again at a smaller budget, and the page says so. <a href="https://github.com/USAREUR-AF/goatstuff/blob/main/docs/design/panoscope-view-model.md">The view model</a> describes the rule in full.</p>
+      <p>In the recorded run, 120 keys under <code>notional/viewproof/stream/</code> arrived from one publisher. The view counted all of them and drew one family:</p>
+      <pre class="json" data-box="output"><span class="ln"><span class="c">$ curl -s -X POST <span class="w">127.0.0.1:8080/api/view</span> -H <span class="w">'content-type: application/json'</span> -d '{}' | jq -c '.totals | {topics, groups, elements}'</span></span><span class="ln">{"topics":139,"groups":1,"elements":143}</span><span class="ln"><span class="c">$ curl -s -X POST <span class="w">127.0.0.1:8080/api/view</span> -H <span class="w">'content-type: application/json'</span> -d '{}' | jq -c '.groups[] | {kind, label, topic_count}'</span></span><span class="ln">{"kind":"family","label":"notional/viewproof/stream/*/…","topic_count":120}</span></pre>
+      <p>Opening a group opens one level. The same request with that group's id in <code>expand</code> drew ten families of twelve:</p>
+      <pre class="json" data-box="output"><span class="ln">{"topics":139,"groups":10,"elements":197}</span></pre>
+      <p>The rule has its own tests, with publishers from a handful of topics to more than 40,000:</p>
+      <pre class="json" data-box="output"><span class="ln"><span class="c">$ cargo test view::group</span></span><span class="ln">test result: ok. 13 passed; 0 failed; 1 ignored; 0 measured; 242 filtered out</span></pre>
+    </div>
+    <figure>
+      <img src="cop-family.png" width="1920" height="1200" loading="lazy" alt="panoscope's COP with 24 peers and 139 topics. The 120 viewproof topics are one family node, drawn as concentric rings labeled viewproof stream, beside the other peers and their topic pins.">
+      <figcaption>The family on the canvas: 139 topics, 143 elements drawn. A capture of panoscope, which has one dark theme.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="band" id="stream">
+  <div class="wrap feature">
+    <div>
+      <h2>Every topic opens to its live bytes</h2>
+      <p>Click a pin and the side panel shows the topic, what it connects to, and a stream of its latest samples. RAW shows a JSON payload as text and any other payload as a hex dump. DECODED shows protobuf fields when the portal supplies the schema. A small <code>jq</code> filter, run in the page, selects fields.</p>
+      <p>The samples come from a ring buffer per topic in panoscope itself. The page asks for them over HTTP; the WebSocket only says that a new one arrived:</p>
+      <pre class="json" data-box="output" style="--hang:4ch"><span class="ln"><span class="c">$ curl -s <span class="w">'127.0.0.1:8080/api/samples?topic=notional/octopus/alpha-fob/tracks/v1&amp;limit=1'</span> | jq -r '.entries[0] | .format, .size_bytes, .preview'</span></span><span class="ln">protobuf</span><span class="ln">72</span><span class="ln">00000000  0a 0d 64 65 6d 6f 2d 37|33 34 66 63 37 39 35 10  | ..demo-734fc795.</span><span class="ln">00000010  9a 88 d7 a2 a1 34 19 12|78 46 03 f4 57 3d 40 21  | .....4..xF..W=@!</span><span class="ln">00000020  55 38 83 c1 84 d3 47 40|29 c4 2c 3b 64 10 d0 58  | U8....G@).,;d..X</span><span class="ln">00000030  40 31 b4 ea 1f 27 5a 2e|22 40 39 d7 da 4b c9 f5  | @1...'Z."@9..K..</span><span class="ln">00000040  2a 76 40 42 03 61 69 72|                         | *v@B.air</span></pre>
+    </div>
+    <figure>
+      <img src="cop-topic.png" width="1920" height="1200" loading="lazy" alt="panoscope's COP with the topic notional/octopus/alpha-fob/tracks/v1 selected. The side panel lists recent samples of 72 to 76 bytes, each as a hex dump with a timestamp and the publishing peer.">
+      <figcaption>The stream pane for one topic of the demo fabric. Each sample has its time, size, key and the peer that published it.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="band" id="status">
+  <div class="wrap">
+    <h2>The demo shows the COP; the other pages need a goatnet</h2>
+    <p class="sub">The local demo has a Zenoh router and 22 notional peers, and no portal. The COP and its stream pane work in full. The other three pages are built and read sources the demo does not have, so they say that instead of showing data.</p>
+    <div class="cards four">
+      <div class="card"><span class="status">Built</span><h3>COP</h3><p>The graph, the stream pane, the history window (1 hour to 7 days), the SOURCE, INFRA and TEST filters, and organization collapse.</p></div>
+      <div class="card"><span class="status">Built</span><h3>TOP</h3><p>Health of the mesh, the fabric, time and presence, and a table of producers. It reads health beats from the goatnet; in the demo every tile reads <code>UNMETERED</code>.</p></div>
+      <div class="card"><span class="status">Built</span><h3>WHO</h3><p>The roster of identities, with columns for write and read access and onboarding. It needs the portal; in the demo the page says the portal is not configured.</p></div>
+      <div class="card"><span class="status designed">Designed</span><h3>ACCESS labels and grants</h3><p>The ACCESS page and its queries are built. Its label lanes and grant edges wait for a registry that is designed and not yet built, and the page says so.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="start">
+  <div class="wrap">
+    <h2>Quick start</h2>
+    <p class="sub">You need Docker. The first run compiles panoscope and the notional data generator from source; later runs start from the build cache.</p>
+    <pre class="block" data-box="command"><span class="ln">git clone <span class="w">https://github.com/usareur-af/goatstuff</span>
+</span><span class="ln">cd <span class="w">goatstuff/ops/panoscope</span>
+</span><span class="ln"><span class="w">./demo.sh</span> up</span></pre>
+    <p>Open <code>http://127.0.0.1:8080</code> and give the fabric about 30 seconds to fill. One container runs all 22 notional peers, each with its own Zenoh session. To check from a shell:</p>
+    <pre class="json" data-box="output"><span class="ln"><span class="c">$ curl -s <span class="w">http://127.0.0.1:8080/api/snapshot</span> | python3 -c 'import sys,json;d=json.load(sys.stdin);print("nodes",len(d["nodes"]),"edges",len(d["edges"]))'</span></span><span class="ln">nodes 23 edges 75</span></pre>
+    <p>To see the grouping rule, put 120 keys on the demo router through its REST plugin:</p>
+    <pre class="block" data-box="command"><span class="ln">for s in {0..9}; do for c in {0..11}; do curl -s -X PUT -H <span class="w">'content-type: application/json'</span> -d "{\"seq\":$c}" <span class="w">"http://127.0.0.1:8000/notional/viewproof/stream/$s/chunk/$c"</span>; done; done</span></pre>
+    <p><code>./demo.sh down</code> stops it. <a href="https://github.com/USAREUR-AF/goatstuff/blob/main/ops/panoscope/README-local-demo.md">The demo guide</a> &middot; <a href="https://github.com/USAREUR-AF/goatstuff/blob/main/docs/operations/panoscope-runbook.md">Operator runbook</a> &middot; <a href="https://github.com/USAREUR-AF/goatstuff/blob/main/CONTRIBUTING.md">Contributing</a></p>
+  </div>
+</section>
+
+<section class="band" id="numbers">
+  <div class="wrap">
+    <h2>Each number, and the command behind it</h2>
+    <p class="sub">Run each command in <code>ops/panoscope</code> of a goatstuff checkout. <code>check.py</code> beside this page measures the four numbers of the first screen the same way, and the goatdocs pages workflow runs it against goatstuff <code>main</code>.</p>
+    <div class="scroll">
+      <table>
+        <thead><tr><th scope="col">What</th><th scope="col">Number</th><th scope="col">How to check it</th></tr></thead>
+        <tbody>
+          <tr><td>Pages</td><td class="num">4</td><td><code>ls frontend/web/*.html | wc -l</code>: <code>index.html</code> (COP), <code>top.html</code>, <code>who.html</code>, <code>access.html</code></td></tr>
+          <tr><td>Elements at most on one canvas</td><td class="num">5,000</td><td><code>grep -o 'MAX_ELEMENTS: usize = [0-9_]*' src/view/assemble.rs</code></td></tr>
+          <tr><td>Vendored browser libraries</td><td class="num">1</td><td><code>ls frontend/web/vendor/*/*.js | wc -l</code>: <code>d3/d3.min.js</code>. npm is used only for the Playwright tests.</td></tr>
+          <tr><td>Rust tests in the crate</td><td class="num">256</td><td><code>grep -rE '#\[(tokio::)?test' src | wc -l</code>. <code>cargo test</code> on <code>main</code>: 251 passed, 5 ignored. The 5 are timing runs, started by hand with <code>--ignored</code>.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><a href="https://github.com/USAREUR-AF/goatstuff">Repository</a><a href="https://github.com/USAREUR-AF/goatstuff/blob/main/LICENSE">Apache License 2.0</a><a href="https://github.com/USAREUR-AF/goatstuff/blob/main/SECURITY.md">Security policy</a></p>
+    <p>Portions written by U.S. Federal government employees within the scope of their employment are in the public domain in the United States. Part of <a href="https://github.com/USAREUR-AF/goatcore">goat</a>.</p>
+  </div>
+</footer>
+<script>
+// Copy buttons, and the first screen's replay. The replay shows four captures of
+// panoscope from one recorded run, in the order they were taken, and under each the
+// publish_sampled events its WebSocket sent in that run, in order. It decides nothing.
+// Reduced motion or no JavaScript: frame 2, one topic opened.
+(function () {
+  "use strict";
+  document.querySelectorAll("button.copy").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var text = document.getElementById(b.dataset.copy).textContent;
+      if (navigator.clipboard) navigator.clipboard.writeText(text).then(function () {
+        b.textContent = "Copied"; setTimeout(function () { b.textContent = "Copy"; }, 1600);
+      });
+    });
+  });
+
+  var stage = document.getElementById("stage-lines");
+  if (!stage) return;
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduce) return;
+  var imgs = Array.prototype.slice.call(document.querySelectorAll("#stage-shot img"));
+  var step = document.getElementById("stage-step"), cap = document.getElementById("stage-cap");
+  // [capture time of the frame, caption, events: [time, key]], from the recorded run.
+  var FRAMES = [
+    ["The whole notional fabric: 23 peers, 19 topics, live.", [
+      ["21:04:10.029", "notional/echidna/alpha-fob/detections/v1"], ["21:04:10.123", "notional/kingfisher/bravo-fob/emissions/v1"],
+      ["21:04:10.169", "notional/axolotl/charlie-fob/composite/v1"], ["21:04:10.443", "notional/octopus/alpha-fob/tracks/v1"],
+      ["21:04:10.499", "notional/cuttlefish/theater/confirmed/v1"], ["21:04:10.537", "notional/chameleon/theater/normalized/v1"],
+      ["21:04:10.890", "notional/tarsier/alpha-fob/contacts/v1"], ["21:04:10.938", "notional/tarsier/bravo-fob/contacts/v1"],
+      ["21:04:10.984", "notional/mantis/alpha-fob/imagery/v1"]]],
+    ["One topic opened: its live bytes in the stream pane.", [
+      ["21:04:15.118", "notional/kingfisher/bravo-fob/emissions/v1"], ["21:04:15.169", "notional/axolotl/charlie-fob/composite/v1"],
+      ["21:04:15.444", "notional/octopus/alpha-fob/tracks/v1"], ["21:04:15.498", "notional/cuttlefish/theater/confirmed/v1"],
+      ["21:04:15.542", "notional/chameleon/theater/normalized/v1"], ["21:04:15.728", "notional/omniwatch/theater/heartbeat/v1"],
+      ["21:04:15.892", "notional/tarsier/alpha-fob/contacts/v1"], ["21:04:15.939", "notional/tarsier/bravo-fob/contacts/v1"],
+      ["21:04:15.987", "notional/mantis/alpha-fob/imagery/v1"]]],
+    ["120 more topics from one publisher: one family group.", [
+      ["21:04:18.309", "notional/viewproof/stream/0/chunk/0"], ["21:04:18.312", "notional/viewproof/stream/0/chunk/1"],
+      ["21:04:18.314", "notional/viewproof/stream/0/chunk/2"], ["21:04:18.315", "notional/viewproof/stream/0/chunk/3"],
+      ["21:04:18.317", "notional/viewproof/stream/0/chunk/4"], ["21:04:18.431", "notional/viewproof/stream/9/chunk/11"],
+      ["21:04:18.441", "notional/octopus/alpha-fob/tracks/v1"], ["21:04:18.497", "notional/cuttlefish/theater/confirmed/v1"],
+      ["21:04:18.543", "notional/chameleon/theater/normalized/v1"]]],
+    ["COLLAPSE ALL: the notional organization is one node.", [
+      ["21:04:30.027", "notional/echidna/alpha-fob/detections/v1"], ["21:04:30.119", "notional/kingfisher/bravo-fob/emissions/v1"],
+      ["21:04:30.166", "notional/axolotl/charlie-fob/composite/v1"], ["21:04:30.447", "notional/octopus/alpha-fob/tracks/v1"],
+      ["21:04:30.496", "notional/cuttlefish/theater/confirmed/v1"], ["21:04:30.539", "notional/chameleon/theater/normalized/v1"],
+      ["21:04:30.892", "notional/tarsier/alpha-fob/contacts/v1"], ["21:04:30.937", "notional/tarsier/bravo-fob/contacts/v1"],
+      ["21:04:30.987", "notional/mantis/alpha-fob/imagery/v1"]]]
+  ];
+  function ms(t) { var p = t.split(":"); return ((+p[0] * 60 + +p[1]) * 60 + +p[2]) * 1000; }
+  function show(k) {
+    imgs.forEach(function (im, i) { im.hidden = false; im.classList.toggle("off", i !== k); });
+    step.textContent = "frame " + (k + 1) + " of " + FRAMES.length;
+    cap.textContent = FRAMES[k][0];
+  }
+  function line(ev, last) {
+    var s = document.createElement("span");
+    if (last) s.className = "ev";
+    s.textContent = ev[0] + "  " + ev[1];
+    return s;
+  }
+  function play(k) {
+    show(k);
+    var evs = FRAMES[k][1], i = 0;
+    (function next() {
+      if (i >= evs.length) { setTimeout(function () { play((k + 1) % FRAMES.length); }, 1600); return; }
+      var shown = evs.slice(Math.max(0, i - 2), i + 1);
+      stage.textContent = "";
+      shown.forEach(function (ev, j) {
+        if (j) stage.appendChild(document.createTextNode("\n"));
+        stage.appendChild(line(ev, j === shown.length - 1));
+      });
+      var gap = i + 1 < evs.length ? ms(evs[i + 1][0]) - ms(evs[i][0]) : 0;
+      i++;
+      // Real spacing, held between 0.25 and 0.7 s so a burst can be read.
+      setTimeout(next, Math.min(700, Math.max(250, gap)));
+    })();
+  }
+  play(0);
+})();
+</script>
+</body>
+</html>
