@@ -33,7 +33,7 @@
      "how": "ls packs/*/pack.def | wc -l"
     }
    ],
-   "measured": 7
+   "measured": 9
   },
   {
    "name": "goat-transformers",
@@ -368,9 +368,43 @@
      "how": "tests/netns, deploy"
     },
     {
+     "n": "1",
+     "l": "statically linked binary per machine, no interpreter or library needed",
+     "how": "ci.yml checks every build"
+    }
+   ],
+   "measured": 4
+  },
+  {
+   "name": "scapegoat",
+   "url": "https://usareur-af.github.io/scapegoat/",
+   "shows": "a real session against the toy simulator: the link established, lost and established again",
+   "kind": "site",
+   "repo": "https://github.com/USAREUR-AF/scapegoat",
+   "slug": "scapegoat",
+   "title": "scapegoat: the C2 side of a sensor link",
+   "tagline": "It speaks first, so the sensor starts sending.",
+   "lede": "Some sensors send nothing until a C2 system talks to them. scapegoat runs on a small computer on the sensor's network and plays that C2 side: it opens the link, keeps it alive and shows whether the sensor is answering. A protocol is a plugin, and the tracks a plugin reads go out as ASTERIX CAT062, CoT or SAPIENT.",
+   "numbers": [
+    {
+     "n": "6",
+     "l": "link states, each change logged with its reason",
+     "how": "STATES in scapegoat/core/session.py"
+    },
+    {
+     "n": "3",
+     "l": "standard track formats out",
+     "how": "FORMATS in scapegoat/core/outputs.py"
+    },
+    {
      "n": "0",
-     "l": "Python packages beyond the standard library",
-     "how": "site/build.py reads every import"
+     "l": "packages to install: standard library only",
+     "how": "imports in scapegoat/ outside sys.stdlib_module_names"
+    },
+    {
+     "n": "171",
+     "l": "tests, run on every pull request",
+     "how": "def test* in tests/"
     }
    ],
    "measured": 4

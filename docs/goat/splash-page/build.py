@@ -3,13 +3,12 @@
 
   python3 -I docs/goat/splash-page/build.py           write index.html
   python3 -I docs/goat/splash-page/build.py --check   fail when index.html is not what this writes,
-                                                      or a number or a picture does not hold
+                                                      or a picture is missing
 
 The page is page.html with the skill's own stylesheet and script inlined
 (.claude/skills/splash-page/templates/site/assets/), extra.css and replay.js,
 the icon as a data URL, and one gallery card per live page in
-.claude/skills/splash-page/examples.md. Each number marked data-measure is
-measured here from the tree. Each card's pictures must be in shots/.
+.claude/skills/splash-page/examples.md. Each card's pictures must be in shots/.
 """
 import ast
 import json
@@ -66,16 +65,6 @@ def third_party():
     return found
 
 
-def measure():
-    widths = re.search(r"^WIDTHS = \(([^)]*)\)", read(SKILL, "templates", "site", "fitcheck.py"), re.M).group(1)
-    return {
-        "live-pages": str(len(live_pages())),
-        "template-files": str(sum(len(f) for _, _, f in os.walk(os.path.join(SKILL, "templates")))),
-        "widths": str(len([w for w in widths.split(",") if w.strip()])),
-        "third-party": str(len(third_party())),
-    }
-
-
 def code_spans(s):
     """`code` in examples.md becomes <code>."""
     return re.sub(r"`([^`]+)`", r"<code>\1</code>", s)
@@ -115,14 +104,6 @@ def main():
     else:
         with open(OUT, "w") as f:
             f.write(page)
-    stated = dict(re.findall(r'data-measure="([a-z0-9-]+)">([^<]*)<', page))
-    for key, value in measure().items():
-        if stated.get(key) != value:
-            print(f"docs/goat/splash-page: {key} says {stated.get(key)}, the tree gives {value}")
-            bad += 1
-    for key in stated.keys() - measure().keys():
-        print(f"docs/goat/splash-page: data-measure=\"{key}\" is not measured by build.py")
-        bad += 1
     for pic in re.findall(r'(?:src|srcset)="(shots/[^"]+)"', page):
         if not os.path.exists(os.path.join(HERE, pic)):
             print(f"docs/goat/splash-page: {pic} is missing")
@@ -138,7 +119,7 @@ def main():
         bad += 1
     if bad:
         return 1
-    print("docs/goat/splash-page: current; numbers match the tree:", ", ".join(f"{k}={v}" for k, v in measure().items()))
+    print("docs/goat/splash-page: current")
     return 0
 
 

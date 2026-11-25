@@ -1,6 +1,6 @@
 ---
 name: splash-page
-description: Build or revise a project's landing page on GitHub Pages in the house style, the shape of ziggity.dev: wordmark and terminal prompt, Star on GitHub, a copyable command, the real thing running in the first screen, four measured numbers, declarative sections, light and dark, checked in CI. Use whenever asked for a splash page, landing page, project page, showcase page, GitHub Pages site, "a page like ziggity" or "like our other repos" for a repository, including a repository created minutes ago; when a component inside a larger repository needs its own page (a goatdocs sub-page); and when an existing landing page needs a new section, a fix, or its numbers brought back in line with the tree.
+description: Build or revise a project's landing page on GitHub Pages in the house style, the shape of ziggity.dev: wordmark and terminal prompt, Star on GitHub, a copyable command, the real thing running in the first screen, measured numbers where the project has real ones, declarative sections, light and dark, checked in CI. Use whenever asked for a splash page, landing page, project page, showcase page, GitHub Pages site, "a page like ziggity" or "like our other repos" for a repository, including a repository created minutes ago; when a component inside a larger repository needs its own page (a goatdocs sub-page); and when an existing landing page needs a new section, a fix, or its numbers brought back in line with the tree.
 ---
 
 # Splash page
@@ -63,9 +63,12 @@ pick the one frame that tells the story. `aria-label` on the stage says in full 
 what the replay shows.
 
 Behind the hero, faint (`.bgcode`, `aria-hidden`), a real file from the tree: a pack, a
-config, a schema. At the bottom edge of the first screen, **the numbers strip**: four numbers
-that are facts about the product (engines, vectors, binary size, dependencies, formats, startup
-time), each with the command that measures it under it in small monospace.
+config, a schema. At the bottom edge of the first screen, **the numbers strip**, only when the project has
+numbers its reader would ask about (vectors that pass, binary size, startup time, formats it
+converts), each with the command that measures it under it in small monospace. Up to four;
+never padded to four. Never a count invented to fill the strip (pages in a list, groups,
+template files, widths checked, numbers stated). A catalogue, an index or a page about a
+tool has no strip. Leave the strip out rather than fill it.
 
 ## 4. Below the fold
 

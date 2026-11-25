@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>goat pages: every goat project's landing page</title>
-<meta name="description" content="The landing page of every goat project in one catalogue: each one's first screen, what it says it does, and the four numbers it states.">
+<meta name="description" content="The landing page of every goat project in one catalogue: each one's first screen and what it says it does.">
 <link rel="icon" href="{{ICON}}">
 <style>
 {{CSS}}
@@ -30,7 +30,7 @@
       <p class="prompt">&gt;_ ls usareur-af.github.io<span class="cur" aria-hidden="true"></span></p>
       <h1 class="wordmark" id="name">goat pages</h1>
       <p class="tagline">Every goat project's landing page, in one catalogue.</p>
-      <p class="lede">Each project has one page that shows the program working in its first screen and states four numbers about it. Here they are side by side: what each one does, what its first screen shows, and its numbers. Select a page to open it.</p>
+      <p class="lede">Each goat project has a landing page that shows the program working in its first screen. Here they all are, with what each one does. Select a page to open it.</p>
       <div class="buttons">
         <a class="btn star" href="https://github.com/USAREUR-AF/goatcore"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M12 2.8l2.8 5.8 6.4.9-4.6 4.5 1.1 6.3L12 17.3l-5.7 3 1.1-6.3-4.6-4.5 6.4-.9z"/></svg>Star goat on GitHub</a>
         <a class="btn" href="#plates">The pages</a>
@@ -47,20 +47,12 @@
     </div>
   </div>
 
-  <div class="wrap">
-    <div class="numbers">
-      <div><span class="n" data-measure="pages">0</span><span class="l">landing pages</span><code>rows of the splash-page skill's examples.md</code></div>
-      <div><span class="n" data-measure="groups">0</span><span class="l">groups, by what each page is for</span><code>groups.json</code></div>
-      <div><span class="n" data-measure="repos">0</span><span class="l">repositories behind them</span><code>the Repository link of each page</code></div>
-      <div><span class="n" data-measure="numbers">0</span><span class="l">numbers stated across them</span><code>the strip under each first screen</code></div>
-    </div>
-  </div>
 </section>
 
 <section class="band" id="plates">
   <div class="wrap">
     <h2>The pages</h2>
-    <p class="sub">Each entry is the page's own words: its tagline, its opening sentences and its four numbers, copied from the live page. Under each number is how the page says it is measured. The pages are grouped by what each one is for, in the order a deployment meets them.</p>
+    <p class="sub">Each entry is the page's first screen and its own words, copied from the live page. The pages are grouped by what each one is for, in the order a deployment meets them.</p>
     <nav class="groups" aria-label="Groups">{{GROUPNAV}}</nav>
 {{PLATES}}
   </div>
@@ -69,7 +61,7 @@
 <section class="band" id="make">
   <div class="wrap">
     <h2>Every page follows one design</h2>
-    <p class="sub">A prompt line and wordmark, Star on GitHub, one command to copy, the real program in the first screen, four measured numbers, sections whose headings make a claim, light and dark. The Claude Code skill <code>splash-page</code> in goatdocs builds a new one in this design and checks it.</p>
+    <p class="sub">A prompt line and wordmark, Star on GitHub, one command to copy, the real program in the first screen, sections whose headings make a claim, light and dark. The Claude Code skill <code>splash-page</code> in goatdocs builds a new one in this design and checks it.</p>
     <p><a href="../splash-page/">splash-page, the skill that builds these pages</a> &middot; <a href="https://github.com/USAREUR-AF/goatdocs/blob/main/.claude/skills/splash-page/examples.md">The list this catalogue is built from</a></p>
   </div>
 </section>
