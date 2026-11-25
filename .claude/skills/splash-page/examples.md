@@ -19,6 +19,7 @@ catalogue of them, built from this list by goatdocs `docs/goat/pages/`. Read the
 | zagros-moon-pod | https://usareur-af.github.io/zagros-moon-pod/ | what crosses the pod router | a boundary as the stage |
 | goat-cloud | https://usareur-af.github.io/goat-cloud/ | an ownership register: every cloud resource has an owner | smallest site: one `index.html` with styles inline, `fitcheck.py`, `README.md`; serif for statements, mono for what a machine reads |
 | goatrope | https://usareur-af.github.io/goatrope/ | a rope figure drawn by `build.py`, state drawn rather than colored | `page.html` → `index.html` with `build.py --check`; SPDX headers |
+| scapegoat | https://usareur-af.github.io/scapegoat/ | a session recorded against the toy simulator: the link held, the simulator stopped once and started again | `record.py` records the stage by running the real program on 127.0.0.1; standard library only |
 
 ## Sub-pages in goatdocs (`docs/goat/<slug>/index.html`)
 
