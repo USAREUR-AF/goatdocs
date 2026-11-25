@@ -20,6 +20,7 @@ catalogue of them, built from this list by goatdocs `docs/goat/pages/`. Read the
 | goat-cloud | https://usareur-af.github.io/goat-cloud/ | an ownership register: every cloud resource has an owner | smallest site: one `index.html` with styles inline, `fitcheck.py`, `README.md`; serif for statements, mono for what a machine reads |
 | goatrope | https://usareur-af.github.io/goatrope/ | a rope figure drawn by `build.py`, state drawn rather than colored | `page.html` → `index.html` with `build.py --check`; SPDX headers |
 | scapegoat | https://usareur-af.github.io/scapegoat/ | a real session against the toy simulator: the link established, lost and established again | `site/record.py` records the session; `build.py` checks the recording and the quoted event log against the tree |
+| goatstuff | https://usareur-af.github.io/goatstuff/ | real captures of the surfaces, one after another: panoscope, the playground, goat-topology, the trust sandbox, dataflows | a gallery card per surface whose status `build.py` checks against `docs/RELEASE-CONTENTS.md` |
 
 ## Sub-pages in goatdocs (`docs/goat/<slug>/index.html`)
 
