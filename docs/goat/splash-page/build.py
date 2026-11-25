@@ -75,6 +75,11 @@ def measure():
     }
 
 
+def code_spans(s):
+    """`code` in examples.md becomes <code>."""
+    return re.sub(r"`([^`]+)`", r"<code>\1</code>", s)
+
+
 def gallery():
     cards = []
     for name, url, shows in live_pages():
@@ -83,7 +88,7 @@ def gallery():
             f'      <a class="shot" href="{url}"><picture>'
             f'<source media="(prefers-color-scheme: dark)" srcset="shots/{s}-dark.jpg">'
             f'<img src="shots/{s}-light.jpg" width="720" height="450" loading="lazy" alt="The first screen of the {name} landing page."></picture>'
-            f'<span class="nm">{name}</span><span class="sh">{shows}</span></a>')
+            f'<span class="nm">{name}</span><span class="sh">{code_spans(shows)}</span></a>')
     return "\n".join(cards)
 
 

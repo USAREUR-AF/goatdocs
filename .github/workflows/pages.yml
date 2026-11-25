@@ -74,10 +74,16 @@ jobs:
       - name: check the splash-page page against the skill
         run: python3 -I docs/goat/splash-page/build.py --check
 
+      # The catalogue of every landing page is written from catalog.json (collected
+      # from the live pages by collect.py): it is current and lists every page of
+      # the skill's examples.md, each with its captures.
+      - name: check the catalogue of landing pages
+        run: python3 -I docs/goat/pages/build.py --check
+
       # The hand-written landing pages: no command box is cut off at 1440 or
       # 390 px, and no output box at 1440 px (headless Chrome, on the runner).
       - name: check the landing pages' command boxes
-        run: python .github/pages/fitcheck.py site goat/index.html hello-galaxy/index.html goat/fieldkit-feeds/index.html goat/splash-page/index.html
+        run: python .github/pages/fitcheck.py site goat/index.html hello-galaxy/index.html goat/fieldkit-feeds/index.html goat/splash-page/index.html goat/pages/index.html
 
       - name: configure Pages
         if: github.event_name != 'pull_request'
