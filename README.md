@@ -26,6 +26,14 @@ Where a document here cites code, it cites `goatcore` by path; where it describe
 
 Start at [docs/INDEX.md](docs/INDEX.md). Every public goat repository is listed in [docs/reference/repositories.md](docs/reference/repositories.md), generated from GitHub by `.github/repositories/index.py`. The same documents are published as a website at <https://usareur-af.github.io/goatdocs/>, built from `main` by [`.github/workflows/pages.yml`](.github/workflows/pages.yml) with MkDocs ([`mkdocs.yml`](mkdocs.yml)). Preview it locally with `pip install -r .github/pages/requirements.txt && mkdocs serve`.
 
+## Claude Code skills
+
+Two skills for work across every public goat repository live in [`.claude/skills/`](.claude/skills/): `splash-page` builds a repository's landing page on GitHub Pages in the house style ([what it builds](https://usareur-af.github.io/goatdocs/goat/splash-page/)), and `changelog` writes a changelog entry. This repository is also a Claude Code plugin marketplace, so one install makes both skills available in every repository, including a new, empty one:
+
+```
+/plugin install goatdocs --marketplace USAREUR-AF/goatdocs
+```
+
 ## Built with
 
 goat runs on and builds with open-source projects including Eclipse Zenoh, NetBird, WireGuard, Ory, SPIFFE/SPIRE, PostgreSQL with pgEdge Spock, and Prometheus. The full list, with licences and what each is used for: [docs/reference/built-with.md](docs/reference/built-with.md).

@@ -1,4 +1,4 @@
-site/
+/site/
 # Build output: goatcore's error-code pages, copied in by .github/pages/import-error-pages.py.
 docs/reference/errors/
 _goatcore/
