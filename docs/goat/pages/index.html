@@ -1,0 +1,485 @@
+<!-- Written by docs/goat/pages/build.py from page.html and catalog.json; edit those, then run the script. -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>goat pages: every goat project's landing page</title>
+<meta name="description" content="The landing page of every goat project in one catalogue: each one's first screen and what it says it does.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22 fill=%22none%22 stroke=%22%231c6a3d%22 stroke-width=%224%22%3E%3Crect x=%226%22 y=%2210%22 width=%2222%22 height=%2218%22 rx=%222%22/%3E%3Crect x=%2236%22 y=%2210%22 width=%2222%22 height=%2218%22 rx=%222%22/%3E%3Crect x=%226%22 y=%2236%22 width=%2222%22 height=%2218%22 rx=%222%22/%3E%3Crect x=%2236%22 y=%2236%22 width=%2222%22 height=%2218%22 rx=%222%22/%3E%3C/svg%3E">
+<style>
+/* Layout: an exhibition catalogue. Each landing page is a numbered plate with
+   its caption beside it, on gallery paper; goat green for what can be selected.
+   System fonts only. */
+:root {
+  --paper: #f2f1ea; --panel: #fcfbf6; --ink: #1b2118; --quiet: #525a4a; --rule: #d3d6c4; --grid: #e6e6dc;
+  --accent: #1c6a3d; --accent-soft: #d9e8d3; --on-accent: #ffffff; --track: #1c6a3d; --track-2: #4a5a4a;
+  --good: #1c6a3d; --bad: #7a3e12; --code-bg: #eae9e0;
+  --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #11150f; --panel: #171d14; --ink: #e6e9da; --quiet: #a7ae98; --rule: #2c3426; --grid: #1a2016;
+    --accent: #74cf93; --accent-soft: #1a3223; --on-accent: #0e140c; --track: #74cf93; --track-2: #b5bda5;
+    --good: #74cf93; --bad: #e0b07a; --code-bg: #0c100a;
+  }
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 17px/1.6 var(--sans); }
+a { color: var(--track); }
+a:focus-visible, button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+code, pre { font-family: var(--mono); }
+.wrap { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+@media (max-width: 600px) { .wrap { padding: 0 16px; } }
+
+/* top bar */
+.top { position: relative; z-index: 2; height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.brand { display: flex; align-items: center; gap: 10px; color: var(--ink); text-decoration: none; font: 700 16px var(--mono); }
+.brand img { width: 28px; height: 28px; }
+.top nav { display: flex; gap: 22px; font: 15px var(--mono); }
+.top nav a { color: var(--quiet); text-decoration: none; }
+.top nav a:hover { color: var(--ink); }
+@media (max-width: 720px) { .top nav a:not(.gh) { display: none; } }
+
+/* hero: fills the first screen; the numbers strip sits at its bottom edge */
+.hero { position: relative; overflow: hidden; min-height: calc(100svh - 64px); display: flex; flex-direction: column;
+  background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 32px 32px; background-position: -1px -1px; }
+.bgcode { position: absolute; inset: 0 0 auto auto; width: 62%; margin: 0; padding: 40px 0 0; color: var(--ink); opacity: .07;
+  font: 15px/1.7 var(--mono); white-space: pre; pointer-events: none; user-select: none;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 30%); mask-image: linear-gradient(90deg, transparent, #000 30%); }
+.hero-grid { position: relative; flex: 1; display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 40px; align-items: center; padding-top: 24px; padding-bottom: 28px; }
+.prompt { font: 600 16px var(--mono); color: var(--track); margin: 0 0 6px; }
+.prompt .cur { display: inline-block; width: .6em; height: 1.05em; vertical-align: -.15em; background: var(--accent); margin-left: 4px; animation: blink 1.1s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+.wordmark { font: 900 clamp(30px, 5.1vw, 80px)/1.02 var(--mono); letter-spacing: -0.04em; margin: 0; white-space: nowrap; }
+.page-title { font: 900 clamp(28px, 4.2vw, 56px)/1.08 var(--mono); letter-spacing: -0.03em; margin: 0; }
+.card h3 a { color: inherit; }
+.tagline { font-weight: 700; font-size: clamp(19px, 1.9vw, 25px); line-height: 1.3; color: var(--accent); margin: 14px 0 10px; }
+.lede { color: var(--quiet); margin: 0 0 24px; max-width: 38em; }
+.buttons { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; }
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 18px; border: 1px solid var(--rule); background: var(--panel);
+  color: var(--ink); font: 700 16px var(--sans); text-decoration: none; border-radius: 3px; }
+.btn svg { width: 18px; height: 18px; }
+.btn.star { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.btn:hover { border-color: var(--ink); }
+.cmd { display: flex; align-items: stretch; border: 1px solid var(--rule); background: var(--panel); border-radius: 3px; max-width: 640px; }
+.cmd pre { flex: 1; margin: 0; padding: 12px 14px; font-size: 14px; overflow-x: auto; white-space: pre-wrap; overflow-wrap: anywhere; min-width: 0; }
+.cmd .dollar { color: var(--good); user-select: none; }
+.copy { border: 0; border-left: 1px solid var(--rule); background: none; color: var(--accent); font: 700 14px var(--mono); padding: 0 16px; cursor: pointer; }
+
+
+/* numbers strip */
+.numbers { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--rule); background: var(--panel); margin-bottom: 14px; }
+.numbers > div { padding: 16px 20px; border-left: 1px solid var(--rule); min-width: 0; }
+.numbers > div:first-child { border-left: 0; }
+.numbers .n { display: block; font: 800 34px/1.1 var(--mono); color: var(--accent); }
+.numbers .l { display: block; font-weight: 700; }
+.numbers code { display: block; font-size: 11.5px; color: var(--quiet); overflow-wrap: anywhere; margin-top: 4px; }
+
+@media (max-width: 960px) {
+  .hero-grid { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  .bgcode { width: 100%; white-space: pre-wrap; overflow-wrap: anywhere; }
+  .numbers { grid-template-columns: repeat(2, 1fr); }
+  .numbers > div:nth-child(3) { border-left: 0; }
+  .numbers > div:nth-child(n+3) { border-top: 1px solid var(--rule); }
+}
+@media (max-width: 600px) {
+  .hero-grid { padding-top: 8px; }
+  .prompt { font-size: 14px; }
+  .bgcode { opacity: .045; }
+  .lede { font-size: 16px; margin-bottom: 18px; }
+  .btn { padding: 10px 14px; font-size: 15px; }
+  .cmd pre { font-size: 12.5px; }
+  .numbers .n { font-size: 26px; }
+  .numbers > div { padding: 12px 14px; }
+}
+
+/* sections */
+section.band { padding: 72px 0; border-top: 1px solid var(--rule); }
+h2 { font-size: clamp(26px, 3vw, 36px); line-height: 1.2; margin: 0 0 12px; letter-spacing: -0.01em; }
+h3 { font-size: 19px; margin: 0 0 6px; }
+.sub { color: var(--quiet); max-width: 46em; margin: 0 0 32px; }
+.cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.card { background: var(--panel); border: 1px solid var(--rule); border-top: 3px solid var(--accent); padding: 22px; border-radius: 3px; }
+.card p { margin: 0; color: var(--quiet); }
+.cards.four { grid-template-columns: repeat(4, 1fr); }
+@media (max-width: 1100px) { .cards.four { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 860px) { .cards, .cards.four { grid-template-columns: 1fr; } }
+.status { display: inline-block; font: 700 12px var(--mono); letter-spacing: .04em; text-transform: uppercase; color: var(--ink); border: 1px solid var(--quiet); border-radius: 2px; padding: 2px 7px; margin-bottom: 10px; }
+.after .status, .card p .status { margin: 0; vertical-align: 1px; }
+.after { margin: 28px 0 0; max-width: 46em; }
+.feature { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr); gap: 40px; align-items: start; }
+@media (max-width: 860px) { .feature { grid-template-columns: minmax(0, 1fr); } }
+figure { margin: 0; }
+figure img { width: 100%; height: auto; display: block; background: var(--panel); border: 1px solid var(--rule); border-radius: 3px; }
+figcaption { font-size: 14px; color: var(--quiet); margin-top: 8px; }
+.json { background: var(--code-bg); border: 1px solid var(--rule); padding: 12px 14px; font-size: 13px; overflow-x: auto; border-radius: 3px; white-space: pre-wrap; overflow-wrap: anywhere; }
+table { border-collapse: collapse; width: 100%; font-size: 15px; }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th { font-size: 13px; text-transform: uppercase; letter-spacing: .04em; color: var(--quiet); }
+td code { font-size: 13px; overflow-wrap: anywhere; }
+.scroll { overflow-x: auto; }
+.num { font-family: var(--mono); color: var(--accent); font-weight: 700; }
+pre.block { background: var(--code-bg); border: 1px solid var(--rule); padding: 14px; overflow-x: auto; font-size: 14px; border-radius: 3px; white-space: pre-wrap; overflow-wrap: anywhere; }
+/* a command shows whole: it wraps at spaces, continuation lines hang two characters in (more for an indented line) */
+.cmd pre .ln, pre.block .ln { display: block; padding-left: 2ch; text-indent: -2ch; }
+/* output wraps too, its continuation lines hang by --hang */
+.json .ln { display: block; padding-left: var(--hang, 2ch); text-indent: calc(-1 * var(--hang, 2ch)); }
+/* a word with a hyphen or slash moves to the next line whole, and breaks only if it alone is wider than the box */
+pre .ln .w { display: inline-block; max-width: 100%; text-indent: 0; }
+footer { border-top: 1px solid var(--rule); padding: 32px 0 48px; color: var(--quiet); font-size: 15px; }
+footer a { margin-right: 18px; }
+
+/* the first screen's stage: the real artifact, replayed */
+.stage { background: var(--panel); border: 1px solid var(--rule); border-radius: 4px; box-shadow: 0 1px 0 var(--rule); min-width: 0; }
+.stage-head { display: flex; justify-content: space-between; gap: 12px; padding: 8px 12px; border-bottom: 1px solid var(--rule); font: 13px var(--mono); color: var(--quiet); }
+.stage-head b { color: var(--ink); }
+.stage-head span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.stage-lines { margin: 0; padding: 10px 12px; min-height: calc(8 * 1.65em + 20px); background: var(--code-bg); font: 12.5px/1.65 var(--mono); color: var(--quiet); white-space: pre-wrap; overflow-wrap: anywhere; }
+.stage-lines .ev { color: var(--accent); font-weight: 700; }
+.stage-lines .in { color: var(--ink); }
+.stage-foot { padding: 8px 12px; font-size: 13px; color: var(--quiet); border-top: 1px solid var(--rule); }
+
+/* this page only */
+.under { font-size: 14px; color: var(--quiet); margin: 8px 0 0; max-width: 40em; }
+.show { display: block; background: var(--code-bg); transition: opacity .25s; }
+.show.fade { opacity: 0; }
+.show img { display: block; width: 100%; height: auto; }
+@media (prefers-reduced-motion: reduce) { .show { transition: none; } }
+.plate { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 36px; align-items: start; padding: 40px 0; border-top: 1px solid var(--rule); }
+.plate[hidden] { display: none; }
+.plate .print { position: relative; display: block; padding: 12px; background: var(--panel); border: 1px solid var(--rule); }
+.plate .print::before, .plate .print::after { content: ""; position: absolute; width: 16px; height: 16px; border: 0 solid var(--quiet); }
+.plate .print::before { top: -8px; left: -8px; border-top-width: 1px; border-left-width: 1px; }
+.plate .print::after { bottom: -8px; right: -8px; border-bottom-width: 1px; border-right-width: 1px; }
+.plate .print img { display: block; width: 100%; height: auto; border: 1px solid var(--rule); }
+.plate .print:hover { border-color: var(--accent); }
+.plate .no { font: 13px var(--mono); color: var(--quiet); overflow-wrap: anywhere; }
+.plate h3 { font: 800 clamp(24px, 2.4vw, 32px)/1.15 var(--mono); letter-spacing: -0.02em; margin: 4px 0 8px; }
+.plate h3 a { color: var(--ink); text-decoration: none; }
+.plate h3 a:hover { color: var(--accent); }
+.plate .tg { font-weight: 700; color: var(--accent); font-size: 18px; line-height: 1.35; margin: 0 0 8px; }
+.plate .ld { color: var(--quiet); margin: 0 0 16px; font-size: 16px; }
+.plate .fs { font-size: 14px; color: var(--quiet); margin: 0 0 16px; }
+.plate .fs b { color: var(--ink); }
+.mini { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border: 1px solid var(--rule); background: var(--panel); margin: 0 0 14px; }
+.mini > div { padding: 10px 12px; border-left: 1px solid var(--rule); border-top: 1px solid var(--rule); min-width: 0; }
+.mini > div:nth-child(odd) { border-left: 0; }
+.mini > div:nth-child(-n+2) { border-top: 0; }
+.mini .n { display: block; font: 800 22px/1.15 var(--mono); color: var(--accent); }
+.mini .l { display: block; font-size: 14px; font-weight: 600; line-height: 1.35; }
+.mini code { display: block; font-size: 11.5px; color: var(--quiet); overflow-wrap: anywhere; margin-top: 2px; }
+.plate .go a { margin-right: 18px; font-weight: 600; }
+@media (max-width: 900px) { .plate { grid-template-columns: minmax(0, 1fr); gap: 20px; } }
+.groups { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 12px; }
+.groups a { font: 700 14px var(--mono); padding: 8px 14px; border: 1px solid var(--rule); background: var(--panel); color: var(--ink); border-radius: 3px; text-decoration: none; }
+.groups a span { color: var(--quiet); font-weight: 400; margin-left: 4px; }
+.groups a:hover { border-color: var(--accent); color: var(--accent); }
+.group { padding: 56px 0 4px; }
+.group .gh { font: 800 clamp(22px, 2.2vw, 28px)/1.2 var(--sans); margin: 0 0 6px; color: var(--accent); }
+.group .gs { color: var(--quiet); margin: 0; max-width: 46em; }
+.plate h3 .st { display: inline-block; vertical-align: middle; font: 700 12px var(--mono); letter-spacing: .04em; text-transform: uppercase; color: var(--ink); border: 1px dashed var(--quiet); border-radius: 3px; padding: 3px 8px; margin-left: 8px; }
+
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="#top"><img src="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22 fill=%22none%22 stroke=%22%231c6a3d%22 stroke-width=%224%22%3E%3Crect x=%226%22 y=%2210%22 width=%2222%22 height=%2218%22 rx=%222%22/%3E%3Crect x=%2236%22 y=%2210%22 width=%2222%22 height=%2218%22 rx=%222%22/%3E%3Crect x=%226%22 y=%2236%22 width=%2222%22 height=%2218%22 rx=%222%22/%3E%3Crect x=%2236%22 y=%2236%22 width=%2222%22 height=%2218%22 rx=%222%22/%3E%3C/svg%3E" width="28" height="28" alt="">goat pages</a>
+    <nav aria-label="Sections">
+      <a href="#plates">The pages</a><a href="../splash-page/">Make one</a>
+      <a href="../">goat</a>
+      <a class="gh" href="https://github.com/USAREUR-AF/goatcore">GitHub</a>
+    </nav>
+  </header>
+</div>
+
+<main id="top">
+<section class="hero" aria-labelledby="name">
+<pre class="bgcode" aria-hidden="true">goat                  https://usareur-af.github.io/goatdocs/goat/
+goat-client           https://usareur-af.github.io/goat-client/
+zagros-moon-pod       https://usareur-af.github.io/zagros-moon-pod/
+saltlick              https://usareur-af.github.io/saltlick/
+open-billie           https://usareur-af.github.io/open-billie/
+first-bite            https://usareur-af.github.io/first-bite/
+goatrope              https://usareur-af.github.io/goatrope/
+scapegoat             https://usareur-af.github.io/scapegoat/
+open-entity-gateway   https://usareur-af.github.io/open-entity-gateway/
+goat-transformers     https://usareur-af.github.io/goat-transformers/
+goat-processors       https://usareur-af.github.io/goat-processors/
+fieldkit-feeds        https://usareur-af.github.io/goatdocs/goat/fieldkit-feeds/
+goatrodeo             https://usareur-af.github.io/goatrodeo/
+goat-cloud            https://usareur-af.github.io/goat-cloud/
+hello-galaxy          https://usareur-af.github.io/goatdocs/hello-galaxy/</pre>
+  <div class="wrap hero-grid">
+    <div>
+      <p class="prompt">&gt;_ ls usareur-af.github.io<span class="cur" aria-hidden="true"></span></p>
+      <h1 class="wordmark" id="name">goat pages</h1>
+      <p class="tagline">Every goat project's landing page, in one catalogue.</p>
+      <p class="lede">Each goat project has a landing page that shows the program working in its first screen. Here they all are, with what each one does. Select a page to open it.</p>
+      <div class="buttons">
+        <a class="btn star" href="https://github.com/USAREUR-AF/goatcore"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M12 2.8l2.8 5.8 6.4.9-4.6 4.5 1.1 6.3L12 17.3l-5.7 3 1.1-6.3-4.6-4.5 6.4-.9z"/></svg>Star goat on GitHub</a>
+        <a class="btn" href="#plates">The pages</a>
+        <a class="btn" href="../splash-page/">Make one</a>
+      </div>
+      <div class="cmd"><pre data-box="command"><span class="ln"><span class="dollar">$ </span><code id="c-collect">python3 <span class="w">-I</span> <span class="w">docs/goat/pages/collect.py</span> <span class="w">--shots</span></code></span></pre><button class="copy" type="button" data-copy="c-collect">Copy</button></div>
+      <p class="under">Rebuilds this catalogue from the live pages, in a clone of goatdocs.</p>
+    </div>
+
+    <div class="stage" role="img" aria-label="The first screen of each goat landing page, shown one after another.">
+      <div class="stage-head"><span><b id="show-name">goat</b></span><span id="show-n">1 / 15</span></div>
+      <a class="show" id="show" href="https://usareur-af.github.io/goatdocs/goat/"><picture id="show-pic"><source media="(prefers-color-scheme: dark)" srcset="shots/goat-dark.jpg"><img src="shots/goat-light.jpg" width="1080" height="675" alt=""></picture></a>
+      <div class="stage-foot">First screens, captured from the live pages at 1440 px.</div>
+    </div>
+  </div>
+
+</section>
+
+<section class="band" id="plates">
+  <div class="wrap">
+    <h2>The pages</h2>
+    <p class="sub">Each entry is the page's first screen and its own words, copied from the live page. The pages are grouped by what each one is for, in the order a deployment meets them.</p>
+    <nav class="groups" aria-label="Groups"><a href="#g-system">The system <span>1</span></a><a href="#g-join">Join a goat network <span>3</span></a><a href="#g-bring-in">Bring data in, connect other systems <span>5</span></a><a href="#g-work">Work on the data <span>2</span></a><a href="#g-use">Use the data <span>2</span></a><a href="#g-run">Run the estate <span>1</span></a><a href="#g-learn">Learn by running it <span>1</span></a></nav>
+    <div class="group" id="g-system"><h3 class="gh">The system</h3><p class="gs">What goat is: a self-hosted data fabric across sites that keeps working when the network around it fails.</p></div>
+    <article class="plate" id="goat" data-kind="subpage">
+      <a class="print" href="https://usareur-af.github.io/goatdocs/goat/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/goat-dark.jpg"><img src="shots/goat-light.jpg" width="1080" height="675" loading="lazy" alt="The first screen of the goat landing page."></picture></a>
+      <div>
+        <span class="no">usareur-af.github.io/goatdocs/goat/</span>
+        <h3><a href="https://usareur-af.github.io/goatdocs/goat/">goat</a></h3>
+        <p class="tg">A self-hosted data fabric that keeps working when the network around it fails.</p>
+        <p class="ld">goat joins people, machines and services across sites into one network. They publish and subscribe to data, and access is decided by who they are, not where they sit. A device that has joined keeps talking to its peers directly, with or without the cloud.</p>
+        <p class="fs"><b>First screen:</b> goat as one system</p>
+        <p class="go"><a href="https://usareur-af.github.io/goatdocs/goat/">Open the page</a><a href="https://github.com/USAREUR-AF/goatdocs">Repository</a></p>
+      </div>
+    </article>
+    <div class="group" id="g-join"><h3 class="gh">Join a goat network</h3><p class="gs">Put a device, a partner&#x27;s host or an organization on a goat network, and find who to peer with.</p></div>
+    <article class="plate" id="goat-client" data-kind="site">
+      <a class="print" href="https://usareur-af.github.io/goat-client/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/goat-client-dark.jpg"><img src="shots/goat-client-light.jpg" width="1080" height="675" loading="lazy" alt="The first screen of the goat-client landing page."></picture></a>
+      <div>
+        <span class="no">usareur-af.github.io/goat-client/</span>
+        <h3><a href="https://usareur-af.github.io/goat-client/">goat-client</a> <span class="st">In development</span></h3>
+        <p class="tg">One signed file, and the device is on the goat network.</p>
+        <p class="ld">A daemon, a desktop GUI and a command line for Linux, macOS and Windows, with iOS, iPadOS and Android shells. It takes a bundle signed by an offline certificate authority, checks the signature, and brings up the outer WireGuard tunnel, the inner NetBird mesh, or both.</p>
+        <p class="fs"><b>First screen:</b> the real daemon, CLI and handshake, replayed</p>
+        <p class="go"><a href="https://usareur-af.github.io/goat-client/">Open the page</a><a href="https://github.com/USAREUR-AF/goat-client">Repository</a></p>
+      </div>
+    </article>
+    <article class="plate" id="zagros-moon-pod" data-kind="site">
+      <a class="print" href="https://usareur-af.github.io/zagros-moon-pod/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/zagros-moon-pod-dark.jpg"><img src="shots/zagros-moon-pod-light.jpg" width="1080" height="675" loading="lazy" alt="The first screen of the zagros-moon-pod landing page."></picture></a>
+      <div>
+        <span class="no">usareur-af.github.io/zagros-moon-pod/</span>
+        <h3><a href="https://usareur-af.github.io/zagros-moon-pod/">zagros-moon-pod</a></h3>
+        <p class="tg">A small bundle you run on your own host to exchange data with a goat fabric, both ways.</p>
+        <p class="ld">A Zenoh router with mutual TLS that may write only your slot, an observe-only audit sink, and a mesh client on the host. Today it is for learning: rung 2 of the goat learner ladder, joined to the zagros sandbox, not in operational use.</p>
+        <p class="fs"><b>First screen:</b> what crosses the pod router</p>
+        <p class="go"><a href="https://usareur-af.github.io/zagros-moon-pod/">Open the page</a><a href="https://github.com/USAREUR-AF/zagros-moon-pod">Repository</a></p>
+      </div>
+    </article>
+    <article class="plate" id="saltlick" data-kind="site">
+      <a class="print" href="https://usareur-af.github.io/saltlick/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/saltlick-dark.jpg"><img src="shots/saltlick-light.jpg" width="1080" height="675" loading="lazy" alt="The first screen of the saltlick landing page."></picture></a>
+      <div>
+        <span class="no">usareur-af.github.io/saltlick/</span>
+        <h3><a href="https://usareur-af.github.io/saltlick/">saltlick</a></h3>
+        <p class="tg">Advisory, never authoritative. Being listed grants access to nothing.</p>
+        <p class="ld">A directory where an organization publishes its own interconnection capability, so that two organizations can check compatibility before they build a link. It holds signed pointers, not permissions. The reader checks every signature and digest against keys it bound outside the directory.</p>
+        <p class="fs"><b>First screen:</b> a directory session recorded against a real instance</p>
+        <p class="go"><a href="https://usareur-af.github.io/saltlick/">Open the page</a><a href="https://github.com/USAREUR-AF/saltlick">Repository</a></p>
+      </div>
+    </article>
+    <div class="group" id="g-bring-in"><h3 class="gh">Bring data in, connect other systems</h3><p class="gs">Take data from sensors, wire protocols, network links and vendor systems onto the fabric, and send it back out.</p></div>
+    <article class="plate" id="open-billie" data-kind="site">
+      <a class="print" href="https://usareur-af.github.io/open-billie/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/open-billie-dark.jpg"><img src="shots/open-billie-light.jpg" width="1080" height="675" loading="lazy" alt="The first screen of the open-billie landing page."></picture></a>
+      <div>
+        <span class="no">usareur-af.github.io/open-billie/</span>
+        <h3><a href="https://usareur-af.github.io/open-billie/">open-billie</a></h3>
+        <p class="tg">Any sensor in, one track record, three standard formats out.</p>
+        <p class="ld">Open Billie prepares a node, builds a small package for each sensor (a kid), and publishes its data, normalized, as CoT, ASTERIX CAT062 or SAPIENT through Zenoh. The kid decodes; the shared translator writes the format.</p>
+        <p class="fs"><b>First screen:</b> a real frame decoded in the first screen</p>
+        <p class="go"><a href="https://usareur-af.github.io/open-billie/">Open the page</a><a href="https://github.com/USAREUR-AF/open-billie">Repository</a></p>
+      </div>
+    </article>
+    <article class="plate" id="first-bite" data-kind="site">
+      <a class="print" href="https://usareur-af.github.io/first-bite/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/first-bite-dark.jpg"><img src="shots/first-bite-light.jpg" width="1080" height="675" loading="lazy" alt="The first screen of the first-bite landing page."></picture></a>
+      <div>
+        <span class="no">usareur-af.github.io/first-bite/</span>
+        <h3><a href="https://usareur-af.github.io/first-bite/">first-bite</a></h3>
+        <p class="tg">Binary messages off the wire, decoded, for those you authorise.</p>
+        <p class="ld">It listens on a tap or a mirror port, local or tunnelled (ERSPAN/GRE), decodes fixed-layout binary messages against a dictionary, and publishes each one as a record of typed values. It never transmits on the capture interface.</p>
+        <p class="fs"><b>First screen:</b> a test vector decoded live</p>
+        <p class="go"><a href="https://usareur-af.github.io/first-bite/">Open the page</a><a href="https://github.com/USAREUR-AF/first-bite">Repository</a></p>
+      </div>
+    </article>
+    <article class="plate" id="goatrope" data-kind="site">
+      <a class="print" href="https://usareur-af.github.io/goatrope/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/goatrope-dark.jpg"><img src="shots/goatrope-light.jpg" width="1080" height="675" loading="lazy" alt="The first screen of the goatrope landing page."></picture></a>
+      <div>
+        <span class="no">usareur-af.github.io/goatrope/</span>
+        <h3><a href="https://usareur-af.github.io/goatrope/">goatrope</a></h3>
+        <p class="tg">Tie distant machines to one link, or tap the link they share.</p>
+        <p class="ld">goatrope takes a copy of one network link, from a tap device, a switch mirror port or its own inline tap on a small computer, and records it, sends on what you name, or relays named datagrams. The relay joins distant sites over the mesh they already share, or through a declared boundary point when a site stands outside it; it is work in progress. One file declares what it does. It runs with nothing else of ours installed.</p>
+        <p class="fs"><b>First screen:</b> a rope figure drawn by <code>build.py</code>, state drawn rather than colored</p>
+        <p class="go"><a href="https://usareur-af.github.io/goatrope/">Open the page</a><a href="https://github.com/USAREUR-AF/goatrope">Repository</a></p>
+      </div>
+    </article>
+    <article class="plate" id="scapegoat" data-kind="site">
+      <a class="print" href="https://usareur-af.github.io/scapegoat/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/scapegoat-dark.jpg"><img src="shots/scapegoat-light.jpg" width="1080" height="675" loading="lazy" alt="The first screen of the scapegoat landing page."></picture></a>
+      <div>
+        <span class="no">usareur-af.github.io/scapegoat/</span>
+        <h3><a href="https://usareur-af.github.io/scapegoat/">scapegoat</a></h3>
+        <p class="tg">It speaks first, so the sensor starts sending.</p>
+        <p class="ld">Some sensors send nothing until a C2 system talks to them. scapegoat runs on a small computer on the sensor&#x27;s network and plays that C2 side: it opens the link, keeps it alive and shows whether the sensor is answering. A protocol is a plugin, and the tracks a plugin reads go out as ASTERIX CAT062, CoT or SAPIENT.</p>
+        <p class="fs"><b>First screen:</b> a real session against the toy simulator: the link established, lost and established again</p>
+        <p class="go"><a href="https://usareur-af.github.io/scapegoat/">Open the page</a><a href="https://github.com/USAREUR-AF/scapegoat">Repository</a></p>
+      </div>
+    </article>
+    <article class="plate" id="open-entity-gateway" data-kind="site">
+      <a class="print" href="https://usareur-af.github.io/open-entity-gateway/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/open-entity-gateway-dark.jpg"><img src="shots/open-entity-gateway-light.jpg" width="1080" height="675" loading="lazy" alt="The first screen of the open-entity-gateway landing page."></picture></a>
+      <div>
+        <span class="no">usareur-af.github.io/open-entity-gateway/</span>
+        <h3><a href="https://usareur-af.github.io/open-entity-gateway/">open-entity-gateway</a></h3>
+        <p class="tg">Bridges between the goat fabric and vendor systems.</p>
+        <p class="ld">Each bridge is its own package that speaks one vendor&#x27;s software kit: Anduril Lattice and Picogrid ECN today. A mapping file says how a record becomes a track; the bridge sends it in the vendor&#x27;s form.</p>
+        <p class="fs"><b>First screen:</b> what the gateway prints for one record</p>
+        <p class="go"><a href="https://usareur-af.github.io/open-entity-gateway/">Open the page</a><a href="https://github.com/USAREUR-AF/open-entity-gateway">Repository</a></p>
+      </div>
+    </article>
+    <div class="group" id="g-work"><h3 class="gh">Work on the data</h3><p class="gs">Convert any message format to any other, then correlate, fuse, filter and grade the tracks, with every decision traced.</p></div>
+    <article class="plate" id="goat-transformers" data-kind="site">
+      <a class="print" href="https://usareur-af.github.io/goat-transformers/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/goat-transformers-dark.jpg"><img src="shots/goat-transformers-light.jpg" width="1080" height="675" loading="lazy" alt="The first screen of the goat-transformers landing page."></picture></a>
+      <div>
+        <span class="no">usareur-af.github.io/goat-transformers/</span>
+        <h3><a href="https://usareur-af.github.io/goat-transformers/">goat-transformers</a></h3>
+        <p class="tg">Any message format to any other. Every format is a data file.</p>
+        <p class="ld">A drone&#x27;s 25-byte Remote ID broadcast becomes a Cursor on Target event for a tactical map. No engine holds code for either format: each is a pack, a text file with one line for each field, and seven engines in seven languages read the same packs and must agree byte for byte.</p>
+        <p class="fs"><b>First screen:</b> a conversion played byte by byte by the engine built to WebAssembly</p>
+        <p class="go"><a href="https://usareur-af.github.io/goat-transformers/">Open the page</a><a href="https://github.com/USAREUR-AF/goat-transformers">Repository</a></p>
+      </div>
+    </article>
+    <article class="plate" id="goat-processors" data-kind="site">
+      <a class="print" href="https://usareur-af.github.io/goat-processors/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/goat-processors-dark.jpg"><img src="shots/goat-processors-light.jpg" width="1080" height="675" loading="lazy" alt="The first screen of the goat-processors landing page."></picture></a>
+      <div>
+        <span class="no">usareur-af.github.io/goat-processors/</span>
+        <h3><a href="https://usareur-af.github.io/goat-processors/">goat-processors</a></h3>
+        <p class="tg">Correlation, fusion, filtering and track quality, with every decision traced.</p>
+        <p class="ld">Each function is a written specification, packs of settings and test vectors. Seven engines, written apart in seven languages, reproduce every vector exactly, down to the record of each test they run.</p>
+        <p class="fs"><b>First screen:</b> a test vector replayed step by step on a plan view, with its trace records</p>
+        <p class="go"><a href="https://usareur-af.github.io/goat-processors/">Open the page</a><a href="https://github.com/USAREUR-AF/goat-processors">Repository</a></p>
+      </div>
+    </article>
+    <div class="group" id="g-use"><h3 class="gh">Use the data</h3><p class="gs">Route fabric data to the systems that need it, and build on it.</p></div>
+    <article class="plate" id="fieldkit-feeds" data-kind="subpage">
+      <a class="print" href="https://usareur-af.github.io/goatdocs/goat/fieldkit-feeds/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/fieldkit-feeds-dark.jpg"><img src="shots/fieldkit-feeds-light.jpg" width="1080" height="675" loading="lazy" alt="The first screen of the fieldkit-feeds landing page."></picture></a>
+      <div>
+        <span class="no">usareur-af.github.io/goatdocs/goat/fieldkit-feeds/</span>
+        <h3><a href="https://usareur-af.github.io/goatdocs/goat/fieldkit-feeds/">fieldkit-feeds</a></h3>
+        <p class="tg">Send fabric data to the systems that need it, and bring their data in. A tactical admin switches it on.</p>
+        <p class="ld">An operator picks a topic and the system that should receive it, or names what a system sends and the standard it uses. A tactical admin for the site switches the feed on; anyone else&#x27;s request waits for one. Each feed shows one word for its health, its counters, the exact command it runs and who did what.</p>
+        <p class="fs"><b>First screen:</b> Fieldkit Feeds, a service inside goatstuff</p>
+        <p class="go"><a href="https://usareur-af.github.io/goatdocs/goat/fieldkit-feeds/">Open the page</a><a href="https://github.com/USAREUR-AF/goatdocs">Repository</a></p>
+      </div>
+    </article>
+    <article class="plate" id="goatrodeo" data-kind="site">
+      <a class="print" href="https://usareur-af.github.io/goatrodeo/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/goatrodeo-dark.jpg"><img src="shots/goatrodeo-light.jpg" width="1080" height="675" loading="lazy" alt="The first screen of the goatrodeo landing page."></picture></a>
+      <div>
+        <span class="no">usareur-af.github.io/goatrodeo/</span>
+        <h3><a href="https://usareur-af.github.io/goatrodeo/">goatrodeo</a></h3>
+        <p class="tg">Games and toys that run on a goat data fabric.</p>
+        <p class="ld">Each one is fun to play and publishes real events while you play it. Air Defenders is the first: a browser arcade game, solo or co-op, that runs on a laptop with one Go command.</p>
+        <p class="fs"><b>First screen:</b> the real game</p>
+        <p class="go"><a href="https://usareur-af.github.io/goatrodeo/">Open the page</a><a href="https://github.com/USAREUR-AF/goatrodeo">Repository</a></p>
+      </div>
+    </article>
+    <div class="group" id="g-run"><h3 class="gh">Run the estate</h3><p class="gs">Know who owns every cloud resource a deployment uses, what it is for and when it ends.</p></div>
+    <article class="plate" id="goat-cloud" data-kind="site">
+      <a class="print" href="https://usareur-af.github.io/goat-cloud/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/goat-cloud-dark.jpg"><img src="shots/goat-cloud-light.jpg" width="1080" height="675" loading="lazy" alt="The first screen of the goat-cloud landing page."></picture></a>
+      <div>
+        <span class="no">usareur-af.github.io/goat-cloud/</span>
+        <h3><a href="https://usareur-af.github.io/goat-cloud/">goat-cloud</a></h3>
+        <p class="tg">Every cloud resource has an owner, a purpose and a lifetime that anyone can look up.</p>
+        <p class="ld">Developers deploy from their own repositories with no central gate and no ticket. Each night a scan finds what has no owner or has outlived its stated expiry; its owner is warned, and it is removed.</p>
+        <p class="fs"><b>First screen:</b> an ownership register: every cloud resource has an owner</p>
+        <p class="go"><a href="https://usareur-af.github.io/goat-cloud/">Open the page</a><a href="https://github.com/USAREUR-AF/goat-cloud">Repository</a></p>
+      </div>
+    </article>
+    <div class="group" id="g-learn"><h3 class="gh">Learn by running it</h3><p class="gs">Small repositories that each answer one question about goat by running the real tools.</p></div>
+    <article class="plate" id="hello-galaxy" data-kind="subpage">
+      <a class="print" href="https://usareur-af.github.io/goatdocs/hello-galaxy/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/hello-galaxy-dark.jpg"><img src="shots/hello-galaxy-light.jpg" width="1080" height="675" loading="lazy" alt="The first screen of the hello-galaxy landing page."></picture></a>
+      <div>
+        <span class="no">usareur-af.github.io/goatdocs/hello-galaxy/</span>
+        <h3><a href="https://usareur-af.github.io/goatdocs/hello-galaxy/">hello-galaxy</a></h3>
+        <p class="tg">17 small repositories. Each answers one question about goat by running it.</p>
+        <p class="ld">Every repository is a short runbook per step and one script that drives the real tools, prints what happens, and says plainly what it does not run. Pick the question you have, clone that repository, and run one command.</p>
+        <p class="fs"><b>First screen:</b> the hello-galaxy worked examples</p>
+        <p class="go"><a href="https://usareur-af.github.io/goatdocs/hello-galaxy/">Open the page</a><a href="https://github.com/USAREUR-AF/goatdocs">Repository</a></p>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="band" id="make">
+  <div class="wrap">
+    <h2>Every page follows one design</h2>
+    <p class="sub">A prompt line and wordmark, Star on GitHub, one command to copy, the real program in the first screen, sections whose headings make a claim, light and dark. The Claude Code skill <code>splash-page</code> in goatdocs builds a new one in this design and checks it.</p>
+    <p><a href="../splash-page/">splash-page, the skill that builds these pages</a> &middot; <a href="https://github.com/USAREUR-AF/goatdocs/blob/main/.claude/skills/splash-page/examples.md">The list this catalogue is built from</a></p>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><a href="https://github.com/USAREUR-AF/goatdocs">Repository</a><a href="https://github.com/USAREUR-AF/goatdocs/blob/main/LICENSE">Apache License 2.0</a><a href="https://github.com/USAREUR-AF/goatdocs/blob/main/SECURITY.md">Security policy</a><a href="../">goat</a></p>
+    <p>Portions written by U.S. Federal government employees within the scope of their employment are in the public domain in the United States. Part of <a href="https://github.com/USAREUR-AF/goatcore">goat</a>.</p>
+  </div>
+</footer>
+<script>
+const PAGES = [{"name": "goat", "url": "https://usareur-af.github.io/goatdocs/goat/", "slug": "goat"}, {"name": "goat-client", "url": "https://usareur-af.github.io/goat-client/", "slug": "goat-client"}, {"name": "zagros-moon-pod", "url": "https://usareur-af.github.io/zagros-moon-pod/", "slug": "zagros-moon-pod"}, {"name": "saltlick", "url": "https://usareur-af.github.io/saltlick/", "slug": "saltlick"}, {"name": "open-billie", "url": "https://usareur-af.github.io/open-billie/", "slug": "open-billie"}, {"name": "first-bite", "url": "https://usareur-af.github.io/first-bite/", "slug": "first-bite"}, {"name": "goatrope", "url": "https://usareur-af.github.io/goatrope/", "slug": "goatrope"}, {"name": "scapegoat", "url": "https://usareur-af.github.io/scapegoat/", "slug": "scapegoat"}, {"name": "open-entity-gateway", "url": "https://usareur-af.github.io/open-entity-gateway/", "slug": "open-entity-gateway"}, {"name": "goat-transformers", "url": "https://usareur-af.github.io/goat-transformers/", "slug": "goat-transformers"}, {"name": "goat-processors", "url": "https://usareur-af.github.io/goat-processors/", "slug": "goat-processors"}, {"name": "fieldkit-feeds", "url": "https://usareur-af.github.io/goatdocs/goat/fieldkit-feeds/", "slug": "fieldkit-feeds"}, {"name": "goatrodeo", "url": "https://usareur-af.github.io/goatrodeo/", "slug": "goatrodeo"}, {"name": "goat-cloud", "url": "https://usareur-af.github.io/goat-cloud/", "slug": "goat-cloud"}, {"name": "hello-galaxy", "url": "https://usareur-af.github.io/goatdocs/hello-galaxy/", "slug": "hello-galaxy"}];
+// Copy button; the first screen's slideshow of every page's real first screen.
+// Without JavaScript the first page's capture shows; every entry is listed either way.
+(function () {
+  "use strict";
+  document.querySelectorAll("button.copy").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var text = document.getElementById(b.dataset.copy).textContent;
+      if (navigator.clipboard) navigator.clipboard.writeText(text).then(function () {
+        b.textContent = "Copied"; setTimeout(function () { b.textContent = "Copy"; }, 1600);
+      });
+    });
+  });
+
+  var show = document.getElementById("show"), pic = document.getElementById("show-pic");
+  var name = document.getElementById("show-name"), n = document.getElementById("show-n");
+  if (!show || typeof PAGES === "undefined") return;
+  if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  // The name, number and link change only once the new capture has loaded, so the
+  // window never shows one page's capture under another page's name.
+  var dark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)");
+  function shot(p) { return "shots/" + p.slug + (dark && dark.matches ? "-dark" : "-light") + ".jpg"; }
+  var i = 0, busy = false;
+  setInterval(function () {
+    if (busy) return;
+    busy = true;
+    var next = (i + 1) % PAGES.length, p = PAGES[next], img = new Image();
+    img.onload = function () {
+      show.classList.add("fade");
+      setTimeout(function () {
+        // A new <source> and <img>, not new attributes on the old ones: a browser
+        // need not choose again between sources whose srcset changed in place.
+        pic.innerHTML = '<source media="(prefers-color-scheme: dark)" srcset="shots/' + p.slug +
+          '-dark.jpg"><img src="shots/' + p.slug + '-light.jpg" width="1080" height="675" alt="">';
+        show.href = p.url; name.textContent = p.name; n.textContent = (next + 1) + " / " + PAGES.length;
+        i = next; busy = false;
+        show.classList.remove("fade");
+      }, 250);
+    };
+    img.onerror = function () { i = next; busy = false; };
+    img.src = shot(p);
+  }, 2600);
+})();
+
+</script>
+</body>
+</html>

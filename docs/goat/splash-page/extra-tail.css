@@ -1,0 +1,27 @@
+
+/* this page only */
+.under { font-size: 14px; color: var(--quiet); margin: 8px 0 0; max-width: 40em; }
+.stage-lines { display: flex; flex-direction: column; justify-content: flex-end; overflow: hidden; height: calc(9 * 1.65em + 20px); white-space: pre-wrap; font-size: 12px; }
+.stage-lines > span { display: block; padding-left: 2ch; text-indent: -2ch; }
+.stage-lines { -webkit-mask-image: linear-gradient(transparent 4px, #000 2.6em); mask-image: linear-gradient(transparent 4px, #000 2.6em); }
+.stage-lines .ok { color: var(--good); }
+.stage-lines .no { color: var(--bad); }
+.stage-lines .cm { color: var(--quiet); font-style: italic; }
+@media (max-width: 600px) { .stage-lines { font-size: 11px; height: calc(11 * 1.65em + 20px); } }
+.sheet { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; }
+@media (max-width: 1000px) { .sheet { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 600px) { .sheet { grid-template-columns: minmax(0, 1fr); } }
+.shot { position: relative; display: block; padding: 10px; background: var(--panel); border: 1px solid var(--rule); color: var(--ink); text-decoration: none; }
+.shot::before, .shot::after { content: ""; position: absolute; width: 14px; height: 14px; border: 0 solid var(--quiet); }
+.shot::before { top: -7px; left: -7px; border-top-width: 1px; border-left-width: 1px; }
+.shot::after { bottom: -7px; right: -7px; border-bottom-width: 1px; border-right-width: 1px; }
+.shot img { display: block; width: 100%; height: auto; border: 1px solid var(--rule); }
+.shot .nm { display: block; font: 700 15px var(--mono); margin-top: 10px; }
+.shot .sh { display: block; font-size: 14px; color: var(--quiet); line-height: 1.45; }
+.shot:hover { border-color: var(--accent); }
+.shot:hover .nm { color: var(--accent); }
+.tree { background: var(--code-bg); border: 1px solid var(--rule); padding: 14px; font-size: 13px; border-radius: 3px; white-space: pre-wrap; overflow-wrap: anywhere; margin: 0; }
+.tree .ln { display: block; padding-left: 4ch; text-indent: -4ch; }
+.tree .dim { color: var(--quiet); }
+#checks .feature, #where .feature { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+@media (max-width: 860px) { #checks .feature, #where .feature { grid-template-columns: minmax(0, 1fr); } }

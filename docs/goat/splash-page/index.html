@@ -1,0 +1,393 @@
+<!-- Written by docs/goat/splash-page/build.py from page.html; edit that, then run the script. -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>splash-page: the Claude Code skill that builds goat landing pages</title>
+<meta name="description" content="splash-page is a Claude Code skill that builds a repository's landing page on GitHub Pages in the goat house style and checks every number on it against the repository.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22 fill=%22none%22 stroke=%22%231d5c97%22 stroke-width=%224%22%3E%3Cpath d=%22M6 14V6h8M50 6h8v8M58 50v8h-8M14 58H6v-8%22/%3E%3Crect x=%2216%22 y=%2216%22 width=%2232%22 height=%2232%22 rx=%222%22/%3E%3Cpath d=%22M22 28l6 4-6 4M32 38h10%22/%3E%3C/svg%3E">
+<style>
+/* Layout: a proof sheet. Pages laid out as prints on a squared table, with crop marks;
+   ink in blue, a check that passed in green. System fonts only. */
+:root {
+  --paper: #f3f2ee; --panel: #fdfdfb; --ink: #1a2230; --quiet: #4d5868; --rule: #d3d3cc; --grid: #e6e5de;
+  --accent: #1d5c97; --accent-soft: #dce8f3; --on-accent: #ffffff; --track: #1d5c97; --track-2: #4a5a6a;
+  --good: #1f6b3d; --bad: #7a3e12; --code-bg: #ecebe5;
+  --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #0e141c; --panel: #131b26; --ink: #e4e9ef; --quiet: #9dabb9; --rule: #26313f; --grid: #18212c;
+    --accent: #7db8ec; --accent-soft: #15283a; --on-accent: #0b1520; --track: #7db8ec; --track-2: #a9b6c3;
+    --good: #6fd194; --bad: #e0b07a; --code-bg: #0a1017;
+  }
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 17px/1.6 var(--sans); }
+a { color: var(--track); }
+a:focus-visible, button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+code, pre { font-family: var(--mono); }
+.wrap { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+@media (max-width: 600px) { .wrap { padding: 0 16px; } }
+
+/* top bar */
+.top { position: relative; z-index: 2; height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.brand { display: flex; align-items: center; gap: 10px; color: var(--ink); text-decoration: none; font: 700 16px var(--mono); }
+.brand img { width: 28px; height: 28px; }
+.top nav { display: flex; gap: 22px; font: 15px var(--mono); }
+.top nav a { color: var(--quiet); text-decoration: none; }
+.top nav a:hover { color: var(--ink); }
+@media (max-width: 720px) { .top nav a:not(.gh) { display: none; } }
+
+/* hero: fills the first screen; the numbers strip sits at its bottom edge */
+.hero { position: relative; overflow: hidden; min-height: calc(100svh - 64px); display: flex; flex-direction: column;
+  background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 32px 32px; background-position: -1px -1px; }
+.bgcode { position: absolute; inset: 0 0 auto auto; width: 62%; margin: 0; padding: 40px 0 0; color: var(--ink); opacity: .07;
+  font: 15px/1.7 var(--mono); white-space: pre; pointer-events: none; user-select: none;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 30%); mask-image: linear-gradient(90deg, transparent, #000 30%); }
+.hero-grid { position: relative; flex: 1; display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 40px; align-items: center; padding-top: 24px; padding-bottom: 28px; }
+.prompt { font: 600 16px var(--mono); color: var(--track); margin: 0 0 6px; }
+.prompt .cur { display: inline-block; width: .6em; height: 1.05em; vertical-align: -.15em; background: var(--accent); margin-left: 4px; animation: blink 1.1s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+.wordmark { font: 900 clamp(30px, 5.1vw, 80px)/1.02 var(--mono); letter-spacing: -0.04em; margin: 0; white-space: nowrap; }
+.page-title { font: 900 clamp(28px, 4.2vw, 56px)/1.08 var(--mono); letter-spacing: -0.03em; margin: 0; }
+.card h3 a { color: inherit; }
+.tagline { font-weight: 700; font-size: clamp(19px, 1.9vw, 25px); line-height: 1.3; color: var(--accent); margin: 14px 0 10px; }
+.lede { color: var(--quiet); margin: 0 0 24px; max-width: 38em; }
+.buttons { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; }
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 18px; border: 1px solid var(--rule); background: var(--panel);
+  color: var(--ink); font: 700 16px var(--sans); text-decoration: none; border-radius: 3px; }
+.btn svg { width: 18px; height: 18px; }
+.btn.star { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.btn:hover { border-color: var(--ink); }
+.cmd { display: flex; align-items: stretch; border: 1px solid var(--rule); background: var(--panel); border-radius: 3px; max-width: 640px; }
+.cmd pre { flex: 1; margin: 0; padding: 12px 14px; font-size: 14px; overflow-x: auto; white-space: pre-wrap; overflow-wrap: anywhere; min-width: 0; }
+.cmd .dollar { color: var(--good); user-select: none; }
+.copy { border: 0; border-left: 1px solid var(--rule); background: none; color: var(--accent); font: 700 14px var(--mono); padding: 0 16px; cursor: pointer; }
+
+
+/* numbers strip */
+.numbers { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--rule); background: var(--panel); margin-bottom: 14px; }
+.numbers > div { padding: 16px 20px; border-left: 1px solid var(--rule); min-width: 0; }
+.numbers > div:first-child { border-left: 0; }
+.numbers .n { display: block; font: 800 34px/1.1 var(--mono); color: var(--accent); }
+.numbers .l { display: block; font-weight: 700; }
+.numbers code { display: block; font-size: 11.5px; color: var(--quiet); overflow-wrap: anywhere; margin-top: 4px; }
+
+@media (max-width: 960px) {
+  .hero-grid { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  .bgcode { width: 100%; white-space: pre-wrap; overflow-wrap: anywhere; }
+  .numbers { grid-template-columns: repeat(2, 1fr); }
+  .numbers > div:nth-child(3) { border-left: 0; }
+  .numbers > div:nth-child(n+3) { border-top: 1px solid var(--rule); }
+}
+@media (max-width: 600px) {
+  .hero-grid { padding-top: 8px; }
+  .prompt { font-size: 14px; }
+  .bgcode { opacity: .045; }
+  .lede { font-size: 16px; margin-bottom: 18px; }
+  .btn { padding: 10px 14px; font-size: 15px; }
+  .cmd pre { font-size: 12.5px; }
+  .numbers .n { font-size: 26px; }
+  .numbers > div { padding: 12px 14px; }
+}
+
+/* sections */
+section.band { padding: 72px 0; border-top: 1px solid var(--rule); }
+h2 { font-size: clamp(26px, 3vw, 36px); line-height: 1.2; margin: 0 0 12px; letter-spacing: -0.01em; }
+h3 { font-size: 19px; margin: 0 0 6px; }
+.sub { color: var(--quiet); max-width: 46em; margin: 0 0 32px; }
+.cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.card { background: var(--panel); border: 1px solid var(--rule); border-top: 3px solid var(--accent); padding: 22px; border-radius: 3px; }
+.card p { margin: 0; color: var(--quiet); }
+.cards.four { grid-template-columns: repeat(4, 1fr); }
+@media (max-width: 1100px) { .cards.four { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 860px) { .cards, .cards.four { grid-template-columns: 1fr; } }
+.status { display: inline-block; font: 700 12px var(--mono); letter-spacing: .04em; text-transform: uppercase; color: var(--ink); border: 1px solid var(--quiet); border-radius: 2px; padding: 2px 7px; margin-bottom: 10px; }
+.after .status, .card p .status { margin: 0; vertical-align: 1px; }
+.after { margin: 28px 0 0; max-width: 46em; }
+.feature { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr); gap: 40px; align-items: start; }
+@media (max-width: 860px) { .feature { grid-template-columns: minmax(0, 1fr); } }
+figure { margin: 0; }
+figure img { width: 100%; height: auto; display: block; background: var(--panel); border: 1px solid var(--rule); border-radius: 3px; }
+figcaption { font-size: 14px; color: var(--quiet); margin-top: 8px; }
+.json { background: var(--code-bg); border: 1px solid var(--rule); padding: 12px 14px; font-size: 13px; overflow-x: auto; border-radius: 3px; white-space: pre-wrap; overflow-wrap: anywhere; }
+table { border-collapse: collapse; width: 100%; font-size: 15px; }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th { font-size: 13px; text-transform: uppercase; letter-spacing: .04em; color: var(--quiet); }
+td code { font-size: 13px; overflow-wrap: anywhere; }
+.scroll { overflow-x: auto; }
+.num { font-family: var(--mono); color: var(--accent); font-weight: 700; }
+pre.block { background: var(--code-bg); border: 1px solid var(--rule); padding: 14px; overflow-x: auto; font-size: 14px; border-radius: 3px; white-space: pre-wrap; overflow-wrap: anywhere; }
+/* a command shows whole: it wraps at spaces, continuation lines hang two characters in (more for an indented line) */
+.cmd pre .ln, pre.block .ln { display: block; padding-left: 2ch; text-indent: -2ch; }
+/* output wraps too, its continuation lines hang by --hang */
+.json .ln { display: block; padding-left: var(--hang, 2ch); text-indent: calc(-1 * var(--hang, 2ch)); }
+/* a word with a hyphen or slash moves to the next line whole, and breaks only if it alone is wider than the box */
+pre .ln .w { display: inline-block; max-width: 100%; text-indent: 0; }
+footer { border-top: 1px solid var(--rule); padding: 32px 0 48px; color: var(--quiet); font-size: 15px; }
+footer a { margin-right: 18px; }
+
+/* the first screen's stage: the real artifact, replayed */
+.stage { background: var(--panel); border: 1px solid var(--rule); border-radius: 4px; box-shadow: 0 1px 0 var(--rule); min-width: 0; }
+.stage-head { display: flex; justify-content: space-between; gap: 12px; padding: 8px 12px; border-bottom: 1px solid var(--rule); font: 13px var(--mono); color: var(--quiet); }
+.stage-head b { color: var(--ink); }
+.stage-head span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.stage-lines { margin: 0; padding: 10px 12px; min-height: calc(8 * 1.65em + 20px); background: var(--code-bg); font: 12.5px/1.65 var(--mono); color: var(--quiet); white-space: pre-wrap; overflow-wrap: anywhere; }
+.stage-lines .ev { color: var(--accent); font-weight: 700; }
+.stage-lines .in { color: var(--ink); }
+.stage-foot { padding: 8px 12px; font-size: 13px; color: var(--quiet); border-top: 1px solid var(--rule); }
+
+/* this page only */
+.under { font-size: 14px; color: var(--quiet); margin: 8px 0 0; max-width: 40em; }
+.stage-lines { display: flex; flex-direction: column; justify-content: flex-end; overflow: hidden; height: calc(9 * 1.65em + 20px); white-space: pre-wrap; font-size: 12px; }
+.stage-lines > span { display: block; padding-left: 2ch; text-indent: -2ch; }
+.stage-lines { -webkit-mask-image: linear-gradient(transparent 4px, #000 2.6em); mask-image: linear-gradient(transparent 4px, #000 2.6em); }
+.stage-lines .ok { color: var(--good); }
+.stage-lines .no { color: var(--bad); }
+.stage-lines .cm { color: var(--quiet); font-style: italic; }
+@media (max-width: 600px) { .stage-lines { font-size: 11px; height: calc(11 * 1.65em + 20px); } }
+.sheet { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; }
+@media (max-width: 1000px) { .sheet { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 600px) { .sheet { grid-template-columns: minmax(0, 1fr); } }
+.shot { position: relative; display: block; padding: 10px; background: var(--panel); border: 1px solid var(--rule); color: var(--ink); text-decoration: none; }
+.shot::before, .shot::after { content: ""; position: absolute; width: 14px; height: 14px; border: 0 solid var(--quiet); }
+.shot::before { top: -7px; left: -7px; border-top-width: 1px; border-left-width: 1px; }
+.shot::after { bottom: -7px; right: -7px; border-bottom-width: 1px; border-right-width: 1px; }
+.shot img { display: block; width: 100%; height: auto; border: 1px solid var(--rule); }
+.shot .nm { display: block; font: 700 15px var(--mono); margin-top: 10px; }
+.shot .sh { display: block; font-size: 14px; color: var(--quiet); line-height: 1.45; }
+.shot:hover { border-color: var(--accent); }
+.shot:hover .nm { color: var(--accent); }
+.tree { background: var(--code-bg); border: 1px solid var(--rule); padding: 14px; font-size: 13px; border-radius: 3px; white-space: pre-wrap; overflow-wrap: anywhere; margin: 0; }
+.tree .ln { display: block; padding-left: 4ch; text-indent: -4ch; }
+.tree .dim { color: var(--quiet); }
+#checks .feature, #where .feature { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+@media (max-width: 860px) { #checks .feature, #where .feature { grid-template-columns: minmax(0, 1fr); } }
+
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="#top"><img src="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22 fill=%22none%22 stroke=%22%231d5c97%22 stroke-width=%224%22%3E%3Cpath d=%22M6 14V6h8M50 6h8v8M58 50v8h-8M14 58H6v-8%22/%3E%3Crect x=%2216%22 y=%2216%22 width=%2232%22 height=%2232%22 rx=%222%22/%3E%3Cpath d=%22M22 28l6 4-6 4M32 38h10%22/%3E%3C/svg%3E" width="28" height="28" alt="">splash-page</a>
+    <nav aria-label="Sections">
+      <a href="#gallery">What it builds</a><a href="#where">Where it lives</a><a href="#checks">Checks</a><a href="#start">Start</a>
+      <a href="../">goat</a>
+      <a class="gh" href="https://github.com/USAREUR-AF/goatdocs">GitHub</a>
+    </nav>
+  </header>
+</div>
+
+<main id="top">
+<section class="hero" aria-labelledby="name">
+<pre class="bgcode" aria-hidden="true">---
+name: splash-page
+description: Build or revise a project's landing page
+  on GitHub Pages in the house style: wordmark and
+  terminal prompt, Star on GitHub, a copyable command,
+  the real thing running in the first screen,
+  measured numbers where the project has them,
+  declarative sections, light and dark, checked in CI.
+---
+
+| The project is            | Page goes              |
+|---------------------------|------------------------|
+| its own public repository | site/ in that repo     |
+| a component inside one    | goatdocs docs/goat/... |
+| a facet of a page         | a second page beside it|</pre>
+  <div class="wrap hero-grid">
+    <div>
+      <p class="prompt">&gt;_ make a landing page for this repository<span class="cur" aria-hidden="true"></span></p>
+      <h1 class="wordmark" id="name">splash-page</h1>
+      <p class="tagline">A Claude Code skill that builds a repository's landing page and checks every number on it.</p>
+      <p class="lede">Ask Claude for a landing page and the skill lays down this design: a prompt line and wordmark, Star on GitHub, a command to copy, the real program running in the first screen, and, where the project has them, numbers measured from the repository. The page you are reading was built with it.</p>
+      <div class="buttons">
+        <a class="btn star" href="https://github.com/USAREUR-AF/goatdocs"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M12 2.8l2.8 5.8 6.4.9-4.6 4.5 1.1 6.3L12 17.3l-5.7 3 1.1-6.3-4.6-4.5 6.4-.9z"/></svg>Star on GitHub</a>
+        <a class="btn" href="#gallery">What it builds</a>
+        <a class="btn" href="https://github.com/USAREUR-AF/goatdocs/tree/main/.claude/skills/splash-page">The skill</a>
+      </div>
+      <div class="cmd"><pre data-box="command"><span class="ln"><code id="c-install">/plugin install goat-skills <span class="w">--marketplace</span> <span class="w">https://usareur-af.github.io/goatdocs/claude/marketplace.json</span></code></span></pre><button class="copy" type="button" data-copy="c-install">Copy</button></div>
+      <p class="under">In Claude Code. Once per person; the skill is then present in every repository, including a new, empty one.</p>
+    </div>
+
+    <div class="stage" role="img" aria-label="A replay of the skill's two scripts run in a new repository: scaffold.py writes the page skeleton and the Pages workflow; build.py fails, naming every placeholder still on the page and one number that differs from the repository; after the page is written, build.py passes, the box check at 1440 and 390 pixels passes, and the number matches the repository.">
+      <div class="stage-head"><span><b>example-repo</b></span><span id="step">3/3 build passes</span></div>
+      <pre class="stage-lines" id="stage-lines" aria-hidden="true"><span class="in">$ python3 -I site/build.py</span><span>site/index.html: placeholders on lines 7, 24, 25, 28, 30 (and 23 more)</span><span>site/assets/site.css: placeholders on lines 1, 5</span><span class="no">site/index.html: example-count says 0, the tree gives 1</span><span class="cm"># the page is written</span><span class="in">$ python3 -I site/build.py</span><span class="ok">fitcheck: index.html: every box fits at 1440 and 390 px</span><span class="ev">site: numbers match the tree: example-count=1</span></pre>
+      <div class="stage-foot">The output of the skill's scripts in a new repository, copied from the run, replayed in order.</div>
+    </div>
+  </div>
+
+</section>
+
+<section class="band" id="gallery">
+  <div class="wrap">
+    <h2>Every page, one design</h2>
+    <p class="sub">Each project gets its own theme, taken from what it does. The layout and the checks are the same on every page. Each picture is the first screen of the live page; select it to open the page. <a href="../pages/">The catalogue</a> has every page with its own words.</p>
+    <div class="sheet">
+      <a class="shot" href="https://usareur-af.github.io/goat-processors/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/goat-processors-dark.jpg"><img src="shots/goat-processors-light.jpg" width="720" height="450" loading="lazy" alt="The first screen of the goat-processors landing page."></picture><span class="nm">goat-processors</span><span class="sh">a test vector replayed step by step on a plan view, with its trace records</span></a>
+      <a class="shot" href="https://usareur-af.github.io/goat-transformers/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/goat-transformers-dark.jpg"><img src="shots/goat-transformers-light.jpg" width="720" height="450" loading="lazy" alt="The first screen of the goat-transformers landing page."></picture><span class="nm">goat-transformers</span><span class="sh">a conversion played byte by byte by the engine built to WebAssembly</span></a>
+      <a class="shot" href="https://usareur-af.github.io/open-billie/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/open-billie-dark.jpg"><img src="shots/open-billie-light.jpg" width="720" height="450" loading="lazy" alt="The first screen of the open-billie landing page."></picture><span class="nm">open-billie</span><span class="sh">a real frame decoded in the first screen</span></a>
+      <a class="shot" href="https://usareur-af.github.io/first-bite/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/first-bite-dark.jpg"><img src="shots/first-bite-light.jpg" width="720" height="450" loading="lazy" alt="The first screen of the first-bite landing page."></picture><span class="nm">first-bite</span><span class="sh">a test vector decoded live</span></a>
+      <a class="shot" href="https://usareur-af.github.io/saltlick/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/saltlick-dark.jpg"><img src="shots/saltlick-light.jpg" width="720" height="450" loading="lazy" alt="The first screen of the saltlick landing page."></picture><span class="nm">saltlick</span><span class="sh">a directory session recorded against a real instance</span></a>
+      <a class="shot" href="https://usareur-af.github.io/goat-client/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/goat-client-dark.jpg"><img src="shots/goat-client-light.jpg" width="720" height="450" loading="lazy" alt="The first screen of the goat-client landing page."></picture><span class="nm">goat-client</span><span class="sh">the real daemon, CLI and handshake, replayed</span></a>
+      <a class="shot" href="https://usareur-af.github.io/goatrodeo/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/goatrodeo-dark.jpg"><img src="shots/goatrodeo-light.jpg" width="720" height="450" loading="lazy" alt="The first screen of the goatrodeo landing page."></picture><span class="nm">goatrodeo</span><span class="sh">the real game</span></a>
+      <a class="shot" href="https://usareur-af.github.io/open-entity-gateway/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/open-entity-gateway-dark.jpg"><img src="shots/open-entity-gateway-light.jpg" width="720" height="450" loading="lazy" alt="The first screen of the open-entity-gateway landing page."></picture><span class="nm">open-entity-gateway</span><span class="sh">what the gateway prints for one record</span></a>
+      <a class="shot" href="https://usareur-af.github.io/zagros-moon-pod/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/zagros-moon-pod-dark.jpg"><img src="shots/zagros-moon-pod-light.jpg" width="720" height="450" loading="lazy" alt="The first screen of the zagros-moon-pod landing page."></picture><span class="nm">zagros-moon-pod</span><span class="sh">what crosses the pod router</span></a>
+      <a class="shot" href="https://usareur-af.github.io/goat-cloud/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/goat-cloud-dark.jpg"><img src="shots/goat-cloud-light.jpg" width="720" height="450" loading="lazy" alt="The first screen of the goat-cloud landing page."></picture><span class="nm">goat-cloud</span><span class="sh">an ownership register: every cloud resource has an owner</span></a>
+      <a class="shot" href="https://usareur-af.github.io/goatrope/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/goatrope-dark.jpg"><img src="shots/goatrope-light.jpg" width="720" height="450" loading="lazy" alt="The first screen of the goatrope landing page."></picture><span class="nm">goatrope</span><span class="sh">a rope figure drawn by <code>build.py</code>, state drawn rather than colored</span></a>
+      <a class="shot" href="https://usareur-af.github.io/scapegoat/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/scapegoat-dark.jpg"><img src="shots/scapegoat-light.jpg" width="720" height="450" loading="lazy" alt="The first screen of the scapegoat landing page."></picture><span class="nm">scapegoat</span><span class="sh">a real session against the toy simulator: the link established, lost and established again</span></a>
+      <a class="shot" href="https://usareur-af.github.io/goatdocs/goat/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/goat-dark.jpg"><img src="shots/goat-light.jpg" width="720" height="450" loading="lazy" alt="The first screen of the goat landing page."></picture><span class="nm">goat</span><span class="sh">goat as one system</span></a>
+      <a class="shot" href="https://usareur-af.github.io/goatdocs/goat/fieldkit-feeds/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/fieldkit-feeds-dark.jpg"><img src="shots/fieldkit-feeds-light.jpg" width="720" height="450" loading="lazy" alt="The first screen of the fieldkit-feeds landing page."></picture><span class="nm">fieldkit-feeds</span><span class="sh">Fieldkit Feeds, a service inside goatstuff</span></a>
+      <a class="shot" href="https://usareur-af.github.io/goatdocs/hello-galaxy/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/hello-galaxy-dark.jpg"><img src="shots/hello-galaxy-light.jpg" width="720" height="450" loading="lazy" alt="The first screen of the hello-galaxy landing page."></picture><span class="nm">hello-galaxy</span><span class="sh">the hello-galaxy worked examples</span></a>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="what">
+  <div class="wrap">
+    <h2>What the skill decides</h2>
+    <p class="sub">The skill is a set of written rules, a skeleton and two checks. Claude follows the rules; the checks fail the pull request when a page breaks them.</p>
+    <div class="cards">
+      <div class="card"><h3>The first screen</h3><p>Prompt line, wordmark, a one-line tagline, two or three sentences, Star on GitHub first, then one command with Copy. Beside it, the real program running: a test vector, a decoded capture, a recorded session, the game itself. Never a mock-up.</p></div>
+      <div class="card"><h3>Numbers, only real ones</h3><p>A number goes on a page only when it is a fact a reader of that project would ask about, and then it is measured from the repository by <code>site/build.py</code>. A page with no such number has no number strip. Stars, commits and contributor counts are left out.</p></div>
+      <div class="card"><h3>The rest of the page</h3><p>Sections whose headings make a claim, figures drawn by code in the repository, light and dark, system fonts, no request to another host, no example data that names a real deployment.</p></div>
+    </div>
+    <div class="scroll" style="margin-top:36px"><table>
+      <thead><tr><th>The project is</th><th>The page goes</th><th>Served at</th></tr></thead>
+      <tbody>
+        <tr><td>its own public repository</td><td><code>site/</code> in that repository, with <code>.github/workflows/pages.yml</code></td><td><code>usareur-af.github.io/&lt;repo&gt;/</code></td></tr>
+        <tr><td>a component inside a larger repository</td><td>goatdocs, <code>docs/goat/&lt;slug&gt;/index.html</code>, one self-contained file</td><td><code>usareur-af.github.io/goatdocs/goat/&lt;slug&gt;/</code></td></tr>
+        <tr><td>a facet of a page that exists</td><td>a second page in the same <code>site/</code>, such as <code>contribute.html</code></td><td>beside its parent</td></tr>
+        <tr><td>a private repository</td><td>no public page unless its content is public</td><td></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</section>
+
+<section class="band" id="where">
+  <div class="wrap feature">
+    <div>
+      <h2>It lives in goatdocs and installs everywhere</h2>
+      <p>The skill is a folder in goatdocs. The goatdocs site publishes a one-file plugin catalogue that points at that folder; the plugin <code>goat-skills</code> holds only this skill and the <code>changelog</code> skill, and Claude Code fetches that folder alone, about 100 KB. Install it once and it is present in every repository you open, including one with no files yet.</p>
+      <p>A repository can ask for the plugin itself. With this in its <code>.claude/settings.json</code>, Claude Code offers the install to anyone who opens the repository:</p>
+      <pre class="json" style="--hang:4ch" data-box="output"><span class="ln">{
+</span><span class="ln">  "extraKnownMarketplaces": { "goat": { "source": { "source": "url",
+</span><span class="ln">    "url": "https://usareur-af.github.io/goatdocs/claude/marketplace.json" } } },
+</span><span class="ln">  "enabledPlugins": { "goat-skills@goat": true }
+</span><span class="ln">}</span></pre>
+      <p>The skill is never copied into another repository, so there is one version of it.</p>
+    </div>
+    <div>
+      <pre class="tree" data-box="output"><span class="ln"><b>USAREUR-AF/goatdocs</b>
+</span><span class="ln">├── docs/claude/marketplace.json   <span class="dim">the plugin catalogue, served by the site</span>
+</span><span class="ln">└── .claude/skills/splash-page/
+</span><span class="ln">    ├── SKILL.md       <span class="dim">the rules Claude follows</span>
+</span><span class="ln">    ├── scaffold.py    <span class="dim">lays down the skeleton, never overwrites</span>
+</span><span class="ln">    ├── examples.md    <span class="dim">every live page, what it shows</span>
+</span><span class="ln">    └── templates/
+</span><span class="ln">        ├── pages.yml  <span class="dim">check on a pull request, deploy from main</span>
+</span><span class="ln">        └── site/      <span class="dim">index.html, site.css, site.js, icon.svg,</span>
+</span><span class="ln">                       <span class="dim">build.py, fitcheck.py, README.md</span></span></pre>
+      <p class="after"><a href="https://github.com/USAREUR-AF/goatdocs/blob/main/.claude/skills/splash-page/SKILL.md">Read SKILL.md</a> &middot; <a href="https://github.com/USAREUR-AF/goatdocs/blob/main/.claude/skills/splash-page/examples.md">examples.md</a></p>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="checks">
+  <div class="wrap feature">
+    <div>
+      <h2>A number that drifts fails the build</h2>
+      <p>Every number on a page sits in an element that names how it is measured. <code>site/build.py</code> measures it from the repository and fails the pull request when the page says something else. This is how goat-processors states its vector count:</p>
+      <pre class="json" data-box="output"><span class="ln">&lt;span class="n" <span class="w">data-measure="vectors"</span>&gt;121&lt;/span&gt;</span></pre>
+      <p>If three vectors were added and the page still said 121, the build would stop with:</p>
+      <pre class="json" data-box="output"><span class="ln">site/index.html: vectors says 121, the tree gives 124</span></pre>
+      <p>The same run fails while any placeholder from the skeleton remains, and runs <code>fitcheck.py</code>, which loads the page in headless Chrome and fails when a command box is cut off at 1440 or 390 px or the page scrolls sideways.</p>
+    </div>
+    <div>
+      <h2>Publishing is a person's call</h2>
+      <p>The workflow checks every pull request that touches the page or anything it measures. It deploys from <code>main</code> only after a repository owner sets Pages to deploy from GitHub Actions. Until then it checks the page and skips the deploy with a notice. Turning Pages on and setting the repository's website both make a page public, so the skill asks first.</p>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="start">
+  <div class="wrap">
+    <h2>Quick start</h2>
+    <p class="sub">In Claude Code, inside the repository that needs a page:</p>
+    <pre class="block" data-box="command"><span class="ln">/plugin install goat-skills <span class="w">--marketplace</span> <span class="w">https://usareur-af.github.io/goatdocs/claude/marketplace.json</span>
+</span><span class="ln">/goat-skills:splash-page</span></pre>
+    <p>Or ask in your own words: "make a landing page for this repository". Without Claude, the scripts run alone, from a clone of goatdocs:</p>
+    <pre class="block" data-box="command"><span class="ln">python3 <span class="w">-I</span> <span class="w">.claude/skills/splash-page/scaffold.py</span> site <span class="w">&lt;repo&gt;</span> <span class="w">--name</span> <span class="w">&lt;repo&gt;</span> <span class="w">--repo</span> <span class="w">USAREUR-AF/&lt;repo&gt;</span>
+</span><span class="ln">python3 <span class="w">-I</span> <span class="w">site/build.py</span></span></pre>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><a href="https://github.com/USAREUR-AF/goatdocs">Repository</a><a href="https://github.com/USAREUR-AF/goatdocs/blob/main/LICENSE">Apache License 2.0</a><a href="https://github.com/USAREUR-AF/goatdocs/blob/main/SECURITY.md">Security policy</a><a href="../">goat</a></p>
+    <p>Portions written by U.S. Federal government employees within the scope of their employment are in the public domain in the United States. Part of <a href="https://github.com/USAREUR-AF/goatcore">goat</a>.</p>
+  </div>
+</footer>
+<script>
+// Copy buttons, and the first screen's replay: the skill's two scripts run in a new
+// repository, their output copied from the run and shown line by line in order.
+// With reduced motion, or without JavaScript, the page shows the last frame.
+(function () {
+  "use strict";
+  document.querySelectorAll("button.copy").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var text = document.getElementById(b.dataset.copy).textContent;
+      if (navigator.clipboard) navigator.clipboard.writeText(text).then(function () {
+        b.textContent = "Copied"; setTimeout(function () { b.textContent = "Copy"; }, 1600);
+      });
+    });
+  });
+
+  var LINES = [
+    ["in", "$ python3 -I scaffold.py site . --name example-repo --repo USAREUR-AF/example-repo"],
+    ["", "wrote site/build.py"], ["", "wrote site/index.html"], ["", "wrote site/fitcheck.py"],
+    ["", "wrote site/README.md"], ["", "wrote site/.gitignore"], ["", "wrote site/assets/icon.svg"],
+    ["", "wrote site/assets/site.css"], ["", "wrote site/assets/site.js"],
+    ["", "wrote .github/workflows/pages.yml"],
+    ["in", "$ python3 -I site/build.py"],
+    ["", "site/index.html: placeholders on lines 7, 24, 25, 28, 30 (and 23 more)"],
+    ["", "site/assets/icon.svg: placeholders on line 1"],
+    ["", "site/assets/site.css: placeholders on lines 1, 5"],
+    ["", "site/assets/site.js: placeholders on line 18"],
+    ["no", "site/index.html: example-count says 0, the tree gives 1"],
+    ["cm", "# the page is written"],
+    ["in", "$ python3 -I site/build.py"],
+    ["ok", "fitcheck: index.html: every box fits at 1440 and 390 px"],
+    ["ev", "site: numbers match the tree: example-count=1"]
+  ];
+  var RUNS = { 0: "1/3 scaffold", 10: "2/3 build fails", 17: "3/3 build passes" };
+  var box = document.getElementById("stage-lines"), step = document.getElementById("step");
+  if (!box) return;
+  if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  var SHOW = 12, i = 0;
+  function esc(s) { return s.replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
+  function draw() {
+    var from = Math.max(0, i - SHOW);
+    box.innerHTML = LINES.slice(from, i).map(function (l) {
+      return '<span class="' + l[0] + '">' + esc(l[1]) + "</span>";
+    }).join("");
+  }
+  (function tick() {
+    if (i in RUNS) step.textContent = RUNS[i];
+    i += 1; draw();
+    if (i < LINES.length) { setTimeout(tick, LINES[i][0] === "in" || LINES[i][0] === "cm" ? 1300 : 380); return; }
+    setTimeout(function () { i = 0; tick(); }, 5000);
+  })();
+})();
+
+</script>
+</body>
+</html>

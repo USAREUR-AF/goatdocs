@@ -1,0 +1,515 @@
+{
+ "source": ".claude/skills/splash-page/examples.md",
+ "pages": [
+  {
+   "name": "goat-processors",
+   "url": "https://usareur-af.github.io/goat-processors/",
+   "shows": "a test vector replayed step by step on a plan view, with its trace records",
+   "kind": "site",
+   "repo": "https://github.com/USAREUR-AF/goat-processors",
+   "slug": "goat-processors",
+   "title": "goat-processors",
+   "tagline": "Correlation, fusion, filtering and track quality, with every decision traced.",
+   "lede": "Each function is a written specification, packs of settings and test vectors. Seven engines, written apart in seven languages, reproduce every vector exactly, down to the record of each test they run.",
+   "numbers": [
+    {
+     "n": "7",
+     "l": "engines",
+     "how": "ls engines | wc -l"
+    },
+    {
+     "n": "121",
+     "l": "scenario vectors",
+     "how": "ls packs/*/vectors/*.json | wc -l"
+    },
+    {
+     "n": "4,333",
+     "l": "trace records, all reproduced",
+     "how": "site/build.py counts every vector's trace"
+    },
+    {
+     "n": "24",
+     "l": "settings packs",
+     "how": "ls packs/*/pack.def | wc -l"
+    }
+   ],
+   "measured": 9
+  },
+  {
+   "name": "goat-transformers",
+   "url": "https://usareur-af.github.io/goat-transformers/",
+   "shows": "a conversion played byte by byte by the engine built to WebAssembly",
+   "kind": "site",
+   "repo": "https://github.com/USAREUR-AF/goat-transformers",
+   "slug": "goat-transformers",
+   "title": "goat-transformers: convert a message from any format to any other",
+   "tagline": "Any message format to any other. Every format is a data file.",
+   "lede": "A drone's 25-byte Remote ID broadcast becomes a Cursor on Target event for a tactical map. No engine holds code for either format: each is a pack, a text file with one line for each field, and seven engines in seven languages read the same packs and must agree byte for byte.",
+   "numbers": [
+    {
+     "n": "4,255",
+     "l": "formats",
+     "how": "each one a pack from a public source"
+    },
+    {
+     "n": "16,746",
+     "l": "message kinds",
+     "how": "message layouts across those formats"
+    },
+    {
+     "n": "25,251",
+     "l": "conversion vectors",
+     "how": "all seven engines match every one"
+    },
+    {
+     "n": "786,657",
+     "l": "bytes",
+     "how": "the engine as WebAssembly, in this page"
+    }
+   ],
+   "measured": 0
+  },
+  {
+   "name": "open-billie",
+   "url": "https://usareur-af.github.io/open-billie/",
+   "shows": "a real frame decoded in the first screen",
+   "kind": "site",
+   "repo": "https://github.com/USAREUR-AF/open-billie",
+   "slug": "open-billie",
+   "title": "Open Billie",
+   "tagline": "Any sensor in, one track record, three standard formats out.",
+   "lede": "Open Billie prepares a node, builds a small package for each sensor (a kid), and publishes its data, normalized, as CoT, ASTERIX CAT062 or SAPIENT through Zenoh. The kid decodes; the shared translator writes the format.",
+   "numbers": [
+    {
+     "n": "110 B",
+     "l": "sensor frame, 2",
+     "how": "the OETF vector, hero-data.json"
+    },
+    {
+     "n": "346 B",
+     "l": "CoT event for track 311",
+     "how": "CAT062: 31 B; same file"
+    },
+    {
+     "n": "3",
+     "l": "output formats",
+     "how": "enum EncoderFormat, request.rs"
+    },
+    {
+     "n": "3",
+     "l": "decoder runtimes in the example",
+     "how": "Containerfile* in kids/examples/oetf"
+    }
+   ],
+   "measured": 0
+  },
+  {
+   "name": "first-bite",
+   "url": "https://usareur-af.github.io/first-bite/",
+   "shows": "a test vector decoded live",
+   "kind": "site",
+   "repo": "https://github.com/USAREUR-AF/first-bite",
+   "slug": "first-bite",
+   "title": "first-bite: binary messages off the wire, decoded and published",
+   "tagline": "Binary messages off the wire, decoded, for those you authorise.",
+   "lede": "It listens on a tap or a mirror port, local or tunnelled (ERSPAN/GRE), decodes fixed-layout binary messages against a dictionary, and publishes each one as a record of typed values. It never transmits on the capture interface.",
+   "numbers": [
+    {
+     "n": "0.47 µs",
+     "l": "to decode one message",
+     "how": "cargo run --release -p bite --example throughput -- dictionaries/weather-station"
+    },
+    {
+     "n": "450,000 / s",
+     "l": "packets through the whole pipeline",
+     "how": "mind --pcap-file load.pcap --dictionary dictionaries/weather-station"
+    },
+    {
+     "n": "10.9 MB",
+     "l": "resident while replaying a 145 MB capture",
+     "how": "/usr/bin/time -f %M"
+    },
+    {
+     "n": "14.67 MB",
+     "l": "the portable mind, needing only glibc",
+     "how": "mind, needing only glibcmake portable"
+    }
+   ],
+   "measured": 0
+  },
+  {
+   "name": "saltlick",
+   "url": "https://usareur-af.github.io/saltlick/",
+   "shows": "a directory session recorded against a real instance",
+   "kind": "site",
+   "repo": "https://github.com/USAREUR-AF/saltlick",
+   "slug": "saltlick",
+   "title": "saltlick",
+   "tagline": "Advisory, never authoritative. Being listed grants access to nothing.",
+   "lede": "A directory where an organization publishes its own interconnection capability, so that two organizations can check compatibility before they build a link. It holds signed pointers, not permissions. The reader checks every signature and digest against keys it bound outside the directory.",
+   "numbers": [
+    {
+     "n": "17",
+     "l": "routes it serves",
+     "how": "curl -s localhost:8080/v1/version"
+    },
+    {
+     "n": "64 KiB",
+     "l": "largest body it accepts",
+     "how": "grep MaxBodyBytes internal/httpapi/server.go"
+    },
+    {
+     "n": "3",
+     "l": "offer blocks refused with 422",
+     "how": "grep -A5 'offerMembers =' internal/pkgv1/package.go"
+    },
+    {
+     "n": "84",
+     "l": "Go tests",
+     "how": "grep -rh '^func Test' --include=*_test.go . | wc -l"
+    }
+   ],
+   "measured": 4
+  },
+  {
+   "name": "goat-client",
+   "url": "https://usareur-af.github.io/goat-client/",
+   "shows": "the real daemon, CLI and handshake, replayed",
+   "kind": "site",
+   "repo": "https://github.com/USAREUR-AF/goat-client",
+   "slug": "goat-client",
+   "title": "goat-client",
+   "tagline": "One signed file, and the device is on the goat network.",
+   "lede": "A daemon, a desktop GUI and a command line for Linux, macOS and Windows, with iOS, iPadOS and Android shells. It takes a bundle signed by an offline certificate authority, checks the signature, and brings up the outer WireGuard tunnel, the inner NetBird mesh, or both.",
+   "numbers": [
+    {
+     "n": "556 B",
+     "l": "signed bundle, the whole credential",
+     "how": "cli-session.txt"
+    },
+    {
+     "n": "0.50 s",
+     "l": "import, tunnel up, handshake",
+     "how": "real-protocol test, handshake.txt"
+    },
+    {
+     "n": "6",
+     "l": "desktop builds, GUI and daemon",
+     "how": "gui matrix, release.yml"
+    },
+    {
+     "n": "3",
+     "l": "modes, switchable at runtime",
+     "how": "usage text, cmd/goat-client"
+    }
+   ],
+   "measured": 0
+  },
+  {
+   "name": "goatrodeo",
+   "url": "https://usareur-af.github.io/goatrodeo/",
+   "shows": "the real game",
+   "kind": "site",
+   "repo": "https://github.com/USAREUR-AF/goatrodeo",
+   "slug": "goatrodeo",
+   "title": "goatrodeo",
+   "tagline": "Games and toys that run on a goat data fabric.",
+   "lede": "Each one is fun to play and publishes real events while you play it. Air Defenders is the first: a browser arcade game, solo or co-op, that runs on a laptop with one Go command.",
+   "numbers": [
+    {
+     "n": "30",
+     "l": "simulation steps a second",
+     "how": "tickHz in multiplayer.go"
+    },
+    {
+     "n": "8",
+     "l": "players in one co-op room",
+     "how": "maxPlayers in multiplayer.go"
+    },
+    {
+     "n": "4",
+     "l": "event keys published",
+     "how": "rows in topic-manifest.tsv"
+    },
+    {
+     "n": "104 KiB",
+     "l": "the solo game, one HTML file",
+     "how": "wc -c airdefenders/index.html"
+    }
+   ],
+   "measured": 0
+  },
+  {
+   "name": "open-entity-gateway",
+   "url": "https://usareur-af.github.io/open-entity-gateway/",
+   "shows": "what the gateway prints for one record",
+   "kind": "site",
+   "repo": "https://github.com/USAREUR-AF/open-entity-gateway",
+   "slug": "open-entity-gateway",
+   "title": "open-entity-gateway",
+   "tagline": "Bridges between the goat fabric and vendor systems.",
+   "lede": "Each bridge is its own package that speaks one vendor's software kit: Anduril Lattice and Picogrid ECN today. A mapping file says how a record becomes a track; the bridge sends it in the vendor's form.",
+   "numbers": [
+    {
+     "n": "2",
+     "l": "vendor bridges",
+     "how": "ls vendors/*/pyproject.toml | wc -l"
+    },
+    {
+     "n": "4",
+     "l": "inputs: HTTP, file, ZeroMQ, Zenoh",
+     "how": "ls src/open_entity_gateway/inputs"
+    },
+    {
+     "n": "9",
+     "l": "CoT events identical to first-bite's",
+     "how": "wc -l tests/vectors/cotify.jsonl"
+    },
+    {
+     "n": "0",
+     "l": "vendor SDKs installed by core CI",
+     "how": "cat requirements/*.txt | grep -ciE 'anduril|picogrid'"
+    }
+   ],
+   "measured": 4
+  },
+  {
+   "name": "zagros-moon-pod",
+   "url": "https://usareur-af.github.io/zagros-moon-pod/",
+   "shows": "what crosses the pod router",
+   "kind": "site",
+   "repo": "https://github.com/USAREUR-AF/zagros-moon-pod",
+   "slug": "zagros-moon-pod",
+   "title": "zagros-moon-pod",
+   "tagline": "A small bundle you run on your own host to exchange data with a goat fabric, both ways.",
+   "lede": "A Zenoh router with mutual TLS that may write only your slot, an observe-only audit sink, and a mesh client on the host. Today it is for learning: rung 2 of the goat learner ladder, joined to the zagros sandbox, not in operational use.",
+   "numbers": [
+    {
+     "n": "2",
+     "l": "containers: router and audit sink",
+     "how": "services in compose/docker-compose.yml"
+    },
+    {
+     "n": "6",
+     "l": "allow rules over a default deny",
+     "how": "access_control.rules in host/zenoh-router.json5.tmpl"
+    },
+    {
+     "n": "6",
+     "l": "client SDK languages",
+     "how": "ls clients/connect"
+    },
+    {
+     "n": "7",
+     "l": "requirements at the boundary",
+     "how": "docs/partner-contract.md"
+    }
+   ],
+   "measured": 4
+  },
+  {
+   "name": "goat-cloud",
+   "url": "https://usareur-af.github.io/goat-cloud/",
+   "shows": "an ownership register: every cloud resource has an owner",
+   "kind": "site",
+   "repo": "https://github.com/USAREUR-AF/goat-cloud",
+   "slug": "goat-cloud",
+   "title": "goat-cloud: every cloud resource has an owner",
+   "tagline": "Every cloud resource has an owner, a purpose and a lifetime that anyone can look up.",
+   "lede": "Developers deploy from their own repositories with no central gate and no ticket. Each night a scan finds what has no owner or has outlived its stated expiry; its owner is warned, and it is removed.",
+   "numbers": [
+    {
+     "n": "6",
+     "l": "facts on every resource: project, environment, managing tool, lifecycle, repository, and an expiry when it is not meant to last",
+     "how": ""
+    },
+    {
+     "n": "8",
+     "l": "deployment tools take part on equal terms: Terraform, OpenTofu, Pulumi, CloudFormation, Serverless Framework, CDK, SAM, Copilot",
+     "how": ""
+    },
+    {
+     "n": "1,831",
+     "l": "tests pass from a fresh clone; none needs a cloud credential",
+     "how": ""
+    },
+    {
+     "n": "152 / 29",
+     "l": "resources and findings in one scan of the synthetic demo estate, from one command",
+     "how": ""
+    }
+   ],
+   "measured": 0
+  },
+  {
+   "name": "goatrope",
+   "url": "https://usareur-af.github.io/goatrope/",
+   "shows": "a rope figure drawn by `build.py`, state drawn rather than colored",
+   "kind": "site",
+   "repo": "https://github.com/USAREUR-AF/goatrope",
+   "slug": "goatrope",
+   "title": "goatrope",
+   "tagline": "Tie distant machines to one link, or tap the link they share.",
+   "lede": "goatrope takes a copy of one network link, from a tap device, a switch mirror port or its own inline tap on a small computer, and records it, sends on what you name, or relays named datagrams. The relay joins distant sites over the mesh they already share, or through a declared boundary point when a site stands outside it; it is work in progress. One file declares what it does. It runs with nothing else of ours installed.",
+   "numbers": [
+    {
+     "n": "500 of 500",
+     "l": "datagrams each way through the inline tap",
+     "how": "tests/netns, inline"
+    },
+    {
+     "n": "0",
+     "l": "frames out of a listen port: install, traffic, attempts to send, restarts",
+     "how": "tests/netns, listen"
+    },
+    {
+     "n": "400 of 400",
+     "l": "pings through the bridge while it is deployed again",
+     "how": "tests/netns, deploy"
+    },
+    {
+     "n": "1",
+     "l": "statically linked binary per machine, no interpreter or library needed",
+     "how": "ci.yml checks every build"
+    }
+   ],
+   "measured": 4
+  },
+  {
+   "name": "scapegoat",
+   "url": "https://usareur-af.github.io/scapegoat/",
+   "shows": "a real session against the toy simulator: the link established, lost and established again",
+   "kind": "site",
+   "repo": "https://github.com/USAREUR-AF/scapegoat",
+   "slug": "scapegoat",
+   "title": "scapegoat: the C2 side of a sensor link",
+   "tagline": "It speaks first, so the sensor starts sending.",
+   "lede": "Some sensors send nothing until a C2 system talks to them. scapegoat runs on a small computer on the sensor's network and plays that C2 side: it opens the link, keeps it alive and shows whether the sensor is answering. A protocol is a plugin, and the tracks a plugin reads go out as ASTERIX CAT062, CoT or SAPIENT.",
+   "numbers": [
+    {
+     "n": "6",
+     "l": "link states, each change logged with its reason",
+     "how": "STATES in scapegoat/core/session.py"
+    },
+    {
+     "n": "3",
+     "l": "standard track formats out",
+     "how": "FORMATS in scapegoat/core/outputs.py"
+    },
+    {
+     "n": "0",
+     "l": "packages to install: standard library only",
+     "how": "imports in scapegoat/ outside sys.stdlib_module_names"
+    },
+    {
+     "n": "171",
+     "l": "tests, run on every pull request",
+     "how": "def test* in tests/"
+    }
+   ],
+   "measured": 4
+  },
+  {
+   "name": "goat",
+   "url": "https://usareur-af.github.io/goatdocs/goat/",
+   "shows": "goat as one system",
+   "kind": "subpage",
+   "repo": "https://github.com/USAREUR-AF/goatdocs",
+   "slug": "goat",
+   "title": "goat: a self-hosted data fabric",
+   "tagline": "A self-hosted data fabric that keeps working when the network around it fails.",
+   "lede": "goat joins people, machines and services across sites into one network. They publish and subscribe to data, and access is decided by who they are, not where they sit. A device that has joined keeps talking to its peers directly, with or without the cloud.",
+   "numbers": [
+    {
+     "n": "0.05 s",
+     "l": "to rehearse a full standup of the example environment on a laptop: 5 components on 4 machines, 14 checks",
+     "how": ""
+    },
+    {
+     "n": "331",
+     "l": "error codes, each with what happened, why, and what to do; goat explain reads them offline",
+     "how": ""
+    },
+    {
+     "n": "377",
+     "l": "decision records in the repository, one per design decision, never rewritten",
+     "how": ""
+    },
+    {
+     "n": "20.7 MB",
+     "l": "the largest goatbuilder release binary; one file per platform, four platforms",
+     "how": ""
+    }
+   ],
+   "measured": 0
+  },
+  {
+   "name": "fieldkit-feeds",
+   "url": "https://usareur-af.github.io/goatdocs/goat/fieldkit-feeds/",
+   "shows": "Fieldkit Feeds, a service inside goatstuff",
+   "kind": "subpage",
+   "repo": "https://github.com/USAREUR-AF/goatdocs",
+   "slug": "fieldkit-feeds",
+   "title": "Fieldkit Feeds: send fabric data to a system, and bring a system's data in",
+   "tagline": "Send fabric data to the systems that need it, and bring their data in. A tactical admin switches it on.",
+   "lede": "An operator picks a topic and the system that should receive it, or names what a system sends and the standard it uses. A tactical admin for the site switches the feed on; anyone else's request waits for one. Each feed shows one word for its health, its counters, the exact command it runs and who did what.",
+   "numbers": [
+    {
+     "n": "7",
+     "l": "actions on a feed: approve, decline, pause, resume, renew, remove, check. Fieldkit allows at most eight",
+     "how": ""
+    },
+    {
+     "n": "1",
+     "l": "direct dependency, the Postgres driver; no JavaScript framework, no package manager, no build step for the page",
+     "how": ""
+    },
+    {
+     "n": "2",
+     "l": "static Linux binaries, x86-64 and arm64, page included: the hosts the fleet runs on",
+     "how": ""
+    },
+    {
+     "n": "813",
+     "l": "lines of HTML, CSS and JavaScript in the whole page",
+     "how": ""
+    }
+   ],
+   "measured": 0
+  },
+  {
+   "name": "hello-galaxy",
+   "url": "https://usareur-af.github.io/goatdocs/hello-galaxy/",
+   "shows": "the hello-galaxy worked examples",
+   "kind": "subpage",
+   "repo": "https://github.com/USAREUR-AF/goatdocs",
+   "slug": "hello-galaxy",
+   "title": "Hello Galaxy",
+   "tagline": "17 small repositories. Each answers one question about goat by running it.",
+   "lede": "Every repository is a short runbook per step and one script that drives the real tools, prints what happens, and says plainly what it does not run. Pick the question you have, clone that repository, and run one command.",
+   "numbers": [
+    {
+     "n": "17",
+     "l": "public repositories",
+     "how": "one question each, in four themes"
+    },
+    {
+     "n": "17 / 0",
+     "l": "checks passed / failed",
+     "how": "federation, the half that needs no goatnet"
+    },
+    {
+     "n": "9 / 0",
+     "l": "checks passed / failed",
+     "how": "time hygiene, five scenarios offline"
+    },
+    {
+     "n": "0",
+     "l": "certificates reissued",
+     "how": "when a unit moves to a new parent"
+    }
+   ],
+   "measured": 0
+  }
+ ]
+}

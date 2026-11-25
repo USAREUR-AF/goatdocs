@@ -1,0 +1,18 @@
+/* Layout: an exhibition catalogue. Each landing page is a numbered plate with
+   its caption beside it, on gallery paper; goat green for what can be selected.
+   System fonts only. */
+:root {
+  --paper: #f2f1ea; --panel: #fcfbf6; --ink: #1b2118; --quiet: #525a4a; --rule: #d3d6c4; --grid: #e6e6dc;
+  --accent: #1c6a3d; --accent-soft: #d9e8d3; --on-accent: #ffffff; --track: #1c6a3d; --track-2: #4a5a4a;
+  --good: #1c6a3d; --bad: #7a3e12; --code-bg: #eae9e0;
+  --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #11150f; --panel: #171d14; --ink: #e6e9da; --quiet: #a7ae98; --rule: #2c3426; --grid: #1a2016;
+    --accent: #74cf93; --accent-soft: #1a3223; --on-accent: #0e140c; --track: #74cf93; --track-2: #b5bda5;
+    --good: #74cf93; --bad: #e0b07a; --code-bg: #0c100a;
+  }
+}

@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>splash-page: the Claude Code skill that builds goat landing pages</title>
+<meta name="description" content="splash-page is a Claude Code skill that builds a repository's landing page on GitHub Pages in the goat house style and checks every number on it against the repository.">
+<link rel="icon" href="{{ICON}}">
+<style>
+{{CSS}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="#top"><img src="{{ICON}}" width="28" height="28" alt="">splash-page</a>
+    <nav aria-label="Sections">
+      <a href="#gallery">What it builds</a><a href="#where">Where it lives</a><a href="#checks">Checks</a><a href="#start">Start</a>
+      <a href="../">goat</a>
+      <a class="gh" href="https://github.com/USAREUR-AF/goatdocs">GitHub</a>
+    </nav>
+  </header>
+</div>
+
+<main id="top">
+<section class="hero" aria-labelledby="name">
+<pre class="bgcode" aria-hidden="true">---
+name: splash-page
+description: Build or revise a project's landing page
+  on GitHub Pages in the house style: wordmark and
+  terminal prompt, Star on GitHub, a copyable command,
+  the real thing running in the first screen,
+  measured numbers where the project has them,
+  declarative sections, light and dark, checked in CI.
+---
+
+| The project is            | Page goes              |
+|---------------------------|------------------------|
+| its own public repository | site/ in that repo     |
+| a component inside one    | goatdocs docs/goat/... |
+| a facet of a page         | a second page beside it|</pre>
+  <div class="wrap hero-grid">
+    <div>
+      <p class="prompt">&gt;_ make a landing page for this repository<span class="cur" aria-hidden="true"></span></p>
+      <h1 class="wordmark" id="name">splash-page</h1>
+      <p class="tagline">A Claude Code skill that builds a repository's landing page and checks every number on it.</p>
+      <p class="lede">Ask Claude for a landing page and the skill lays down this design: a prompt line and wordmark, Star on GitHub, a command to copy, the real program running in the first screen, and, where the project has them, numbers measured from the repository. The page you are reading was built with it.</p>
+      <div class="buttons">
+        <a class="btn star" href="https://github.com/USAREUR-AF/goatdocs"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M12 2.8l2.8 5.8 6.4.9-4.6 4.5 1.1 6.3L12 17.3l-5.7 3 1.1-6.3-4.6-4.5 6.4-.9z"/></svg>Star on GitHub</a>
+        <a class="btn" href="#gallery">What it builds</a>
+        <a class="btn" href="https://github.com/USAREUR-AF/goatdocs/tree/main/.claude/skills/splash-page">The skill</a>
+      </div>
+      <div class="cmd"><pre data-box="command"><span class="ln"><code id="c-install">/plugin install goat-skills <span class="w">--marketplace</span> <span class="w">https://usareur-af.github.io/goatdocs/claude/marketplace.json</span></code></span></pre><button class="copy" type="button" data-copy="c-install">Copy</button></div>
+      <p class="under">In Claude Code. Once per person; the skill is then present in every repository, including a new, empty one.</p>
+    </div>
+
+    <div class="stage" role="img" aria-label="A replay of the skill's two scripts run in a new repository: scaffold.py writes the page skeleton and the Pages workflow; build.py fails, naming every placeholder still on the page and one number that differs from the repository; after the page is written, build.py passes, the box check at 1440 and 390 pixels passes, and the number matches the repository.">
+      <div class="stage-head"><span><b>example-repo</b></span><span id="step">3/3 build passes</span></div>
+      <pre class="stage-lines" id="stage-lines" aria-hidden="true"><span class="in">$ python3 -I site/build.py</span><span>site/index.html: placeholders on lines 7, 24, 25, 28, 30 (and 23 more)</span><span>site/assets/site.css: placeholders on lines 1, 5</span><span class="no">site/index.html: example-count says 0, the tree gives 1</span><span class="cm"># the page is written</span><span class="in">$ python3 -I site/build.py</span><span class="ok">fitcheck: index.html: every box fits at 1440 and 390 px</span><span class="ev">site: numbers match the tree: example-count=1</span></pre>
+      <div class="stage-foot">The output of the skill's scripts in a new repository, copied from the run, replayed in order.</div>
+    </div>
+  </div>
+
+</section>
+
+<section class="band" id="gallery">
+  <div class="wrap">
+    <h2>Every page, one design</h2>
+    <p class="sub">Each project gets its own theme, taken from what it does. The layout and the checks are the same on every page. Each picture is the first screen of the live page; select it to open the page. <a href="../pages/">The catalogue</a> has every page with its own words.</p>
+    <div class="sheet">
+{{GALLERY}}
+    </div>
+  </div>
+</section>
+
+<section class="band" id="what">
+  <div class="wrap">
+    <h2>What the skill decides</h2>
+    <p class="sub">The skill is a set of written rules, a skeleton and two checks. Claude follows the rules; the checks fail the pull request when a page breaks them.</p>
+    <div class="cards">
+      <div class="card"><h3>The first screen</h3><p>Prompt line, wordmark, a one-line tagline, two or three sentences, Star on GitHub first, then one command with Copy. Beside it, the real program running: a test vector, a decoded capture, a recorded session, the game itself. Never a mock-up.</p></div>
+      <div class="card"><h3>Numbers, only real ones</h3><p>A number goes on a page only when it is a fact a reader of that project would ask about, and then it is measured from the repository by <code>site/build.py</code>. A page with no such number has no number strip. Stars, commits and contributor counts are left out.</p></div>
+      <div class="card"><h3>The rest of the page</h3><p>Sections whose headings make a claim, figures drawn by code in the repository, light and dark, system fonts, no request to another host, no example data that names a real deployment.</p></div>
+    </div>
+    <div class="scroll" style="margin-top:36px"><table>
+      <thead><tr><th>The project is</th><th>The page goes</th><th>Served at</th></tr></thead>
+      <tbody>
+        <tr><td>its own public repository</td><td><code>site/</code> in that repository, with <code>.github/workflows/pages.yml</code></td><td><code>usareur-af.github.io/&lt;repo&gt;/</code></td></tr>
+        <tr><td>a component inside a larger repository</td><td>goatdocs, <code>docs/goat/&lt;slug&gt;/index.html</code>, one self-contained file</td><td><code>usareur-af.github.io/goatdocs/goat/&lt;slug&gt;/</code></td></tr>
+        <tr><td>a facet of a page that exists</td><td>a second page in the same <code>site/</code>, such as <code>contribute.html</code></td><td>beside its parent</td></tr>
+        <tr><td>a private repository</td><td>no public page unless its content is public</td><td></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</section>
+
+<section class="band" id="where">
+  <div class="wrap feature">
+    <div>
+      <h2>It lives in goatdocs and installs everywhere</h2>
+      <p>The skill is a folder in goatdocs. The goatdocs site publishes a one-file plugin catalogue that points at that folder; the plugin <code>goat-skills</code> holds only this skill and the <code>changelog</code> skill, and Claude Code fetches that folder alone, about 100 KB. Install it once and it is present in every repository you open, including one with no files yet.</p>
+      <p>A repository can ask for the plugin itself. With this in its <code>.claude/settings.json</code>, Claude Code offers the install to anyone who opens the repository:</p>
+      <pre class="json" style="--hang:4ch" data-box="output"><span class="ln">{
+</span><span class="ln">  "extraKnownMarketplaces": { "goat": { "source": { "source": "url",
+</span><span class="ln">    "url": "https://usareur-af.github.io/goatdocs/claude/marketplace.json" } } },
+</span><span class="ln">  "enabledPlugins": { "goat-skills@goat": true }
+</span><span class="ln">}</span></pre>
+      <p>The skill is never copied into another repository, so there is one version of it.</p>
+    </div>
+    <div>
+      <pre class="tree" data-box="output"><span class="ln"><b>USAREUR-AF/goatdocs</b>
+</span><span class="ln">├── docs/claude/marketplace.json   <span class="dim">the plugin catalogue, served by the site</span>
+</span><span class="ln">└── .claude/skills/splash-page/
+</span><span class="ln">    ├── SKILL.md       <span class="dim">the rules Claude follows</span>
+</span><span class="ln">    ├── scaffold.py    <span class="dim">lays down the skeleton, never overwrites</span>
+</span><span class="ln">    ├── examples.md    <span class="dim">every live page, what it shows</span>
+</span><span class="ln">    └── templates/
+</span><span class="ln">        ├── pages.yml  <span class="dim">check on a pull request, deploy from main</span>
+</span><span class="ln">        └── site/      <span class="dim">index.html, site.css, site.js, icon.svg,</span>
+</span><span class="ln">                       <span class="dim">build.py, fitcheck.py, README.md</span></span></pre>
+      <p class="after"><a href="https://github.com/USAREUR-AF/goatdocs/blob/main/.claude/skills/splash-page/SKILL.md">Read SKILL.md</a> &middot; <a href="https://github.com/USAREUR-AF/goatdocs/blob/main/.claude/skills/splash-page/examples.md">examples.md</a></p>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="checks">
+  <div class="wrap feature">
+    <div>
+      <h2>A number that drifts fails the build</h2>
+      <p>Every number on a page sits in an element that names how it is measured. <code>site/build.py</code> measures it from the repository and fails the pull request when the page says something else. This is how goat-processors states its vector count:</p>
+      <pre class="json" data-box="output"><span class="ln">&lt;span class="n" <span class="w">data-measure="vectors"</span>&gt;121&lt;/span&gt;</span></pre>
+      <p>If three vectors were added and the page still said 121, the build would stop with:</p>
+      <pre class="json" data-box="output"><span class="ln">site/index.html: vectors says 121, the tree gives 124</span></pre>
+      <p>The same run fails while any placeholder from the skeleton remains, and runs <code>fitcheck.py</code>, which loads the page in headless Chrome and fails when a command box is cut off at 1440 or 390 px or the page scrolls sideways.</p>
+    </div>
+    <div>
+      <h2>Publishing is a person's call</h2>
+      <p>The workflow checks every pull request that touches the page or anything it measures. It deploys from <code>main</code> only after a repository owner sets Pages to deploy from GitHub Actions. Until then it checks the page and skips the deploy with a notice. Turning Pages on and setting the repository's website both make a page public, so the skill asks first.</p>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="start">
+  <div class="wrap">
+    <h2>Quick start</h2>
+    <p class="sub">In Claude Code, inside the repository that needs a page:</p>
+    <pre class="block" data-box="command"><span class="ln">/plugin install goat-skills <span class="w">--marketplace</span> <span class="w">https://usareur-af.github.io/goatdocs/claude/marketplace.json</span>
+</span><span class="ln">/goat-skills:splash-page</span></pre>
+    <p>Or ask in your own words: "make a landing page for this repository". Without Claude, the scripts run alone, from a clone of goatdocs:</p>
+    <pre class="block" data-box="command"><span class="ln">python3 <span class="w">-I</span> <span class="w">.claude/skills/splash-page/scaffold.py</span> site <span class="w">&lt;repo&gt;</span> <span class="w">--name</span> <span class="w">&lt;repo&gt;</span> <span class="w">--repo</span> <span class="w">USAREUR-AF/&lt;repo&gt;</span>
+</span><span class="ln">python3 <span class="w">-I</span> <span class="w">site/build.py</span></span></pre>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><a href="https://github.com/USAREUR-AF/goatdocs">Repository</a><a href="https://github.com/USAREUR-AF/goatdocs/blob/main/LICENSE">Apache License 2.0</a><a href="https://github.com/USAREUR-AF/goatdocs/blob/main/SECURITY.md">Security policy</a><a href="../">goat</a></p>
+    <p>Portions written by U.S. Federal government employees within the scope of their employment are in the public domain in the United States. Part of <a href="https://github.com/USAREUR-AF/goatcore">goat</a>.</p>
+  </div>
+</footer>
+<script>
+{{JS}}
+</script>
+</body>
+</html>

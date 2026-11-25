@@ -1,0 +1,14 @@
+{
+  "name": "goat",
+  "owner": { "name": "goat-owners" },
+  "metadata": { "description": "Claude Code skills for work across the goat public repositories." },
+  "plugins": [
+    {
+      "name": "goat-skills",
+      "description": "splash-page (landing pages on GitHub Pages in the house style) and changelog (goat changelog entries).",
+      "version": "0.1.0",
+      "license": "Apache-2.0",
+      "source": { "source": "git-subdir", "url": "https://github.com/USAREUR-AF/goatdocs.git", "path": ".claude", "ref": "main" }
+    }
+  ]
+}

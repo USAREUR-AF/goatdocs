@@ -28,6 +28,22 @@ exclude_docs: |
   goat/README.md
   goat/fieldkit-feeds/README.md
   goat/goatbuilder/README.md
+  goat/splash-page/README.md
+  goat/splash-page/page.html
+  goat/splash-page/build.py
+  goat/splash-page/extra.css
+  goat/splash-page/extra-tail.css
+  goat/splash-page/replay.js
+  goat/splash-page/icon.svg
+  goat/pages/README.md
+  goat/pages/page.html
+  goat/pages/build.py
+  goat/pages/collect.py
+  goat/pages/catalog.json
+  goat/pages/catalogue.js
+  goat/pages/extra.css
+  goat/pages/extra-tail.css
+  goat/pages/icon.svg
   hello-galaxy/README.md
 
 theme:
