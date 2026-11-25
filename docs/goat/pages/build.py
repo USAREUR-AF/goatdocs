@@ -43,7 +43,7 @@ def md(s):
     return re.sub(r"`([^`]+)`", r"<code>\1</code>", esc(s))
 
 
-def plate(i, p):
+def plate(i, p, status=None):
     cells = "".join(
         f'<div><span class="n">{esc(c["n"])}</span><span class="l">{esc(c["l"])}</span>'
         + (f'<code>{esc(c["how"])}</code>' if c["how"] else "") + "</div>" for c in p["numbers"])
@@ -52,7 +52,7 @@ def plate(i, p):
       <a class="print" href="{esc(p["url"])}"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/{p["slug"]}-dark.jpg"><img src="shots/{p["slug"]}-light.jpg" width="1080" height="675" loading="lazy" alt="The first screen of the {esc(p["name"])} landing page."></picture></a>
       <div>
         <span class="no">{esc(addr)}</span>
-        <h3><a href="{esc(p["url"])}">{esc(p["name"])}</a></h3>
+        <h3><a href="{esc(p["url"])}">{esc(p["name"])}</a>{f' <span class="st">{esc(status)}</span>' if status else ""}</h3>
         <p class="tg">{esc(p["tagline"])}</p>
         <p class="ld">{esc(p["lede"])}</p>
         <div class="mini">{cells}</div>
@@ -63,12 +63,13 @@ def plate(i, p):
 
 
 def plates(groups):
+    status = json.loads(read(HERE, "groups.json")).get("status", {})
     out, i = [], 0
     for g, members in groups:
         out.append(f'    <div class="group" id="g-{g["id"]}"><h3 class="gh">{esc(g["title"])}</h3><p class="gs">{esc(g["says"])}</p></div>')
         for p in members:
             i += 1
-            out.append(plate(i, p))
+            out.append(plate(i, p, status.get(p["slug"])))
     return "\n".join(out)
 
 
@@ -134,6 +135,8 @@ def main():
         bad.append(f"{s} is in catalog.json but in no group of groups.json")
     for s in sorted(set(placed) - set(slugs)):
         bad.append(f"groups.json names {s}, which catalog.json does not have")
+    for s in sorted(set(json.loads(read(HERE, "groups.json")).get("status", {})) - set(slugs)):
+        bad.append(f"groups.json status names {s}, which catalog.json does not have")
     for s in sorted({s for s in placed if placed.count(s) > 1}):
         bad.append(f"groups.json puts {s} in more than one group")
     if "{{" in page:

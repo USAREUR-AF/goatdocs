@@ -37,3 +37,4 @@
 .group { padding: 56px 0 4px; }
 .group .gh { font: 800 clamp(22px, 2.2vw, 28px)/1.2 var(--sans); margin: 0 0 6px; color: var(--accent); }
 .group .gs { color: var(--quiet); margin: 0; max-width: 46em; }
+.plate h3 .st { display: inline-block; vertical-align: middle; font: 700 12px var(--mono); letter-spacing: .04em; text-transform: uppercase; color: var(--ink); border: 1px dashed var(--quiet); border-radius: 3px; padding: 3px 8px; margin-left: 8px; }
