@@ -57,7 +57,7 @@
      "how": "message layouts across those formats"
     },
     {
-     "n": "25,251",
+     "n": "25,472",
      "l": "conversion vectors",
      "how": "all seven engines match every one"
     },
@@ -417,6 +417,40 @@
     {
      "n": "20.7 MB",
      "l": "the largest goatbuilder release binary; one file per platform, four platforms",
+     "how": ""
+    }
+   ],
+   "measured": 0
+  },
+  {
+   "name": "goatbuilder",
+   "url": "https://usareur-af.github.io/goatdocs/goat/goatbuilder/",
+   "shows": "goatbuilder, the tool in goatcore that builds, releases and deploys every machine",
+   "kind": "subpage",
+   "repo": "https://github.com/USAREUR-AF/goatdocs",
+   "slug": "goatbuilder",
+   "title": "goatbuilder: one tool for every machine in a goatnet",
+   "tagline": "One tool for every machine in a goatnet, from the core servers to the billie kids.",
+   "lede": "Declare what a machine is for. goatbuilder takes it from a reachable Ubuntu host to its role in the goatnet, then checks the result. Five roles build today. Eight more, from boundaries to processing to the network tap, are designed as target types, with a place for a role of your own.",
+   "numbers": [
+    {
+     "n": "13",
+     "l": "machine roles in one design; each becomes one data file that every verb reads",
+     "how": ""
+    },
+    {
+     "n": "5",
+     "l": "of them built by goatbuilder join-node today, release 0.7.3",
+     "how": ""
+    },
+    {
+     "n": "34",
+     "l": "services goatbuilder deploy can put on those machines today",
+     "how": ""
+    },
+    {
+     "n": "Host site",
+     "l": "",
      "how": ""
     }
    ],

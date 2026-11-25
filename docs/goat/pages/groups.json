@@ -4,9 +4,10 @@
   {
    "id": "system",
    "title": "The system",
-   "says": "What goat is: a self-hosted data fabric across sites that keeps working when the network around it fails.",
+   "says": "What goat is: a self-hosted data fabric across sites that keeps working when the network around it fails, and the tool that builds it.",
    "pages": [
-    "goat"
+    "goat",
+    "goatbuilder"
    ]
   },
   {
