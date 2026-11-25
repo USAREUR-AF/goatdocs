@@ -1,0 +1,12 @@
+{
+ "about": "The order of the catalogue: groups follow a goat deployment from the whole system, to joining it, to bringing data in, working on it and using it, then running and learning it. Every page in catalog.json is in exactly one group.",
+ "groups": [
+  {"id": "system", "title": "The system", "says": "What goat is: a self-hosted data fabric across sites that keeps working when the network around it fails.", "pages": ["goat"]},
+  {"id": "join", "title": "Join a goat network", "says": "Put a device, a partner's host or an organization on a goat network, and find who to peer with.", "pages": ["goat-client", "zagros-moon-pod", "saltlick"]},
+  {"id": "bring-in", "title": "Bring data in, connect other systems", "says": "Take data from sensors, wire protocols, network links and vendor systems onto the fabric, and send it back out.", "pages": ["open-billie", "first-bite", "goatrope", "open-entity-gateway"]},
+  {"id": "work", "title": "Work on the data", "says": "Convert any message format to any other, then correlate, fuse, filter and grade the tracks, with every decision traced.", "pages": ["goat-transformers", "goat-processors"]},
+  {"id": "use", "title": "Use the data", "says": "Route fabric data to the systems that need it, and build on it.", "pages": ["fieldkit-feeds", "goatrodeo"]},
+  {"id": "run", "title": "Run the estate", "says": "Know who owns every cloud resource a deployment uses, what it is for and when it ends.", "pages": ["goat-cloud"]},
+  {"id": "learn", "title": "Learn by running it", "says": "Small repositories that each answer one question about goat by running the real tools.", "pages": ["hello-galaxy"]}
+ ]
+}

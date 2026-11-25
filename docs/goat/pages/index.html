@@ -151,11 +151,6 @@ footer a { margin-right: 18px; }
 .show.fade { opacity: 0; }
 .show img { display: block; width: 100%; height: auto; }
 @media (prefers-reduced-motion: reduce) { .show { transition: none; } }
-.filter { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 36px; }
-.filter button { font: 700 14px var(--mono); padding: 8px 14px; border: 1px solid var(--rule); background: var(--panel); color: var(--ink); border-radius: 3px; cursor: pointer; }
-.filter button span { color: var(--quiet); font-weight: 400; margin-left: 4px; }
-.filter button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
-.filter button[aria-pressed="true"] span { color: var(--on-accent); }
 .plate { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 36px; align-items: start; padding: 40px 0; border-top: 1px solid var(--rule); }
 .plate[hidden] { display: none; }
 .plate .print { position: relative; display: block; padding: 12px; background: var(--panel); border: 1px solid var(--rule); }
@@ -181,6 +176,13 @@ footer a { margin-right: 18px; }
 .mini code { display: block; font-size: 11.5px; color: var(--quiet); overflow-wrap: anywhere; margin-top: 2px; }
 .plate .go a { margin-right: 18px; font-weight: 600; }
 @media (max-width: 900px) { .plate { grid-template-columns: minmax(0, 1fr); gap: 20px; } }
+.groups { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 12px; }
+.groups a { font: 700 14px var(--mono); padding: 8px 14px; border: 1px solid var(--rule); background: var(--panel); color: var(--ink); border-radius: 3px; text-decoration: none; }
+.groups a span { color: var(--quiet); font-weight: 400; margin-left: 4px; }
+.groups a:hover { border-color: var(--accent); color: var(--accent); }
+.group { padding: 56px 0 4px; }
+.group .gh { font: 800 clamp(22px, 2.2vw, 28px)/1.2 var(--sans); margin: 0 0 6px; color: var(--accent); }
+.group .gs { color: var(--quiet); margin: 0; max-width: 46em; }
 
 </style>
 </head>
@@ -198,19 +200,19 @@ footer a { margin-right: 18px; }
 
 <main id="top">
 <section class="hero" aria-labelledby="name">
-<pre class="bgcode" aria-hidden="true">goat-processors       https://usareur-af.github.io/goat-processors/
-goat-transformers     https://usareur-af.github.io/goat-transformers/
+<pre class="bgcode" aria-hidden="true">goat                  https://usareur-af.github.io/goatdocs/goat/
+goat-client           https://usareur-af.github.io/goat-client/
+zagros-moon-pod       https://usareur-af.github.io/zagros-moon-pod/
+saltlick              https://usareur-af.github.io/saltlick/
 open-billie           https://usareur-af.github.io/open-billie/
 first-bite            https://usareur-af.github.io/first-bite/
-saltlick              https://usareur-af.github.io/saltlick/
-goat-client           https://usareur-af.github.io/goat-client/
-goatrodeo             https://usareur-af.github.io/goatrodeo/
-open-entity-gateway   https://usareur-af.github.io/open-entity-gateway/
-zagros-moon-pod       https://usareur-af.github.io/zagros-moon-pod/
-goat-cloud            https://usareur-af.github.io/goat-cloud/
 goatrope              https://usareur-af.github.io/goatrope/
-goat                  https://usareur-af.github.io/goatdocs/goat/
+open-entity-gateway   https://usareur-af.github.io/open-entity-gateway/
+goat-transformers     https://usareur-af.github.io/goat-transformers/
+goat-processors       https://usareur-af.github.io/goat-processors/
 fieldkit-feeds        https://usareur-af.github.io/goatdocs/goat/fieldkit-feeds/
+goatrodeo             https://usareur-af.github.io/goatrodeo/
+goat-cloud            https://usareur-af.github.io/goat-cloud/
 hello-galaxy          https://usareur-af.github.io/goatdocs/hello-galaxy/</pre>
   <div class="wrap hero-grid">
     <div>
@@ -228,8 +230,8 @@ hello-galaxy          https://usareur-af.github.io/goatdocs/hello-galaxy/</pre>
     </div>
 
     <div class="stage" role="img" aria-label="The first screen of each goat landing page, shown one after another.">
-      <div class="stage-head"><span><b id="show-name">goat-processors</b></span><span id="show-n">1 / 14</span></div>
-      <a class="show" id="show" href="https://usareur-af.github.io/goat-processors/"><picture id="show-pic"><source media="(prefers-color-scheme: dark)" srcset="shots/goat-processors-dark.jpg"><img src="shots/goat-processors-light.jpg" width="1080" height="675" alt=""></picture></a>
+      <div class="stage-head"><span><b id="show-name">goat</b></span><span id="show-n">1 / 14</span></div>
+      <a class="show" id="show" href="https://usareur-af.github.io/goatdocs/goat/"><picture id="show-pic"><source media="(prefers-color-scheme: dark)" srcset="shots/goat-dark.jpg"><img src="shots/goat-light.jpg" width="1080" height="675" alt=""></picture></a>
       <div class="stage-foot">First screens, captured from the live pages at 1440 px.</div>
     </div>
   </div>
@@ -247,40 +249,63 @@ hello-galaxy          https://usareur-af.github.io/goatdocs/hello-galaxy/</pre>
 <section class="band" id="plates">
   <div class="wrap">
     <h2>The pages</h2>
-    <p class="sub">Each entry is the page's own words: its tagline, its opening sentences and its four numbers, copied from the live page. Under each number is how the page says it is measured.</p>
-    <div class="filter" role="group" aria-label="Show">
-      <button type="button" data-kind="all" aria-pressed="true">All <span>14</span></button>
-      <button type="button" data-kind="site" aria-pressed="false">Own site <span>11</span></button>
-      <button type="button" data-kind="subpage" aria-pressed="false">In goatdocs <span>3</span></button>
-    </div>
-    <article class="plate" id="goat-processors" data-kind="site">
-      <a class="print" href="https://usareur-af.github.io/goat-processors/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/goat-processors-dark.jpg"><img src="shots/goat-processors-light.jpg" width="1080" height="675" loading="lazy" alt="The first screen of the goat-processors landing page."></picture></a>
+    <p class="sub">Each entry is the page's own words: its tagline, its opening sentences and its four numbers, copied from the live page. Under each number is how the page says it is measured. The pages are grouped by what each one is for, in the order a deployment meets them.</p>
+    <nav class="groups" aria-label="Groups"><a href="#g-system">The system <span>1</span></a><a href="#g-join">Join a goat network <span>3</span></a><a href="#g-bring-in">Bring data in, connect other systems <span>4</span></a><a href="#g-work">Work on the data <span>2</span></a><a href="#g-use">Use the data <span>2</span></a><a href="#g-run">Run the estate <span>1</span></a><a href="#g-learn">Learn by running it <span>1</span></a></nav>
+    <div class="group" id="g-system"><h3 class="gh">The system</h3><p class="gs">What goat is: a self-hosted data fabric across sites that keeps working when the network around it fails.</p></div>
+    <article class="plate" id="goat" data-kind="subpage">
+      <a class="print" href="https://usareur-af.github.io/goatdocs/goat/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/goat-dark.jpg"><img src="shots/goat-light.jpg" width="1080" height="675" loading="lazy" alt="The first screen of the goat landing page."></picture></a>
       <div>
-        <span class="no">Plate 01 &middot; its own site</span>
-        <h3><a href="https://usareur-af.github.io/goat-processors/">goat-processors</a></h3>
-        <p class="tg">Correlation, fusion, filtering and track quality, with every decision traced.</p>
-        <p class="ld">Each function is a written specification, packs of settings and test vectors. Seven engines, written apart in seven languages, reproduce every vector exactly, down to the record of each test they run.</p>
-        <div class="mini"><div><span class="n">7</span><span class="l">engines</span><code>ls engines | wc -l</code></div><div><span class="n">121</span><span class="l">scenario vectors</span><code>ls packs/*/vectors/*.json | wc -l</code></div><div><span class="n">4,333</span><span class="l">trace records, all reproduced</span><code>site/build.py counts every vector&#x27;s trace</code></div><div><span class="n">24</span><span class="l">settings packs</span><code>ls packs/*/pack.def | wc -l</code></div></div>
-        <p class="fs"><b>First screen:</b> a test vector replayed step by step on a plan view, with its trace records</p>
-        <p class="go"><a href="https://usareur-af.github.io/goat-processors/">Open the page</a><a href="https://github.com/USAREUR-AF/goat-processors">Repository</a></p>
+        <span class="no">Plate 01 &middot; a page in goatdocs</span>
+        <h3><a href="https://usareur-af.github.io/goatdocs/goat/">goat</a></h3>
+        <p class="tg">A self-hosted data fabric that keeps working when the network around it fails.</p>
+        <p class="ld">goat joins people, machines and services across sites into one network. They publish and subscribe to data, and access is decided by who they are, not where they sit. A device that has joined keeps talking to its peers directly, with or without the cloud.</p>
+        <div class="mini"><div><span class="n">0.05 s</span><span class="l">to rehearse a full standup of the example environment on a laptop: 5 components on 4 machines, 14 checks</span></div><div><span class="n">331</span><span class="l">error codes, each with what happened, why, and what to do; goat explain reads them offline</span></div><div><span class="n">377</span><span class="l">decision records in the repository, one per design decision, never rewritten</span></div><div><span class="n">20.7 MB</span><span class="l">the largest goatbuilder release binary; one file per platform, four platforms</span></div></div>
+        <p class="fs"><b>First screen:</b> goat as one system</p>
+        <p class="go"><a href="https://usareur-af.github.io/goatdocs/goat/">Open the page</a><a href="https://github.com/USAREUR-AF/goatdocs">Repository</a></p>
       </div>
     </article>
-    <article class="plate" id="goat-transformers" data-kind="site">
-      <a class="print" href="https://usareur-af.github.io/goat-transformers/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/goat-transformers-dark.jpg"><img src="shots/goat-transformers-light.jpg" width="1080" height="675" loading="lazy" alt="The first screen of the goat-transformers landing page."></picture></a>
+    <div class="group" id="g-join"><h3 class="gh">Join a goat network</h3><p class="gs">Put a device, a partner&#x27;s host or an organization on a goat network, and find who to peer with.</p></div>
+    <article class="plate" id="goat-client" data-kind="site">
+      <a class="print" href="https://usareur-af.github.io/goat-client/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/goat-client-dark.jpg"><img src="shots/goat-client-light.jpg" width="1080" height="675" loading="lazy" alt="The first screen of the goat-client landing page."></picture></a>
       <div>
         <span class="no">Plate 02 &middot; its own site</span>
-        <h3><a href="https://usareur-af.github.io/goat-transformers/">goat-transformers</a></h3>
-        <p class="tg">Any message format to any other. Every format is a data file.</p>
-        <p class="ld">A drone&#x27;s 25-byte Remote ID broadcast becomes a Cursor on Target event for a tactical map. No engine holds code for either format: each is a pack, a text file with one line for each field, and seven engines in seven languages read the same packs and must agree byte for byte.</p>
-        <div class="mini"><div><span class="n">4,255</span><span class="l">formats</span><code>each one a pack from a public source</code></div><div><span class="n">16,746</span><span class="l">message kinds</span><code>message layouts across those formats</code></div><div><span class="n">25,251</span><span class="l">conversion vectors</span><code>all seven engines match every one</code></div><div><span class="n">786,657</span><span class="l">bytes</span><code>the engine as WebAssembly, in this page</code></div></div>
-        <p class="fs"><b>First screen:</b> a conversion played byte by byte by the engine built to WebAssembly</p>
-        <p class="go"><a href="https://usareur-af.github.io/goat-transformers/">Open the page</a><a href="https://github.com/USAREUR-AF/goat-transformers">Repository</a></p>
+        <h3><a href="https://usareur-af.github.io/goat-client/">goat-client</a></h3>
+        <p class="tg">One signed file, and the device is on the goat network.</p>
+        <p class="ld">A daemon, a desktop GUI and a command line for Linux, macOS and Windows, with iOS, iPadOS and Android shells. It takes a bundle signed by an offline certificate authority, checks the signature, and brings up the outer WireGuard tunnel, the inner NetBird mesh, or both.</p>
+        <div class="mini"><div><span class="n">556 B</span><span class="l">signed bundle, the whole credential</span><code>cli-session.txt</code></div><div><span class="n">0.50 s</span><span class="l">import, tunnel up, handshake</span><code>real-protocol test, handshake.txt</code></div><div><span class="n">6</span><span class="l">desktop builds, GUI and daemon</span><code>gui matrix, release.yml</code></div><div><span class="n">3</span><span class="l">modes, switchable at runtime</span><code>usage text, cmd/goat-client</code></div></div>
+        <p class="fs"><b>First screen:</b> the real daemon, CLI and handshake, replayed</p>
+        <p class="go"><a href="https://usareur-af.github.io/goat-client/">Open the page</a><a href="https://github.com/USAREUR-AF/goat-client">Repository</a></p>
       </div>
     </article>
+    <article class="plate" id="zagros-moon-pod" data-kind="site">
+      <a class="print" href="https://usareur-af.github.io/zagros-moon-pod/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/zagros-moon-pod-dark.jpg"><img src="shots/zagros-moon-pod-light.jpg" width="1080" height="675" loading="lazy" alt="The first screen of the zagros-moon-pod landing page."></picture></a>
+      <div>
+        <span class="no">Plate 03 &middot; its own site</span>
+        <h3><a href="https://usareur-af.github.io/zagros-moon-pod/">zagros-moon-pod</a></h3>
+        <p class="tg">A small bundle you run on your own host to exchange data with a goat fabric, both ways.</p>
+        <p class="ld">A Zenoh router with mutual TLS that may write only your slot, an observe-only audit sink, and a mesh client on the host. Today it is for learning: rung 2 of the goat learner ladder, joined to the zagros sandbox, not in operational use.</p>
+        <div class="mini"><div><span class="n">2</span><span class="l">containers: router and audit sink</span><code>services in compose/docker-compose.yml</code></div><div><span class="n">6</span><span class="l">allow rules over a default deny</span><code>access_control.rules in host/zenoh-router.json5.tmpl</code></div><div><span class="n">6</span><span class="l">client SDK languages</span><code>ls clients/connect</code></div><div><span class="n">7</span><span class="l">requirements at the boundary</span><code>docs/partner-contract.md</code></div></div>
+        <p class="fs"><b>First screen:</b> what crosses the pod router</p>
+        <p class="go"><a href="https://usareur-af.github.io/zagros-moon-pod/">Open the page</a><a href="https://github.com/USAREUR-AF/zagros-moon-pod">Repository</a></p>
+      </div>
+    </article>
+    <article class="plate" id="saltlick" data-kind="site">
+      <a class="print" href="https://usareur-af.github.io/saltlick/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/saltlick-dark.jpg"><img src="shots/saltlick-light.jpg" width="1080" height="675" loading="lazy" alt="The first screen of the saltlick landing page."></picture></a>
+      <div>
+        <span class="no">Plate 04 &middot; its own site</span>
+        <h3><a href="https://usareur-af.github.io/saltlick/">saltlick</a></h3>
+        <p class="tg">Advisory, never authoritative. Being listed grants access to nothing.</p>
+        <p class="ld">A directory where an organization publishes its own interconnection capability, so that two organizations can check compatibility before they build a link. It holds signed pointers, not permissions. The reader checks every signature and digest against keys it bound outside the directory.</p>
+        <div class="mini"><div><span class="n">17</span><span class="l">routes it serves</span><code>curl -s localhost:8080/v1/version</code></div><div><span class="n">64 KiB</span><span class="l">largest body it accepts</span><code>grep MaxBodyBytes internal/httpapi/server.go</code></div><div><span class="n">3</span><span class="l">offer blocks refused with 422</span><code>grep -A5 &#x27;offerMembers =&#x27; internal/pkgv1/package.go</code></div><div><span class="n">84</span><span class="l">Go tests</span><code>grep -rh &#x27;^func Test&#x27; --include=*_test.go . | wc -l</code></div></div>
+        <p class="fs"><b>First screen:</b> a directory session recorded against a real instance</p>
+        <p class="go"><a href="https://usareur-af.github.io/saltlick/">Open the page</a><a href="https://github.com/USAREUR-AF/saltlick">Repository</a></p>
+      </div>
+    </article>
+    <div class="group" id="g-bring-in"><h3 class="gh">Bring data in, connect other systems</h3><p class="gs">Take data from sensors, wire protocols, network links and vendor systems onto the fabric, and send it back out.</p></div>
     <article class="plate" id="open-billie" data-kind="site">
       <a class="print" href="https://usareur-af.github.io/open-billie/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/open-billie-dark.jpg"><img src="shots/open-billie-light.jpg" width="1080" height="675" loading="lazy" alt="The first screen of the open-billie landing page."></picture></a>
       <div>
-        <span class="no">Plate 03 &middot; its own site</span>
+        <span class="no">Plate 05 &middot; its own site</span>
         <h3><a href="https://usareur-af.github.io/open-billie/">open-billie</a></h3>
         <p class="tg">Any sensor in, one track record, three standard formats out.</p>
         <p class="ld">Open Billie prepares a node, builds a small package for each sensor (a kid), and publishes its data, normalized, as CoT, ASTERIX CAT062 or SAPIENT through Zenoh. The kid decodes; the shared translator writes the format.</p>
@@ -292,7 +317,7 @@ hello-galaxy          https://usareur-af.github.io/goatdocs/hello-galaxy/</pre>
     <article class="plate" id="first-bite" data-kind="site">
       <a class="print" href="https://usareur-af.github.io/first-bite/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/first-bite-dark.jpg"><img src="shots/first-bite-light.jpg" width="1080" height="675" loading="lazy" alt="The first screen of the first-bite landing page."></picture></a>
       <div>
-        <span class="no">Plate 04 &middot; its own site</span>
+        <span class="no">Plate 06 &middot; its own site</span>
         <h3><a href="https://usareur-af.github.io/first-bite/">first-bite</a></h3>
         <p class="tg">Binary messages off the wire, decoded, for those you authorise.</p>
         <p class="ld">It listens on a tap or a mirror port, local or tunnelled (ERSPAN/GRE), decodes fixed-layout binary messages against a dictionary, and publishes each one as a record of typed values. It never transmits on the capture interface.</p>
@@ -301,40 +326,16 @@ hello-galaxy          https://usareur-af.github.io/goatdocs/hello-galaxy/</pre>
         <p class="go"><a href="https://usareur-af.github.io/first-bite/">Open the page</a><a href="https://github.com/USAREUR-AF/first-bite">Repository</a></p>
       </div>
     </article>
-    <article class="plate" id="saltlick" data-kind="site">
-      <a class="print" href="https://usareur-af.github.io/saltlick/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/saltlick-dark.jpg"><img src="shots/saltlick-light.jpg" width="1080" height="675" loading="lazy" alt="The first screen of the saltlick landing page."></picture></a>
-      <div>
-        <span class="no">Plate 05 &middot; its own site</span>
-        <h3><a href="https://usareur-af.github.io/saltlick/">saltlick</a></h3>
-        <p class="tg">Advisory, never authoritative. Being listed grants access to nothing.</p>
-        <p class="ld">A directory where an organization publishes its own interconnection capability, so that two organizations can check compatibility before they build a link. It holds signed pointers, not permissions. The reader checks every signature and digest against keys it bound outside the directory.</p>
-        <div class="mini"><div><span class="n">17</span><span class="l">routes it serves</span><code>curl -s localhost:8080/v1/version</code></div><div><span class="n">64 KiB</span><span class="l">largest body it accepts</span><code>grep MaxBodyBytes internal/httpapi/server.go</code></div><div><span class="n">3</span><span class="l">offer blocks refused with 422</span><code>grep -A5 &#x27;offerMembers =&#x27; internal/pkgv1/package.go</code></div><div><span class="n">84</span><span class="l">Go tests</span><code>grep -rh &#x27;^func Test&#x27; --include=*_test.go . | wc -l</code></div></div>
-        <p class="fs"><b>First screen:</b> a directory session recorded against a real instance</p>
-        <p class="go"><a href="https://usareur-af.github.io/saltlick/">Open the page</a><a href="https://github.com/USAREUR-AF/saltlick">Repository</a></p>
-      </div>
-    </article>
-    <article class="plate" id="goat-client" data-kind="site">
-      <a class="print" href="https://usareur-af.github.io/goat-client/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/goat-client-dark.jpg"><img src="shots/goat-client-light.jpg" width="1080" height="675" loading="lazy" alt="The first screen of the goat-client landing page."></picture></a>
-      <div>
-        <span class="no">Plate 06 &middot; its own site</span>
-        <h3><a href="https://usareur-af.github.io/goat-client/">goat-client</a></h3>
-        <p class="tg">One signed file, and the device is on the goat network.</p>
-        <p class="ld">A daemon, a desktop GUI and a command line for Linux, macOS and Windows, with iOS, iPadOS and Android shells. It takes a bundle signed by an offline certificate authority, checks the signature, and brings up the outer WireGuard tunnel, the inner NetBird mesh, or both.</p>
-        <div class="mini"><div><span class="n">556 B</span><span class="l">signed bundle, the whole credential</span><code>cli-session.txt</code></div><div><span class="n">0.50 s</span><span class="l">import, tunnel up, handshake</span><code>real-protocol test, handshake.txt</code></div><div><span class="n">6</span><span class="l">desktop builds, GUI and daemon</span><code>gui matrix, release.yml</code></div><div><span class="n">3</span><span class="l">modes, switchable at runtime</span><code>usage text, cmd/goat-client</code></div></div>
-        <p class="fs"><b>First screen:</b> the real daemon, CLI and handshake, replayed</p>
-        <p class="go"><a href="https://usareur-af.github.io/goat-client/">Open the page</a><a href="https://github.com/USAREUR-AF/goat-client">Repository</a></p>
-      </div>
-    </article>
-    <article class="plate" id="goatrodeo" data-kind="site">
-      <a class="print" href="https://usareur-af.github.io/goatrodeo/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/goatrodeo-dark.jpg"><img src="shots/goatrodeo-light.jpg" width="1080" height="675" loading="lazy" alt="The first screen of the goatrodeo landing page."></picture></a>
+    <article class="plate" id="goatrope" data-kind="site">
+      <a class="print" href="https://usareur-af.github.io/goatrope/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/goatrope-dark.jpg"><img src="shots/goatrope-light.jpg" width="1080" height="675" loading="lazy" alt="The first screen of the goatrope landing page."></picture></a>
       <div>
         <span class="no">Plate 07 &middot; its own site</span>
-        <h3><a href="https://usareur-af.github.io/goatrodeo/">goatrodeo</a></h3>
-        <p class="tg">Games and toys that run on a goat data fabric.</p>
-        <p class="ld">Each one is fun to play and publishes real events while you play it. Air Defenders is the first: a browser arcade game, solo or co-op, that runs on a laptop with one Go command.</p>
-        <div class="mini"><div><span class="n">30</span><span class="l">simulation steps a second</span><code>tickHz in multiplayer.go</code></div><div><span class="n">8</span><span class="l">players in one co-op room</span><code>maxPlayers in multiplayer.go</code></div><div><span class="n">4</span><span class="l">event keys published</span><code>rows in topic-manifest.tsv</code></div><div><span class="n">104 KiB</span><span class="l">the solo game, one HTML file</span><code>wc -c airdefenders/index.html</code></div></div>
-        <p class="fs"><b>First screen:</b> the real game</p>
-        <p class="go"><a href="https://usareur-af.github.io/goatrodeo/">Open the page</a><a href="https://github.com/USAREUR-AF/goatrodeo">Repository</a></p>
+        <h3><a href="https://usareur-af.github.io/goatrope/">goatrope</a></h3>
+        <p class="tg">Tie distant machines to one link, or tap the link they share.</p>
+        <p class="ld">goatrope takes a copy of one network link, from a tap device, a switch mirror port or its own inline tap on a small computer, and records it, sends on what you name, or relays named datagrams. The relay joins distant sites over the mesh they already share, or through a declared boundary point when a site stands outside it; it is work in progress. One file declares what it does. It runs with nothing else of ours installed.</p>
+        <div class="mini"><div><span class="n">500 of 500</span><span class="l">datagrams each way through the inline tap</span><code>tests/netns, inline</code></div><div><span class="n">0</span><span class="l">frames out of a listen port: install, traffic, attempts to send, restarts</span><code>tests/netns, listen</code></div><div><span class="n">400 of 400</span><span class="l">pings through the bridge while it is deployed again</span><code>tests/netns, deploy</code></div><div><span class="n">0</span><span class="l">Python packages beyond the standard library</span><code>site/build.py reads every import</code></div></div>
+        <p class="fs"><b>First screen:</b> a rope figure drawn by <code>build.py</code>, state drawn rather than colored</p>
+        <p class="go"><a href="https://usareur-af.github.io/goatrope/">Open the page</a><a href="https://github.com/USAREUR-AF/goatrope">Repository</a></p>
       </div>
     </article>
     <article class="plate" id="open-entity-gateway" data-kind="site">
@@ -349,58 +350,36 @@ hello-galaxy          https://usareur-af.github.io/goatdocs/hello-galaxy/</pre>
         <p class="go"><a href="https://usareur-af.github.io/open-entity-gateway/">Open the page</a><a href="https://github.com/USAREUR-AF/open-entity-gateway">Repository</a></p>
       </div>
     </article>
-    <article class="plate" id="zagros-moon-pod" data-kind="site">
-      <a class="print" href="https://usareur-af.github.io/zagros-moon-pod/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/zagros-moon-pod-dark.jpg"><img src="shots/zagros-moon-pod-light.jpg" width="1080" height="675" loading="lazy" alt="The first screen of the zagros-moon-pod landing page."></picture></a>
+    <div class="group" id="g-work"><h3 class="gh">Work on the data</h3><p class="gs">Convert any message format to any other, then correlate, fuse, filter and grade the tracks, with every decision traced.</p></div>
+    <article class="plate" id="goat-transformers" data-kind="site">
+      <a class="print" href="https://usareur-af.github.io/goat-transformers/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/goat-transformers-dark.jpg"><img src="shots/goat-transformers-light.jpg" width="1080" height="675" loading="lazy" alt="The first screen of the goat-transformers landing page."></picture></a>
       <div>
         <span class="no">Plate 09 &middot; its own site</span>
-        <h3><a href="https://usareur-af.github.io/zagros-moon-pod/">zagros-moon-pod</a></h3>
-        <p class="tg">A small bundle you run on your own host to exchange data with a goat fabric, both ways.</p>
-        <p class="ld">A Zenoh router with mutual TLS that may write only your slot, an observe-only audit sink, and a mesh client on the host. Today it is for learning: rung 2 of the goat learner ladder, joined to the zagros sandbox, not in operational use.</p>
-        <div class="mini"><div><span class="n">2</span><span class="l">containers: router and audit sink</span><code>services in compose/docker-compose.yml</code></div><div><span class="n">6</span><span class="l">allow rules over a default deny</span><code>access_control.rules in host/zenoh-router.json5.tmpl</code></div><div><span class="n">6</span><span class="l">client SDK languages</span><code>ls clients/connect</code></div><div><span class="n">7</span><span class="l">requirements at the boundary</span><code>docs/partner-contract.md</code></div></div>
-        <p class="fs"><b>First screen:</b> what crosses the pod router</p>
-        <p class="go"><a href="https://usareur-af.github.io/zagros-moon-pod/">Open the page</a><a href="https://github.com/USAREUR-AF/zagros-moon-pod">Repository</a></p>
+        <h3><a href="https://usareur-af.github.io/goat-transformers/">goat-transformers</a></h3>
+        <p class="tg">Any message format to any other. Every format is a data file.</p>
+        <p class="ld">A drone&#x27;s 25-byte Remote ID broadcast becomes a Cursor on Target event for a tactical map. No engine holds code for either format: each is a pack, a text file with one line for each field, and seven engines in seven languages read the same packs and must agree byte for byte.</p>
+        <div class="mini"><div><span class="n">4,255</span><span class="l">formats</span><code>each one a pack from a public source</code></div><div><span class="n">16,746</span><span class="l">message kinds</span><code>message layouts across those formats</code></div><div><span class="n">25,251</span><span class="l">conversion vectors</span><code>all seven engines match every one</code></div><div><span class="n">786,657</span><span class="l">bytes</span><code>the engine as WebAssembly, in this page</code></div></div>
+        <p class="fs"><b>First screen:</b> a conversion played byte by byte by the engine built to WebAssembly</p>
+        <p class="go"><a href="https://usareur-af.github.io/goat-transformers/">Open the page</a><a href="https://github.com/USAREUR-AF/goat-transformers">Repository</a></p>
       </div>
     </article>
-    <article class="plate" id="goat-cloud" data-kind="site">
-      <a class="print" href="https://usareur-af.github.io/goat-cloud/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/goat-cloud-dark.jpg"><img src="shots/goat-cloud-light.jpg" width="1080" height="675" loading="lazy" alt="The first screen of the goat-cloud landing page."></picture></a>
+    <article class="plate" id="goat-processors" data-kind="site">
+      <a class="print" href="https://usareur-af.github.io/goat-processors/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/goat-processors-dark.jpg"><img src="shots/goat-processors-light.jpg" width="1080" height="675" loading="lazy" alt="The first screen of the goat-processors landing page."></picture></a>
       <div>
         <span class="no">Plate 10 &middot; its own site</span>
-        <h3><a href="https://usareur-af.github.io/goat-cloud/">goat-cloud</a></h3>
-        <p class="tg">Every cloud resource has an owner, a purpose and a lifetime that anyone can look up.</p>
-        <p class="ld">Developers deploy from their own repositories with no central gate and no ticket. Each night a scan finds what has no owner or has outlived its stated expiry; its owner is warned, and it is removed.</p>
-        <div class="mini"><div><span class="n">6</span><span class="l">facts on every resource: project, environment, managing tool, lifecycle, repository, and an expiry when it is not meant to last</span></div><div><span class="n">8</span><span class="l">deployment tools take part on equal terms: Terraform, OpenTofu, Pulumi, CloudFormation, Serverless Framework, CDK, SAM, Copilot</span></div><div><span class="n">1,831</span><span class="l">tests pass from a fresh clone; none needs a cloud credential</span></div><div><span class="n">152 / 29</span><span class="l">resources and findings in one scan of the synthetic demo estate, from one command</span></div></div>
-        <p class="fs"><b>First screen:</b> an ownership register: every cloud resource has an owner</p>
-        <p class="go"><a href="https://usareur-af.github.io/goat-cloud/">Open the page</a><a href="https://github.com/USAREUR-AF/goat-cloud">Repository</a></p>
+        <h3><a href="https://usareur-af.github.io/goat-processors/">goat-processors</a></h3>
+        <p class="tg">Correlation, fusion, filtering and track quality, with every decision traced.</p>
+        <p class="ld">Each function is a written specification, packs of settings and test vectors. Seven engines, written apart in seven languages, reproduce every vector exactly, down to the record of each test they run.</p>
+        <div class="mini"><div><span class="n">7</span><span class="l">engines</span><code>ls engines | wc -l</code></div><div><span class="n">121</span><span class="l">scenario vectors</span><code>ls packs/*/vectors/*.json | wc -l</code></div><div><span class="n">4,333</span><span class="l">trace records, all reproduced</span><code>site/build.py counts every vector&#x27;s trace</code></div><div><span class="n">24</span><span class="l">settings packs</span><code>ls packs/*/pack.def | wc -l</code></div></div>
+        <p class="fs"><b>First screen:</b> a test vector replayed step by step on a plan view, with its trace records</p>
+        <p class="go"><a href="https://usareur-af.github.io/goat-processors/">Open the page</a><a href="https://github.com/USAREUR-AF/goat-processors">Repository</a></p>
       </div>
     </article>
-    <article class="plate" id="goatrope" data-kind="site">
-      <a class="print" href="https://usareur-af.github.io/goatrope/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/goatrope-dark.jpg"><img src="shots/goatrope-light.jpg" width="1080" height="675" loading="lazy" alt="The first screen of the goatrope landing page."></picture></a>
-      <div>
-        <span class="no">Plate 11 &middot; its own site</span>
-        <h3><a href="https://usareur-af.github.io/goatrope/">goatrope</a></h3>
-        <p class="tg">Tie distant machines to one link, or tap the link they share.</p>
-        <p class="ld">goatrope takes a copy of one network link, from a tap device, a switch mirror port or its own inline tap on a small computer, and records it, sends on what you name, or relays named datagrams. The relay joins distant sites over the mesh they already share, or through a declared boundary point when a site stands outside it; it is work in progress. One file declares what it does. It runs with nothing else of ours installed.</p>
-        <div class="mini"><div><span class="n">500 of 500</span><span class="l">datagrams each way through the inline tap</span><code>tests/netns, inline</code></div><div><span class="n">0</span><span class="l">frames out of a listen port: install, traffic, attempts to send, restarts</span><code>tests/netns, listen</code></div><div><span class="n">400 of 400</span><span class="l">pings through the bridge while it is deployed again</span><code>tests/netns, deploy</code></div><div><span class="n">0</span><span class="l">Python packages beyond the standard library</span><code>site/build.py reads every import</code></div></div>
-        <p class="fs"><b>First screen:</b> a rope figure drawn by <code>build.py</code>, state drawn rather than colored</p>
-        <p class="go"><a href="https://usareur-af.github.io/goatrope/">Open the page</a><a href="https://github.com/USAREUR-AF/goatrope">Repository</a></p>
-      </div>
-    </article>
-    <article class="plate" id="goat" data-kind="subpage">
-      <a class="print" href="https://usareur-af.github.io/goatdocs/goat/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/goat-dark.jpg"><img src="shots/goat-light.jpg" width="1080" height="675" loading="lazy" alt="The first screen of the goat landing page."></picture></a>
-      <div>
-        <span class="no">Plate 12 &middot; a page in goatdocs</span>
-        <h3><a href="https://usareur-af.github.io/goatdocs/goat/">goat</a></h3>
-        <p class="tg">A self-hosted data fabric that keeps working when the network around it fails.</p>
-        <p class="ld">goat joins people, machines and services across sites into one network. They publish and subscribe to data, and access is decided by who they are, not where they sit. A device that has joined keeps talking to its peers directly, with or without the cloud.</p>
-        <div class="mini"><div><span class="n">0.05 s</span><span class="l">to rehearse a full standup of the example environment on a laptop: 5 components on 4 machines, 14 checks</span></div><div><span class="n">331</span><span class="l">error codes, each with what happened, why, and what to do; goat explain reads them offline</span></div><div><span class="n">377</span><span class="l">decision records in the repository, one per design decision, never rewritten</span></div><div><span class="n">20.7 MB</span><span class="l">the largest goatbuilder release binary; one file per platform, four platforms</span></div></div>
-        <p class="fs"><b>First screen:</b> goat as one system</p>
-        <p class="go"><a href="https://usareur-af.github.io/goatdocs/goat/">Open the page</a><a href="https://github.com/USAREUR-AF/goatdocs">Repository</a></p>
-      </div>
-    </article>
+    <div class="group" id="g-use"><h3 class="gh">Use the data</h3><p class="gs">Route fabric data to the systems that need it, and build on it.</p></div>
     <article class="plate" id="fieldkit-feeds" data-kind="subpage">
       <a class="print" href="https://usareur-af.github.io/goatdocs/goat/fieldkit-feeds/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/fieldkit-feeds-dark.jpg"><img src="shots/fieldkit-feeds-light.jpg" width="1080" height="675" loading="lazy" alt="The first screen of the fieldkit-feeds landing page."></picture></a>
       <div>
-        <span class="no">Plate 13 &middot; a page in goatdocs</span>
+        <span class="no">Plate 11 &middot; a page in goatdocs</span>
         <h3><a href="https://usareur-af.github.io/goatdocs/goat/fieldkit-feeds/">fieldkit-feeds</a></h3>
         <p class="tg">Send fabric data to the systems that need it, and bring their data in. A tactical admin switches it on.</p>
         <p class="ld">An operator picks a topic and the system that should receive it, or names what a system sends and the standard it uses. A tactical admin for the site switches the feed on; anyone else&#x27;s request waits for one. Each feed shows one word for its health, its counters, the exact command it runs and who did what.</p>
@@ -409,6 +388,32 @@ hello-galaxy          https://usareur-af.github.io/goatdocs/hello-galaxy/</pre>
         <p class="go"><a href="https://usareur-af.github.io/goatdocs/goat/fieldkit-feeds/">Open the page</a><a href="https://github.com/USAREUR-AF/goatdocs">Repository</a></p>
       </div>
     </article>
+    <article class="plate" id="goatrodeo" data-kind="site">
+      <a class="print" href="https://usareur-af.github.io/goatrodeo/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/goatrodeo-dark.jpg"><img src="shots/goatrodeo-light.jpg" width="1080" height="675" loading="lazy" alt="The first screen of the goatrodeo landing page."></picture></a>
+      <div>
+        <span class="no">Plate 12 &middot; its own site</span>
+        <h3><a href="https://usareur-af.github.io/goatrodeo/">goatrodeo</a></h3>
+        <p class="tg">Games and toys that run on a goat data fabric.</p>
+        <p class="ld">Each one is fun to play and publishes real events while you play it. Air Defenders is the first: a browser arcade game, solo or co-op, that runs on a laptop with one Go command.</p>
+        <div class="mini"><div><span class="n">30</span><span class="l">simulation steps a second</span><code>tickHz in multiplayer.go</code></div><div><span class="n">8</span><span class="l">players in one co-op room</span><code>maxPlayers in multiplayer.go</code></div><div><span class="n">4</span><span class="l">event keys published</span><code>rows in topic-manifest.tsv</code></div><div><span class="n">104 KiB</span><span class="l">the solo game, one HTML file</span><code>wc -c airdefenders/index.html</code></div></div>
+        <p class="fs"><b>First screen:</b> the real game</p>
+        <p class="go"><a href="https://usareur-af.github.io/goatrodeo/">Open the page</a><a href="https://github.com/USAREUR-AF/goatrodeo">Repository</a></p>
+      </div>
+    </article>
+    <div class="group" id="g-run"><h3 class="gh">Run the estate</h3><p class="gs">Know who owns every cloud resource a deployment uses, what it is for and when it ends.</p></div>
+    <article class="plate" id="goat-cloud" data-kind="site">
+      <a class="print" href="https://usareur-af.github.io/goat-cloud/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/goat-cloud-dark.jpg"><img src="shots/goat-cloud-light.jpg" width="1080" height="675" loading="lazy" alt="The first screen of the goat-cloud landing page."></picture></a>
+      <div>
+        <span class="no">Plate 13 &middot; its own site</span>
+        <h3><a href="https://usareur-af.github.io/goat-cloud/">goat-cloud</a></h3>
+        <p class="tg">Every cloud resource has an owner, a purpose and a lifetime that anyone can look up.</p>
+        <p class="ld">Developers deploy from their own repositories with no central gate and no ticket. Each night a scan finds what has no owner or has outlived its stated expiry; its owner is warned, and it is removed.</p>
+        <div class="mini"><div><span class="n">6</span><span class="l">facts on every resource: project, environment, managing tool, lifecycle, repository, and an expiry when it is not meant to last</span></div><div><span class="n">8</span><span class="l">deployment tools take part on equal terms: Terraform, OpenTofu, Pulumi, CloudFormation, Serverless Framework, CDK, SAM, Copilot</span></div><div><span class="n">1,831</span><span class="l">tests pass from a fresh clone; none needs a cloud credential</span></div><div><span class="n">152 / 29</span><span class="l">resources and findings in one scan of the synthetic demo estate, from one command</span></div></div>
+        <p class="fs"><b>First screen:</b> an ownership register: every cloud resource has an owner</p>
+        <p class="go"><a href="https://usareur-af.github.io/goat-cloud/">Open the page</a><a href="https://github.com/USAREUR-AF/goat-cloud">Repository</a></p>
+      </div>
+    </article>
+    <div class="group" id="g-learn"><h3 class="gh">Learn by running it</h3><p class="gs">Small repositories that each answer one question about goat by running the real tools.</p></div>
     <article class="plate" id="hello-galaxy" data-kind="subpage">
       <a class="print" href="https://usareur-af.github.io/goatdocs/hello-galaxy/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/hello-galaxy-dark.jpg"><img src="shots/hello-galaxy-light.jpg" width="1080" height="675" loading="lazy" alt="The first screen of the hello-galaxy landing page."></picture></a>
       <div>
@@ -440,9 +445,9 @@ hello-galaxy          https://usareur-af.github.io/goatdocs/hello-galaxy/</pre>
   </div>
 </footer>
 <script>
-const PAGES = [{"name": "goat-processors", "url": "https://usareur-af.github.io/goat-processors/", "slug": "goat-processors"}, {"name": "goat-transformers", "url": "https://usareur-af.github.io/goat-transformers/", "slug": "goat-transformers"}, {"name": "open-billie", "url": "https://usareur-af.github.io/open-billie/", "slug": "open-billie"}, {"name": "first-bite", "url": "https://usareur-af.github.io/first-bite/", "slug": "first-bite"}, {"name": "saltlick", "url": "https://usareur-af.github.io/saltlick/", "slug": "saltlick"}, {"name": "goat-client", "url": "https://usareur-af.github.io/goat-client/", "slug": "goat-client"}, {"name": "goatrodeo", "url": "https://usareur-af.github.io/goatrodeo/", "slug": "goatrodeo"}, {"name": "open-entity-gateway", "url": "https://usareur-af.github.io/open-entity-gateway/", "slug": "open-entity-gateway"}, {"name": "zagros-moon-pod", "url": "https://usareur-af.github.io/zagros-moon-pod/", "slug": "zagros-moon-pod"}, {"name": "goat-cloud", "url": "https://usareur-af.github.io/goat-cloud/", "slug": "goat-cloud"}, {"name": "goatrope", "url": "https://usareur-af.github.io/goatrope/", "slug": "goatrope"}, {"name": "goat", "url": "https://usareur-af.github.io/goatdocs/goat/", "slug": "goat"}, {"name": "fieldkit-feeds", "url": "https://usareur-af.github.io/goatdocs/goat/fieldkit-feeds/", "slug": "fieldkit-feeds"}, {"name": "hello-galaxy", "url": "https://usareur-af.github.io/goatdocs/hello-galaxy/", "slug": "hello-galaxy"}];
-// Copy button; the first screen's slideshow of every page's real first screen; the filter.
-// Without JavaScript the first page's capture shows and every entry is listed.
+const PAGES = [{"name": "goat", "url": "https://usareur-af.github.io/goatdocs/goat/", "slug": "goat"}, {"name": "goat-client", "url": "https://usareur-af.github.io/goat-client/", "slug": "goat-client"}, {"name": "zagros-moon-pod", "url": "https://usareur-af.github.io/zagros-moon-pod/", "slug": "zagros-moon-pod"}, {"name": "saltlick", "url": "https://usareur-af.github.io/saltlick/", "slug": "saltlick"}, {"name": "open-billie", "url": "https://usareur-af.github.io/open-billie/", "slug": "open-billie"}, {"name": "first-bite", "url": "https://usareur-af.github.io/first-bite/", "slug": "first-bite"}, {"name": "goatrope", "url": "https://usareur-af.github.io/goatrope/", "slug": "goatrope"}, {"name": "open-entity-gateway", "url": "https://usareur-af.github.io/open-entity-gateway/", "slug": "open-entity-gateway"}, {"name": "goat-transformers", "url": "https://usareur-af.github.io/goat-transformers/", "slug": "goat-transformers"}, {"name": "goat-processors", "url": "https://usareur-af.github.io/goat-processors/", "slug": "goat-processors"}, {"name": "fieldkit-feeds", "url": "https://usareur-af.github.io/goatdocs/goat/fieldkit-feeds/", "slug": "fieldkit-feeds"}, {"name": "goatrodeo", "url": "https://usareur-af.github.io/goatrodeo/", "slug": "goatrodeo"}, {"name": "goat-cloud", "url": "https://usareur-af.github.io/goat-cloud/", "slug": "goat-cloud"}, {"name": "hello-galaxy", "url": "https://usareur-af.github.io/goatdocs/hello-galaxy/", "slug": "hello-galaxy"}];
+// Copy button; the first screen's slideshow of every page's real first screen.
+// Without JavaScript the first page's capture shows; every entry is listed either way.
 (function () {
   "use strict";
   document.querySelectorAll("button.copy").forEach(function (b) {
@@ -450,16 +455,6 @@ const PAGES = [{"name": "goat-processors", "url": "https://usareur-af.github.io/
       var text = document.getElementById(b.dataset.copy).textContent;
       if (navigator.clipboard) navigator.clipboard.writeText(text).then(function () {
         b.textContent = "Copied"; setTimeout(function () { b.textContent = "Copy"; }, 1600);
-      });
-    });
-  });
-
-  document.querySelectorAll(".filter button").forEach(function (b) {
-    b.addEventListener("click", function () {
-      var kind = b.dataset.kind;
-      document.querySelectorAll(".filter button").forEach(function (o) { o.setAttribute("aria-pressed", String(o === b)); });
-      document.querySelectorAll(".plate").forEach(function (p) {
-        p.hidden = kind !== "all" && p.dataset.kind !== kind;
       });
     });
   });
