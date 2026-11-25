@@ -27,6 +27,7 @@ exclude_docs: |
   design-system/ui_kits/*/README.md
   goat/README.md
   goat/fieldkit-feeds/README.md
+  goat/goatbuilder/README.md
   goat/splash-page/README.md
   goat/splash-page/page.html
   goat/splash-page/build.py
