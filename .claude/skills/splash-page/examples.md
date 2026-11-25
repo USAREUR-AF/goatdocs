@@ -1,6 +1,7 @@
 # Live landing pages
 
-Every page below follows this skill. Read the source of two before writing a new one:
+Every page below follows this skill. https://usareur-af.github.io/goatdocs/goat/pages/ is the
+catalogue of them, built from this list by goatdocs `docs/goat/pages/`. Read the source of two before writing a new one:
 `git show origin/main:site/index.html` in a clone, or the page itself.
 
 ## Own sites (`site/` in the repository)

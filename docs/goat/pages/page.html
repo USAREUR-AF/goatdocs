@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>goat pages: every goat project's landing page</title>
+<meta name="description" content="The landing page of every goat project in one catalogue: each one's first screen, what it says it does, and the four numbers it states.">
+<link rel="icon" href="{{ICON}}">
+<style>
+{{CSS}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="#top"><img src="{{ICON}}" width="28" height="28" alt="">goat pages</a>
+    <nav aria-label="Sections">
+      <a href="#plates">The pages</a><a href="../splash-page/">Make one</a>
+      <a href="../">goat</a>
+      <a class="gh" href="https://github.com/USAREUR-AF/goatcore">GitHub</a>
+    </nav>
+  </header>
+</div>
+
+<main id="top">
+<section class="hero" aria-labelledby="name">
+<pre class="bgcode" aria-hidden="true">{{BGCODE}}</pre>
+  <div class="wrap hero-grid">
+    <div>
+      <p class="prompt">&gt;_ ls usareur-af.github.io<span class="cur" aria-hidden="true"></span></p>
+      <h1 class="wordmark" id="name">goat pages</h1>
+      <p class="tagline">Every goat project's landing page, in one catalogue.</p>
+      <p class="lede">Each project has one page that shows the program working in its first screen and states four numbers about it. Here they are side by side: what each one does, what its first screen shows, and its numbers. Select a page to open it.</p>
+      <div class="buttons">
+        <a class="btn star" href="https://github.com/USAREUR-AF/goatcore"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M12 2.8l2.8 5.8 6.4.9-4.6 4.5 1.1 6.3L12 17.3l-5.7 3 1.1-6.3-4.6-4.5 6.4-.9z"/></svg>Star goat on GitHub</a>
+        <a class="btn" href="#plates">The pages</a>
+        <a class="btn" href="../splash-page/">Make one</a>
+      </div>
+      <div class="cmd"><pre data-box="command"><span class="ln"><span class="dollar">$ </span><code id="c-collect">python3 <span class="w">-I</span> <span class="w">docs/goat/pages/collect.py</span> <span class="w">--shots</span></code></span></pre><button class="copy" type="button" data-copy="c-collect">Copy</button></div>
+      <p class="under">Rebuilds this catalogue from the live pages, in a clone of goatdocs.</p>
+    </div>
+
+    <div class="stage" role="img" aria-label="The first screen of each goat landing page, shown one after another.">
+      <div class="stage-head"><span><b id="show-name">{{FIRST_NAME}}</b></span><span id="show-n">1 / {{COUNT}}</span></div>
+      <a class="show" id="show" href="{{FIRST_URL}}"><picture id="show-pic"><source media="(prefers-color-scheme: dark)" srcset="shots/{{FIRST_SLUG}}-dark.jpg"><img src="shots/{{FIRST_SLUG}}-light.jpg" width="1080" height="675" alt=""></picture></a>
+      <div class="stage-foot">First screens, captured from the live pages at 1440 px.</div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="numbers">
+      <div><span class="n" data-measure="pages">0</span><span class="l">landing pages</span><code>rows of the splash-page skill's examples.md</code></div>
+      <div><span class="n" data-measure="sites">0</span><span class="l">repositories with a site of their own</span><code>usareur-af.github.io/&lt;repo&gt;/</code></div>
+      <div><span class="n" data-measure="subpages">0</span><span class="l">pages inside goatdocs</span><code>usareur-af.github.io/goatdocs/...</code></div>
+      <div><span class="n" data-measure="numbers">0</span><span class="l">numbers stated across them</span><code>the strip under each first screen</code></div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="plates">
+  <div class="wrap">
+    <h2>The pages</h2>
+    <p class="sub">Each entry is the page's own words: its tagline, its opening sentences and its four numbers, copied from the live page. Under each number is how the page says it is measured.</p>
+    <div class="filter" role="group" aria-label="Show">
+      <button type="button" data-kind="all" aria-pressed="true">All <span>{{COUNT}}</span></button>
+      <button type="button" data-kind="site" aria-pressed="false">Own site <span>{{SITES}}</span></button>
+      <button type="button" data-kind="subpage" aria-pressed="false">In goatdocs <span>{{SUBPAGES}}</span></button>
+    </div>
+{{PLATES}}
+  </div>
+</section>
+
+<section class="band" id="make">
+  <div class="wrap">
+    <h2>Every page follows one design</h2>
+    <p class="sub">A prompt line and wordmark, Star on GitHub, one command to copy, the real program in the first screen, four measured numbers, sections whose headings make a claim, light and dark. The Claude Code skill <code>splash-page</code> in goatdocs builds a new one in this design and checks it.</p>
+    <p><a href="../splash-page/">splash-page, the skill that builds these pages</a> &middot; <a href="https://github.com/USAREUR-AF/goatdocs/blob/main/.claude/skills/splash-page/examples.md">The list this catalogue is built from</a></p>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><a href="https://github.com/USAREUR-AF/goatdocs">Repository</a><a href="https://github.com/USAREUR-AF/goatdocs/blob/main/LICENSE">Apache License 2.0</a><a href="https://github.com/USAREUR-AF/goatdocs/blob/main/SECURITY.md">Security policy</a><a href="../">goat</a></p>
+    <p>Portions written by U.S. Federal government employees within the scope of their employment are in the public domain in the United States. Part of <a href="https://github.com/USAREUR-AF/goatcore">goat</a>.</p>
+  </div>
+</footer>
+<script>
+const PAGES = {{PAGES_JSON}};
+{{JS}}
+</script>
+</body>
+</html>

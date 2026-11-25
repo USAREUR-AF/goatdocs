@@ -3,6 +3,7 @@
 .under { font-size: 14px; color: var(--quiet); margin: 8px 0 0; max-width: 40em; }
 .stage-lines { display: flex; flex-direction: column; justify-content: flex-end; overflow: hidden; height: calc(9 * 1.65em + 20px); white-space: pre-wrap; font-size: 12px; }
 .stage-lines > span { display: block; padding-left: 2ch; text-indent: -2ch; }
+.stage-lines { -webkit-mask-image: linear-gradient(transparent 4px, #000 2.6em); mask-image: linear-gradient(transparent 4px, #000 2.6em); }
 .stage-lines .ok { color: var(--good); }
 .stage-lines .no { color: var(--bad); }
 .stage-lines .cm { color: var(--quiet); font-style: italic; }
