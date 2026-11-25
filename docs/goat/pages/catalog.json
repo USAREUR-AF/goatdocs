@@ -391,7 +391,7 @@
   {
    "name": "goatstuff",
    "url": "https://usareur-af.github.io/goatstuff/",
-   "shows": "real captures of the surfaces, one after another: panoscope, the playground, goat-topology, the trust sandbox, dataflows",
+   "shows": "real recordings of the surfaces, one after another: panoscope, flashlight, goat-map, the playground, goat-topology, dataflows",
    "kind": "site",
    "repo": "https://github.com/USAREUR-AF/goatstuff",
    "slug": "goatstuff",
@@ -479,6 +479,19 @@
    "title": "goat: the command-line tool that operates a goatnet",
    "tagline": "One command-line tool to operate a goatnet: its health, who is on it, and its data.",
    "lede": "goat answers the questions an operator asks about a running goatnet. Is it healthy? Is data flowing? Who is on it, and what may they do? Why is this connection blocked? It is one file per platform, it runs with your own certificate, and it starts in a sandbox that needs no credentials and no network.",
+   "numbers": [],
+   "measured": 0
+  },
+  {
+   "name": "panoscope",
+   "url": "https://usareur-af.github.io/goatdocs/goat/panoscope/",
+   "shows": "panoscope, the live view of a goat fabric, in goatstuff",
+   "kind": "subpage",
+   "repo": "https://github.com/USAREUR-AF/goatdocs",
+   "slug": "panoscope",
+   "title": "panoscope: the whole goatnet at a glance",
+   "tagline": "The whole goatnet at a glance: who publishes, who subscribes, and what is flowing now.",
+   "lede": "panoscope draws a goat data fabric as it runs. Every peer is a node, every topic sits between its publishers and its subscribers, and a dot crosses the graph for each sampled message. Select a peer or topic and the side panel streams its messages. panoscope only reads: it subscribes to the fabric and declares no publisher.",
    "numbers": [],
    "measured": 0
   },
