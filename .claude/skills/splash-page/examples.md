@@ -27,6 +27,7 @@ catalogue of them, built from this list by goatdocs `docs/goat/pages/`. Read the
 |---|---|---|
 | https://usareur-af.github.io/goatdocs/goat/ | goat as one system | the parent every component sub-page links back to |
 | https://usareur-af.github.io/goatdocs/goat/goatbuilder/ | goatbuilder, the tool in goatcore that builds, releases and deploys every machine | a site plan of machine roles, each selectable, built or designed |
+| https://usareur-af.github.io/goatdocs/goat/goat-cli/ | goat, the command-line tool in goatcore that operates a goatnet | real output of the release binary: the sandbox, why a connection is blocked, an error explained |
 | https://usareur-af.github.io/goatdocs/goat/fieldkit-feeds/ | Fieldkit Feeds, a service inside goatstuff | captures in light and dark chosen by color scheme; event lines replay a real audit log; numbers each name their command |
 | https://usareur-af.github.io/goatdocs/hello-galaxy/ | the hello-galaxy worked examples | one page for a family of small repositories |
 

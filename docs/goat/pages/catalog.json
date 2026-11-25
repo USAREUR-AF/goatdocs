@@ -457,6 +457,19 @@
    "measured": 0
   },
   {
+   "name": "goat-cli",
+   "url": "https://usareur-af.github.io/goatdocs/goat/goat-cli/",
+   "shows": "goat, the command-line tool in goatcore that operates a goatnet",
+   "kind": "subpage",
+   "repo": "https://github.com/USAREUR-AF/goatdocs",
+   "slug": "goat-cli",
+   "title": "goat: the command-line tool that operates a goatnet",
+   "tagline": "One command-line tool to operate a goatnet: its health, who is on it, and its data.",
+   "lede": "goat answers the questions an operator asks about a running goatnet. Is it healthy? Is data flowing? Who is on it, and what may they do? Why is this connection blocked? It is one file per platform, it runs with your own certificate, and it starts in a sandbox that needs no credentials and no network.",
+   "numbers": [],
+   "measured": 0
+  },
+  {
    "name": "fieldkit-feeds",
    "url": "https://usareur-af.github.io/goatdocs/goat/fieldkit-feeds/",
    "shows": "Fieldkit Feeds, a service inside goatstuff",
