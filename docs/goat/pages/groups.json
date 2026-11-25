@@ -4,10 +4,11 @@
   {
    "id": "system",
    "title": "The system",
-   "says": "goat as a whole, and the tool that builds it.",
+   "says": "goat as a whole, and the two tools that build and operate it.",
    "pages": [
     "goat",
-    "goatbuilder"
+    "goatbuilder",
+    "goat-cli"
    ]
   },
   {
