@@ -60,12 +60,8 @@
 <section class="band" id="plates">
   <div class="wrap">
     <h2>The pages</h2>
-    <p class="sub">Each entry is the page's own words: its tagline, its opening sentences and its four numbers, copied from the live page. Under each number is how the page says it is measured.</p>
-    <div class="filter" role="group" aria-label="Show">
-      <button type="button" data-kind="all" aria-pressed="true">All <span>{{COUNT}}</span></button>
-      <button type="button" data-kind="site" aria-pressed="false">Own site <span>{{SITES}}</span></button>
-      <button type="button" data-kind="subpage" aria-pressed="false">In goatdocs <span>{{SUBPAGES}}</span></button>
-    </div>
+    <p class="sub">Each entry is the page's own words: its tagline, its opening sentences and its four numbers, copied from the live page. Under each number is how the page says it is measured. The pages are grouped by what each one is for, in the order a deployment meets them.</p>
+    <nav class="groups" aria-label="Groups">{{GROUPNAV}}</nav>
 {{PLATES}}
   </div>
 </section>

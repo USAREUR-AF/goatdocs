@@ -8,7 +8,8 @@
                                                 lacks its tagline or four numbers, or when a
                                                 capture is missing
 
-catalog.json is written by collect.py from the live pages. The styles are the
+catalog.json is written by collect.py from the live pages; groups.json sets the order
+and the group headings, and every page must be in exactly one group. The styles are the
 splash-page skill's own (.claude/skills/splash-page/templates/site/assets/site.css)
 with this page's tokens (extra.css) and additions (extra-tail.css).
 """
@@ -61,6 +62,16 @@ def plate(i, p):
     </article>'''
 
 
+def plates(groups):
+    out, i = [], 0
+    for g, members in groups:
+        out.append(f'    <div class="group" id="g-{g["id"]}"><h3 class="gh">{esc(g["title"])}</h3><p class="gs">{esc(g["says"])}</p></div>')
+        for p in members:
+            i += 1
+            out.append(plate(i, p))
+    return "\n".join(out)
+
+
 def measure(cat):
     ps = cat["pages"]
     return {"pages": str(len(ps)), "sites": str(sum(p["kind"] == "site" for p in ps)),
@@ -68,8 +79,15 @@ def measure(cat):
             "numbers": str(sum(len(p["numbers"]) for p in ps))}
 
 
+def grouped(cat):
+    """[(group, [page, ...]), ...] in the order of groups.json."""
+    by = {p["slug"]: p for p in cat["pages"]}
+    return [(g, [by[s] for s in g["pages"] if s in by]) for g in json.loads(read(HERE, "groups.json"))["groups"]]
+
+
 def render(cat):
-    ps = cat["pages"]
+    groups = grouped(cat)
+    ps = [p for _, members in groups for p in members]
     icon = "data:image/svg+xml," + urllib.parse.quote(read(HERE, "icon.svg").strip(), safe="=:/ '")
     css = read(SKILL, "templates", "site", "assets", "site.css")
     css = read(HERE, "extra.css") + css[css.index("* { box-sizing"):] + read(HERE, "extra-tail.css")
@@ -80,7 +98,8 @@ def render(cat):
         "ICON": icon, "CSS": css, "JS": read(HERE, "catalogue.js"), "BGCODE": esc(bg),
         "FIRST_NAME": esc(ps[0]["name"]), "FIRST_URL": esc(ps[0]["url"]), "FIRST_SLUG": ps[0]["slug"],
         "COUNT": m["pages"], "SITES": m["sites"], "SUBPAGES": m["subpages"],
-        "PLATES": "\n".join(plate(i + 1, p) for i, p in enumerate(ps)),
+        "PLATES": plates(groups),
+        "GROUPNAV": "".join(f'<a href="#g-{g["id"]}">{esc(g["title"])} <span>{len(m)}</span></a>' for g, m in groups),
         "PAGES_JSON": json.dumps([{"name": p["name"], "url": p["url"], "slug": p["slug"]} for p in ps]),
     }.items():
         page = page.replace("{{" + k + "}}", v)
@@ -109,6 +128,14 @@ def main():
         for scheme in ("light", "dark"):
             if not os.path.exists(os.path.join(HERE, "shots", f"{p['slug']}-{scheme}.jpg")):
                 bad.append(f"shots/{p['slug']}-{scheme}.jpg is missing")
+    placed = [s for g in json.loads(read(HERE, "groups.json"))["groups"] for s in g["pages"]]
+    slugs = [p["slug"] for p in cat["pages"]]
+    for s in sorted(set(slugs) - set(placed)):
+        bad.append(f"{s} is in catalog.json but in no group of groups.json")
+    for s in sorted(set(placed) - set(slugs)):
+        bad.append(f"groups.json names {s}, which catalog.json does not have")
+    for s in sorted({s for s in placed if placed.count(s) > 1}):
+        bad.append(f"groups.json puts {s} in more than one group")
     if "{{" in page:
         bad.append("a {{...}} marker was not filled")
     stated = dict(re.findall(r'data-measure="([a-z]+)">([^<]*)<', page))
