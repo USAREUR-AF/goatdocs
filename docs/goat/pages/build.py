@@ -47,11 +47,11 @@ def plate(i, p):
     cells = "".join(
         f'<div><span class="n">{esc(c["n"])}</span><span class="l">{esc(c["l"])}</span>'
         + (f'<code>{esc(c["how"])}</code>' if c["how"] else "") + "</div>" for c in p["numbers"])
-    where = "its own site" if p["kind"] == "site" else "a page in goatdocs"
+    addr = re.sub(r"^https?://", "", p["url"])
     return f'''    <article class="plate" id="{esc(p["slug"])}" data-kind="{p["kind"]}">
       <a class="print" href="{esc(p["url"])}"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/{p["slug"]}-dark.jpg"><img src="shots/{p["slug"]}-light.jpg" width="1080" height="675" loading="lazy" alt="The first screen of the {esc(p["name"])} landing page."></picture></a>
       <div>
-        <span class="no">Plate {i:02d} &middot; {where}</span>
+        <span class="no">{esc(addr)}</span>
         <h3><a href="{esc(p["url"])}">{esc(p["name"])}</a></h3>
         <p class="tg">{esc(p["tagline"])}</p>
         <p class="ld">{esc(p["lede"])}</p>
@@ -74,8 +74,8 @@ def plates(groups):
 
 def measure(cat):
     ps = cat["pages"]
-    return {"pages": str(len(ps)), "sites": str(sum(p["kind"] == "site" for p in ps)),
-            "subpages": str(sum(p["kind"] == "subpage" for p in ps)),
+    return {"pages": str(len(ps)), "groups": str(len(json.loads(read(HERE, "groups.json"))["groups"])),
+            "repos": str(len({p["repo"] for p in ps})),
             "numbers": str(sum(len(p["numbers"]) for p in ps))}
 
 
@@ -97,7 +97,7 @@ def render(cat):
     for k, v in {
         "ICON": icon, "CSS": css, "JS": read(HERE, "catalogue.js"), "BGCODE": esc(bg),
         "FIRST_NAME": esc(ps[0]["name"]), "FIRST_URL": esc(ps[0]["url"]), "FIRST_SLUG": ps[0]["slug"],
-        "COUNT": m["pages"], "SITES": m["sites"], "SUBPAGES": m["subpages"],
+        "COUNT": m["pages"],
         "PLATES": plates(groups),
         "GROUPNAV": "".join(f'<a href="#g-{g["id"]}">{esc(g["title"])} <span>{len(m)}</span></a>' for g, m in groups),
         "PAGES_JSON": json.dumps([{"name": p["name"], "url": p["url"], "slug": p["slug"]} for p in ps]),
