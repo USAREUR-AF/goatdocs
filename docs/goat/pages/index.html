@@ -159,7 +159,7 @@ footer a { margin-right: 18px; }
 .plate .print::after { bottom: -8px; right: -8px; border-bottom-width: 1px; border-right-width: 1px; }
 .plate .print img { display: block; width: 100%; height: auto; border: 1px solid var(--rule); }
 .plate .print:hover { border-color: var(--accent); }
-.plate .no { font: 700 13px var(--mono); color: var(--quiet); letter-spacing: .06em; text-transform: uppercase; }
+.plate .no { font: 13px var(--mono); color: var(--quiet); overflow-wrap: anywhere; }
 .plate h3 { font: 800 clamp(24px, 2.4vw, 32px)/1.15 var(--mono); letter-spacing: -0.02em; margin: 4px 0 8px; }
 .plate h3 a { color: var(--ink); text-decoration: none; }
 .plate h3 a:hover { color: var(--accent); }
@@ -239,8 +239,8 @@ hello-galaxy          https://usareur-af.github.io/goatdocs/hello-galaxy/</pre>
   <div class="wrap">
     <div class="numbers">
       <div><span class="n" data-measure="pages">14</span><span class="l">landing pages</span><code>rows of the splash-page skill's examples.md</code></div>
-      <div><span class="n" data-measure="sites">11</span><span class="l">repositories with a site of their own</span><code>usareur-af.github.io/&lt;repo&gt;/</code></div>
-      <div><span class="n" data-measure="subpages">3</span><span class="l">pages inside goatdocs</span><code>usareur-af.github.io/goatdocs/...</code></div>
+      <div><span class="n" data-measure="groups">7</span><span class="l">groups, by what each page is for</span><code>groups.json</code></div>
+      <div><span class="n" data-measure="repos">12</span><span class="l">repositories behind them</span><code>the Repository link of each page</code></div>
       <div><span class="n" data-measure="numbers">56</span><span class="l">numbers stated across them</span><code>the strip under each first screen</code></div>
     </div>
   </div>
@@ -255,7 +255,7 @@ hello-galaxy          https://usareur-af.github.io/goatdocs/hello-galaxy/</pre>
     <article class="plate" id="goat" data-kind="subpage">
       <a class="print" href="https://usareur-af.github.io/goatdocs/goat/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/goat-dark.jpg"><img src="shots/goat-light.jpg" width="1080" height="675" loading="lazy" alt="The first screen of the goat landing page."></picture></a>
       <div>
-        <span class="no">Plate 01 &middot; a page in goatdocs</span>
+        <span class="no">usareur-af.github.io/goatdocs/goat/</span>
         <h3><a href="https://usareur-af.github.io/goatdocs/goat/">goat</a></h3>
         <p class="tg">A self-hosted data fabric that keeps working when the network around it fails.</p>
         <p class="ld">goat joins people, machines and services across sites into one network. They publish and subscribe to data, and access is decided by who they are, not where they sit. A device that has joined keeps talking to its peers directly, with or without the cloud.</p>
@@ -268,7 +268,7 @@ hello-galaxy          https://usareur-af.github.io/goatdocs/hello-galaxy/</pre>
     <article class="plate" id="goat-client" data-kind="site">
       <a class="print" href="https://usareur-af.github.io/goat-client/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/goat-client-dark.jpg"><img src="shots/goat-client-light.jpg" width="1080" height="675" loading="lazy" alt="The first screen of the goat-client landing page."></picture></a>
       <div>
-        <span class="no">Plate 02 &middot; its own site</span>
+        <span class="no">usareur-af.github.io/goat-client/</span>
         <h3><a href="https://usareur-af.github.io/goat-client/">goat-client</a></h3>
         <p class="tg">One signed file, and the device is on the goat network.</p>
         <p class="ld">A daemon, a desktop GUI and a command line for Linux, macOS and Windows, with iOS, iPadOS and Android shells. It takes a bundle signed by an offline certificate authority, checks the signature, and brings up the outer WireGuard tunnel, the inner NetBird mesh, or both.</p>
@@ -280,7 +280,7 @@ hello-galaxy          https://usareur-af.github.io/goatdocs/hello-galaxy/</pre>
     <article class="plate" id="zagros-moon-pod" data-kind="site">
       <a class="print" href="https://usareur-af.github.io/zagros-moon-pod/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/zagros-moon-pod-dark.jpg"><img src="shots/zagros-moon-pod-light.jpg" width="1080" height="675" loading="lazy" alt="The first screen of the zagros-moon-pod landing page."></picture></a>
       <div>
-        <span class="no">Plate 03 &middot; its own site</span>
+        <span class="no">usareur-af.github.io/zagros-moon-pod/</span>
         <h3><a href="https://usareur-af.github.io/zagros-moon-pod/">zagros-moon-pod</a></h3>
         <p class="tg">A small bundle you run on your own host to exchange data with a goat fabric, both ways.</p>
         <p class="ld">A Zenoh router with mutual TLS that may write only your slot, an observe-only audit sink, and a mesh client on the host. Today it is for learning: rung 2 of the goat learner ladder, joined to the zagros sandbox, not in operational use.</p>
@@ -292,7 +292,7 @@ hello-galaxy          https://usareur-af.github.io/goatdocs/hello-galaxy/</pre>
     <article class="plate" id="saltlick" data-kind="site">
       <a class="print" href="https://usareur-af.github.io/saltlick/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/saltlick-dark.jpg"><img src="shots/saltlick-light.jpg" width="1080" height="675" loading="lazy" alt="The first screen of the saltlick landing page."></picture></a>
       <div>
-        <span class="no">Plate 04 &middot; its own site</span>
+        <span class="no">usareur-af.github.io/saltlick/</span>
         <h3><a href="https://usareur-af.github.io/saltlick/">saltlick</a></h3>
         <p class="tg">Advisory, never authoritative. Being listed grants access to nothing.</p>
         <p class="ld">A directory where an organization publishes its own interconnection capability, so that two organizations can check compatibility before they build a link. It holds signed pointers, not permissions. The reader checks every signature and digest against keys it bound outside the directory.</p>
@@ -305,7 +305,7 @@ hello-galaxy          https://usareur-af.github.io/goatdocs/hello-galaxy/</pre>
     <article class="plate" id="open-billie" data-kind="site">
       <a class="print" href="https://usareur-af.github.io/open-billie/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/open-billie-dark.jpg"><img src="shots/open-billie-light.jpg" width="1080" height="675" loading="lazy" alt="The first screen of the open-billie landing page."></picture></a>
       <div>
-        <span class="no">Plate 05 &middot; its own site</span>
+        <span class="no">usareur-af.github.io/open-billie/</span>
         <h3><a href="https://usareur-af.github.io/open-billie/">open-billie</a></h3>
         <p class="tg">Any sensor in, one track record, three standard formats out.</p>
         <p class="ld">Open Billie prepares a node, builds a small package for each sensor (a kid), and publishes its data, normalized, as CoT, ASTERIX CAT062 or SAPIENT through Zenoh. The kid decodes; the shared translator writes the format.</p>
@@ -317,7 +317,7 @@ hello-galaxy          https://usareur-af.github.io/goatdocs/hello-galaxy/</pre>
     <article class="plate" id="first-bite" data-kind="site">
       <a class="print" href="https://usareur-af.github.io/first-bite/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/first-bite-dark.jpg"><img src="shots/first-bite-light.jpg" width="1080" height="675" loading="lazy" alt="The first screen of the first-bite landing page."></picture></a>
       <div>
-        <span class="no">Plate 06 &middot; its own site</span>
+        <span class="no">usareur-af.github.io/first-bite/</span>
         <h3><a href="https://usareur-af.github.io/first-bite/">first-bite</a></h3>
         <p class="tg">Binary messages off the wire, decoded, for those you authorise.</p>
         <p class="ld">It listens on a tap or a mirror port, local or tunnelled (ERSPAN/GRE), decodes fixed-layout binary messages against a dictionary, and publishes each one as a record of typed values. It never transmits on the capture interface.</p>
@@ -329,7 +329,7 @@ hello-galaxy          https://usareur-af.github.io/goatdocs/hello-galaxy/</pre>
     <article class="plate" id="goatrope" data-kind="site">
       <a class="print" href="https://usareur-af.github.io/goatrope/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/goatrope-dark.jpg"><img src="shots/goatrope-light.jpg" width="1080" height="675" loading="lazy" alt="The first screen of the goatrope landing page."></picture></a>
       <div>
-        <span class="no">Plate 07 &middot; its own site</span>
+        <span class="no">usareur-af.github.io/goatrope/</span>
         <h3><a href="https://usareur-af.github.io/goatrope/">goatrope</a></h3>
         <p class="tg">Tie distant machines to one link, or tap the link they share.</p>
         <p class="ld">goatrope takes a copy of one network link, from a tap device, a switch mirror port or its own inline tap on a small computer, and records it, sends on what you name, or relays named datagrams. The relay joins distant sites over the mesh they already share, or through a declared boundary point when a site stands outside it; it is work in progress. One file declares what it does. It runs with nothing else of ours installed.</p>
@@ -341,7 +341,7 @@ hello-galaxy          https://usareur-af.github.io/goatdocs/hello-galaxy/</pre>
     <article class="plate" id="open-entity-gateway" data-kind="site">
       <a class="print" href="https://usareur-af.github.io/open-entity-gateway/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/open-entity-gateway-dark.jpg"><img src="shots/open-entity-gateway-light.jpg" width="1080" height="675" loading="lazy" alt="The first screen of the open-entity-gateway landing page."></picture></a>
       <div>
-        <span class="no">Plate 08 &middot; its own site</span>
+        <span class="no">usareur-af.github.io/open-entity-gateway/</span>
         <h3><a href="https://usareur-af.github.io/open-entity-gateway/">open-entity-gateway</a></h3>
         <p class="tg">Bridges between the goat fabric and vendor systems.</p>
         <p class="ld">Each bridge is its own package that speaks one vendor&#x27;s software kit: Anduril Lattice and Picogrid ECN today. A mapping file says how a record becomes a track; the bridge sends it in the vendor&#x27;s form.</p>
@@ -354,7 +354,7 @@ hello-galaxy          https://usareur-af.github.io/goatdocs/hello-galaxy/</pre>
     <article class="plate" id="goat-transformers" data-kind="site">
       <a class="print" href="https://usareur-af.github.io/goat-transformers/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/goat-transformers-dark.jpg"><img src="shots/goat-transformers-light.jpg" width="1080" height="675" loading="lazy" alt="The first screen of the goat-transformers landing page."></picture></a>
       <div>
-        <span class="no">Plate 09 &middot; its own site</span>
+        <span class="no">usareur-af.github.io/goat-transformers/</span>
         <h3><a href="https://usareur-af.github.io/goat-transformers/">goat-transformers</a></h3>
         <p class="tg">Any message format to any other. Every format is a data file.</p>
         <p class="ld">A drone&#x27;s 25-byte Remote ID broadcast becomes a Cursor on Target event for a tactical map. No engine holds code for either format: each is a pack, a text file with one line for each field, and seven engines in seven languages read the same packs and must agree byte for byte.</p>
@@ -366,7 +366,7 @@ hello-galaxy          https://usareur-af.github.io/goatdocs/hello-galaxy/</pre>
     <article class="plate" id="goat-processors" data-kind="site">
       <a class="print" href="https://usareur-af.github.io/goat-processors/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/goat-processors-dark.jpg"><img src="shots/goat-processors-light.jpg" width="1080" height="675" loading="lazy" alt="The first screen of the goat-processors landing page."></picture></a>
       <div>
-        <span class="no">Plate 10 &middot; its own site</span>
+        <span class="no">usareur-af.github.io/goat-processors/</span>
         <h3><a href="https://usareur-af.github.io/goat-processors/">goat-processors</a></h3>
         <p class="tg">Correlation, fusion, filtering and track quality, with every decision traced.</p>
         <p class="ld">Each function is a written specification, packs of settings and test vectors. Seven engines, written apart in seven languages, reproduce every vector exactly, down to the record of each test they run.</p>
@@ -379,7 +379,7 @@ hello-galaxy          https://usareur-af.github.io/goatdocs/hello-galaxy/</pre>
     <article class="plate" id="fieldkit-feeds" data-kind="subpage">
       <a class="print" href="https://usareur-af.github.io/goatdocs/goat/fieldkit-feeds/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/fieldkit-feeds-dark.jpg"><img src="shots/fieldkit-feeds-light.jpg" width="1080" height="675" loading="lazy" alt="The first screen of the fieldkit-feeds landing page."></picture></a>
       <div>
-        <span class="no">Plate 11 &middot; a page in goatdocs</span>
+        <span class="no">usareur-af.github.io/goatdocs/goat/fieldkit-feeds/</span>
         <h3><a href="https://usareur-af.github.io/goatdocs/goat/fieldkit-feeds/">fieldkit-feeds</a></h3>
         <p class="tg">Send fabric data to the systems that need it, and bring their data in. A tactical admin switches it on.</p>
         <p class="ld">An operator picks a topic and the system that should receive it, or names what a system sends and the standard it uses. A tactical admin for the site switches the feed on; anyone else&#x27;s request waits for one. Each feed shows one word for its health, its counters, the exact command it runs and who did what.</p>
@@ -391,7 +391,7 @@ hello-galaxy          https://usareur-af.github.io/goatdocs/hello-galaxy/</pre>
     <article class="plate" id="goatrodeo" data-kind="site">
       <a class="print" href="https://usareur-af.github.io/goatrodeo/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/goatrodeo-dark.jpg"><img src="shots/goatrodeo-light.jpg" width="1080" height="675" loading="lazy" alt="The first screen of the goatrodeo landing page."></picture></a>
       <div>
-        <span class="no">Plate 12 &middot; its own site</span>
+        <span class="no">usareur-af.github.io/goatrodeo/</span>
         <h3><a href="https://usareur-af.github.io/goatrodeo/">goatrodeo</a></h3>
         <p class="tg">Games and toys that run on a goat data fabric.</p>
         <p class="ld">Each one is fun to play and publishes real events while you play it. Air Defenders is the first: a browser arcade game, solo or co-op, that runs on a laptop with one Go command.</p>
@@ -404,7 +404,7 @@ hello-galaxy          https://usareur-af.github.io/goatdocs/hello-galaxy/</pre>
     <article class="plate" id="goat-cloud" data-kind="site">
       <a class="print" href="https://usareur-af.github.io/goat-cloud/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/goat-cloud-dark.jpg"><img src="shots/goat-cloud-light.jpg" width="1080" height="675" loading="lazy" alt="The first screen of the goat-cloud landing page."></picture></a>
       <div>
-        <span class="no">Plate 13 &middot; its own site</span>
+        <span class="no">usareur-af.github.io/goat-cloud/</span>
         <h3><a href="https://usareur-af.github.io/goat-cloud/">goat-cloud</a></h3>
         <p class="tg">Every cloud resource has an owner, a purpose and a lifetime that anyone can look up.</p>
         <p class="ld">Developers deploy from their own repositories with no central gate and no ticket. Each night a scan finds what has no owner or has outlived its stated expiry; its owner is warned, and it is removed.</p>
@@ -417,7 +417,7 @@ hello-galaxy          https://usareur-af.github.io/goatdocs/hello-galaxy/</pre>
     <article class="plate" id="hello-galaxy" data-kind="subpage">
       <a class="print" href="https://usareur-af.github.io/goatdocs/hello-galaxy/"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/hello-galaxy-dark.jpg"><img src="shots/hello-galaxy-light.jpg" width="1080" height="675" loading="lazy" alt="The first screen of the hello-galaxy landing page."></picture></a>
       <div>
-        <span class="no">Plate 14 &middot; a page in goatdocs</span>
+        <span class="no">usareur-af.github.io/goatdocs/hello-galaxy/</span>
         <h3><a href="https://usareur-af.github.io/goatdocs/hello-galaxy/">hello-galaxy</a></h3>
         <p class="tg">17 small repositories. Each answers one question about goat by running it.</p>
         <p class="ld">Every repository is a short runbook per step and one script that drives the real tools, prints what happens, and says plainly what it does not run. Pick the question you have, clone that repository, and run one command.</p>

@@ -13,7 +13,7 @@
 .plate .print::after { bottom: -8px; right: -8px; border-bottom-width: 1px; border-right-width: 1px; }
 .plate .print img { display: block; width: 100%; height: auto; border: 1px solid var(--rule); }
 .plate .print:hover { border-color: var(--accent); }
-.plate .no { font: 700 13px var(--mono); color: var(--quiet); letter-spacing: .06em; text-transform: uppercase; }
+.plate .no { font: 13px var(--mono); color: var(--quiet); overflow-wrap: anywhere; }
 .plate h3 { font: 800 clamp(24px, 2.4vw, 32px)/1.15 var(--mono); letter-spacing: -0.02em; margin: 4px 0 8px; }
 .plate h3 a { color: var(--ink); text-decoration: none; }
 .plate h3 a:hover { color: var(--accent); }
