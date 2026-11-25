@@ -5,7 +5,7 @@
   python3 -I docs/goat/pages/build.py --check   fail when index.html is not what this writes,
                                                 when catalog.json and the splash-page skill's
                                                 examples.md list different pages, when a page
-                                                lacks its tagline or four numbers, or when a
+                                                lacks its tagline, or when a
                                                 capture is missing
 
 catalog.json is written by collect.py from the live pages; groups.json sets the order
@@ -44,9 +44,6 @@ def md(s):
 
 
 def plate(i, p, status=None):
-    cells = "".join(
-        f'<div><span class="n">{esc(c["n"])}</span><span class="l">{esc(c["l"])}</span>'
-        + (f'<code>{esc(c["how"])}</code>' if c["how"] else "") + "</div>" for c in p["numbers"])
     addr = re.sub(r"^https?://", "", p["url"])
     return f'''    <article class="plate" id="{esc(p["slug"])}" data-kind="{p["kind"]}">
       <a class="print" href="{esc(p["url"])}"><picture><source media="(prefers-color-scheme: dark)" srcset="shots/{p["slug"]}-dark.jpg"><img src="shots/{p["slug"]}-light.jpg" width="1080" height="675" loading="lazy" alt="The first screen of the {esc(p["name"])} landing page."></picture></a>
@@ -55,7 +52,6 @@ def plate(i, p, status=None):
         <h3><a href="{esc(p["url"])}">{esc(p["name"])}</a>{f' <span class="st">{esc(status)}</span>' if status else ""}</h3>
         <p class="tg">{esc(p["tagline"])}</p>
         <p class="ld">{esc(p["lede"])}</p>
-        <div class="mini">{cells}</div>
         <p class="fs"><b>First screen:</b> {md(p["shows"])}</p>
         <p class="go"><a href="{esc(p["url"])}">Open the page</a><a href="{esc(p["repo"])}">Repository</a></p>
       </div>
@@ -73,13 +69,6 @@ def plates(groups):
     return "\n".join(out)
 
 
-def measure(cat):
-    ps = cat["pages"]
-    return {"pages": str(len(ps)), "groups": str(len(json.loads(read(HERE, "groups.json"))["groups"])),
-            "repos": str(len({p["repo"] for p in ps})),
-            "numbers": str(sum(len(p["numbers"]) for p in ps))}
-
-
 def grouped(cat):
     """[(group, [page, ...]), ...] in the order of groups.json."""
     by = {p["slug"]: p for p in cat["pages"]}
@@ -92,20 +81,17 @@ def render(cat):
     icon = "data:image/svg+xml," + urllib.parse.quote(read(HERE, "icon.svg").strip(), safe="=:/ '")
     css = read(SKILL, "templates", "site", "assets", "site.css")
     css = read(HERE, "extra.css") + css[css.index("* { box-sizing"):] + read(HERE, "extra-tail.css")
-    m = measure(cat)
     bg = "\n".join(f"{p['slug']:<22}{p['url']}" for p in ps)
     page = read(HERE, "page.html")
     for k, v in {
         "ICON": icon, "CSS": css, "JS": read(HERE, "catalogue.js"), "BGCODE": esc(bg),
         "FIRST_NAME": esc(ps[0]["name"]), "FIRST_URL": esc(ps[0]["url"]), "FIRST_SLUG": ps[0]["slug"],
-        "COUNT": m["pages"],
+        "COUNT": str(len(ps)),
         "PLATES": plates(groups),
         "GROUPNAV": "".join(f'<a href="#g-{g["id"]}">{esc(g["title"])} <span>{len(m)}</span></a>' for g, m in groups),
         "PAGES_JSON": json.dumps([{"name": p["name"], "url": p["url"], "slug": p["slug"]} for p in ps]),
     }.items():
         page = page.replace("{{" + k + "}}", v)
-    for k, v in m.items():
-        page = page.replace(f'data-measure="{k}">0<', f'data-measure="{k}">{v}<')
     return HEAD + page
 
 
@@ -124,8 +110,8 @@ def main():
     if want != have:
         bad.append(f"catalog.json lists {have}, examples.md lists {want}: run collect.py --shots")
     for p in cat["pages"]:
-        if not p["tagline"] or len(p["numbers"]) != 4:
-            bad.append(f"{p['slug']}: no tagline or not four numbers in catalog.json")
+        if not p["tagline"]:
+            bad.append(f"{p['slug']}: no tagline in catalog.json")
         for scheme in ("light", "dark"):
             if not os.path.exists(os.path.join(HERE, "shots", f"{p['slug']}-{scheme}.jpg")):
                 bad.append(f"shots/{p['slug']}-{scheme}.jpg is missing")
@@ -141,15 +127,11 @@ def main():
         bad.append(f"groups.json puts {s} in more than one group")
     if "{{" in page:
         bad.append("a {{...}} marker was not filled")
-    stated = dict(re.findall(r'data-measure="([a-z]+)">([^<]*)<', page))
-    for k, v in measure(cat).items():
-        if stated.get(k) != v:
-            bad.append(f"{k} says {stated.get(k)}, catalog.json gives {v}")
     for b in bad:
         print("docs/goat/pages:", b)
     if bad:
         return 1
-    print("docs/goat/pages: current;", ", ".join(f"{k}={v}" for k, v in measure(cat).items()))
+    print(f"docs/goat/pages: current; {len(cat['pages'])} pages")
     return 0
 
 

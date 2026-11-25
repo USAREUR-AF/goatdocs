@@ -383,7 +383,7 @@ ok    zagros/alpha/core/portal/publish                            serial 4: ghcr
 
 <div class="wrap">
   <figure class="system" aria-labelledby="sys-cap">
-    <div class="fig scroll"><svg id="fig-system" class="viz" viewBox="0 0 760 590" role="img" aria-label="Edge systems at three sites, such as sensors, cameras, weather stations, radios, machines, vehicles, drones, phones and laptops, join through an open-billie sensor node, an octo-pod site gateway or goat-client on the device. Each site runs goatcore, and the sites form one data fabric over direct tunnels with no central broker. Operations software, goatstuff live views, analytics and AI agents, and partners by release publish and subscribe on that fabric by identity. Cloud relays are used when a device enrolls and when two peers cannot reach each other directly; the sites keep working without them.">
+    <div class="fig scroll"><svg id="fig-system" class="viz" viewBox="0 0 760 644" role="img" aria-label="Systems join a goat deployment in three ways. A device joins on its own with the NetBird client; goat-client is a forthcoming option. open-billie integrates one old or proprietary system once, straight onto the fabric or through a local pod. octo-pod is itself a pod: it spans networks, does local work, and most often bridges an existing tactical network with many systems on it. Either one can connect any kind of system. Each site runs goatcore, and the sites form one data fabric over direct tunnels with no central broker. Operations software, goatstuff live views, analytics and AI agents, and partners by release publish and subscribe on that fabric by identity. Cloud relays are used when a device enrolls and when two peers cannot reach each other directly; the sites keep working without them.">
 <rect x="20" y="14" width="720" height="112" rx="12" class="bxp"/>
 <text x="36" y="38" class="tq" font-size="13" font-weight="700">Systems that use the data</text>
 <rect x="36" y="54" width="160" height="56" rx="8" class="bx"/>
@@ -430,65 +430,49 @@ ok    zagros/alpha/core/portal/publish                            serial 4: ghcr
 <text x="186" y="327" class="tq" font-size="13">enroll and relay</text>
 <path d="M192 288L192 262" class="lnd" data-lint="nohead"/>
 <path d="M312 288L312 262" class="lnd" data-lint="nohead"/>
-<rect x="20" y="374" width="720" height="202" rx="12" class="bxp"/>
-<text x="36" y="562" class="tq" font-size="13" font-weight="700">Edge systems, many at each site</text>
+<rect x="20" y="374" width="720" height="256" rx="12" class="bxp"/>
+<text x="36" y="616" class="tq" font-size="13" font-weight="700">A device joins</text>
+<rect x="36" y="396" width="180" height="56" rx="8" class="bx"/>
+<text x="50" y="419" class="t" font-size="15" font-weight="700">NetBird client</text>
+<text x="50" y="439" class="tq" font-size="13">goat-client: forthcoming</text>
+<text x="262" y="616" class="tq" font-size="13" font-weight="700">One system, integrated once</text>
 <a href="#open-billie" tabindex="-1" aria-label="open-billie"><g id="lk-open-billie">
-<rect x="36" y="392" width="180" height="56" rx="8" class="bx"/>
-<text x="50" y="415" class="t" font-size="15" font-weight="700">open-billie</text>
-<text x="50" y="435" class="tq" font-size="13">sensor node</text>
+<rect x="262" y="396" width="200" height="56" rx="8" class="bx"/>
+<text x="276" y="419" class="t" font-size="15" font-weight="700">open-billie</text>
+<text x="276" y="439" class="tq" font-size="13">integrates one system</text>
 </g></a>
-<path d="M126 392L126 271" class="lna"/>
-<path d="M126 262L131 272L121 272z" class="fa"/>
-<path d="M56 462L196 462" class="ln"/>
-<path d="M126 462L126 448" class="ln"/>
-<rect x="36" y="474" width="84" height="28" rx="14" class="bx"/>
-<text x="78" y="493" text-anchor="middle" class="t" font-size="13">Sensors</text>
-<path d="M78 474L78 462" class="ln"/>
-<rect x="132" y="474" width="84" height="28" rx="14" class="bx"/>
-<text x="174" y="493" text-anchor="middle" class="t" font-size="13">Cameras</text>
-<path d="M174 474L174 462" class="ln"/>
-<rect x="36" y="510" width="84" height="28" rx="14" class="bx"/>
-<text x="78" y="529" text-anchor="middle" class="t" font-size="13">Weather</text>
-<rect x="132" y="510" width="84" height="28" rx="14" class="bx"/>
-<text x="174" y="529" text-anchor="middle" class="t" font-size="13">Radios</text>
+<text x="514" y="616" class="tq" font-size="13" font-weight="700">A network, bridged</text>
 <a href="#octo-pod" tabindex="-1" aria-label="octo-pod"><g id="lk-octo-pod">
-<rect x="290" y="392" width="180" height="56" rx="8" class="bx"/>
-<text x="304" y="415" class="t" font-size="15" font-weight="700">octo-pod</text>
-<text x="304" y="435" class="tq" font-size="13">site gateway</text>
+<rect x="514" y="396" width="210" height="56" rx="8" class="bx"/>
+<text x="528" y="419" class="t" font-size="15" font-weight="700">octo-pod</text>
+<text x="528" y="439" class="tq" font-size="13">a pod across networks</text>
 </g></a>
-<path d="M380 392L380 271" class="lna"/>
-<path d="M380 262L385 272L375 272z" class="fa"/>
-<path d="M310 462L450 462" class="ln"/>
-<path d="M380 462L380 448" class="ln"/>
-<rect x="290" y="474" width="84" height="28" rx="14" class="bx"/>
-<text x="332" y="493" text-anchor="middle" class="t" font-size="13">Machines</text>
-<path d="M332 474L332 462" class="ln"/>
-<rect x="386" y="474" width="84" height="28" rx="14" class="bx"/>
-<text x="428" y="493" text-anchor="middle" class="t" font-size="13">Vehicles</text>
-<path d="M428 474L428 462" class="ln"/>
-<rect x="290" y="510" width="84" height="28" rx="14" class="bx"/>
-<text x="332" y="529" text-anchor="middle" class="t" font-size="13">Drones</text>
-<rect x="386" y="510" width="84" height="28" rx="14" class="bx"/>
-<text x="428" y="529" text-anchor="middle" class="t" font-size="13">Equipment</text>
-<rect x="544" y="392" width="180" height="56" rx="8" class="bx"/>
-<text x="558" y="415" class="t" font-size="15" font-weight="700">goat-client</text>
-<text x="558" y="435" class="tq" font-size="13">on each device</text>
-<path d="M634 392L634 271" class="lna"/>
-<path d="M634 262L639 272L629 272z" class="fa"/>
-<path d="M564 462L704 462" class="ln"/>
-<path d="M634 462L634 448" class="ln"/>
-<rect x="544" y="474" width="84" height="28" rx="14" class="bx"/>
-<text x="586" y="493" text-anchor="middle" class="t" font-size="13">Phones</text>
-<path d="M586 474L586 462" class="ln"/>
-<rect x="640" y="474" width="84" height="28" rx="14" class="bx"/>
-<text x="682" y="493" text-anchor="middle" class="t" font-size="13">Laptops</text>
-<path d="M682 474L682 462" class="ln"/>
-<rect x="544" y="510" width="84" height="28" rx="14" class="bx"/>
-<text x="586" y="529" text-anchor="middle" class="t" font-size="13">Tablets</text>
-<rect x="640" y="510" width="84" height="28" rx="14" class="bx"/>
-<text x="682" y="529" text-anchor="middle" class="t" font-size="13">Field kits</text>
+<path d="M126 396L126 262" class="lna" data-lint="nohead"/>
+<path d="M362 396L362 382L380 382L380 262" class="lna" data-lint="nohead"/>
+<path d="M619 396L619 382L634 382L634 262" class="lna" data-lint="nohead"/>
+<path d="M462 424L514 424" class="lnd" data-lint="nohead"/>
+<text x="488" y="416" text-anchor="middle" class="ta" font-size="13">or via</text>
+<text x="488" y="444" text-anchor="middle" class="ta" font-size="13">a pod</text>
+<path d="M126 452L126 478" class="ln"/>
+<rect x="36" y="478" width="180" height="34" rx="14" class="bx"/>
+<text x="126" y="500" text-anchor="middle" class="t" font-size="13">a laptop, server or phone</text>
+<path d="M362 452L362 478" class="ln"/>
+<rect x="262" y="478" width="200" height="52" rx="8" class="bx"/>
+<text x="362" y="500" text-anchor="middle" class="t" font-size="13">an old or proprietary</text>
+<text x="362" y="518" text-anchor="middle" class="t" font-size="13">system</text>
+<path d="M619 452L619 478" class="ln"/>
+<path d="M514 478H724V590H514z" class="lnd"/>
+<text x="526" y="500" class="tq" font-size="13">an existing tactical network</text>
+<rect x="526" y="512" width="88" height="28" rx="14" class="bx"/>
+<text x="570" y="531" text-anchor="middle" class="t" font-size="13">system</text>
+<rect x="624" y="512" width="88" height="28" rx="14" class="bx"/>
+<text x="668" y="531" text-anchor="middle" class="t" font-size="13">system</text>
+<rect x="526" y="548" width="88" height="28" rx="14" class="bx"/>
+<text x="570" y="567" text-anchor="middle" class="t" font-size="13">system</text>
+<rect x="624" y="548" width="88" height="28" rx="14" class="bx"/>
+<text x="668" y="567" text-anchor="middle" class="t" font-size="13">system</text>
 </svg></div>
-    <figcaption id="sys-cap">How a goat deployment carries an operation. Many edge systems at each site join through a sensor node, a site gateway or the client on the device. Each site runs its own goatcore, and the sites share one data fabric. The systems that use the data publish and subscribe on it by identity. Relays and one public DNS name in the cloud are used when a device enrolls and when two peers cannot reach each other directly; peers that have joined keep their tunnels when the cloud cannot be reached. A diagram, not a capture. Select a part to read about its repository. <span class="scrollhint">The figure scrolls sideways.</span></figcaption>
+    <figcaption id="sys-cap">How systems join a goat deployment. A device joins on its own with the NetBird client; goat-client is a forthcoming option. open-billie integrates one old or proprietary system once, onto the fabric or through a local pod. octo-pod is itself a pod across networks, most often bridging an existing tactical network; data goes both ways through it. Either one can connect any kind of system. Each site runs its own goatcore, and the sites share one data fabric. The systems that use the data publish and subscribe on it by identity. Relays and one public DNS name in the cloud are used when a device enrolls and when two peers cannot reach each other directly; peers that have joined keep their tunnels when the cloud cannot be reached. A diagram, not a capture. Select a part to read about its repository. <span class="scrollhint">The figure scrolls sideways.</span></figcaption>
     <ul class="partnav" aria-label="The five repositories">
       <li><a href="#goatcore">goatcore</a></li>
       <li><a href="#goatstuff">goatstuff</a></li>
@@ -644,27 +628,33 @@ zenoh-router     alpha-core-2        converged  v1.9.0   v1.9.0</pre>
       <article class="part wide" id="octo-pod" aria-labelledby="octo-pod-h">
         <header><h3 id="octo-pod-h">octo-pod</h3><span class="role">Edge gateway</span></header>
         <div>
-          <div class="fig scroll"><svg id="fig-pod" class="viz" viewBox="0 0 760 128" role="img" aria-label="An octo-pod sits between a site&#x27;s sensors and the shared fabric: ingress arms bring feeds in, capture stays local, and only released feeds cross to the fabric">
-<rect x="20" y="24" width="173.33" height="84" rx="8" class="bxp"/>
-<text x="36" y="50" class="t" font-size="15" font-weight="700">Sensor feeds</text>
-<text x="36" y="72" class="tq" font-size="13">UDP, TCP, Zenoh</text>
-<rect x="293.33" y="24" width="173.33" height="84" rx="8" class="bxa"/>
+          <div class="fig scroll"><svg id="fig-pod" class="viz" viewBox="0 0 760 150" role="img" aria-label="An octo-pod sits between a local network and the shared fabric, and data crosses it both ways. Feeds from the local network come in, are captured and audited on the pod, and only released feeds go out to the fabric. Data from the fabric is delivered back through the pod to a receiver on the local network.">
+<rect x="20" y="24" width="173.33" height="102" rx="8" class="bxp"/>
+<text x="36" y="50" class="t" font-size="15" font-weight="700">Local network</text>
+<text x="36" y="72" class="tq" font-size="13">sensors and receivers</text>
+<text x="36" y="90" class="tq" font-size="13">UDP, TCP, Zenoh</text>
+<rect x="293.33" y="24" width="173.33" height="102" rx="8" class="bxa"/>
 <text x="309.33" y="50" class="t" font-size="15" font-weight="700">octo-pod</text>
 <text x="309.33" y="72" class="tq" font-size="13">capture and</text>
 <text x="309.33" y="90" class="tq" font-size="13">audit stay local</text>
-<rect x="566.67" y="24" width="173.33" height="84" rx="8" class="bxp"/>
+<rect x="566.67" y="24" width="173.33" height="102" rx="8" class="bxp"/>
 <text x="582.67" y="50" class="t" font-size="15" font-weight="700">Fabric</text>
-<text x="582.67" y="72" class="tq" font-size="13">released feeds only</text>
-<path d="M193.33 66L284.58 66" class="ln"/><path d="M292.58 66L283.58 70.5L283.58 61.5z" class="fl"/>
-<text x="242.96" y="53" text-anchor="middle" class="tq" font-size="13" font-weight="700">ingress</text>
-<path d="M466.67 66L556.92 66" class="lna"/><path d="M565.92 66L555.92 71L555.92 61z" class="fa"/>
-<text x="516.29" y="53" text-anchor="middle" class="tq" font-size="13" font-weight="700">release</text>
+<text x="582.67" y="72" class="tq" font-size="13">released feeds out,</text>
+<text x="582.67" y="90" class="tq" font-size="13">chosen data in</text>
+<path d="M193.33 56L284.58 56" class="ln"/><path d="M292.58 56L283.58 60.5L283.58 51.5z" class="fl"/>
+<text x="242.96" y="45" text-anchor="middle" class="tq" font-size="13" font-weight="700">ingress</text>
+<path d="M466.67 56L556.92 56" class="lna"/><path d="M565.92 56L555.92 61L555.92 51z" class="fa"/>
+<text x="516.29" y="45" text-anchor="middle" class="tq" font-size="13" font-weight="700">release</text>
+<path d="M566.67 100L475.42 100" class="lna"/><path d="M467.42 100L477.42 95L477.42 105z" class="fa"/>
+<text x="516.29" y="120" text-anchor="middle" class="tq" font-size="13" font-weight="700">deliver</text>
+<path d="M293.33 100L202.08 100" class="ln"/><path d="M194.08 100L203.08 95.5L203.08 104.5z" class="fl"/>
+<text x="242.96" y="120" text-anchor="middle" class="tq" font-size="13" font-weight="700">to a receiver</text>
 </svg></div>
-          <p class="caption">What crosses, from the octo-pod README. A diagram, not a capture. <span class="scrollhint">The figure scrolls sideways.</span></p>
+          <p class="caption">What crosses, both ways, from the octo-pod README. A diagram, not a capture. <span class="scrollhint">The figure scrolls sideways.</span></p>
         </div>
         <div class="split">
           <div class="stack">
-            <p>An edge gateway appliance on one small computer where sensors live. It takes in their feeds, records and audits them locally, and releases only what you choose onto the fabric. Every feed gets its own certificate and a narrow set of keys. Nothing on the running pod changes until you <code>apply</code>.</p>
+            <p>An edge gateway appliance on one small computer where sensors live. It takes in their feeds, records and audits them locally, and releases only what you choose onto the fabric. It works the other way too: it delivers data from the fabric to a local receiver. Every feed gets its own certificate and a narrow set of keys. Nothing on the running pod changes until you <code>apply</code>.</p>
             <p class="label">Install release 0.6.0 from your laptop</p>
             <div class="cmd"><pre data-box="command"><span class="ln"><span class="prompt">$ </span><code id="c-pod"><span class="w">tools/install-to-pod.sh</span> operator@192.0.2.10 <span class="w">--version</span> 0.6.0 <span class="w">--with-images</span></code></span></pre><button class="copy" type="button" data-copy="c-pod">Copy</button></div>
             <p class="links"><a href="https://github.com/USAREUR-AF/octo-pod">Repository</a><a href="https://github.com/USAREUR-AF/octo-pod/blob/main/docs/deployment.md">Deployment</a><a href="https://github.com/USAREUR-AF/octo-pod/blob/main/docs/release-status.md">Release status</a></p>

@@ -29,9 +29,9 @@ name: splash-page
 description: Build or revise a project's landing page
   on GitHub Pages in the house style: wordmark and
   terminal prompt, Star on GitHub, a copyable command,
-  the real thing running in the first screen, four
-  measured numbers, declarative sections, light and
-  dark, checked in CI.
+  the real thing running in the first screen,
+  measured numbers where the project has them,
+  declarative sections, light and dark, checked in CI.
 ---
 
 | The project is            | Page goes              |
@@ -44,7 +44,7 @@ description: Build or revise a project's landing page
       <p class="prompt">&gt;_ make a landing page for this repository<span class="cur" aria-hidden="true"></span></p>
       <h1 class="wordmark" id="name">splash-page</h1>
       <p class="tagline">A Claude Code skill that builds a repository's landing page and checks every number on it.</p>
-      <p class="lede">Ask Claude for a landing page and the skill lays down this design: a prompt line and wordmark, Star on GitHub, a command to copy, the real program running in the first screen, and four numbers measured from the repository. The page you are reading was built with it.</p>
+      <p class="lede">Ask Claude for a landing page and the skill lays down this design: a prompt line and wordmark, Star on GitHub, a command to copy, the real program running in the first screen, and, where the project has them, numbers measured from the repository. The page you are reading was built with it.</p>
       <div class="buttons">
         <a class="btn star" href="https://github.com/USAREUR-AF/goatdocs"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M12 2.8l2.8 5.8 6.4.9-4.6 4.5 1.1 6.3L12 17.3l-5.7 3 1.1-6.3-4.6-4.5 6.4-.9z"/></svg>Star on GitHub</a>
         <a class="btn" href="#gallery">What it builds</a>
@@ -61,20 +61,12 @@ description: Build or revise a project's landing page
     </div>
   </div>
 
-  <div class="wrap">
-    <div class="numbers">
-      <div><span class="n" data-measure="live-pages">14</span><span class="l">pages built in this style</span><code>rows of examples.md</code></div>
-      <div><span class="n" data-measure="template-files">9</span><span class="l">template files</span><code>find templates -type f | wc -l</code></div>
-      <div><span class="n" data-measure="widths">2</span><span class="l">widths checked, 1440 and 390 px</span><code>WIDTHS in fitcheck.py</code></div>
-      <div><span class="n" data-measure="third-party">0</span><span class="l">third-party imports</span><code>build.py reads every import</code></div>
-    </div>
-  </div>
 </section>
 
 <section class="band" id="gallery">
   <div class="wrap">
     <h2>Every page, one design</h2>
-    <p class="sub">Each project gets its own theme, taken from what it does. The layout and the checks are the same on every page. Each picture is the first screen of the live page; select it to open the page. <a href="../pages/">The catalogue</a> has every page with its own words and numbers.</p>
+    <p class="sub">Each project gets its own theme, taken from what it does. The layout and the checks are the same on every page. Each picture is the first screen of the live page; select it to open the page. <a href="../pages/">The catalogue</a> has every page with its own words.</p>
     <div class="sheet">
 {{GALLERY}}
     </div>
@@ -87,7 +79,7 @@ description: Build or revise a project's landing page
     <p class="sub">The skill is a set of written rules, a skeleton and two checks. Claude follows the rules; the checks fail the pull request when a page breaks them.</p>
     <div class="cards">
       <div class="card"><h3>The first screen</h3><p>Prompt line, wordmark, a one-line tagline, two or three sentences, Star on GitHub first, then one command with Copy. Beside it, the real program running: a test vector, a decoded capture, a recorded session, the game itself. Never a mock-up.</p></div>
-      <div class="card"><h3>The numbers</h3><p>Four facts about the product, each in <code>data-measure</code>, each measured from the repository by <code>site/build.py</code>. Stars, commits and contributor counts are left out.</p></div>
+      <div class="card"><h3>Numbers, only real ones</h3><p>A number goes on a page only when it is a fact a reader of that project would ask about, and then it is measured from the repository by <code>site/build.py</code>. A page with no such number has no number strip. Stars, commits and contributor counts are left out.</p></div>
       <div class="card"><h3>The rest of the page</h3><p>Sections whose headings make a claim, figures drawn by code in the repository, light and dark, system fonts, no request to another host, no example data that names a real deployment.</p></div>
     </div>
     <div class="scroll" style="margin-top:36px"><table>
