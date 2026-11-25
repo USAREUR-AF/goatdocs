@@ -213,7 +213,7 @@ description: Build or revise a project's landing page
         <a class="btn" href="#gallery">What it builds</a>
         <a class="btn" href="https://github.com/USAREUR-AF/goatdocs/tree/main/.claude/skills/splash-page">The skill</a>
       </div>
-      <div class="cmd"><pre data-box="command"><span class="ln"><code id="c-install">/plugin install goat-skills <span class="w">--marketplace</span> <span class="w">USAREUR-AF/goatdocs</span></code></span></pre><button class="copy" type="button" data-copy="c-install">Copy</button></div>
+      <div class="cmd"><pre data-box="command"><span class="ln"><code id="c-install">/plugin install goat-skills <span class="w">--marketplace</span> <span class="w">https://usareur-af.github.io/goatdocs/claude/marketplace.json</span></code></span></pre><button class="copy" type="button" data-copy="c-install">Copy</button></div>
       <p class="under">In Claude Code. Once per person; the skill is then present in every repository, including a new, empty one.</p>
     </div>
 
@@ -282,18 +282,18 @@ description: Build or revise a project's landing page
   <div class="wrap feature">
     <div>
       <h2>It lives in goatdocs and installs everywhere</h2>
-      <p>The skill is a folder in goatdocs. goatdocs is also a Claude Code plugin marketplace, so the folder installs as the plugin <code>goat-skills</code>, which holds only this skill and the <code>changelog</code> skill. Claude Code reads the plugin list from a copy of the goatdocs repository; what lands in your sessions is the two skill folders. Install it once and it is present in every repository you open, including one with no files yet.</p>
+      <p>The skill is a folder in goatdocs. The goatdocs site publishes a one-file plugin catalogue that points at that folder; the plugin <code>goat-skills</code> holds only this skill and the <code>changelog</code> skill, and Claude Code fetches that folder alone, about 100 KB. Install it once and it is present in every repository you open, including one with no files yet.</p>
       <p>A repository can ask for the plugin itself. With this in its <code>.claude/settings.json</code>, Claude Code offers the install to anyone who opens the repository:</p>
       <pre class="json" style="--hang:4ch" data-box="output"><span class="ln">{
-</span><span class="ln">  "extraKnownMarketplaces": { "goatdocs": { "source":
-</span><span class="ln">    { "source": "github", "repo": "USAREUR-AF/goatdocs" } } },
-</span><span class="ln">  "enabledPlugins": { "goat-skills@goatdocs": true }
+</span><span class="ln">  "extraKnownMarketplaces": { "goat": { "source": { "source": "url",
+</span><span class="ln">    "url": "https://usareur-af.github.io/goatdocs/claude/marketplace.json" } } },
+</span><span class="ln">  "enabledPlugins": { "goat-skills@goat": true }
 </span><span class="ln">}</span></pre>
       <p>The skill is never copied into another repository, so there is one version of it.</p>
     </div>
     <div>
       <pre class="tree" data-box="output"><span class="ln"><b>USAREUR-AF/goatdocs</b>
-</span><span class="ln">├── .claude-plugin/marketplace.json   <span class="dim">publishes .claude/ as the plugin</span>
+</span><span class="ln">├── docs/claude/marketplace.json   <span class="dim">the plugin catalogue, served by the site</span>
 </span><span class="ln">└── .claude/skills/splash-page/
 </span><span class="ln">    ├── SKILL.md       <span class="dim">the rules Claude follows</span>
 </span><span class="ln">    ├── scaffold.py    <span class="dim">lays down the skeleton, never overwrites</span>
@@ -328,7 +328,7 @@ description: Build or revise a project's landing page
   <div class="wrap">
     <h2>Quick start</h2>
     <p class="sub">In Claude Code, inside the repository that needs a page:</p>
-    <pre class="block" data-box="command"><span class="ln">/plugin install goat-skills <span class="w">--marketplace</span> <span class="w">USAREUR-AF/goatdocs</span>
+    <pre class="block" data-box="command"><span class="ln">/plugin install goat-skills <span class="w">--marketplace</span> <span class="w">https://usareur-af.github.io/goatdocs/claude/marketplace.json</span>
 </span><span class="ln">/goat-skills:splash-page</span></pre>
     <p>Or ask in your own words: "make a landing page for this repository". Without Claude, the scripts run alone, from a clone of goatdocs:</p>
     <pre class="block" data-box="command"><span class="ln">python3 <span class="w">-I</span> <span class="w">.claude/skills/splash-page/scaffold.py</span> site <span class="w">&lt;repo&gt;</span> <span class="w">--name</span> <span class="w">&lt;repo&gt;</span> <span class="w">--repo</span> <span class="w">USAREUR-AF/&lt;repo&gt;</span>
