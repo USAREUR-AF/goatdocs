@@ -35,13 +35,17 @@ def fill(text, a):
     return text
 
 
+def show(path):
+    return os.path.relpath(path)
+
+
 def write(path, text):
     if os.path.exists(path):
-        sys.exit(f"scaffold: {path} exists; not overwriting")
+        sys.exit(f"scaffold: {show(path)} exists; not overwriting")
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w") as f:
         f.write(text)
-    print("wrote", path)
+    print("wrote", show(path))
 
 
 def read(*p):
@@ -60,10 +64,10 @@ def site(a):
                 write(dst, fill(read("site", rel), a))
             else:
                 if os.path.exists(dst):
-                    sys.exit(f"scaffold: {dst} exists; not overwriting")
+                    sys.exit(f"scaffold: {show(dst)} exists; not overwriting")
                 os.makedirs(os.path.dirname(dst), exist_ok=True)
                 shutil.copyfile(src, dst)
-                print("wrote", dst)
+                print("wrote", show(dst))
     write(os.path.join(root, ".github", "workflows", "pages.yml"), read("pages.yml"))
     print("\nnext: replace every placeholder, then  python3 -I site/build.py")
 

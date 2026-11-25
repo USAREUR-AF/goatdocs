@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{NAME}}</title>
+<meta name="description" content="{{TAGLINE}}">
+<link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="#top"><img src="assets/icon.svg" width="28" height="28" alt="">{{NAME}}</a>
+    <nav aria-label="Sections">
+      <a href="#what">What it is</a><a href="#how">How it works</a><a href="#start">Start</a>
+      <a class="gh" href="{{REPO_URL}}">GitHub</a>
+    </nav>
+  </header>
+</div>
+
+<main id="top">
+<section class="hero" aria-labelledby="name">
+<!-- REPLACE: a real file from the tree, faint behind the hero (a pack, a config, a schema). Decoration only. -->
+<pre class="bgcode" aria-hidden="true">{{BGCODE}}</pre>
+  <div class="wrap hero-grid">
+    <div>
+      <p class="prompt">&gt;_ {{PROMPT}}<span class="cur" aria-hidden="true"></span></p>
+      <h1 class="wordmark" id="name">{{NAME}}</h1>
+      <p class="tagline">{{TAGLINE}}</p>
+      <p class="lede">REPLACE: two or three sentences. What it is, what it does with what, and the one fact that makes it worth a star.</p>
+      <div class="buttons">
+        <a class="btn star" href="{{REPO_URL}}"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M12 2.8l2.8 5.8 6.4.9-4.6 4.5 1.1 6.3L12 17.3l-5.7 3 1.1-6.3-4.6-4.5 6.4-.9z"/></svg>Star on GitHub</a>
+        <a class="btn" href="#start">Quick start</a>
+        <a class="btn" href="{{REPO_URL}}#readme">README</a>
+      </div>
+      <div class="cmd"><pre data-box="command"><span class="ln"><span class="dollar">$ </span><code id="c-start">{{START_COMMAND}}</code></span></pre><button class="copy" type="button" data-copy="c-start">Copy</button></div>
+    </div>
+
+    <!-- REPLACE: the show. The real thing working, from the tree: a replayed vector, a decoded
+         capture, a recorded session, the real game. Never a mock. The lines below are the
+         no-JavaScript and reduced-motion frame. -->
+    <div class="stage" role="img" aria-label="REPLACE: one sentence saying what the replay shows, step by step.">
+      <div class="stage-head"><span><b>{{NAME}}</b> REPLACE: artifact name</span><span>REPLACE: step</span></div>
+      <pre class="stage-lines" id="stage-lines" aria-hidden="true"><span class="in">REPLACE: first record</span>
+<span>REPLACE: next record</span>
+<span class="ev">-&gt; REPLACE: the outcome</span></pre>
+      <div class="stage-foot">REPLACE: where these lines come from, e.g. "The vector's own records, replayed in order."</div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <!-- Four numbers that are facts about the product, each measured by site/build.py. Never stars, commits or contributors. -->
+    <div class="numbers">
+      <div><span class="n" data-measure="example-count">0</span><span class="l">REPLACE: label</span><code>REPLACE: the command that measures it</code></div>
+      <div><span class="n">-</span><span class="l">REPLACE</span><code>REPLACE</code></div>
+      <div><span class="n">-</span><span class="l">REPLACE</span><code>REPLACE</code></div>
+      <div><span class="n">-</span><span class="l">REPLACE</span><code>REPLACE</code></div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="what">
+  <div class="wrap">
+    <h2>What it is</h2>
+    <p class="sub">REPLACE: one plain paragraph a reader who has never heard of goat follows. Link the neighbouring repositories it works with.</p>
+    <div class="cards">
+      <div class="card"><h3>REPLACE: a declarative claim</h3><p>REPLACE: the specifics, with real paths in <code>code</code>.</p></div>
+      <div class="card"><h3>REPLACE</h3><p>REPLACE</p></div>
+      <div class="card"><h3>REPLACE</h3><p>REPLACE</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="how">
+  <div class="wrap feature">
+    <div>
+      <h2>REPLACE: a declarative headline</h2>
+      <p>REPLACE: the mechanism, with one real output copied from the tree:</p>
+      <pre class="json" data-box="output"><span class="ln">REPLACE: real output</span></pre>
+    </div>
+    <figure>
+      <!-- REPLACE: a figure drawn from the tree, light and dark, copied in by build.py. Or remove the figure. -->
+      <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="assets/from-tree/figure-dark.svg">
+        <img src="assets/from-tree/figure-light.svg" width="880" height="500" loading="lazy" alt="REPLACE: what the figure shows, in full sentences.">
+      </picture>
+      <figcaption>Drawn by <code>REPLACE: the generator</code> from the tree.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="band" id="start">
+  <div class="wrap">
+    <h2>Quick start</h2>
+    <p class="sub">REPLACE: what a reader needs installed, in one sentence.</p>
+    <pre class="block" data-box="command"><span class="ln">git clone <span class="w">{{REPO_URL}}</span>
+</span><span class="ln">cd <span class="w">{{NAME}}</span>
+</span><span class="ln">{{START_COMMAND}}</span></pre>
+    <p><a href="{{REPO_URL}}#readme">README</a> &middot; <a href="{{REPO_URL}}/blob/main/CONTRIBUTING.md">Contributing</a></p>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><a href="{{REPO_URL}}">Repository</a><a href="{{REPO_URL}}/blob/main/LICENSE">Apache License 2.0</a><a href="{{REPO_URL}}/blob/main/SECURITY.md">Security policy</a></p>
+    <p>Portions written by U.S. Federal government employees within the scope of their employment are in the public domain in the United States. Part of <a href="https://github.com/USAREUR-AF/goatcore">goat</a>.</p>
+  </div>
+</footer>
+<script src="assets/site.js" defer></script>
+</body>
+</html>

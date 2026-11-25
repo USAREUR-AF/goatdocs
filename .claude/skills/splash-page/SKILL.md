@@ -6,9 +6,9 @@ description: Build or revise a project's landing page on GitHub Pages in the hou
 # Splash page
 
 A landing page sells a repository to someone who has never heard of it, in one screen, and
-proves every claim it makes. The house pattern is live on twelve public repositories and
-several goatdocs sub-pages; `examples.md` lists them and what each first screen shows. Read
-two of them before writing a third.
+proves every claim it makes. The house pattern is live on every page `examples.md` lists, with
+what each first screen shows; https://usareur-af.github.io/goatdocs/goat/splash-page/ shows
+them side by side and was built with this skill. Read two of them before writing another.
 
 This skill ships a skeleton (`templates/`), a scaffold script that lays it down without
 overwriting anything, and the two checks every page passes: numbers against the tree, and

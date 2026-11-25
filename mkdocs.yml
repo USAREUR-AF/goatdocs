@@ -27,6 +27,13 @@ exclude_docs: |
   design-system/ui_kits/*/README.md
   goat/README.md
   goat/fieldkit-feeds/README.md
+  goat/splash-page/README.md
+  goat/splash-page/page.html
+  goat/splash-page/build.py
+  goat/splash-page/extra.css
+  goat/splash-page/extra-tail.css
+  goat/splash-page/replay.js
+  goat/splash-page/icon.svg
   hello-galaxy/README.md
 
 theme:

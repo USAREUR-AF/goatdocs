@@ -19,6 +19,7 @@ on:
       - "mkdocs.yml"
       - ".github/pages/**"
       - ".github/workflows/pages.yml"
+      - ".claude/skills/splash-page/**"
   push:
     branches: [main]
   workflow_dispatch:
@@ -68,10 +69,15 @@ jobs:
           NO_MKDOCS_2_WARNING: "1"
         run: mkdocs build --clean
 
+      # The splash-page skill's own page is written by a script from the skill's
+      # files: it is current, its numbers match the tree, its pictures exist.
+      - name: check the splash-page page against the skill
+        run: python3 -I docs/goat/splash-page/build.py --check
+
       # The hand-written landing pages: no command box is cut off at 1440 or
       # 390 px, and no output box at 1440 px (headless Chrome, on the runner).
       - name: check the landing pages' command boxes
-        run: python .github/pages/fitcheck.py site goat/index.html hello-galaxy/index.html goat/fieldkit-feeds/index.html
+        run: python .github/pages/fitcheck.py site goat/index.html hello-galaxy/index.html goat/fieldkit-feeds/index.html goat/splash-page/index.html
 
       - name: configure Pages
         if: github.event_name != 'pull_request'
