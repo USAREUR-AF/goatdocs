@@ -116,23 +116,22 @@ moves a number fails before the merge.
 
 ## Where this skill lives
 
-The source is goatdocs `.claude/skills/splash-page/`. goatdocs is also a Claude Code plugin
-marketplace, so the skill can be installed once per person and is then present in every
-repository, including one that has no files yet:
+The source is goatdocs `.claude/skills/splash-page/`. The goatdocs site publishes a one-file
+plugin catalogue, `https://usareur-af.github.io/goatdocs/claude/marketplace.json` (source: goatdocs `docs/claude/marketplace.json`).
+Its plugin `goat-skills` is the folder `.claude/` of goatdocs, fetched on its own
+(`git-subdir`), about 100 KB; nobody clones goatdocs to get it. Install once per person and the
+skill is present in every repository, including one that has no files yet:
 
 ```
-/plugin install goat-skills --marketplace USAREUR-AF/goatdocs
+/plugin install goat-skills --marketplace https://usareur-af.github.io/goatdocs/claude/marketplace.json
 ```
-
-(Before Claude Code 2.1.275: `claude plugin marketplace add USAREUR-AF/goatdocs`, then
-`claude plugin install goat-skills@goatdocs --scope user`.)
 
 A repository can ask for it on its own: its `.claude/settings.json` carries
 
 ```json
 {
-  "extraKnownMarketplaces": { "goatdocs": { "source": { "source": "github", "repo": "USAREUR-AF/goatdocs" } } },
-  "enabledPlugins": { "goat-skills@goatdocs": true }
+  "extraKnownMarketplaces": { "goat": { "source": { "source": "url", "url": "https://usareur-af.github.io/goatdocs/claude/marketplace.json" } } },
+  "enabledPlugins": { "goat-skills@goat": true }
 }
 ```
 

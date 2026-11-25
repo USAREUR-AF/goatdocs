@@ -12,6 +12,7 @@ the icon as a data URL, and one gallery card per live page in
 measured here from the tree. Each card's pictures must be in shots/.
 """
 import ast
+import json
 import glob
 import os
 import re
@@ -126,6 +127,12 @@ def main():
         if not os.path.exists(os.path.join(HERE, pic)):
             print(f"docs/goat/splash-page: {pic} is missing")
             bad += 1
+    mkt = json.loads(read(ROOT, "docs", "claude", "marketplace.json"))
+    plugin = next((p for p in mkt.get("plugins", []) if p.get("name") == "goat-skills"), None)
+    src = (plugin or {}).get("source", {})
+    if not plugin or src.get("source") != "git-subdir" or not os.path.exists(os.path.join(ROOT, src.get("path", "-"), "skills", "splash-page", "SKILL.md")):
+        print("docs/claude/marketplace.json: no goat-skills plugin whose git-subdir path holds skills/splash-page/SKILL.md")
+        bad += 1
     if "{{" in page:
         print("docs/goat/splash-page: a {{...}} marker was not filled")
         bad += 1

@@ -28,10 +28,10 @@ Start at [docs/INDEX.md](docs/INDEX.md). Every public goat repository is listed 
 
 ## Claude Code skills
 
-Two skills for work across every public goat repository live in [`.claude/skills/`](.claude/skills/): `splash-page` builds a repository's landing page on GitHub Pages in the house style ([what it builds](https://usareur-af.github.io/goatdocs/goat/splash-page/), [every page built with it](https://usareur-af.github.io/goatdocs/goat/pages/)), and `changelog` writes a changelog entry. This repository is also a Claude Code plugin marketplace, so one install makes both skills available in every repository, including a new, empty one:
+Two skills for work across every public goat repository live in [`.claude/skills/`](.claude/skills/): `splash-page` builds a repository's landing page on GitHub Pages in the house style ([what it builds](https://usareur-af.github.io/goatdocs/goat/splash-page/), [every page built with it](https://usareur-af.github.io/goatdocs/goat/pages/)), and `changelog` writes a changelog entry. The goatdocs site publishes a one-file plugin catalogue that points at that folder, so one install brings both skills, about 100 KB and no clone of this repository, to every repository you open, including a new, empty one:
 
 ```
-/plugin install goat-skills --marketplace USAREUR-AF/goatdocs
+/plugin install goat-skills --marketplace https://usareur-af.github.io/goatdocs/claude/marketplace.json
 ```
 
 ## Built with
