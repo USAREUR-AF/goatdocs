@@ -30,6 +30,7 @@ exclude_docs: |
   goat/goatbuilder/README.md
   goat/goat-cli/README.md
   goat/industry/README.md
+  goat/industry/figures.py
   goat/panoscope/README.md
   goat/panoscope/build.py
   goat/panoscope/record.mjs
