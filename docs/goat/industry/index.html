@@ -369,10 +369,14 @@ svg .bn { fill: var(--paper); stroke: var(--accent); stroke-width: 2; }
 .chips li { border: 1px solid var(--line); border-radius: 999px; padding: 3px 11px; font-size: 14.5px; background: var(--panel); }
 /* handoff */
 .handoff { margin-top: 72px; }
-.hbox { border: 2px solid var(--accent); border-radius: 12px; background: var(--accent-soft); padding: 26px 28px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 24px; align-items: center; }
+.hbox { border: 2px solid var(--accent); border-radius: 12px; background: var(--accent-soft); padding: 26px 28px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 20px 32px; align-items: center; }
+.htext { display: flex; flex-direction: column; gap: 6px; align-items: flex-start; }
+.htext .btn { margin-top: 12px; cursor: pointer; font-family: inherit; }
+.hqr { margin: 0; text-align: center; }
+.hqr svg { display: block; width: 148px; height: 148px; border-radius: 6px; }
+.hqr figcaption { font-size: 13px; color: var(--quiet); margin-top: 6px; }
 .hlead { font-size: clamp(1.25rem, 2.2vw, 1.6rem); font-weight: 750; line-height: 1.25; letter-spacing: -.01em; }
-.hsub { color: var(--quiet); grid-column: 1; }
-.hbox .btn { grid-column: 2; grid-row: 1 / span 2; cursor: pointer; font-family: inherit; }
+.hsub { color: var(--quiet); }
 /* timeline */
 .timeline { list-style: none; position: relative; margin: 34px 0 0; padding: 0; height: 96px; }
 .timeline::before { content: ""; position: absolute; left: 0; right: 0; top: 20px; border-top: 3px solid var(--accent); }
@@ -402,33 +406,41 @@ svg .bn { fill: var(--paper); stroke: var(--accent); stroke-width: 2; }
 /* contact */
 .notes { margin: 40px 0 0; padding: 16px 0 0 1.2em; border-top: 1px solid var(--rule); max-width: 56em; font-size: 14.5px; color: var(--quiet); }
 .notes li { margin: 4px 0; }
-table.fit tbody th { font-weight: 650; min-width: 12em; }
-table.fit td:nth-child(3), table.fit td:nth-child(4) { white-space: nowrap; }
 @media (max-width: 960px) { .rights { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 860px) {
   .steps2, .steps2 dl { grid-template-columns: minmax(0, 1fr); }
   .steps2 dl div + div { border-left: 0; padding-left: 0; }
   .hbox { grid-template-columns: minmax(0, 1fr); }
-  .hbox .btn { grid-column: 1; grid-row: auto; justify-self: start; margin-top: 10px; }
+  .hqr { justify-self: start; }
   .timeline { height: auto; padding-left: 0; }
   .timeline::before { left: 19px; right: auto; top: 0; bottom: 0; border-top: 0; border-left: 3px solid var(--accent); }
     .timeline li, .timeline li:first-child, .timeline li:last-child { position: relative; left: auto; transform: none; width: auto; text-align: left; padding: 0 0 16px 0; }
   .timeline a { display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 0 14px; align-items: center; }
   .timeline span, .timeline i { grid-column: 2; margin: 0; }
   .timeline b { grid-row: 1 / span 2; }
-  table.fit td:nth-child(3), table.fit td:nth-child(4) { white-space: normal; }
-  .slayer { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+    .slayer { grid-template-columns: minmax(0, 1fr); gap: 6px; }
   .lname { border-right: 0; border-bottom: 3px solid var(--accent); padding: 0 0 4px; }
 }
 @media (max-width: 640px) {
   .rights { grid-template-columns: minmax(0, 1fr); }
-  table.fit td:nth-child(2)::before { content: "Joins through: "; color: var(--quiet); }
-  table.fit td:nth-child(3)::before { content: "Start in: "; color: var(--quiet); }
-  table.fit td:nth-child(4)::before { content: "Run first: "; color: var(--quiet); }
-}
+      }
 @media (prefers-reduced-motion: reduce) { .fitmap .flow.on { animation: none; stroke-dasharray: none; } .fitmap .node rect { transition: none; } }
 .fithint { font-size: 13.5px; color: var(--quiet); margin: 0 0 6px; }
 @media (max-width: 640px) { .fitbox { overflow-x: auto; } .fitbox svg { min-width: 540px; } }
+/* fit cards: one per kind of product, each with a glyph of where it attaches */
+.fitcards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-top: 28px; }
+.fitcard { border: 1px solid var(--line); border-radius: 10px; background: var(--paper); padding: 18px 20px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.fitcard .glyph { width: 96px; height: 64px; }
+.fitcard h3 { font-size: 1.08rem; line-height: 1.3; }
+.fitcard p { font-size: 15.5px; color: var(--quiet); }
+.pills { display: flex; flex-wrap: wrap; gap: 6px; }
+.pill { font: 600 13px var(--mono); text-decoration: none; color: var(--ink); border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px; background: var(--panel); }
+.pill:hover { border-color: var(--accent); color: var(--accent); }
+.fitcard .run { margin-top: auto; padding-top: 10px; border-top: 1px solid var(--rule); font-size: 14.5px; color: var(--quiet); overflow-wrap: anywhere; }
+.fitnote { margin-top: 16px; font-size: 15px; color: var(--quiet); }
+svg .gdash { fill: none; stroke: var(--accent); stroke-width: 2; stroke-dasharray: 5 4; }
+@media (max-width: 960px) { .fitcards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px) { .fitcards { grid-template-columns: minmax(0, 1fr); } }
 </style>
 </head>
 <body>
@@ -437,7 +449,7 @@ table.fit td:nth-child(3), table.fit td:nth-child(4) { white-space: nowrap; }
       <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="square" aria-hidden="true"><path d="M24 22L12 18L6 28L10 40L18 44"/><path d="M40 22L52 18L58 28L54 40L46 44"/><path d="M24 22L26 38L32 48L38 38L40 22"/><path d="M28 30h2M34 30h2"/></svg>
       goat
     </a>
-<nav aria-label="Page"><ul><li><a href="#fit">Fit</a></li><li><a href="#nations">Nations</a></li><li><a href="#standards">Standards</a></li><li><a href="#license">License</a></li><li><a href="#path">Path</a></li><li><a href="#contact">Contact</a></li></ul></nav>
+<nav aria-label="Page"><ul><li><a href="#fit">Fit</a></li><li><a href="#nations">Everywhere</a></li><li><a href="#standards">Standards</a></li><li><a href="#license">License</a></li><li><a href="#path">Path</a></li><li><a href="#contact">Contact</a></li></ul></nav>
 </div></header>
 <main id="content">
 <div class="hero" id="top">
@@ -456,11 +468,11 @@ table.fit td:nth-child(3), table.fit td:nth-child(4) { white-space: nowrap; }
 </div>
 <figure class="fitfig" id="fitmap">
 <div class="picker" role="group" aria-label="Your product">
-<button type="button" data-pick="sensor" aria-pressed="true">Sensor or effector</button><button type="button" data-pick="legacy" aria-pressed="false">Equipment</button><button type="button" data-pick="c2" aria-pressed="false">C2, data or AI</button><button type="button" data-pick="network" aria-pressed="false">Network</button><button type="button" data-pick="security" aria-pressed="false">Security</button>
+<button type="button" data-pick="sensor" aria-pressed="true">Open format</button><button type="button" data-pick="legacy" aria-pressed="false">Private format</button><button type="button" data-pick="c2" aria-pressed="false">C2, data or AI</button><button type="button" data-pick="network" aria-pressed="false">Network</button><button type="button" data-pick="security" aria-pressed="false">Security</button>
 </div>
 <div class="fitbox">
 <p class="scrollhint fithint">The map scrolls sideways.</p>
-<svg id="fig-fit" class="viz fitmap" viewBox="0 0 600 636" role="img" aria-label="Where a product joins goat. C2 systems, data platforms and AI agents subscribe to the data layer, natively or through open-entity-gateway. Sensors and effectors with open formats enter through goat-transformers and open-billie; equipment with a private format enters through first-bite or octo-pod. goat itself is three layers on every site: data, identity and mesh. It runs over any IP network: radio, MANET, 5G, satellite or fiber. Security products replace the mesh or identity layer.">
+<svg id="fig-fit" class="viz fitmap" viewBox="0 0 600 636" role="img" aria-label="Where a product joins goat. C2 systems, data platforms and AI agents subscribe to the data layer, natively or through open-entity-gateway. Systems with an open format, whether sensors, effectors or other equipment, enter through goat-transformers and open-billie; systems with a private format enter through first-bite or octo-pod. goat itself is three layers on every site: data, identity and mesh. It runs over any IP network: radio, MANET, 5G, satellite or fiber. Security products replace the mesh or identity layer.">
 <g class="node" data-k="c2">
 <rect x="20" y="16" width="168" height="56" rx="8" class="bx"/>
 <text x="34" y="39" class="t" font-size="15" font-weight="700">C2 systems</text>
@@ -512,13 +524,13 @@ table.fit td:nth-child(3), table.fit td:nth-child(4) { white-space: nowrap; }
 <path d="M445 392L445 348" class="flow" data-k="legacy"/>
 <g class="node" data-k="sensor">
 <rect x="20" y="484" width="270" height="56" rx="8" class="bx"/>
-<text x="34" y="507" class="t" font-size="15" font-weight="700">Sensors and effectors</text>
+<text x="34" y="507" class="t" font-size="15" font-weight="700">Systems with an open format</text>
 <text x="34" y="527" class="tq" font-size="14">CoT, SAPIENT, ASTERIX</text>
 </g>
 <g class="node" data-k="legacy">
 <rect x="310" y="484" width="270" height="56" rx="8" class="bx"/>
-<text x="324" y="507" class="t" font-size="15" font-weight="700">Equipment</text>
-<text x="324" y="527" class="tq" font-size="14">a format or link you cannot change</text>
+<text x="324" y="507" class="t" font-size="15" font-weight="700">Systems with a private format</text>
+<text x="324" y="527" class="tq" font-size="14">or a link you cannot change</text>
 </g>
 <path d="M155 484L155 448" class="flow" data-k="sensor"/>
 <path d="M445 484L445 448" class="flow" data-k="legacy"/>
@@ -530,8 +542,8 @@ table.fit td:nth-child(3), table.fit td:nth-child(4) { white-space: nowrap; }
 </svg>
 </div>
 <figcaption>
-<span class="pickcap" data-cap="sensor">Your sensor keeps its CoT, SAPIENT or ASTERIX output. goat-transformers turns it into one shared model as it enters.</span>
-<span class="pickcap" data-cap="legacy" hidden>first-bite decodes a private binary format from a dictionary file. Equipment that cannot join a fabric sits behind an octo-pod.</span>
+<span class="pickcap" data-cap="sensor">A sensor, effector or any system that speaks CoT, SAPIENT or ASTERIX keeps its output. goat-transformers turns it into one shared model as it enters.</span>
+<span class="pickcap" data-cap="legacy" hidden>A system with a private binary format is decoded by first-bite from a dictionary file. A system that cannot join a fabric at all sits behind an octo-pod.</span>
 <span class="pickcap" data-cap="c2" hidden>Your system subscribes to the data it is granted and publishes its results back, natively or through a bridge in open-entity-gateway.</span>
 <span class="pickcap" data-cap="network" hidden>goat runs over any IP network. A bearer that keeps the mesh up in the field is the integration.</span>
 <span class="pickcap" data-cap="security" hidden>Each layer can be replaced. Put your product in the mesh or identity layer and show the same tests passing.</span>
@@ -542,23 +554,14 @@ table.fit td:nth-child(3), table.fit td:nth-child(4) { white-space: nowrap; }
 
 <section id="fit" class="wrap">
 <h2>Where your product fits</h2>
-<p class="intro">Your product keeps its own format and interface; goat meets it at the door. Each row names the repositories to start in and the worked example to run first.</p>
-<div class="table"><table class="facts fit">
-<thead><tr><th>Your product</th><th>Joins through</th><th>Start in</th><th>Run first</th></tr></thead>
-<tbody>
-<tr><th>Sensors and effectors with an open format</th><td>goat-transformers, open-billie</td><td><a href="https://github.com/USAREUR-AF/goat-transformers">goat-transformers</a><br><a href="https://github.com/USAREUR-AF/open-billie">open-billie</a></td><td><a href="https://github.com/USAREUR-AF/hello-galaxy-legacy-feed">hello-galaxy-legacy-feed</a></td></tr>
-<tr><th>Equipment with a private format, or a link you cannot change</th><td>first-bite, octo-pod</td><td><a href="https://github.com/USAREUR-AF/first-bite">first-bite</a><br><a href="https://github.com/USAREUR-AF/octo-pod">octo-pod</a></td><td><a href="https://github.com/USAREUR-AF/hello-galaxy-first-bite">hello-galaxy-first-bite</a></td></tr>
-<tr><th>C2 systems, data platforms, analytics and AI</th><td>A native Zenoh client, or a bridge package</td><td><a href="https://github.com/USAREUR-AF/open-entity-gateway">open-entity-gateway</a><br><a href="https://github.com/USAREUR-AF/goat-processors">goat-processors</a></td><td><a href="https://github.com/USAREUR-AF/hello-galaxy-partner-data-sharing">hello-galaxy-partner-data-sharing</a></td></tr>
-<tr><th>Radios, MANET, 5G, satellite and other networks</th><td>Under the mesh, as its bearer</td><td><a href="https://github.com/USAREUR-AF/goatcore">goatcore</a><br><a href="https://github.com/USAREUR-AF/goatrope">goatrope</a></td><td><a href="https://github.com/USAREUR-AF/goatcore/blob/main/docs/tutorials/00-goatlite.md">your first goatnet</a></td></tr>
-<tr><th>Zero-trust networking, identity and security</th><td>In place of the mesh or identity layer</td><td><a href="https://github.com/USAREUR-AF/goatcore">goatcore</a><br><a href="https://github.com/USAREUR-AF/netbird">netbird</a></td><td><a href="https://github.com/USAREUR-AF/hello-galaxy-universal-id">hello-galaxy-universal-id</a></td></tr>
-<tr><th>Integration and services</th><td>goatbuilder, from an environment of your own</td><td><a href="https://github.com/USAREUR-AF/goatenv">goatenv</a><br><a href="../goatbuilder/">goatbuilder</a></td><td><a href="https://github.com/USAREUR-AF/hello-galaxy-goatenv">hello-galaxy-goatenv</a></td></tr>
-<tr><th>Mechanical and electrical subsystems</th><td>The controller that commands them</td><td colspan="2">The controller's row</td></tr>
-</tbody></table></div>
+<p class="intro">Your product keeps its own format and interface; goat meets it at the door. Each card names the repositories to start in and the worked example to run first.</p>
+<div class="fitcards"><article class="fitcard"><svg class="glyph" viewBox="0 0 120 80" aria-hidden="true"><rect x="28" y="22" width="64" height="10" rx="2" class="bx"/><rect x="28" y="36" width="64" height="10" rx="2" class="bx"/><rect x="28" y="50" width="64" height="10" rx="2" class="bx"/><path d="M60 66V32" class="lna"/><rect x="44" y="64" width="32" height="12" rx="6" class="prod"/></svg><h3>Systems with an open format</h3><p>CoT, SAPIENT or ASTERIX, converted to one shared model at the door.</p><div class="pills"><a class="pill" href="https://github.com/USAREUR-AF/goat-transformers">goat-transformers</a><a class="pill" href="https://github.com/USAREUR-AF/open-billie">open-billie</a></div><p class="run">Run first: <a href="https://github.com/USAREUR-AF/hello-galaxy-legacy-feed">hello-galaxy-legacy-feed</a></p></article><article class="fitcard"><svg class="glyph" viewBox="0 0 120 80" aria-hidden="true"><rect x="28" y="22" width="64" height="10" rx="2" class="bx"/><rect x="28" y="36" width="64" height="10" rx="2" class="bx"/><rect x="28" y="50" width="64" height="10" rx="2" class="bx"/><path d="M60 66V32" class="lna"/><rect x="44" y="64" width="32" height="12" rx="6" class="prod"/><rect x="50" y="60" width="20" height="4" rx="1" class="fa"/></svg><h3>Systems with a private format</h3><p>Decoded from a dictionary file. A system that cannot join a fabric sits behind an octo-pod.</p><div class="pills"><a class="pill" href="https://github.com/USAREUR-AF/first-bite">first-bite</a><a class="pill" href="https://github.com/USAREUR-AF/octo-pod">octo-pod</a></div><p class="run">Run first: <a href="https://github.com/USAREUR-AF/hello-galaxy-first-bite">hello-galaxy-first-bite</a></p></article><article class="fitcard"><svg class="glyph" viewBox="0 0 120 80" aria-hidden="true"><rect x="28" y="22" width="64" height="10" rx="2" class="bx"/><rect x="28" y="36" width="64" height="10" rx="2" class="bx"/><rect x="28" y="50" width="64" height="10" rx="2" class="bx"/><path d="M60 14V22" class="lna"/><rect x="44" y="2" width="32" height="12" rx="6" class="prod"/></svg><h3>C2 systems, data platforms and AI</h3><p>Subscribe to the data you are granted and publish results back, natively or through a bridge.</p><div class="pills"><a class="pill" href="https://github.com/USAREUR-AF/open-entity-gateway">open-entity-gateway</a><a class="pill" href="https://github.com/USAREUR-AF/goat-processors">goat-processors</a></div><p class="run">Run first: <a href="https://github.com/USAREUR-AF/hello-galaxy-partner-data-sharing">hello-galaxy-partner-data-sharing</a></p></article><article class="fitcard"><svg class="glyph" viewBox="0 0 120 80" aria-hidden="true"><rect x="28" y="22" width="64" height="10" rx="2" class="bx"/><rect x="28" y="36" width="64" height="10" rx="2" class="bx"/><rect x="28" y="50" width="64" height="10" rx="2" class="bx"/><path d="M60 60V68" class="lna"/><rect x="14" y="68" width="92" height="8" rx="4" class="prod"/></svg><h3>Radios, MANET, 5G and satellite</h3><p>Carry the mesh. goat runs over any IP network.</p><div class="pills"><a class="pill" href="https://github.com/USAREUR-AF/goatcore">goatcore</a><a class="pill" href="https://github.com/USAREUR-AF/goatrope">goatrope</a></div><p class="run">Run first: <a href="https://github.com/USAREUR-AF/goatcore/blob/main/docs/tutorials/00-goatlite.md">your first goatnet</a></p></article><article class="fitcard"><svg class="glyph" viewBox="0 0 120 80" aria-hidden="true"><rect x="28" y="22" width="64" height="10" rx="2" class="bx"/><rect x="28" y="36" width="64" height="10" rx="2" class="bxa"/><rect x="28" y="50" width="64" height="10" rx="2" class="bxa"/></svg><h3>Zero-trust, identity and security</h3><p>Replace the mesh or identity layer and pass the same tests.</p><div class="pills"><a class="pill" href="https://github.com/USAREUR-AF/goatcore">goatcore</a><a class="pill" href="https://github.com/USAREUR-AF/netbird">netbird</a></div><p class="run">Run first: <a href="https://github.com/USAREUR-AF/hello-galaxy-universal-id">hello-galaxy-universal-id</a></p></article><article class="fitcard"><svg class="glyph" viewBox="0 0 120 80" aria-hidden="true"><rect x="28" y="22" width="64" height="10" rx="2" class="bx"/><rect x="28" y="36" width="64" height="10" rx="2" class="bx"/><rect x="28" y="50" width="64" height="10" rx="2" class="bx"/><rect x="20" y="15" width="80" height="52" rx="6" class="gdash"/></svg><h3>Integration and services</h3><p>Build and run goatnets for others with goatbuilder.</p><div class="pills"><a class="pill" href="https://github.com/USAREUR-AF/goatenv">goatenv</a><a class="pill" href="../goatbuilder/">goatbuilder</a></div><p class="run">Run first: <a href="https://github.com/USAREUR-AF/hello-galaxy-goatenv">hello-galaxy-goatenv</a></p></article></div>
+<p class="fitnote">A mechanical or electrical subsystem with no data interface joins through the controller that commands it.</p>
 </section>
 
 <section id="nations" class="wrap">
-<h2>One integration works on every goatnet</h2>
-<p class="intro">Each nation runs its own goatnet and releases chosen data to its partners through boundary nodes. Every goatnet has the same open interfaces, so a product connected once runs on all of them.</p>
+<h2>Build it once, use it everywhere, with everyone</h2>
+<p class="intro">Every goatnet has the same open interfaces, so the integration you build once runs on every one of them, in every nation that runs goat. Nations share data with each other by release through boundary nodes, so what your product publishes can reach their partners too.</p>
 <figure class="fig scroll natfig">
 <svg id="fig-nations" class="viz" viewBox="0 0 800 322" role="img" aria-label="Three notional nations, each running its own goatnet with its own sensors and C2. Each releases chosen data to the next through a pair of boundary nodes. The same product runs inside each nation&#x27;s goatnet, because every goatnet has the same open interfaces.">
 <rect x="10" y="30" width="196" height="280" rx="12" class="bxp"/>
@@ -652,9 +655,12 @@ table.fit td:nth-child(3), table.fit td:nth-child(4) { white-space: nowrap; }
 
 <aside class="handoff wrap" aria-label="Forward this page">
 <div class="hbox">
+<div class="htext">
 <p class="hlead">Forward this page to the engineer who owns your product's interfaces.</p>
 <p class="hsub">Everything below is the path they follow.</p>
 <button class="btn primary" type="button" data-copylink>Copy the link</button>
+</div>
+<figure class="hqr"><svg class="qr" viewBox="0 0 41 41" role="img" aria-label="QR code that opens https://usareur-af.github.io/goatdocs/goat/industry/" shape-rendering="crispEdges"><rect width="41" height="41" fill="#ffffff"/><path d="M4 4h1v1h-1zM5 4h1v1h-1zM6 4h1v1h-1zM7 4h1v1h-1zM8 4h1v1h-1zM9 4h1v1h-1zM10 4h1v1h-1zM20 4h1v1h-1zM23 4h1v1h-1zM24 4h1v1h-1zM26 4h1v1h-1zM27 4h1v1h-1zM30 4h1v1h-1zM31 4h1v1h-1zM32 4h1v1h-1zM33 4h1v1h-1zM34 4h1v1h-1zM35 4h1v1h-1zM36 4h1v1h-1zM4 5h1v1h-1zM10 5h1v1h-1zM13 5h1v1h-1zM14 5h1v1h-1zM19 5h1v1h-1zM20 5h1v1h-1zM22 5h1v1h-1zM24 5h1v1h-1zM26 5h1v1h-1zM30 5h1v1h-1zM36 5h1v1h-1zM4 6h1v1h-1zM6 6h1v1h-1zM7 6h1v1h-1zM8 6h1v1h-1zM10 6h1v1h-1zM12 6h1v1h-1zM13 6h1v1h-1zM15 6h1v1h-1zM16 6h1v1h-1zM18 6h1v1h-1zM20 6h1v1h-1zM22 6h1v1h-1zM25 6h1v1h-1zM30 6h1v1h-1zM32 6h1v1h-1zM33 6h1v1h-1zM34 6h1v1h-1zM36 6h1v1h-1zM4 7h1v1h-1zM6 7h1v1h-1zM7 7h1v1h-1zM8 7h1v1h-1zM10 7h1v1h-1zM12 7h1v1h-1zM13 7h1v1h-1zM15 7h1v1h-1zM22 7h1v1h-1zM23 7h1v1h-1zM26 7h1v1h-1zM28 7h1v1h-1zM30 7h1v1h-1zM32 7h1v1h-1zM33 7h1v1h-1zM34 7h1v1h-1zM36 7h1v1h-1zM4 8h1v1h-1zM6 8h1v1h-1zM7 8h1v1h-1zM8 8h1v1h-1zM10 8h1v1h-1zM12 8h1v1h-1zM13 8h1v1h-1zM14 8h1v1h-1zM16 8h1v1h-1zM18 8h1v1h-1zM19 8h1v1h-1zM20 8h1v1h-1zM22 8h1v1h-1zM25 8h1v1h-1zM27 8h1v1h-1zM30 8h1v1h-1zM32 8h1v1h-1zM33 8h1v1h-1zM34 8h1v1h-1zM36 8h1v1h-1zM4 9h1v1h-1zM10 9h1v1h-1zM12 9h1v1h-1zM13 9h1v1h-1zM15 9h1v1h-1zM17 9h1v1h-1zM18 9h1v1h-1zM24 9h1v1h-1zM25 9h1v1h-1zM26 9h1v1h-1zM30 9h1v1h-1zM36 9h1v1h-1zM4 10h1v1h-1zM5 10h1v1h-1zM6 10h1v1h-1zM7 10h1v1h-1zM8 10h1v1h-1zM9 10h1v1h-1zM10 10h1v1h-1zM12 10h1v1h-1zM14 10h1v1h-1zM16 10h1v1h-1zM18 10h1v1h-1zM20 10h1v1h-1zM22 10h1v1h-1zM24 10h1v1h-1zM26 10h1v1h-1zM28 10h1v1h-1zM30 10h1v1h-1zM31 10h1v1h-1zM32 10h1v1h-1zM33 10h1v1h-1zM34 10h1v1h-1zM35 10h1v1h-1zM36 10h1v1h-1zM12 11h1v1h-1zM13 11h1v1h-1zM16 11h1v1h-1zM18 11h1v1h-1zM20 11h1v1h-1zM22 11h1v1h-1zM23 11h1v1h-1zM24 11h1v1h-1zM25 11h1v1h-1zM26 11h1v1h-1zM28 11h1v1h-1zM4 12h1v1h-1zM6 12h1v1h-1zM7 12h1v1h-1zM8 12h1v1h-1zM9 12h1v1h-1zM10 12h1v1h-1zM13 12h1v1h-1zM16 12h1v1h-1zM17 12h1v1h-1zM18 12h1v1h-1zM21 12h1v1h-1zM23 12h1v1h-1zM26 12h1v1h-1zM27 12h1v1h-1zM28 12h1v1h-1zM30 12h1v1h-1zM31 12h1v1h-1zM32 12h1v1h-1zM33 12h1v1h-1zM34 12h1v1h-1zM4 13h1v1h-1zM7 13h1v1h-1zM8 13h1v1h-1zM12 13h1v1h-1zM14 13h1v1h-1zM16 13h1v1h-1zM17 13h1v1h-1zM21 13h1v1h-1zM22 13h1v1h-1zM23 13h1v1h-1zM24 13h1v1h-1zM25 13h1v1h-1zM26 13h1v1h-1zM27 13h1v1h-1zM30 13h1v1h-1zM31 13h1v1h-1zM33 13h1v1h-1zM34 13h1v1h-1zM36 13h1v1h-1zM6 14h1v1h-1zM7 14h1v1h-1zM8 14h1v1h-1zM9 14h1v1h-1zM10 14h1v1h-1zM11 14h1v1h-1zM12 14h1v1h-1zM14 14h1v1h-1zM17 14h1v1h-1zM18 14h1v1h-1zM19 14h1v1h-1zM20 14h1v1h-1zM21 14h1v1h-1zM24 14h1v1h-1zM25 14h1v1h-1zM26 14h1v1h-1zM28 14h1v1h-1zM29 14h1v1h-1zM32 14h1v1h-1zM34 14h1v1h-1zM35 14h1v1h-1zM5 15h1v1h-1zM7 15h1v1h-1zM9 15h1v1h-1zM11 15h1v1h-1zM15 15h1v1h-1zM17 15h1v1h-1zM20 15h1v1h-1zM21 15h1v1h-1zM22 15h1v1h-1zM23 15h1v1h-1zM24 15h1v1h-1zM25 15h1v1h-1zM27 15h1v1h-1zM28 15h1v1h-1zM29 15h1v1h-1zM30 15h1v1h-1zM32 15h1v1h-1zM33 15h1v1h-1zM34 15h1v1h-1zM4 16h1v1h-1zM9 16h1v1h-1zM10 16h1v1h-1zM11 16h1v1h-1zM12 16h1v1h-1zM14 16h1v1h-1zM16 16h1v1h-1zM18 16h1v1h-1zM20 16h1v1h-1zM26 16h1v1h-1zM28 16h1v1h-1zM29 16h1v1h-1zM31 16h1v1h-1zM32 16h1v1h-1zM33 16h1v1h-1zM35 16h1v1h-1zM4 17h1v1h-1zM7 17h1v1h-1zM8 17h1v1h-1zM12 17h1v1h-1zM13 17h1v1h-1zM15 17h1v1h-1zM16 17h1v1h-1zM19 17h1v1h-1zM21 17h1v1h-1zM22 17h1v1h-1zM23 17h1v1h-1zM25 17h1v1h-1zM26 17h1v1h-1zM27 17h1v1h-1zM30 17h1v1h-1zM33 17h1v1h-1zM34 17h1v1h-1zM35 17h1v1h-1zM36 17h1v1h-1zM5 18h1v1h-1zM9 18h1v1h-1zM10 18h1v1h-1zM13 18h1v1h-1zM14 18h1v1h-1zM17 18h1v1h-1zM19 18h1v1h-1zM20 18h1v1h-1zM22 18h1v1h-1zM24 18h1v1h-1zM29 18h1v1h-1zM30 18h1v1h-1zM32 18h1v1h-1zM34 18h1v1h-1zM35 18h1v1h-1zM8 19h1v1h-1zM9 19h1v1h-1zM14 19h1v1h-1zM15 19h1v1h-1zM16 19h1v1h-1zM17 19h1v1h-1zM18 19h1v1h-1zM19 19h1v1h-1zM22 19h1v1h-1zM25 19h1v1h-1zM27 19h1v1h-1zM29 19h1v1h-1zM30 19h1v1h-1zM32 19h1v1h-1zM33 19h1v1h-1zM34 19h1v1h-1zM4 20h1v1h-1zM7 20h1v1h-1zM8 20h1v1h-1zM10 20h1v1h-1zM18 20h1v1h-1zM19 20h1v1h-1zM21 20h1v1h-1zM23 20h1v1h-1zM27 20h1v1h-1zM29 20h1v1h-1zM31 20h1v1h-1zM32 20h1v1h-1zM36 20h1v1h-1zM8 21h1v1h-1zM9 21h1v1h-1zM12 21h1v1h-1zM14 21h1v1h-1zM17 21h1v1h-1zM20 21h1v1h-1zM23 21h1v1h-1zM24 21h1v1h-1zM25 21h1v1h-1zM27 21h1v1h-1zM29 21h1v1h-1zM30 21h1v1h-1zM31 21h1v1h-1zM33 21h1v1h-1zM34 21h1v1h-1zM35 21h1v1h-1zM36 21h1v1h-1zM4 22h1v1h-1zM5 22h1v1h-1zM7 22h1v1h-1zM10 22h1v1h-1zM13 22h1v1h-1zM14 22h1v1h-1zM16 22h1v1h-1zM18 22h1v1h-1zM19 22h1v1h-1zM20 22h1v1h-1zM22 22h1v1h-1zM25 22h1v1h-1zM26 22h1v1h-1zM29 22h1v1h-1zM30 22h1v1h-1zM31 22h1v1h-1zM32 22h1v1h-1zM34 22h1v1h-1zM35 22h1v1h-1zM6 23h1v1h-1zM7 23h1v1h-1zM8 23h1v1h-1zM9 23h1v1h-1zM11 23h1v1h-1zM12 23h1v1h-1zM14 23h1v1h-1zM17 23h1v1h-1zM19 23h1v1h-1zM23 23h1v1h-1zM24 23h1v1h-1zM25 23h1v1h-1zM26 23h1v1h-1zM28 23h1v1h-1zM29 23h1v1h-1zM30 23h1v1h-1zM31 23h1v1h-1zM32 23h1v1h-1zM33 23h1v1h-1zM34 23h1v1h-1zM35 23h1v1h-1zM6 24h1v1h-1zM7 24h1v1h-1zM9 24h1v1h-1zM10 24h1v1h-1zM11 24h1v1h-1zM13 24h1v1h-1zM15 24h1v1h-1zM17 24h1v1h-1zM22 24h1v1h-1zM23 24h1v1h-1zM24 24h1v1h-1zM26 24h1v1h-1zM28 24h1v1h-1zM29 24h1v1h-1zM31 24h1v1h-1zM32 24h1v1h-1zM33 24h1v1h-1zM4 25h1v1h-1zM5 25h1v1h-1zM6 25h1v1h-1zM7 25h1v1h-1zM8 25h1v1h-1zM9 25h1v1h-1zM11 25h1v1h-1zM12 25h1v1h-1zM13 25h1v1h-1zM14 25h1v1h-1zM16 25h1v1h-1zM17 25h1v1h-1zM18 25h1v1h-1zM19 25h1v1h-1zM20 25h1v1h-1zM23 25h1v1h-1zM24 25h1v1h-1zM26 25h1v1h-1zM27 25h1v1h-1zM28 25h1v1h-1zM30 25h1v1h-1zM31 25h1v1h-1zM33 25h1v1h-1zM36 25h1v1h-1zM4 26h1v1h-1zM7 26h1v1h-1zM8 26h1v1h-1zM9 26h1v1h-1zM10 26h1v1h-1zM11 26h1v1h-1zM12 26h1v1h-1zM13 26h1v1h-1zM15 26h1v1h-1zM16 26h1v1h-1zM25 26h1v1h-1zM26 26h1v1h-1zM28 26h1v1h-1zM29 26h1v1h-1zM32 26h1v1h-1zM33 26h1v1h-1zM35 26h1v1h-1zM4 27h1v1h-1zM6 27h1v1h-1zM7 27h1v1h-1zM8 27h1v1h-1zM12 27h1v1h-1zM14 27h1v1h-1zM15 27h1v1h-1zM20 27h1v1h-1zM23 27h1v1h-1zM25 27h1v1h-1zM26 27h1v1h-1zM29 27h1v1h-1zM31 27h1v1h-1zM33 27h1v1h-1zM34 27h1v1h-1zM4 28h1v1h-1zM6 28h1v1h-1zM8 28h1v1h-1zM10 28h1v1h-1zM14 28h1v1h-1zM16 28h1v1h-1zM17 28h1v1h-1zM21 28h1v1h-1zM26 28h1v1h-1zM28 28h1v1h-1zM29 28h1v1h-1zM30 28h1v1h-1zM31 28h1v1h-1zM32 28h1v1h-1zM35 28h1v1h-1zM12 29h1v1h-1zM14 29h1v1h-1zM16 29h1v1h-1zM17 29h1v1h-1zM18 29h1v1h-1zM20 29h1v1h-1zM21 29h1v1h-1zM22 29h1v1h-1zM23 29h1v1h-1zM25 29h1v1h-1zM28 29h1v1h-1zM32 29h1v1h-1zM34 29h1v1h-1zM36 29h1v1h-1zM4 30h1v1h-1zM5 30h1v1h-1zM6 30h1v1h-1zM7 30h1v1h-1zM8 30h1v1h-1zM9 30h1v1h-1zM10 30h1v1h-1zM13 30h1v1h-1zM15 30h1v1h-1zM16 30h1v1h-1zM18 30h1v1h-1zM19 30h1v1h-1zM21 30h1v1h-1zM27 30h1v1h-1zM28 30h1v1h-1zM30 30h1v1h-1zM32 30h1v1h-1zM34 30h1v1h-1zM35 30h1v1h-1zM4 31h1v1h-1zM10 31h1v1h-1zM12 31h1v1h-1zM13 31h1v1h-1zM14 31h1v1h-1zM15 31h1v1h-1zM16 31h1v1h-1zM17 31h1v1h-1zM20 31h1v1h-1zM21 31h1v1h-1zM22 31h1v1h-1zM23 31h1v1h-1zM24 31h1v1h-1zM25 31h1v1h-1zM26 31h1v1h-1zM27 31h1v1h-1zM28 31h1v1h-1zM32 31h1v1h-1zM33 31h1v1h-1zM34 31h1v1h-1zM35 31h1v1h-1zM36 31h1v1h-1zM4 32h1v1h-1zM6 32h1v1h-1zM7 32h1v1h-1zM8 32h1v1h-1zM10 32h1v1h-1zM12 32h1v1h-1zM13 32h1v1h-1zM14 32h1v1h-1zM20 32h1v1h-1zM24 32h1v1h-1zM26 32h1v1h-1zM28 32h1v1h-1zM29 32h1v1h-1zM30 32h1v1h-1zM31 32h1v1h-1zM32 32h1v1h-1zM33 32h1v1h-1zM35 32h1v1h-1zM36 32h1v1h-1zM4 33h1v1h-1zM6 33h1v1h-1zM7 33h1v1h-1zM8 33h1v1h-1zM10 33h1v1h-1zM12 33h1v1h-1zM14 33h1v1h-1zM15 33h1v1h-1zM17 33h1v1h-1zM18 33h1v1h-1zM19 33h1v1h-1zM22 33h1v1h-1zM23 33h1v1h-1zM24 33h1v1h-1zM25 33h1v1h-1zM26 33h1v1h-1zM27 33h1v1h-1zM29 33h1v1h-1zM32 33h1v1h-1zM34 33h1v1h-1zM35 33h1v1h-1zM36 33h1v1h-1zM4 34h1v1h-1zM6 34h1v1h-1zM7 34h1v1h-1zM8 34h1v1h-1zM10 34h1v1h-1zM12 34h1v1h-1zM14 34h1v1h-1zM15 34h1v1h-1zM16 34h1v1h-1zM17 34h1v1h-1zM18 34h1v1h-1zM19 34h1v1h-1zM20 34h1v1h-1zM21 34h1v1h-1zM22 34h1v1h-1zM25 34h1v1h-1zM28 34h1v1h-1zM29 34h1v1h-1zM30 34h1v1h-1zM31 34h1v1h-1zM33 34h1v1h-1zM4 35h1v1h-1zM10 35h1v1h-1zM14 35h1v1h-1zM15 35h1v1h-1zM18 35h1v1h-1zM19 35h1v1h-1zM22 35h1v1h-1zM24 35h1v1h-1zM25 35h1v1h-1zM26 35h1v1h-1zM27 35h1v1h-1zM32 35h1v1h-1zM33 35h1v1h-1zM34 35h1v1h-1zM4 36h1v1h-1zM5 36h1v1h-1zM6 36h1v1h-1zM7 36h1v1h-1zM8 36h1v1h-1zM9 36h1v1h-1zM10 36h1v1h-1zM12 36h1v1h-1zM13 36h1v1h-1zM14 36h1v1h-1zM16 36h1v1h-1zM17 36h1v1h-1zM19 36h1v1h-1zM21 36h1v1h-1zM22 36h1v1h-1zM26 36h1v1h-1zM27 36h1v1h-1zM28 36h1v1h-1zM29 36h1v1h-1zM31 36h1v1h-1zM33 36h1v1h-1zM35 36h1v1h-1z" fill="#0e140c"/></svg><figcaption>Scan to open this page</figcaption></figure>
 </div>
 </aside>
 

@@ -80,8 +80,8 @@ def fit_svg():
     f.box(310, 392, 270, 56, "first-bite, octo-pod", "private formats", "bx", "legacy")
     f.line([(155, 392), (155, 348)], "flow", "sensor")
     f.line([(445, 392), (445, 348)], "flow", "legacy")
-    f.box(20, 484, 270, 56, "Sensors and effectors", "CoT, SAPIENT, ASTERIX", "bx", "sensor")
-    f.box(310, 484, 270, 56, "Equipment", "a format or link you cannot change", "bx", "legacy")
+    f.box(20, 484, 270, 56, "Systems with an open format", "CoT, SAPIENT, ASTERIX", "bx", "sensor")
+    f.box(310, 484, 270, 56, "Systems with a private format", "or a link you cannot change", "bx", "legacy")
     f.line([(155, 484), (155, 448)], "flow", "sensor")
     f.line([(445, 484), (445, 448)], "flow", "legacy")
     # the network underneath
@@ -91,8 +91,8 @@ def fit_svg():
     f.text(300, 603, "Any IP network: radio, MANET, 5G, satellite, fiber", "t", 15, True, "middle", halo=True)
     f.out.append("</g>")
     label = ("Where a product joins goat. C2 systems, data platforms and AI agents subscribe to the data layer, natively or "
-             "through open-entity-gateway. Sensors and effectors with open formats enter through goat-transformers and "
-             "open-billie; equipment with a private format enters through first-bite or octo-pod. goat itself is three "
+             "through open-entity-gateway. Systems with an open format, whether sensors, effectors or other equipment, enter "
+             "through goat-transformers and open-billie; systems with a private format enter through first-bite or octo-pod. goat itself is three "
              "layers on every site: data, identity and mesh. It runs over any IP network: radio, MANET, 5G, satellite or "
              "fiber. Security products replace the mesh or identity layer.")
     return f.svg("fig-fit", W, 636, label, "viz fitmap")
@@ -130,3 +130,41 @@ def nations_svg():
 if __name__ == "__main__":
     print(fit_svg())
     print(nations_svg())
+
+
+def glyph(kind):
+    """A small picture of where one kind of product attaches: data, identity and mesh bars, as in the fit map."""
+    o = []
+    bars = [("data", 22), ("ident", 36), ("mesh", 50)]
+    on = {"security": {"ident", "mesh"}}.get(kind, set())
+    for k, y in bars:
+        o.append(f'<rect x="28" y="{y}" width="64" height="10" rx="2" class="{"bxa" if k in on else "bx"}"/>')
+    if kind in ("open", "private"):
+        o.append('<path d="M60 66V32" class="lna"/>')
+        o.append('<rect x="44" y="64" width="32" height="12" rx="6" class="prod"/>')
+        if kind == "private":
+            o.append('<rect x="50" y="60" width="20" height="4" rx="1" class="fa"/>')
+    elif kind == "c2":
+        o.append('<path d="M60 14V22" class="lna"/>')
+        o.append('<rect x="44" y="2" width="32" height="12" rx="6" class="prod"/>')
+    elif kind == "network":
+        o.append('<path d="M60 60V68" class="lna"/>')
+        o.append('<rect x="14" y="68" width="92" height="8" rx="4" class="prod"/>')
+    elif kind == "integration":
+        o.append('<rect x="20" y="15" width="80" height="52" rx="6" class="gdash"/>')
+    return ('<svg class="glyph" viewBox="0 0 120 80" aria-hidden="true">' + "".join(o) + "</svg>")
+
+
+PAGE_URL = "https://usareur-af.github.io/goatdocs/goat/industry/"
+
+
+def qr_svg(url=PAGE_URL):
+    """A QR code that opens this page: dark modules on a light square in every color scheme, so it scans.
+    Needs segno (pip install segno) only when the code is regenerated."""
+    import segno
+    q = segno.make(url, error="m", micro=False)
+    rows = list(q.matrix_iter(border=4))
+    n = len(rows)
+    d = "".join(f"M{x} {y}h1v1h-1z" for y, row in enumerate(rows) for x, v in enumerate(row) if v)
+    return (f'<svg class="qr" viewBox="0 0 {n} {n}" role="img" aria-label="QR code that opens {url}" shape-rendering="crispEdges">'
+            f'<rect width="{n}" height="{n}" fill="#ffffff"/><path d="{d}" fill="#0e140c"/></svg>')
