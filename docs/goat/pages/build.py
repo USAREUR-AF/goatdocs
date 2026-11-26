@@ -112,6 +112,8 @@ def main():
     for p in cat["pages"]:
         if not p["tagline"]:
             bad.append(f"{p['slug']}: no tagline in catalog.json")
+        if p.get("tree") is False:
+            bad.append(f"{p['slug']}: no goat-tree strip linking to this catalogue (splash-page skill, section 3)")
         for scheme in ("light", "dark"):
             if not os.path.exists(os.path.join(HERE, "shots", f"{p['slug']}-{scheme}.jpg")):
                 bad.append(f"shots/{p['slug']}-{scheme}.jpg is missing")
