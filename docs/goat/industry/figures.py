@@ -153,3 +153,18 @@ def glyph(kind):
     elif kind == "integration":
         o.append('<rect x="20" y="15" width="80" height="52" rx="6" class="gdash"/>')
     return ('<svg class="glyph" viewBox="0 0 120 80" aria-hidden="true">' + "".join(o) + "</svg>")
+
+
+PAGE_URL = "https://usareur-af.github.io/goatdocs/goat/industry/"
+
+
+def qr_svg(url=PAGE_URL):
+    """A QR code that opens this page: dark modules on a light square in every color scheme, so it scans.
+    Needs segno (pip install segno) only when the code is regenerated."""
+    import segno
+    q = segno.make(url, error="m", micro=False)
+    rows = list(q.matrix_iter(border=4))
+    n = len(rows)
+    d = "".join(f"M{x} {y}h1v1h-1z" for y, row in enumerate(rows) for x, v in enumerate(row) if v)
+    return (f'<svg class="qr" viewBox="0 0 {n} {n}" role="img" aria-label="QR code that opens {url}" shape-rendering="crispEdges">'
+            f'<rect width="{n}" height="{n}" fill="#ffffff"/><path d="{d}" fill="#0e140c"/></svg>')
