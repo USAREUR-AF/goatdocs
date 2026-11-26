@@ -178,9 +178,14 @@ footer ul { display: flex; flex-wrap: wrap; gap: 6px 22px; list-style: none; mar
 }
 @media (prefers-reduced-motion: reduce) { .cursor { animation: none; } }
 </style>
+<style>/* goat-tree: the same strip on every goat landing page, back to the catalogue of them all */
+.goat-tree{font:600 13px/1.3 ui-monospace,"SF Mono",Menlo,Consolas,monospace;letter-spacing:.02em;padding:7px max(20px,env(safe-area-inset-left,0px));border-bottom:1px solid color-mix(in srgb,currentColor 18%,transparent);background:color-mix(in srgb,currentColor 5%,transparent)}
+.goat-tree a{color:inherit;text-decoration:none}.goat-tree a:hover,.goat-tree a:focus-visible{text-decoration:underline;text-underline-offset:3px}
+@media print{.goat-tree{display:none}}</style>
 </head>
 <body class="nojs">
 <a class="skip" href="#series">Skip to the series</a>
+<nav class="goat-tree" aria-label="goat pages"><a href="https://usareur-af.github.io/goatdocs/goat/pages/"><span aria-hidden="true">&larr;</span> All goat pages</a></nav>
 <header class="top">
   <div class="wrap">
     <a class="brand" href="#top"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="6" fill="#141a33"/><ellipse cx="16" cy="16" rx="12" ry="5" fill="none" stroke="#f0b84a" stroke-width="1.6" transform="rotate(-24 16 16)"/><circle cx="16" cy="16" r="3.4" fill="#f0b84a"/></svg>Hello Galaxy</a>

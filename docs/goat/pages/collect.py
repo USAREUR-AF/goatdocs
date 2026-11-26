@@ -119,6 +119,7 @@ def main():
             "lede": first(r'<p class="(?:lede|sentence)"[^>]*>(.*?)</p>', page),
             "numbers": numbers(page),
             "measured": len(re.findall(r"data-measure=", page)),
+            "tree": bool(re.search(r'<nav class="goat-tree"[^>]*><a href="https://usareur-af\.github\.io/goatdocs/goat/pages/"', page)),
         })
         rows.append(p)
         print(f"{p['slug']}: " + " | ".join(f"{c['n']} {c['l'][:28]}" for c in p["numbers"]))

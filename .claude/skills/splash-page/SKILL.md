@@ -40,7 +40,12 @@ goatdocs wiring edits (link from `docs/goat/index.html`, `exclude_docs` in `mkdo
 
 ## 3. The first screen
 
-The first screen is the whole pitch. Top to bottom, left column:
+The first screen is the whole pitch. Above it, on every page, is the goat-tree strip: one line,
+`<nav class="goat-tree">` with "← All goat pages" linking to
+https://usareur-af.github.io/goatdocs/goat/pages/, the catalogue, so a reader exploring one page
+can reach all of them. It is the body's first element after the skip link, in the template's
+markup and CSS word for word; it takes its colors from the page, so it fits any palette. The
+catalogue itself carries "↑ goat" in its place. Then, top to bottom, left column:
 
 1. **Prompt line**: `>_ <a command that names what the stage shows>` with a blinking cursor.
 2. **Wordmark**: the repository name in heavy monospace. One word where the name allows.
@@ -90,6 +95,7 @@ domain in the United States. Part of goat." linked to goatcore.
 | Every `<pre>` is `data-box="command"` (shows whole at any width, wraps at spaces, each line a `<span class="ln">`, long tokens in `<span class="w">`) or `data-box="output"` (fits at 1440 px) | `fitcheck.py` |
 | The page never scrolls sideways at 1440 or 390 px | `fitcheck.py` |
 | No placeholder survives | `build.py` |
+| The goat-tree strip is on the page and links to the catalogue | goatdocs `docs/goat/pages/collect.py` records it from each live page; `build.py --check` fails while any page lacks it |
 | Figures and captures are copied from the tree into `assets/from-tree/` (git-ignored), never committed twice | `build.py` `FROM_TREE` |
 | A status tile shows the least-built status (Built, Written, Designed) of what it names, read from the file the README is written from | `build.py` (copy `check_agentic` from goat-processors `site/build.py`) |
 
