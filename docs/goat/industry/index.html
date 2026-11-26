@@ -369,12 +369,12 @@ svg .bn { fill: var(--paper); stroke: var(--accent); stroke-width: 2; }
 .chips li { border: 1px solid var(--line); border-radius: 999px; padding: 3px 11px; font-size: 14.5px; background: var(--panel); }
 /* handoff */
 .handoff { margin-top: 72px; }
-.hbox { border: 2px solid var(--accent); border-radius: 12px; background: var(--accent-soft); padding: 26px 28px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 20px 32px; align-items: center; }
+.hbox { border: 2px solid var(--accent); border-radius: 12px; background: var(--accent-soft); padding: 26px 28px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 24px; }
 .htext { display: flex; flex-direction: column; gap: 6px; align-items: flex-start; }
 .htext .btn { margin-top: 12px; cursor: pointer; font-family: inherit; }
-.hqr { margin: 0; text-align: center; }
-.hqr svg { display: block; width: 148px; height: 148px; border-radius: 6px; }
-.hqr figcaption { font-size: 13px; color: var(--quiet); margin-top: 6px; }
+.hqr { margin: 0; text-align: center; justify-self: center; padding-top: 22px; border-top: 1px solid var(--accent); width: 100%; }
+.hqr svg { display: block; width: min(320px, 100%); height: auto; margin: 0 auto; border-radius: 8px; }
+.hqr figcaption { font-size: 15px; color: var(--quiet); margin: 10px auto 0; text-align: center; max-width: none; }
 .hlead { font-size: clamp(1.25rem, 2.2vw, 1.6rem); font-weight: 750; line-height: 1.25; letter-spacing: -.01em; }
 .hsub { color: var(--quiet); }
 /* timeline */
@@ -411,7 +411,6 @@ svg .bn { fill: var(--paper); stroke: var(--accent); stroke-width: 2; }
   .steps2, .steps2 dl { grid-template-columns: minmax(0, 1fr); }
   .steps2 dl div + div { border-left: 0; padding-left: 0; }
   .hbox { grid-template-columns: minmax(0, 1fr); }
-  .hqr { justify-self: start; }
   .timeline { height: auto; padding-left: 0; }
   .timeline::before { left: 19px; right: auto; top: 0; bottom: 0; border-top: 0; border-left: 3px solid var(--accent); }
     .timeline li, .timeline li:first-child, .timeline li:last-child { position: relative; left: auto; transform: none; width: auto; text-align: left; padding: 0 0 16px 0; }
