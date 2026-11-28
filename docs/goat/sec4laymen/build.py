@@ -144,7 +144,6 @@ def render():
     <p class="kicker">sec4laymen &middot; our work, in plain words</p>
     <h1>We build a private way for a group's computers to talk to each other.</h1>
     <p class="lede">The group can set it up itself, keep it hidden from strangers, and set it up again from a clean start with less than an hour of machine work.</p>
-    <p class="lede">This page is for our families and friends. You do not need any technical background, and every special word is explained the first time it appears.</p>
     <div class="btns"><a class="btn fill" href="#why">Start reading</a><a class="btn" href="#words">Words used here</a></div>
     <figure>{F.hero()}</figure>
   </div>
