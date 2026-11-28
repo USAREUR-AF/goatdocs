@@ -131,8 +131,7 @@ def html():
         "The system is built from a declaration, so the declaration is the description. Its logs are already in open formats, ready for your monitoring platform.",
         "Your evidence is current because it is the system.",
         [("built", "the declaration, the generated rules, the records and the audit trail, for assessors working under the Risk Management Framework and for security engineers"),
-         ("built", "security records in OCSF, sent off each machine, with a forwarder to your own collector"),
-         ("built", "not replaced: vulnerability scans (ACAS), configuration baselines (STIG) and web application testing (Burp) are still run from outside")],
+         ("built", "security records in OCSF, sent off each machine, with a forwarder to your own collector")],
         figure_wide() + "\n" + figure_narrow(), mark())
 
 

@@ -825,11 +825,13 @@ environments:
         <a class="idea" href="#readers"><svg class="mark mark-sealed" viewBox="0 0 96 96" role="img" aria-label="A closed box held on a tray. Its key is somewhere else."><path d="M10 78H66M10 78V68M66 78V68" class="mk"/><rect x="18" y="36" width="40" height="34" rx="6" class="mkf"/><circle cx="38" cy="50" r="4.5" class="mkfi"/><path d="M38 54V61" class="mk"/><circle cx="76" cy="20" r="7" class="mka"/><path d="M76 27V46M76 38H84M76 46H82" class="mka"/></svg><b>Sealed data</b><span>A stolen server holds only sealed data.</span></a>
         <a class="idea" href="#layers"><svg class="mark mark-layers" viewBox="0 0 96 96" role="img" aria-label="Three rings around one filled center."><circle cx="48" cy="48" r="40" class="mk"/><circle cx="48" cy="48" r="27" class="mka"/><circle cx="48" cy="48" r="14" class="mk mkt"/><circle cx="48" cy="48" r="6" class="mkfa"/></svg><b>Three layers</b><span>Breaking one layer shows the next layer, not your data.</span></a>
         <a class="idea" href="#chain"><svg class="mark mark-verified" viewBox="0 0 96 96" role="img" aria-label="A stamp with a check mark."><path d="M48 10L80 28V66L48 86L16 66V28Z" class="mkf"/><path d="M33 49L44 60L64 36" class="mka"/></svg><b>Verified releases</b><span>A changed image is refused before it runs.</span></a>
+        <a class="idea" href="#self-documenting"><svg class="mark mark-self-documenting" viewBox="0 0 96 96" role="img" aria-label="A page with three ticked lines."><path d="M22 8H62L78 24V88H22Z" class="mkf"/><path d="M62 8V24H78" class="mk mkt"/><path d="M32 42l5 5l9 -10M32 60l5 5l9 -10M32 78l5 5l9 -10" class="mka mkt"/><path d="M54 44H68M54 62H68M54 80H68" class="mk mkt"/></svg><b>Documents itself</b><span>Your evidence is current because it is the system.</span></a>
         <a class="idea" href="#quantum"><svg class="mark mark-quantum" viewBox="0 0 96 96" role="img" aria-label="A padlock with two shackles, one inside the other."><path d="M24 46V34a24 24 0 0 1 48 0V46" class="mk"/><path d="M36 46V36a12 12 0 0 1 24 0V46" class="mka"/><rect x="16" y="46" width="64" height="40" rx="6" class="mkf"/><circle cx="48" cy="64" r="5" class="mkfi"/></svg><b>Post-quantum</b><span>Traffic recorded today stays closed later.</span></a>
         <a class="idea" href="#decoy"><svg class="mark mark-decoy" viewBox="0 0 96 96" role="img" aria-label="A door standing by itself, with nothing around it, and a bell that rings."><path d="M6 84H90" class="mk mkd"/><rect x="26" y="20" width="34" height="64" rx="4" class="mkf"/><circle cx="51" cy="54" r="3.5" class="mkfi"/><path d="M72 34h16l-2.5 -3.5v-5a5.5 5.5 0 0 0 -11 0v5z" class="mkfa"/><path d="M68 16q-4 6 -1 12M92 16q4 6 1 12" class="mka mkt"/></svg><b>Decoys</b><span>Touching a decoy raises an alarm.</span></a>
         <a class="idea" href="#rebuild"><svg class="mark mark-rebuild" viewBox="0 0 96 96" role="img" aria-label="A dashed outline of a shape, the same shape drawn solid again, and a turning arrow between them."><rect x="10" y="50" width="30" height="30" rx="6" class="mk mkd"/><rect x="54" y="50" width="30" height="30" rx="6" class="mkf"/><path d="M25 40A24 24 0 0 1 66 30" class="mka"/><path d="M70 44L71 27L57 34Z" class="mkfa"/></svg><b>Rebuild</b><span>Every machine returns to a known clean state.</span></a>
         <a class="idea" href="#island"><svg class="mark mark-island" viewBox="0 0 96 96" role="img" aria-label="A site inside its own ring. The link that leaves it is cut."><circle cx="40" cy="52" r="28" class="mka"/><rect x="27" y="39" width="26" height="26" rx="6" class="mkf"/><path d="M62 30L70 22M78 14L88 4" class="mk"/></svg><b>Stands alone</b><span>A lost link does not stop a site.</span></a>
         <a class="idea" href="#hub"><svg class="mark mark-hub" viewBox="0 0 96 96" role="img" aria-label="A hub with three links. One link is ended, and the site at its end is still there."><circle cx="48" cy="26" r="12" class="mkf"/><path d="M38 36L20 62M48 38V62" class="mk"/><path d="M58 36L66 48" class="mk"/><path d="M58 54L74 44" class="mka"/><circle cx="18" cy="72" r="8" class="mkf"/><circle cx="48" cy="72" r="8" class="mkf"/><circle cx="78" cy="72" r="8" class="mkf"/></svg><b>A severed site</b><span>Cut from the others, it still works alone.</span></a>
+        <a class="idea" href="#boundary"><svg class="mark mark-boundary" viewBox="0 0 96 96" role="img" aria-label="A wall with two openings: through the wide one run two lines, through the narrow one runs a single arrow."><path d="M48 6V26M48 54V62M48 76V90" class="mk"/><path d="M24 35H72M24 45H72" class="mka"/><path d="M24 69H70M61 61L71 69L61 77" class="mka mkt"/></svg><b>Across the edge</b><span>You choose what leaves, to whom, and through which one machine.</span></a>
     </div>
   </div>
 </section>
@@ -1659,6 +1661,177 @@ environments:
   </div>
 </section>
 
+<section class="scene center" id="self-documenting">
+  <div class="wrap">
+    <div class="say wide">
+      <div class="mk-anchor" aria-hidden="true"><svg class="mark mark-self-documenting" viewBox="0 0 96 96" role="img" aria-label="A page with three ticked lines."><path d="M22 8H62L78 24V88H22Z" class="mkf"/><path d="M62 8V24H78" class="mk mkt"/><path d="M32 42l5 5l9 -10M32 60l5 5l9 -10M32 78l5 5l9 -10" class="mka mkt"/><path d="M54 44H68M54 62H68M54 80H68" class="mk mkt"/></svg></div>
+      <p class="eyebrow">Evidence</p>
+      <h2>The system documents itself</h2>
+      <p class="known"><i>Known as: compliance as code, continuous monitoring, audit trail, security information and event management (SIEM)</i></p>
+      <dl class="cols">
+        <div><dt>Usually</dt><dd class="usual">A system's description is written by hand for an assessment, and it is out of date as soon as the system changes.</dd></div>
+        <div><dt>Here</dt><dd class="here">The system is built from a declaration, so the declaration is the description. Its logs are already in open formats, ready for your monitoring platform.</dd></div>
+        <div><dt>For you</dt><dd class="you">Your evidence is current because it is the system.</dd></div>
+      </dl>
+      <ul class="ev">
+        <li><span class="status s-built">built</span><span>the declaration, the generated rules, the records and the audit trail, for assessors working under the Risk Management Framework and for security engineers</span></li>
+        <li><span class="status s-built">built</span><span>security records in OCSF, sent off each machine, with a forwarder to your own collector</span></li>
+      </ul>
+    </div>
+    <figure class="full"><div class="frame"><svg class="viz wide" viewBox="0 0 1120 640" role="img" aria-label="At the center, one declaration: a document listing the machines, the exact versions by content hash, the allowed connections, who may do what, and the signed, reviewed changes. An arrow from it to the left builds the running system. An arrow from it to the right goes to the assessor, who reads the same files. The running system leaves records: deploy and check records, an audit trail, security events in OCSF, and service events over OpenTelemetry. Those records flow to your monitoring platform, connected by setting one address. Outside the system, drawn with dashed lines, are three checks that an organization still runs from outside: vulnerability scans, configuration baselines and web application testing." font-family="var(--sans)">
+<defs><marker id="sd-ah" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="12" refX="11" refY="6" orient="auto"><path d="M1 1 L12 6 L1 11 z" fill="var(--ink)"/></marker></defs>
+<rect x="400.0" y="24.0" width="320.0" height="222.0" rx="8" fill="var(--paper)" stroke="var(--ink)" stroke-width="3"/>
+<path d="M690 24 v30 h30" fill="none" stroke="var(--ink)" stroke-width="2"/>
+<text x="420.0" y="58.0" font-size="18" font-weight="700" fill="var(--ink)">the declaration</text>
+<path d="M422 87 l5 5 l9 -10" fill="none" stroke="var(--accent)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="446.0" y="92.0" font-size="15" fill="var(--ink)">the machines</text>
+<path d="M422 115 l5 5 l9 -10" fill="none" stroke="var(--accent)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="446.0" y="120.0" font-size="15" fill="var(--ink)">exact versions, by content hash</text>
+<path d="M422 143 l5 5 l9 -10" fill="none" stroke="var(--accent)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="446.0" y="148.0" font-size="15" fill="var(--ink)">the allowed connections</text>
+<path d="M422 171 l5 5 l9 -10" fill="none" stroke="var(--accent)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="446.0" y="176.0" font-size="15" fill="var(--ink)">who may do what</text>
+<path d="M422 199 l5 5 l9 -10" fill="none" stroke="var(--accent)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="446.0" y="204.0" font-size="15" fill="var(--ink)">signed, reviewed changes</text>
+<rect x="40.0" y="54.0" width="250.0" height="160.0" rx="12" fill="var(--accent-soft)" stroke="var(--ink)" stroke-width="3"/>
+<path d="M95 112 L165 92" fill="none" stroke="var(--accent)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M165 92 L235 118" fill="none" stroke="var(--accent)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M95 112 L125 166" fill="none" stroke="var(--accent)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M125 166 L205 169" fill="none" stroke="var(--accent)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M235 118 L205 169" fill="none" stroke="var(--accent)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M165 92 L205 169" fill="none" stroke="var(--accent)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="95.0" cy="111.6" r="13" fill="var(--paper)" stroke="var(--accent)" stroke-width="2"/>
+<circle cx="95.0" cy="111.6" r="7" fill="var(--ink)" stroke="none" stroke-width="0"/>
+<circle cx="165.0" cy="92.4" r="13" fill="var(--paper)" stroke="var(--accent)" stroke-width="2"/>
+<circle cx="165.0" cy="92.4" r="7" fill="var(--ink)" stroke="none" stroke-width="0"/>
+<circle cx="235.0" cy="118.0" r="13" fill="var(--paper)" stroke="var(--accent)" stroke-width="2"/>
+<circle cx="235.0" cy="118.0" r="7" fill="var(--ink)" stroke="none" stroke-width="0"/>
+<circle cx="125.0" cy="166.0" r="13" fill="var(--paper)" stroke="var(--accent)" stroke-width="2"/>
+<circle cx="125.0" cy="166.0" r="7" fill="var(--ink)" stroke="none" stroke-width="0"/>
+<circle cx="205.0" cy="169.2" r="13" fill="var(--paper)" stroke="var(--accent)" stroke-width="2"/>
+<circle cx="205.0" cy="169.2" r="7" fill="var(--ink)" stroke="none" stroke-width="0"/>
+<text x="165.0" y="240.0" font-size="16" font-weight="700" fill="var(--ink)" text-anchor="middle">the running system</text>
+<path d="M400 134 H300" fill="none" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#sd-ah)"/>
+<text x="350.0" y="122.0" font-size="14" fill="var(--quiet)" text-anchor="middle" font-style="italic">builds</text>
+<rect x="830.0" y="54.0" width="250.0" height="160.0" rx="12" fill="var(--panel)" stroke="var(--ink)" stroke-width="3"/>
+<g fill="none" stroke="var(--ink)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M905 134q50 -46 100 0q-50 46 -100 0z"/></g><circle cx="955" cy="134" r="11" fill="var(--accent)"/>
+<text x="955.0" y="240.0" font-size="16" font-weight="700" fill="var(--ink)" text-anchor="middle">an assessor, or a security engineer</text>
+<path d="M720 134 H820" fill="none" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#sd-ah)"/>
+<text x="772.0" y="104.0" font-size="14" fill="var(--quiet)" text-anchor="middle" font-style="italic">reads the</text>
+<text x="772.0" y="122.0" font-size="14" fill="var(--quiet)" text-anchor="middle" font-style="italic">same files</text>
+<path d="M165 252 V318" fill="none" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#sd-ah)"/>
+<text x="180.0" y="292.0" font-size="14" fill="var(--quiet)" font-style="italic">leaves records</text>
+<rect x="40.0" y="330.0" width="184.0" height="62.0" rx="6" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
+<path d="M54 352h16M54 361h10M54 370h14" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" fill="none"/>
+<text x="80.0" y="356.0" font-size="14" font-weight="600" fill="var(--ink)">deploy and</text>
+<text x="80.0" y="375.0" font-size="14" font-weight="600" fill="var(--ink)">check records</text>
+<rect x="236.0" y="330.0" width="184.0" height="62.0" rx="6" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
+<path d="M250 352h16M250 361h10M250 370h14" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" fill="none"/>
+<text x="276.0" y="366.0" font-size="14" font-weight="600" fill="var(--ink)">an audit trail</text>
+<rect x="432.0" y="330.0" width="184.0" height="62.0" rx="6" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
+<path d="M446 352h16M446 361h10M446 370h14" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" fill="none"/>
+<text x="472.0" y="356.0" font-size="14" font-weight="600" fill="var(--ink)">security events,</text>
+<text x="472.0" y="375.0" font-size="14" font-weight="600" fill="var(--ink)">in OCSF</text>
+<rect x="628.0" y="330.0" width="184.0" height="62.0" rx="6" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
+<path d="M642 352h16M642 361h10M642 370h14" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" fill="none"/>
+<text x="668.0" y="356.0" font-size="14" font-weight="600" fill="var(--ink)">service events,</text>
+<text x="668.0" y="375.0" font-size="14" font-weight="600" fill="var(--ink)">over OpenTelemetry</text>
+<path d="M812 361 H862" fill="none" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#sd-ah)"/>
+<rect x="872.0" y="318.0" width="208.0" height="86.0" rx="10" fill="var(--panel)" stroke="var(--ink)" stroke-width="3"/>
+<text x="976.0" y="352.0" font-size="16" font-weight="700" fill="var(--ink)" text-anchor="middle">your monitoring</text>
+<text x="976.0" y="373.0" font-size="16" font-weight="700" fill="var(--ink)" text-anchor="middle">platform</text>
+<text x="976.0" y="426.0" font-size="14" fill="var(--quiet)" text-anchor="middle" font-style="italic">connected by setting one address</text>
+<path d="M20 462 H1100" fill="none" stroke="var(--line)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="6 6"/>
+<text x="40.0" y="494.0" font-size="14" font-weight="700" fill="var(--quiet)" letter-spacing="1.4">RUN FROM OUTSIDE BY YOUR ORGANIZATION, AND STILL REQUIRED</text>
+<rect x="40.0" y="512.0" width="336.0" height="64.0" rx="8" fill="none" stroke="var(--ink)" stroke-width="2" stroke-dasharray="6 5"/>
+<text x="60.0" y="540.0" font-size="16" font-weight="600" fill="var(--ink)">vulnerability scans</text>
+<text x="60.0" y="561.0" font-size="14" fill="var(--quiet)">ACAS</text>
+<rect x="392.0" y="512.0" width="336.0" height="64.0" rx="8" fill="none" stroke="var(--ink)" stroke-width="2" stroke-dasharray="6 5"/>
+<text x="412.0" y="540.0" font-size="16" font-weight="600" fill="var(--ink)">configuration baselines</text>
+<text x="412.0" y="561.0" font-size="14" fill="var(--quiet)">STIG</text>
+<rect x="744.0" y="512.0" width="336.0" height="64.0" rx="8" fill="none" stroke="var(--ink)" stroke-width="2" stroke-dasharray="6 5"/>
+<text x="764.0" y="540.0" font-size="16" font-weight="600" fill="var(--ink)">web application testing</text>
+<text x="764.0" y="561.0" font-size="14" fill="var(--quiet)">Burp</text>
+<text x="40.0" y="612.0" font-size="16" fill="var(--quiet)">The documentation is the set of files the system runs from, so it cannot drift from the system.</text>
+</svg>
+<svg class="viz narrow" viewBox="0 0 464 1196" role="img" aria-label="At the center, one declaration: a document listing the machines, the exact versions by content hash, the allowed connections, who may do what, and the signed, reviewed changes. An arrow from it to the left builds the running system. An arrow from it to the right goes to the assessor, who reads the same files. The running system leaves records: deploy and check records, an audit trail, security events in OCSF, and service events over OpenTelemetry. Those records flow to your monitoring platform, connected by setting one address. Outside the system, drawn with dashed lines, are three checks that an organization still runs from outside: vulnerability scans, configuration baselines and web application testing." font-family="var(--sans)">
+<defs><marker id="sdn-ah" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="12" refX="11" refY="6" orient="auto"><path d="M1 1 L12 6 L1 11 z" fill="var(--ink)"/></marker></defs>
+<rect x="52.0" y="12.0" width="360.0" height="222.0" rx="8" fill="var(--paper)" stroke="var(--ink)" stroke-width="3"/>
+<path d="M382 12 v30 h30" fill="none" stroke="var(--ink)" stroke-width="2"/>
+<text x="72.0" y="46.0" font-size="18" font-weight="700" fill="var(--ink)">the declaration</text>
+<path d="M74 75 l5 5 l9 -10" fill="none" stroke="var(--accent)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="98.0" y="80.0" font-size="15" fill="var(--ink)">the machines</text>
+<path d="M74 103 l5 5 l9 -10" fill="none" stroke="var(--accent)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="98.0" y="108.0" font-size="15" fill="var(--ink)">exact versions, by content hash</text>
+<path d="M74 131 l5 5 l9 -10" fill="none" stroke="var(--accent)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="98.0" y="136.0" font-size="15" fill="var(--ink)">the allowed connections</text>
+<path d="M74 159 l5 5 l9 -10" fill="none" stroke="var(--accent)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="98.0" y="164.0" font-size="15" fill="var(--ink)">who may do what</text>
+<path d="M74 187 l5 5 l9 -10" fill="none" stroke="var(--accent)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="98.0" y="192.0" font-size="15" fill="var(--ink)">signed, reviewed changes</text>
+<path d="M150 234 V282" fill="none" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#sdn-ah)"/>
+<text x="134.0" y="264.0" font-size="14" fill="var(--quiet)" text-anchor="end" font-style="italic">builds</text>
+<path d="M314 234 V282" fill="none" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#sdn-ah)"/>
+<text x="330.0" y="258.0" font-size="14" fill="var(--quiet)" font-style="italic">reads the</text>
+<text x="330.0" y="276.0" font-size="14" fill="var(--quiet)" font-style="italic">same files</text>
+<rect x="14.0" y="294.0" width="210.0" height="140.0" rx="12" fill="var(--accent-soft)" stroke="var(--ink)" stroke-width="3"/>
+<path d="M60 344 L119 328" fill="none" stroke="var(--accent)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M119 328 L178 350" fill="none" stroke="var(--accent)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M60 344 L85 392" fill="none" stroke="var(--accent)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M85 392 L153 395" fill="none" stroke="var(--accent)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M178 350 L153 395" fill="none" stroke="var(--accent)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M119 328 L153 395" fill="none" stroke="var(--accent)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="60.2" cy="344.4" r="13" fill="var(--paper)" stroke="var(--accent)" stroke-width="2"/>
+<circle cx="60.2" cy="344.4" r="7" fill="var(--ink)" stroke="none" stroke-width="0"/>
+<circle cx="119.0" cy="327.6" r="13" fill="var(--paper)" stroke="var(--accent)" stroke-width="2"/>
+<circle cx="119.0" cy="327.6" r="7" fill="var(--ink)" stroke="none" stroke-width="0"/>
+<circle cx="177.8" cy="350.0" r="13" fill="var(--paper)" stroke="var(--accent)" stroke-width="2"/>
+<circle cx="177.8" cy="350.0" r="7" fill="var(--ink)" stroke="none" stroke-width="0"/>
+<circle cx="85.4" cy="392.0" r="13" fill="var(--paper)" stroke="var(--accent)" stroke-width="2"/>
+<circle cx="85.4" cy="392.0" r="7" fill="var(--ink)" stroke="none" stroke-width="0"/>
+<circle cx="152.6" cy="394.8" r="13" fill="var(--paper)" stroke="var(--accent)" stroke-width="2"/>
+<circle cx="152.6" cy="394.8" r="7" fill="var(--ink)" stroke="none" stroke-width="0"/>
+<text x="119.0" y="458.0" font-size="15" font-weight="700" fill="var(--ink)" text-anchor="middle">the running system</text>
+<rect x="240.0" y="294.0" width="210.0" height="140.0" rx="12" fill="var(--panel)" stroke="var(--ink)" stroke-width="3"/>
+<g fill="none" stroke="var(--ink)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M295 364q50 -46 100 0q-50 46 -100 0z"/></g><circle cx="345" cy="364" r="11" fill="var(--accent)"/>
+<text x="345.0" y="458.0" font-size="15" font-weight="700" fill="var(--ink)" text-anchor="middle">an assessor, or a</text>
+<text x="345.0" y="478.0" font-size="15" font-weight="700" fill="var(--ink)" text-anchor="middle">security engineer</text>
+<path d="M119 470 V520" fill="none" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#sdn-ah)"/>
+<text x="134.0" y="502.0" font-size="14" fill="var(--quiet)" font-style="italic">leaves records</text>
+<rect x="14.0" y="532.0" width="300.0" height="46.0" rx="6" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
+<path d="M28 547h16M28 555h10M28 563h14" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" fill="none"/>
+<text x="56.0" y="560.5" font-size="14.5" font-weight="600" fill="var(--ink)">deploy and check records</text>
+<rect x="14.0" y="588.0" width="300.0" height="46.0" rx="6" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
+<path d="M28 603h16M28 611h10M28 619h14" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" fill="none"/>
+<text x="56.0" y="616.5" font-size="14.5" font-weight="600" fill="var(--ink)">an audit trail</text>
+<rect x="14.0" y="644.0" width="300.0" height="46.0" rx="6" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
+<path d="M28 659h16M28 667h10M28 675h14" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" fill="none"/>
+<text x="56.0" y="672.5" font-size="14.5" font-weight="600" fill="var(--ink)">security events, in OCSF</text>
+<rect x="14.0" y="700.0" width="300.0" height="46.0" rx="6" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
+<path d="M28 715h16M28 723h10M28 731h14" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" fill="none"/>
+<text x="56.0" y="728.5" font-size="14.5" font-weight="600" fill="var(--ink)">service events, over OpenTelemetry</text>
+<path d="M164 756 V796" fill="none" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#sdn-ah)"/>
+<rect x="14.0" y="808.0" width="300.0" height="60.0" rx="10" fill="var(--panel)" stroke="var(--ink)" stroke-width="3"/>
+<text x="164.0" y="844.0" font-size="16" font-weight="700" fill="var(--ink)" text-anchor="middle">your monitoring platform</text>
+<text x="14.0" y="894.0" font-size="14" fill="var(--quiet)" font-style="italic">connected by setting one address</text>
+<path d="M8 924 H456" fill="none" stroke="var(--line)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="6 6"/>
+<text x="14.0" y="952.0" font-size="13" font-weight="700" fill="var(--quiet)" letter-spacing="1.3">RUN FROM OUTSIDE BY YOUR</text>
+<text x="14.0" y="971.0" font-size="13" font-weight="700" fill="var(--quiet)" letter-spacing="1.3">ORGANIZATION, AND STILL REQUIRED</text>
+<rect x="14.0" y="988.0" width="436.0" height="42.0" rx="8" fill="none" stroke="var(--ink)" stroke-width="2" stroke-dasharray="6 5"/>
+<text x="30.0" y="1015.0" font-size="15" font-weight="600" fill="var(--ink)">vulnerability scans</text>
+<text x="436.0" y="1015.0" font-size="14" fill="var(--quiet)" text-anchor="end">ACAS</text>
+<rect x="14.0" y="1040.0" width="436.0" height="42.0" rx="8" fill="none" stroke="var(--ink)" stroke-width="2" stroke-dasharray="6 5"/>
+<text x="30.0" y="1067.0" font-size="15" font-weight="600" fill="var(--ink)">configuration baselines</text>
+<text x="436.0" y="1067.0" font-size="14" fill="var(--quiet)" text-anchor="end">STIG</text>
+<rect x="14.0" y="1092.0" width="436.0" height="42.0" rx="8" fill="none" stroke="var(--ink)" stroke-width="2" stroke-dasharray="6 5"/>
+<text x="30.0" y="1119.0" font-size="15" font-weight="600" fill="var(--ink)">web application testing</text>
+<text x="436.0" y="1119.0" font-size="14" fill="var(--quiet)" text-anchor="end">Burp</text>
+<text x="14.0" y="1164.0" font-size="15" fill="var(--quiet)">The documentation is the set of files the system</text>
+<text x="14.0" y="1184.7" font-size="15" fill="var(--quiet)">runs from, so it cannot drift from the system.</text>
+</svg></div></figure>
+  </div>
+</section>
+
 <section class="scene" id="quantum">
   <div class="wrap">
     <div class="say">
@@ -1911,6 +2084,186 @@ environments:
   </div>
 </section>
 
+<section class="scene center" id="boundary">
+  <div class="wrap">
+    <div class="say wide">
+      <div class="mk-anchor" aria-hidden="true"><svg class="mark mark-boundary" viewBox="0 0 96 96" role="img" aria-label="A wall with two openings: through the wide one run two lines, through the narrow one runs a single arrow."><path d="M48 6V26M48 54V62M48 76V90" class="mk"/><path d="M24 35H72M24 45H72" class="mka"/><path d="M24 69H70M61 61L71 69L61 77" class="mka mkt"/></svg></div>
+      <p class="eyebrow">The edge</p>
+      <h2>Two ways data crosses the edge</h2>
+      <p class="known"><i>Known as: federation, gateway, controlled release</i></p>
+      <dl class="cols">
+        <div><dt>Usually</dt><dd class="usual">Networks are joined, and what crosses is whatever a rule fails to stop.</dd></div>
+        <div><dt>Here</dt><dd class="here">Data crosses only through a boundary node. One kind carries released sets of data to another owner's environment; the other carries one plain stream, one way, to one known destination.</dd></div>
+        <div><dt>For you</dt><dd class="you">You choose what leaves, to whom, and through which one machine.</dd></div>
+      </dl>
+      <ul class="ev">
+        <li><span class="status s-built">built</span><span>federation between two environments, set up and backed out by one command</span></li>
+        <li><span class="status s-designed">designed</span><span>sealing data for named readers across a boundary between two environments</span></li>
+        <li><span class="status s-built">built</span><span>the simple boundary node, as a machine type</span></li>
+      </ul>
+    </div>
+    <figure class="full"><div class="frame"><svg class="viz wide" viewBox="0 0 1120 470" role="img" aria-label="Two owners&#x27; environments, drawn as two plates with a gap between them. A federation boundary node stands at the edge of each. From the first owner, two sets of data that the owner released travel to the node and cross to the other side through one sealed tunnel between the two nodes. A third set, not released, stops before the node and does not cross. On the other side the receiving node makes two separate checks, first whether it recognizes the sender and then whether the sender is authorized, before the released data arrives." font-family="var(--sans)">
+<defs><marker id="bf-ah" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="12" refX="11" refY="6" orient="auto"><path d="M1 1 L12 6 L1 11 z" fill="var(--ink)"/></marker></defs>
+<rect x="20.0" y="40.0" width="480.0" height="350.0" rx="14" fill="var(--accent-soft)" stroke="var(--ink)" stroke-width="3"/>
+<text x="40.0" y="70.0" font-size="14" font-weight="700" fill="var(--ink)" letter-spacing="1.4">YOUR ENVIRONMENT, YOUR AUTHORITY</text>
+<rect x="620.0" y="40.0" width="480.0" height="350.0" rx="14" fill="var(--accent-soft)" stroke="var(--ink)" stroke-width="3"/>
+<text x="640.0" y="70.0" font-size="14" font-weight="700" fill="var(--ink)" letter-spacing="1.4">ANOTHER OWNER&#x27;S ENVIRONMENT</text>
+<rect x="48.0" y="112.0" width="200.0" height="40.0" rx="6" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
+<path d="M60 126h20M60 134h14M60 142h18" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" fill="none"/>
+<text x="92.0" y="137.5" font-size="15" font-weight="600" fill="var(--ink)">a released set</text>
+<rect x="48.0" y="196.0" width="200.0" height="40.0" rx="6" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
+<path d="M60 210h20M60 218h14M60 226h18" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" fill="none"/>
+<text x="92.0" y="221.5" font-size="15" font-weight="600" fill="var(--ink)">a released set</text>
+<rect x="48.0" y="300.0" width="200.0" height="40.0" rx="6" fill="none" stroke="var(--line)" stroke-width="2" stroke-dasharray="5 4"/>
+<path d="M60 314h20M60 322h14M60 330h18" stroke="var(--line)" stroke-width="2" stroke-linecap="round" fill="none"/>
+<text x="92.0" y="325.5" font-size="15" fill="var(--quiet)">not released</text>
+<path d="M248 132 C300 132 300 200 350 200" fill="none" stroke="var(--accent)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M248 216 H350" fill="none" stroke="var(--accent)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M248 320 H300" fill="none" stroke="var(--line)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 6"/>
+<path d="M306 308 V332" fill="none" stroke="var(--ink)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="316.0" y="325.0" font-size="13.5" fill="var(--quiet)" font-style="italic">does not cross</text>
+<rect x="350.0" y="170.0" width="150.0" height="92.0" rx="10" fill="var(--panel)" stroke="var(--ink)" stroke-width="3"/>
+<path d="M409 190v22M441 190v22M409 190h32" fill="none" stroke="var(--accent)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="425.0" y="232.0" font-size="14" font-weight="700" fill="var(--ink)" text-anchor="middle">federation</text>
+<text x="425.0" y="250.0" font-size="13.5" fill="var(--quiet)" text-anchor="middle">boundary node</text>
+<rect x="620.0" y="170.0" width="150.0" height="92.0" rx="10" fill="var(--panel)" stroke="var(--ink)" stroke-width="3"/>
+<path d="M679 190v22M711 190v22M679 190h32" fill="none" stroke="var(--accent)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="695.0" y="232.0" font-size="14" font-weight="700" fill="var(--ink)" text-anchor="middle">federation</text>
+<text x="695.0" y="250.0" font-size="13.5" fill="var(--quiet)" text-anchor="middle">boundary node</text>
+<path d="M500 216 H620" fill="none" stroke="var(--accent)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+<g transform="translate(560.0 216.0) scale(1.05)"><circle r="14" fill="var(--paper)" stroke="var(--accent)" stroke-width="2.2"/><rect x="-5.5" y="-1.5" width="11" height="9" rx="2" fill="var(--accent)"/><path d="M-3.4 -1.5 v-3 a3.4 3.4 0 0 1 6.8 0 v3" fill="none" stroke="var(--accent)" stroke-width="2"/></g>
+<text x="560.0" y="182.0" font-size="13.5" fill="var(--quiet)" text-anchor="middle">one sealed tunnel</text>
+<text x="560.0" y="260.0" font-size="13.5" fill="var(--quiet)" text-anchor="middle">between the</text>
+<text x="560.0" y="278.0" font-size="13.5" fill="var(--quiet)" text-anchor="middle">two nodes</text>
+<path d="M770 216 H810" fill="none" stroke="var(--accent)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="826.0" cy="216.0" r="14" fill="var(--ink)" stroke="none" stroke-width="0"/>
+<text x="826.0" y="221.2" font-size="14" font-weight="700" fill="var(--paper)" text-anchor="middle">1</text>
+<text x="848.0" y="221.0" font-size="15" font-weight="600" fill="var(--ink)">recognized: who sent this?</text>
+<circle cx="826.0" cy="282.0" r="14" fill="var(--ink)" stroke="none" stroke-width="0"/>
+<text x="826.0" y="287.2" font-size="14" font-weight="700" fill="var(--paper)" text-anchor="middle">2</text>
+<text x="848.0" y="287.0" font-size="15" font-weight="600" fill="var(--ink)">authorized: may it be read here?</text>
+<path d="M826 232 V264" fill="none" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#bf-ah)"/>
+<path d="M826 298 V326" fill="none" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#bf-ah)"/>
+<rect x="786.0" y="332.0" width="250.0" height="40.0" rx="6" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
+<path d="M798 346h20M798 354h14M798 362h18" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" fill="none"/>
+<text x="830.0" y="357.5" font-size="15" font-weight="600" fill="var(--ink)">the released data arrives</text>
+<text x="848.0" y="252.0" font-size="13.5" fill="var(--quiet)" font-style="italic">two separate checks</text>
+<text x="20.0" y="428.0" font-size="16" fill="var(--quiet)">Only the sets of data that the owner released cross. Each side keeps its own environment and its own authority.</text>
+<text x="20.0" y="452.0" font-size="16" fill="var(--quiet)">A peering can be removed cleanly: everything it created, and nothing else.</text>
+</svg>
+<svg class="viz narrow" viewBox="0 0 464 948" role="img" aria-label="Two owners&#x27; environments, drawn as two plates with a gap between them. A federation boundary node stands at the edge of each. From the first owner, two sets of data that the owner released travel to the node and cross to the other side through one sealed tunnel between the two nodes. A third set, not released, stops before the node and does not cross. On the other side the receiving node makes two separate checks, first whether it recognizes the sender and then whether the sender is authorized, before the released data arrives." font-family="var(--sans)">
+<defs><marker id="bfn-ah" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="12" refX="11" refY="6" orient="auto"><path d="M1 1 L12 6 L1 11 z" fill="var(--ink)"/></marker></defs>
+<rect x="8.0" y="10.0" width="448.0" height="356.0" rx="14" fill="var(--accent-soft)" stroke="var(--ink)" stroke-width="3"/>
+<text x="24.0" y="38.0" font-size="13" font-weight="700" fill="var(--ink)" letter-spacing="1.3">YOUR ENVIRONMENT, YOUR AUTHORITY</text>
+<rect x="24.0" y="58.0" width="196.0" height="40.0" rx="6" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
+<path d="M36 72h20M36 80h14M36 88h18" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" fill="none"/>
+<text x="68.0" y="83.5" font-size="15" font-weight="600" fill="var(--ink)">a released set</text>
+<rect x="24.0" y="112.0" width="196.0" height="40.0" rx="6" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
+<path d="M36 126h20M36 134h14M36 142h18" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" fill="none"/>
+<text x="68.0" y="137.5" font-size="15" font-weight="600" fill="var(--ink)">a released set</text>
+<rect x="24.0" y="176.0" width="196.0" height="40.0" rx="6" fill="none" stroke="var(--line)" stroke-width="2" stroke-dasharray="5 4"/>
+<path d="M36 190h20M36 198h14M36 206h18" stroke="var(--line)" stroke-width="2" stroke-linecap="round" fill="none"/>
+<text x="68.0" y="201.5" font-size="15" fill="var(--quiet)">not released</text>
+<path d="M220 78 C340 78 340 200 276 264" fill="none" stroke="var(--accent)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M220 132 C296 132 296 200 252 264" fill="none" stroke="var(--accent)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M122 216 V236" fill="none" stroke="var(--line)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 6"/>
+<path d="M108 242 H136" fill="none" stroke="var(--ink)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="24.0" y="250.0" font-size="13.5" fill="var(--quiet)" font-style="italic">does not</text>
+<text x="24.0" y="267.0" font-size="13.5" fill="var(--quiet)" font-style="italic">cross</text>
+<rect x="147.0" y="264.0" width="170.0" height="92.0" rx="10" fill="var(--panel)" stroke="var(--ink)" stroke-width="3"/>
+<path d="M216 284v22M248 284v22M216 284h32" fill="none" stroke="var(--accent)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="232.0" y="326.0" font-size="14" font-weight="700" fill="var(--ink)" text-anchor="middle">federation</text>
+<text x="232.0" y="344.0" font-size="13.5" fill="var(--quiet)" text-anchor="middle">boundary node</text>
+<path d="M232 356 V486" fill="none" stroke="var(--accent)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+<g transform="translate(232.0 411.0) scale(1.05)"><circle r="14" fill="var(--paper)" stroke="var(--accent)" stroke-width="2.2"/><rect x="-5.5" y="-1.5" width="11" height="9" rx="2" fill="var(--accent)"/><path d="M-3.4 -1.5 v-3 a3.4 3.4 0 0 1 6.8 0 v3" fill="none" stroke="var(--accent)" stroke-width="2"/></g>
+<text x="260.0" y="406.0" font-size="13.5" fill="var(--quiet)">one sealed tunnel</text>
+<text x="260.0" y="424.0" font-size="13.5" fill="var(--quiet)">between the two nodes</text>
+<rect x="8.0" y="456.0" width="448.0" height="392.0" rx="14" fill="var(--accent-soft)" stroke="var(--ink)" stroke-width="3"/>
+<text x="24.0" y="484.0" font-size="13" font-weight="700" fill="var(--ink)" letter-spacing="1.3">ANOTHER OWNER&#x27;S</text>
+<text x="24.0" y="502.0" font-size="13" font-weight="700" fill="var(--ink)" letter-spacing="1.3">ENVIRONMENT</text>
+<rect x="147.0" y="506.0" width="170.0" height="92.0" rx="10" fill="var(--panel)" stroke="var(--ink)" stroke-width="3"/>
+<path d="M216 526v22M248 526v22M216 526h32" fill="none" stroke="var(--accent)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="232.0" y="568.0" font-size="14" font-weight="700" fill="var(--ink)" text-anchor="middle">federation</text>
+<text x="232.0" y="586.0" font-size="13.5" fill="var(--quiet)" text-anchor="middle">boundary node</text>
+<path d="M232 598 V628 H60 V642" fill="none" stroke="var(--accent)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="60.0" cy="660.0" r="14" fill="var(--ink)" stroke="none" stroke-width="0"/>
+<text x="60.0" y="665.2" font-size="14" font-weight="700" fill="var(--paper)" text-anchor="middle">1</text>
+<text x="84.0" y="665.0" font-size="15" font-weight="600" fill="var(--ink)">recognized: who sent this?</text>
+<circle cx="60.0" cy="716.0" r="14" fill="var(--ink)" stroke="none" stroke-width="0"/>
+<text x="60.0" y="721.2" font-size="14" font-weight="700" fill="var(--paper)" text-anchor="middle">2</text>
+<text x="84.0" y="721.0" font-size="15" font-weight="600" fill="var(--ink)">authorized: may it be read here?</text>
+<path d="M60 676 V698" fill="none" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#bfn-ah)"/>
+<path d="M60 732 V770" fill="none" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#bfn-ah)"/>
+<text x="84.0" y="693.0" font-size="13.5" fill="var(--quiet)" font-style="italic">two separate checks</text>
+<rect x="40.0" y="778.0" width="260.0" height="40.0" rx="6" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
+<path d="M52 792h20M52 800h14M52 808h18" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" fill="none"/>
+<text x="84.0" y="803.5" font-size="15" font-weight="600" fill="var(--ink)">the released data arrives</text>
+<text x="14.0" y="882.0" font-size="15" fill="var(--quiet)">Only the sets of data that the owner released cross.</text>
+<text x="14.0" y="902.7" font-size="15" fill="var(--quiet)">Each side keeps its own environment and authority.</text>
+<text x="14.0" y="923.4" font-size="15" fill="var(--quiet)">A peering can be removed cleanly.</text>
+</svg></div></figure>
+    <figure class="full"><div class="frame"><svg class="viz wide" viewBox="0 0 1120 372" role="img" aria-label="One owner&#x27;s environment as a plate. At its edge stands a dedicated machine, the simple boundary node. From it one plain stream runs one way, inside an encrypted tunnel, to one known destination with a known owner. An arrow from the destination back toward the environment ends at a bar: nothing else is reachable through the node. If the tunnel is down, nothing is sent." font-family="var(--sans)">
+<defs><marker id="bs-ah" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="12" refX="11" refY="6" orient="auto"><path d="M1 1 L12 6 L1 11 z" fill="var(--ink)"/></marker></defs>
+<rect x="20.0" y="40.0" width="400.0" height="250.0" rx="14" fill="var(--accent-soft)" stroke="var(--ink)" stroke-width="3"/>
+<text x="40.0" y="70.0" font-size="14" font-weight="700" fill="var(--ink)" letter-spacing="1.4">YOUR ENVIRONMENT</text>
+<rect x="48.0" y="146.0" width="190.0" height="40.0" rx="6" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
+<path d="M60 160h20M60 168h14M60 176h18" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" fill="none"/>
+<text x="92.0" y="171.5" font-size="15" font-weight="600" fill="var(--ink)">released data</text>
+<path d="M238 166 H322" fill="none" stroke="var(--accent)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="322.0" y="114.0" width="196.0" height="104.0" rx="10" fill="var(--panel)" stroke="var(--ink)" stroke-width="3"/>
+<path d="M412 136v22M428 136v22" fill="none" stroke="var(--accent)" stroke-width="3.2" stroke-linecap="round"/>
+<text x="420.0" y="178.0" font-size="14" font-weight="700" fill="var(--ink)" text-anchor="middle">simple boundary node</text>
+<text x="420.0" y="197.0" font-size="13.5" fill="var(--quiet)" text-anchor="middle">a dedicated machine</text>
+<rect x="518.0" y="146.0" width="322.0" height="40.0" rx="20" fill="none" stroke="var(--ink)" stroke-width="2" stroke-dasharray="7 5"/>
+<path d="M524 166 H830" fill="none" stroke="var(--accent)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M816 157 L832 166 L816 175" fill="none" stroke="var(--accent)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<g transform="translate(679.0 146.0) scale(0.9)"><circle r="14" fill="var(--paper)" stroke="var(--ink)" stroke-width="2.2"/><rect x="-5.5" y="-1.5" width="11" height="9" rx="2" fill="var(--ink)"/><path d="M-3.4 -1.5 v-3 a3.4 3.4 0 0 1 6.8 0 v3" fill="none" stroke="var(--ink)" stroke-width="2"/></g>
+<text x="679.0" y="120.0" font-size="13.5" fill="var(--quiet)" text-anchor="middle">an encrypted tunnel to that one destination</text>
+<text x="679.0" y="212.0" font-size="15" font-weight="600" fill="var(--ink)" text-anchor="middle">one plain UDP or TCP stream, one way</text>
+<rect x="840.0" y="104.0" width="250.0" height="124.0" rx="10" fill="var(--paper)" stroke="var(--ink)" stroke-width="3"/>
+<g fill="none" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="864" y="126" width="44" height="32" rx="3"/><path d="M876 168h20M886 158v10"/></g>
+<text x="922.0" y="140.0" font-size="15" font-weight="700" fill="var(--ink)">one known</text>
+<text x="922.0" y="159.0" font-size="15" font-weight="700" fill="var(--ink)">destination</text>
+<text x="864.0" y="194.0" font-size="14" fill="var(--quiet)">a known owner</text>
+<text x="864.0" y="213.0" font-size="13.5" fill="var(--quiet)">the conventions it already uses</text>
+<path d="M900 228 V262 H548" fill="none" stroke="var(--line)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 6"/>
+<path d="M542 250 V274" fill="none" stroke="var(--ink)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="548.0" y="290.0" font-size="13.5" fill="var(--quiet)" font-style="italic">nothing else is reachable through it</text>
+<text x="20.0" y="330.0" font-size="16" fill="var(--quiet)">One stream, one destination, one direction. If the tunnel is down, nothing is sent.</text>
+<text x="20.0" y="354.0" font-size="16" fill="var(--quiet)">For a system that cannot join a data fabric.</text>
+</svg>
+<svg class="viz narrow" viewBox="0 0 464 660" role="img" aria-label="One owner&#x27;s environment as a plate. At its edge stands a dedicated machine, the simple boundary node. From it one plain stream runs one way, inside an encrypted tunnel, to one known destination with a known owner. An arrow from the destination back toward the environment ends at a bar: nothing else is reachable through the node. If the tunnel is down, nothing is sent." font-family="var(--sans)">
+<defs><marker id="bsn-ah" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="12" refX="11" refY="6" orient="auto"><path d="M1 1 L12 6 L1 11 z" fill="var(--ink)"/></marker></defs>
+<rect x="8.0" y="10.0" width="448.0" height="232.0" rx="14" fill="var(--accent-soft)" stroke="var(--ink)" stroke-width="3"/>
+<text x="24.0" y="38.0" font-size="13" font-weight="700" fill="var(--ink)" letter-spacing="1.3">YOUR ENVIRONMENT</text>
+<rect x="132.0" y="58.0" width="200.0" height="40.0" rx="6" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
+<path d="M144 72h20M144 80h14M144 88h18" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" fill="none"/>
+<text x="176.0" y="83.5" font-size="15" font-weight="600" fill="var(--ink)">released data</text>
+<path d="M232 98 V134" fill="none" stroke="var(--accent)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="132.0" y="134.0" width="200.0" height="104.0" rx="10" fill="var(--panel)" stroke="var(--ink)" stroke-width="3"/>
+<path d="M224 156v22M240 156v22" fill="none" stroke="var(--accent)" stroke-width="3.2" stroke-linecap="round"/>
+<text x="232.0" y="198.0" font-size="14" font-weight="700" fill="var(--ink)" text-anchor="middle">simple boundary node</text>
+<text x="232.0" y="217.0" font-size="13.5" fill="var(--quiet)" text-anchor="middle">a dedicated machine</text>
+<rect x="212.0" y="238.0" width="40.0" height="192.0" rx="20" fill="none" stroke="var(--ink)" stroke-width="2" stroke-dasharray="7 5"/>
+<path d="M232 244 V420" fill="none" stroke="var(--accent)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M223 406 L232 422 L241 406" fill="none" stroke="var(--accent)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<g transform="translate(252.0 334.0) scale(0.9)"><circle r="14" fill="var(--paper)" stroke="var(--ink)" stroke-width="2.2"/><rect x="-5.5" y="-1.5" width="11" height="9" rx="2" fill="var(--ink)"/><path d="M-3.4 -1.5 v-3 a3.4 3.4 0 0 1 6.8 0 v3" fill="none" stroke="var(--ink)" stroke-width="2"/></g>
+<text x="278.0" y="312.0" font-size="13.5" fill="var(--quiet)">an encrypted tunnel</text>
+<text x="278.0" y="330.6" font-size="13.5" fill="var(--quiet)">to that one destination</text>
+<text x="198.0" y="312.0" font-size="15" font-weight="600" fill="var(--ink)" text-anchor="end">one plain UDP</text>
+<text x="198.0" y="332.7" font-size="15" font-weight="600" fill="var(--ink)" text-anchor="end">or TCP stream,</text>
+<text x="198.0" y="353.4" font-size="15" font-weight="600" fill="var(--ink)" text-anchor="end">one way</text>
+<rect x="102.0" y="430.0" width="260.0" height="96.0" rx="10" fill="var(--paper)" stroke="var(--ink)" stroke-width="3"/>
+<text x="232.0" y="462.0" font-size="15" font-weight="700" fill="var(--ink)" text-anchor="middle">one known destination</text>
+<text x="232.0" y="483.0" font-size="14" fill="var(--quiet)" text-anchor="middle">a known owner</text>
+<text x="232.0" y="503.0" font-size="13.5" fill="var(--quiet)" text-anchor="middle">the conventions it already uses</text>
+<text x="14.0" y="566.0" font-size="15" fill="var(--quiet)">One stream, one destination, one direction.</text>
+<text x="14.0" y="586.7" font-size="15" fill="var(--quiet)">Nothing else is reachable through the node.</text>
+<text x="14.0" y="607.4" font-size="15" fill="var(--quiet)">If the tunnel is down, nothing is sent.</text>
+</svg></div></figure>
+  </div>
+</section>
+
 <section class="band" id="status">
   <div class="wrap">
     <h2>Where each part stands</h2>
@@ -1936,6 +2289,9 @@ environments:
       <div class="sr" role="listitem"><span class="sw">A deploy refuses what it cannot verify</span><span class="sc"></span><span class="sc on s-inuse" data-s="in use" role="img" aria-label="in use"></span><span class="sc"></span><span class="sc"></span></div>
       <div class="sr" role="listitem"><span class="sw">Post-quantum key exchange preferred on the data fabric</span><span class="sc"></span><span class="sc on s-inuse" data-s="in use" role="img" aria-label="in use"></span><span class="sc"></span><span class="sc"></span></div>
       <div class="sr" role="listitem"><span class="sw">A declared table of roles, enforced</span><span class="sc"></span><span class="sc"></span><span class="sc on s-built" data-s="built" role="img" aria-label="built"></span><span class="sc"></span></div>
+      <div class="sr" role="listitem"><span class="sw">Federation between two environments, set up and backed out by one command</span><span class="sc"></span><span class="sc"></span><span class="sc on s-built" data-s="built" role="img" aria-label="built"></span><span class="sc"></span></div>
+      <div class="sr" role="listitem"><span class="sw">A simple boundary node: one stream, one way, to one destination</span><span class="sc"></span><span class="sc"></span><span class="sc on s-built" data-s="built" role="img" aria-label="built"></span><span class="sc"></span></div>
+      <div class="sr" role="listitem"><span class="sw">Security records in an open format, with a forwarder to your own collector</span><span class="sc"></span><span class="sc"></span><span class="sc on s-built" data-s="built" role="img" aria-label="built"></span><span class="sc"></span></div>
       <div class="sr" role="listitem"><span class="sw">A partner is verified without being granted anything</span><span class="sc"></span><span class="sc"></span><span class="sc on s-built" data-s="built" role="img" aria-label="built"></span><span class="sc"></span></div>
       <div class="sr" role="listitem"><span class="sw">An identity can be revoked, a machine held for review</span><span class="sc"></span><span class="sc"></span><span class="sc on s-built" data-s="built" role="img" aria-label="built"></span><span class="sc"></span></div>
       <div class="sr" role="listitem"><span class="sw">A post-quantum key exchange for mesh tunnels, not enabled</span><span class="sc"></span><span class="sc"></span><span class="sc on s-built" data-s="built" role="img" aria-label="built"></span><span class="sc"></span></div>
@@ -1971,7 +2327,7 @@ environments:
 
 <footer>
   <div class="wrap">
-    <p><a href="https://github.com/USAREUR-AF/goatcore">Repository</a><a href="https://github.com/USAREUR-AF/goatcore/blob/main/LICENSE">Apache License 2.0</a><a href="https://github.com/USAREUR-AF/goatcore/blob/main/SECURITY.md">Security policy</a><a href="notes/">Notes and sources</a></p>
+    <p><a href="https://github.com/USAREUR-AF/goatcore">Repository</a><a href="https://github.com/USAREUR-AF/goatcore/blob/main/LICENSE">Apache License 2.0</a><a href="https://github.com/USAREUR-AF/goatcore/blob/main/SECURITY.md">Security policy</a><a href="notes/">Notes and sources</a><a href="../sec4laymen/">The same ideas in plain words</a></p>
     <p>Portions written by U.S. Federal government employees within the scope of their employment are in the public domain in the United States. Part of <a href="https://github.com/USAREUR-AF/goatcore">goat</a>.</p>
   </div>
 </footer>

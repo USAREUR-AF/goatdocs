@@ -47,6 +47,9 @@ STATUS = [
     ("A deploy refuses what it cannot verify", "in use"),
     ("Post-quantum key exchange preferred on the data fabric", "in use"),
     ("A declared table of roles, enforced", "built"),
+    ("Federation between two environments, set up and backed out by one command", "built"),
+    ("A simple boundary node: one stream, one way, to one destination", "built"),
+    ("Security records in an open format, with a forwarder to your own collector", "built"),
     ("A partner is verified without being granted anything", "built"),
     ("An identity can be revoked, a machine held for review", "built"),
     ("A post-quantum key exchange for mesh tunnels, not enabled", "built"),
@@ -62,7 +65,7 @@ STATUS = [
 ORDER = ["measured", "in use", "built", "designed"]
 
 # Scenes written as one module each in scenes/: the module returns its whole section and its mark.
-SCENES = ["layers", "path", "custody"]
+SCENES = ["layers", "path", "custody", "self_documenting", "boundary"]
 
 
 def read(*p):
