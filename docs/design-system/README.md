@@ -46,6 +46,7 @@ specific; the design will be better for matching them.
 | `SKILL.md` | Cross-compatible skill entry point for Agent Skills / Claude Code. |
 | `colors_and_type.css` | All design tokens — primitives + semantic vars + base typography. Import this. |
 | `components.css` | Reusable component classes — buttons, chips, inputs, tables, banners, etc. |
+| `color-doctrine.md` | **Proposed, not adopted.** Color and emphasis doctrine: one meaning per color, status as shape + word, opacity only for not-relevant. |
 | `assets/goat-logo.svg` | The original goat-head mark from the repo (single-path, `#20964f`). |
 | `assets/goat-mark.svg` | **Working default mark** — geometric horns + wedge, uses `currentColor`. |
 | `assets/goat-mark-curve.svg` | Alternative mark — spiral horns, monoline. |
