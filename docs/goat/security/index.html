@@ -255,7 +255,7 @@ section.scene { padding: 88px 0; border-top: 1px solid var(--rule); }
 .facts .n { display: block; font: 800 clamp(30px, 4.4vw, 54px)/1.05 var(--mono); color: var(--accent); letter-spacing: -0.02em; }
 .facts .l { display: block; font-size: 17px; margin-top: 6px; }
 @media (max-width: 640px) { .facts { grid-template-columns: minmax(0, 1fr); } .facts > div + div { border-left: 0; border-top: 1px solid var(--rule); } }
-.reqs { display: flex; flex-wrap: wrap; gap: 10px 26px; margin: 0; padding: 0; list-style: none; font-size: 16px; }
+.reqs { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; font-size: 16px; }
 .reqs li .status { margin: 0 8px 0 0; vertical-align: 1px; }
 .h3 { font: 700 13px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--quiet); margin: 0 0 12px; }
 .two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 36px; }
@@ -372,6 +372,7 @@ ul.ev code { font-size: 13.5px; }
 @media (max-width: 760px) {
   .sr .sc.s-inuse::after { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
 }
+.blunder .fix + .fix { margin-top: 12px; border-top: 0; padding-top: 0; }
 
 </style>
 <style>/* goat-tree: the same strip on every goat landing page, back to the catalogue of them all */
@@ -394,21 +395,24 @@ ul.ev code { font-size: 13.5px; }
 
 <main id="top">
 <section class="hero" aria-labelledby="name">
-<pre class="bgcode" aria-hidden="true">| C1 | A founder site goes from declared to verified
-     | in 60 minutes or less, a new node in 15,
-     | a burn-down in 15
-
-## Where the day goes
-
-Past buildouts took a day or more. Most of that
-time was not a play running. It was a run stopping
-on a defect, the defect being fixed on main, and
-the run resuming.
-
-| Targets | founder site declared -> verified
-          | <= 60 min; one new node <= 15 min;
-          | burn-down to nothing, records kept
-          | <= 15 min</pre>
+<pre class="bgcode" aria-hidden="true">schema: goatbuilder/v1
+preset: lite
+components:
+  netbird-mgmt:
+    declared_in: declared/pins.yaml
+  zenoh-router:
+    declared_in: declared/pins.yaml
+  portal:
+    declared_in: declared/pins.yaml
+environments:
+  - name: zagros
+    converger: push-ansible
+    sites:
+      - name: alpha
+        role: founder
+        classes:
+          core: {}
+          obs: {}</pre>
   <div class="wrap hero-grid">
     <div>
       <p class="prompt">&gt;_ goatbuilder standup zagros --site alpha<span class="cur" aria-hidden="true"></span></p>
@@ -504,7 +508,7 @@ the run resuming.
 
   <div class="wrap">
     <div class="numbers">
-      <div><span class="n" data-measure="build">38 min 12 s</span><span class="l">of machine time to build a whole site</span><code>every stage is listed below; measured on real machines</code></div>
+      <div><span class="n" data-measure="build">38 min 12 s</span><span class="l">of machine time to build a whole site</span><code>every stage of the build, measured on real machines</code></div>
       <div><span class="n" data-measure="down">5 min 54 s</span><span class="l">to take a site down</span><code>goatbuilder teardown --services, <span data-measure="down-checks">57</span> checks</code></div>
       <div><span class="n" data-measure="checks">42</span><span class="l">checks passed on the built site</span><code>the acceptance suite, the last stage of the build</code></div>
       <div><span class="n" data-measure="commands">1</span><span class="l">command builds a site, or builds it again</span><code>goatbuilder standup &lt;goatnet&gt; --site &lt;site&gt;</code></div>
@@ -515,7 +519,6 @@ the run resuming.
 <section class="scene center" id="position">
   <div class="wrap">
     <div class="say wide">
-      <p class="eyebrow">The idea</p>
       <h2>No inside, no outside</h2>
       <dl class="cols">
         <div><dt>Usually</dt><dd class="usual">Most defenses draw a few boundaries, sometimes only one, and those boundaries move slowly or never. Anything that gets inside one is trusted there.</dd></div>
@@ -771,7 +774,7 @@ the run resuming.
     <div class="blunders">
       <div class="blunder"><svg class="mark mark-outside" viewBox="0 0 96 96" role="img" aria-label="A building with no door on the street. The way in runs under the ground."><path d="M8 58H88" class="mk"/><path d="M30 58V28L50 14L70 28V58" class="mk"/><path d="M8 80Q50 92 50 58" class="mka mkd"/><circle cx="50" cy="42" r="5" class="mkfa"/></svg><h3>A door on the public internet</h3><p class="cost">A service or a gateway that anyone can reach is one that anyone can probe.</p><p class="fix"><span class="status s-inuse">in use</span>No service has a public address. The private overlay does not answer what it cannot authenticate.</p></div>
       <div class="blunder"><svg class="mark mark-zero-trust" viewBox="0 0 96 96" role="img" aria-label="A line between two points, stopped at a gate in the middle."><circle cx="14" cy="48" r="7" class="mkf"/><circle cx="82" cy="48" r="7" class="mkf"/><path d="M23 48H36M60 48H73" class="mk"/><circle cx="48" cy="48" r="17" class="mka"/><path d="M48 39V57" class="mka"/></svg><h3>Trust by location</h3><p class="cost">Whatever gets inside a boundary is trusted there.</p><p class="fix"><span class="status s-inuse">in use</span>There is no inside. Every connection has its own keys and its own rule.</p></div>
-      <div class="blunder"><svg class="mark mark-island" viewBox="0 0 96 96" role="img" aria-label="A site inside its own ring. The link that leaves it is cut."><circle cx="40" cy="52" r="28" class="mka"/><rect x="27" y="39" width="26" height="26" rx="6" class="mkf"/><path d="M62 30L70 22M78 14L88 4" class="mk"/></svg><h3>A distant center</h3><p class="cost">A far cloud and a long link back to it: cut the link and the site stops, and the link can be found and followed.</p><p class="fix"><span class="status s-inuse">in use</span>Each site runs everything it needs on its own machines, and is designed to work with no link at all.</p></div>
+      <div class="blunder"><svg class="mark mark-island" viewBox="0 0 96 96" role="img" aria-label="A site inside its own ring. The link that leaves it is cut."><circle cx="40" cy="52" r="28" class="mka"/><rect x="27" y="39" width="26" height="26" rx="6" class="mkf"/><path d="M62 30L70 22M78 14L88 4" class="mk"/></svg><h3>A distant center</h3><p class="cost">A far cloud and a long link back to it: cut the link and the site stops, and the link can be found and followed.</p><p class="fix"><span class="status s-inuse">in use</span>Each site runs everything it needs on its own machines.</p><p class="fix"><span class="status s-designed">designed</span>A site keeps working with no link at all.</p></div>
       <div class="blunder"><svg class="mark mark-ordinary" viewBox="0 0 96 96" role="img" aria-label="Three identical parts in a row. Any one can take the place of another."><rect x="8" y="34" width="22" height="28" rx="6" class="mkf"/><rect x="37" y="34" width="22" height="28" rx="6" class="mkf"/><rect x="66" y="34" width="22" height="28" rx="6" class="mkf"/><path d="M20 20Q48 4 76 20" class="mka"/><path d="M80 24L80 12L68 16Z" class="mkfa"/></svg><h3>Special parts</h3><p class="cost">Special encryption, special lines and special hardware mark who is there, and take months to replace.</p><p class="fix"><span class="status s-inuse">in use</span>Ordinary computers, a common open protocol, and any link that carries packets.</p></div>
       <div class="blunder"><svg class="mark mark-rebuild" viewBox="0 0 96 96" role="img" aria-label="A dashed outline of a shape, the same shape drawn solid again, and a turning arrow between them."><rect x="10" y="50" width="30" height="30" rx="6" class="mk mkd"/><rect x="54" y="50" width="30" height="30" rx="6" class="mkf"/><path d="M25 40A24 24 0 0 1 66 30" class="mka"/><path d="M70 44L71 27L57 34Z" class="mkfa"/></svg><h3>Recovery as a rare emergency</h3><p class="cost">A compromised system is cleaned in place and restored slowly, by a procedure that nobody practices.</p><p class="fix"><span class="status s-measured">measured</span>A whole site is rebuilt from its declaration in minutes, as a routine operation.</p></div>
     </div>
@@ -785,11 +788,11 @@ the run resuming.
     <div class="ideas">
         <a class="idea" href="#join"><svg class="mark mark-outside" viewBox="0 0 96 96" role="img" aria-label="A building with no door on the street. The way in runs under the ground."><path d="M8 58H88" class="mk"/><path d="M30 58V28L50 14L70 28V58" class="mk"/><path d="M8 80Q50 92 50 58" class="mka mkd"/><circle cx="50" cy="42" r="5" class="mkfa"/></svg><b>Little to find</b><span>Your services are not listed where an outsider can look.</span></a>
         <a class="idea" href="#silent"><svg class="mark mark-silent" viewBox="0 0 96 96" role="img" aria-label="A signal sent toward a point, and no answer coming back."><circle cx="74" cy="48" r="9" class="mkf"/><path d="M12 48H24" class="mk"/><path d="M34 30Q46 48 34 66" class="mk"/><path d="M48 22Q64 48 48 74" class="mk mkd"/></svg><b>A quiet protocol</b><span>A probe of your address gets no reply.</span></a>
-        <a class="idea" href="#zero-trust"><svg class="mark mark-zero-trust" viewBox="0 0 96 96" role="img" aria-label="A line between two points, stopped at a gate in the middle."><circle cx="14" cy="48" r="7" class="mkf"/><circle cx="82" cy="48" r="7" class="mkf"/><path d="M23 48H36M60 48H73" class="mk"/><circle cx="48" cy="48" r="17" class="mka"/><path d="M48 39V57" class="mka"/></svg><b>Zero trust</b><span>Access is one list that you can read and change.</span></a>
-        <a class="idea" href="#readers"><svg class="mark mark-sealed" viewBox="0 0 96 96" role="img" aria-label="A closed box held on a tray. Its key is somewhere else."><path d="M10 78H66M10 78V68M66 78V68" class="mk"/><rect x="18" y="36" width="40" height="34" rx="6" class="mkf"/><circle cx="38" cy="50" r="4.5" class="mkfi"/><path d="M38 54V61" class="mk"/><circle cx="76" cy="20" r="7" class="mka"/><path d="M76 27V46M76 38H84M76 46H82" class="mka"/></svg><b>Sealed data</b><span>Taking one server yields sealed data.</span></a>
+        <a class="idea" href="#zero-trust"><svg class="mark mark-zero-trust" viewBox="0 0 96 96" role="img" aria-label="A line between two points, stopped at a gate in the middle."><circle cx="14" cy="48" r="7" class="mkf"/><circle cx="82" cy="48" r="7" class="mkf"/><path d="M23 48H36M60 48H73" class="mk"/><circle cx="48" cy="48" r="17" class="mka"/><path d="M48 39V57" class="mka"/></svg><b>Zero trust</b><span>Every connection is checked, and every rule is written down.</span></a>
+        <a class="idea" href="#readers"><svg class="mark mark-sealed" viewBox="0 0 96 96" role="img" aria-label="A closed box held on a tray. Its key is somewhere else."><path d="M10 78H66M10 78V68M66 78V68" class="mk"/><rect x="18" y="36" width="40" height="34" rx="6" class="mkf"/><circle cx="38" cy="50" r="4.5" class="mkfi"/><path d="M38 54V61" class="mk"/><circle cx="76" cy="20" r="7" class="mka"/><path d="M76 27V46M76 38H84M76 46H82" class="mka"/></svg><b>Sealed data</b><span>A stolen server holds only sealed data.</span></a>
         <a class="idea" href="#chain"><svg class="mark mark-verified" viewBox="0 0 96 96" role="img" aria-label="A stamp with a check mark."><path d="M48 10L80 28V66L48 86L16 66V28Z" class="mkf"/><path d="M33 49L44 60L64 36" class="mka"/></svg><b>Verified releases</b><span>A changed image is refused before it runs.</span></a>
         <a class="idea" href="#quantum"><svg class="mark mark-quantum" viewBox="0 0 96 96" role="img" aria-label="A padlock with two shackles, one inside the other."><path d="M24 46V34a24 24 0 0 1 48 0V46" class="mk"/><path d="M36 46V36a12 12 0 0 1 24 0V46" class="mka"/><rect x="16" y="46" width="64" height="40" rx="6" class="mkf"/><circle cx="48" cy="64" r="5" class="mkfi"/></svg><b>Post-quantum</b><span>Traffic recorded today stays closed later.</span></a>
-        <a class="idea" href="#decoy"><svg class="mark mark-decoy" viewBox="0 0 96 96" role="img" aria-label="A door standing by itself, with nothing around it, and a bell that rings."><path d="M6 84H90" class="mk mkd"/><rect x="26" y="20" width="34" height="64" rx="4" class="mkf"/><circle cx="51" cy="54" r="3.5" class="mkfi"/><path d="M72 34h16l-2.5 -3.5v-5a5.5 5.5 0 0 0 -11 0v5z" class="mkfa"/><path d="M68 16q-4 6 -1 12M92 16q4 6 1 12" class="mka mkt"/></svg><b>Decoys</b><span>An alert from a decoy has one meaning.</span></a>
+        <a class="idea" href="#decoy"><svg class="mark mark-decoy" viewBox="0 0 96 96" role="img" aria-label="A door standing by itself, with nothing around it, and a bell that rings."><path d="M6 84H90" class="mk mkd"/><rect x="26" y="20" width="34" height="64" rx="4" class="mkf"/><circle cx="51" cy="54" r="3.5" class="mkfi"/><path d="M72 34h16l-2.5 -3.5v-5a5.5 5.5 0 0 0 -11 0v5z" class="mkfa"/><path d="M68 16q-4 6 -1 12M92 16q4 6 1 12" class="mka mkt"/></svg><b>Decoys</b><span>Touching a decoy raises an alarm.</span></a>
         <a class="idea" href="#rebuild"><svg class="mark mark-rebuild" viewBox="0 0 96 96" role="img" aria-label="A dashed outline of a shape, the same shape drawn solid again, and a turning arrow between them."><rect x="10" y="50" width="30" height="30" rx="6" class="mk mkd"/><rect x="54" y="50" width="30" height="30" rx="6" class="mkf"/><path d="M25 40A24 24 0 0 1 66 30" class="mka"/><path d="M70 44L71 27L57 34Z" class="mkfa"/></svg><b>Rebuild</b><span>Every machine returns to a known clean state.</span></a>
         <a class="idea" href="#island"><svg class="mark mark-island" viewBox="0 0 96 96" role="img" aria-label="A site inside its own ring. The link that leaves it is cut."><circle cx="40" cy="52" r="28" class="mka"/><rect x="27" y="39" width="26" height="26" rx="6" class="mkf"/><path d="M62 30L70 22M78 14L88 4" class="mk"/></svg><b>Stands alone</b><span>A lost link does not stop a site.</span></a>
         <a class="idea" href="#hub"><svg class="mark mark-hub" viewBox="0 0 96 96" role="img" aria-label="A hub with three links. One link is ended, and the site at its end is still there."><circle cx="48" cy="26" r="12" class="mkf"/><path d="M38 36L20 62M48 38V62" class="mk"/><path d="M58 36L66 48" class="mk"/><path d="M58 54L74 44" class="mka"/><circle cx="18" cy="72" r="8" class="mkf"/><circle cx="48" cy="72" r="8" class="mkf"/><circle cx="78" cy="72" r="8" class="mkf"/></svg><b>A severed site</b><span>Cut from the others, it still works alone.</span></a>
@@ -806,7 +809,7 @@ the run resuming.
       <dl>
         <dt>Usually</dt><dd class="usual">Services have public addresses, protected by a filter and a login page. Anyone can find them and test them.</dd>
         <dt>Here</dt><dd class="here">A goatnet has one public name, and it is used only to join. A relay behind the name passes the encrypted connection to the site and cannot read it. The device presents a key that works once, and gets its identity and the list of parties it may reach.</dd>
-        <dt>For you</dt><dd class="you">Public means one name, used to join, and nothing else.</dd>
+        <dt>For you</dt><dd class="you">Only one name of yours is public, and it is used only to join.</dd>
       </dl>
       <ul class="ev">
         <li><span class="status s-inuse">in use</span><span>"No host site has a public address." goatcore, decision record 1192</span></li>
@@ -957,9 +960,9 @@ the run resuming.
       <h2>Being on the network grants nothing</h2>
       <dl>
         <dt>Usually</dt><dd class="usual">A device inside the network is trusted because of where it is.</dd>
-        <dt>Here</dt><dd class="here">Every request passes four checks. A person, a machine and a workload each prove who they are in their own way. A connection needs a declared rule, and with no rule there is no connection. A declared table says what each role may do. An identity can be revoked, and a machine can be held for review.</dd>
+        <dt>Here</dt><dd class="here">Every request passes four checks. Who is asking: a person, a machine and a program each prove their identity in their own way. Is there a rule: a connection needs a declared rule, and with no rule there is no connection. Is it allowed: a declared table says what each role may do. Is the identity still good: an identity can be revoked, and a machine can be held for review.</dd>
         <dd class="here" style="margin-top:10px">The rules in force are generated from a declaration that is reviewed like code. A partner's identities can be verified without being granted anything.</dd>
-        <dt>For you</dt><dd class="you">Access is one list that you can read, review and change.</dd>
+        <dt>For you</dt><dd class="you">Access is written down in one place that you can read, review and change.</dd>
       </dl>
       <ul class="ev">
         <li><span class="status s-inuse">in use</span><span>identities; declared rules, applied and checked by every stand-up</span></li>
@@ -1027,10 +1030,10 @@ the run resuming.
       <dl>
         <dt>Usually</dt><dd class="usual">A secret store can read every secret it holds, and a message broker can read every message. Whoever takes that server has all of it.</dd>
         <dt>Here</dt><dd class="here">A secret is encrypted on your device before it is stored, so the store cannot read it. Shared data is sealed for named readers, and the platform holds no key for it. The data fabric that carries it holds no key and has no central broker.</dd>
-        <dt>For you</dt><dd class="you">Taking one server yields sealed data.</dd>
+        <dt>For you</dt><dd class="you">A stolen server holds only sealed data.</dd>
       </dl>
       <ul class="ev">
-        <li><span class="status s-inuse">in use</span><span>the secret store; no central broker; sealing for named readers</span></li>
+        <li><span class="status s-inuse">in use</span><span>the secret store; no central broker; sealing for named readers, in use for the data sets an owner seals</span></li>
       </ul>
     </div>
     <figure><div class="frame"><svg id="fig-readers" class="viz" viewBox="8 0 464 312" role="img" aria-label="A secret is encrypted on your device before it reaches the secret store, which holds it and cannot read it. A shared message is sealed by the sender, carried by the data fabric, and opened only by a named reader. The fabric holds no key and has no central broker: machines pass the sealed message on.">
@@ -1127,7 +1130,7 @@ the run resuming.
       <h2>Traffic recorded today stays closed later</h2>
       <dl>
         <dt>Usually</dt><dd class="usual">Encrypted traffic can be recorded now and kept. A future quantum computer could open what today's key exchange protects.</dd>
-        <dt>Here</dt><dd class="here">The routers of the data fabric offer two key exchanges together first: the usual kind, and one built to resist that computer. A client that supports the pair gets it, and reading that traffic needs both to be broken. A client that does not support it connects the usual way.</dd>
+        <dt>Here</dt><dd class="here">The routers of the data fabric prefer a combined key exchange: the usual kind together with one built to resist a quantum computer. A client that supports the combination gets it, and reading that traffic means breaking both. A client that does not support it connects the usual way.</dd>
         <dt>For you</dt><dd class="you">Data that must stay private for years is protected against a later reader.</dd>
       </dl>
       <ul class="ev">
@@ -1179,7 +1182,7 @@ the run resuming.
       <dl>
         <dt>Usually</dt><dd class="usual">Detection depends on noticing unusual behavior among normal use, so quiet exploration can go unseen for a long time.</dd>
         <dt>Here</dt><dd class="here">A site carries decoys: names and web paths that no person or program has a reason to use. Any use of one is hostile, and the first use alerts the operator on call.</dd>
-        <dt>For you</dt><dd class="you">An alert from a decoy has one meaning.</dd>
+        <dt>For you</dt><dd class="you">An alert from a decoy means an intruder. Normal use never touches one.</dd>
       </dl>
       <ul class="ev">
         <li><span class="status s-built">built</span><span>decoy names and web paths</span></li>
@@ -1269,15 +1272,15 @@ the run resuming.
           <li data-end="1614"><span class="wn"><b>The administrator signs in</b><small>A person signs in for the first time.</small></span><span class="wt"><i style="left:65.58%;width:4.84%"></i></span><span class="wd">1:51</span></li>
           <li data-end="2103"><span class="wn"><b>Access rules, service identities, portal, alarm</b><small>The declared access rules are applied and checked; the portal, onboarding and the off-site alarm start.</small></span><span class="wt"><i style="left:70.42%;width:21.34%"></i></span><span class="wd">8:09</span></li>
           <li data-end="2202"><span class="wn"><b>Checks that prove the site works</b><small>An acceptance suite checks the running site.</small></span><span class="wt"><i style="left:91.75%;width:4.32%"></i></span><span class="wd">1:39</span></li>
-          <li class="wsum"><span class="wn"><b>Whole site</b><small>The stages, and 1 min 30 s between steps.</small></span><span class="wt"><i style="left:0;width:100%"></i></span><span class="wd">38:12</span></li>
+          <li class="wsum"><span class="wn"><b>Whole site</b><small>all stages, plus 1 min 30 s between them.</small></span><span class="wt"><i style="left:0;width:100%"></i></span><span class="wd">38:12</span></li>
       </ol>
     </div>
     <div>
-      <p class="h3">Release 1.0 requires</p>
-      <ul class="ev">
-        <li><span class="status s-built">built</span><span>a first site, start to finish, in <span data-measure="req-site">60 min</span> or less</span></li>
-        <li><span class="status s-built">built</span><span>a machine added in <span data-measure="req-node">15 min</span> or less</span></li>
-        <li><span class="status s-measured">measured</span><span>a site taken down in <span data-measure="req-down">15 min</span> or less</span></li>
+      <p class="h3">Required for release 1.0</p>
+      <ul class="reqs">
+        <li>A first site, start to finish, in <span data-measure="req-site">60 min</span> or less: in progress.</li>
+        <li>A machine added in <span data-measure="req-node">15 min</span> or less: in progress.</li>
+        <li>A site taken down in <span data-measure="req-down">15 min</span> or less: measured, <span data-measure="down">5 min 54 s</span>.</li>
       </ul>
     </div>
     <div class="two">
@@ -1308,7 +1311,7 @@ the run resuming.
       <p class="eyebrow">9 &middot; Sites that stand alone</p>
       <h2>Cut off, a site keeps working, and it can stay silent</h2>
       <dl>
-        <dt>Usually</dt><dd class="usual">Sites depend on a central service and on a long link to it. When the link fails they stop. While it works, it can be found, jammed or followed.</dd>
+        <dt>Usually</dt><dd class="usual">Sites depend on a central service and on a long link to it. When the link fails they stop. While the link works, it can be found, jammed or followed.</dd>
         <dt>Here</dt><dd class="here">Every site runs the same services, and keeps admitting people, enrolling machines and changing access while it is cut off. A site that needs no link back does not have to transmit off-site at all.</dd>
         <dt>For you</dt><dd class="you">A lost link does not stop a site, and a site that sends nothing shows less in the radio spectrum, to signals collection and on the network.</dd>
       </dl>
@@ -1353,7 +1356,7 @@ the run resuming.
       <dl>
         <dt>Usually</dt><dd class="usual">A site that may be compromised stays connected until someone is sure, or it is shut down and the people there lose their systems.</dd>
         <dt>Here</dt><dd class="here">The hub can sever a site that it no longer trusts. From then on, nothing that site writes reaches any other site. The severed site keeps running locally, so the people there are not left without their systems. It rejoins only after it is built again and loaded from the hub.</dd>
-        <dt>For you</dt><dd class="you">Protecting the whole network does not destroy one of its parts.</dd>
+        <dt>For you</dt><dd class="you">You can cut one site off to protect the others, and the site that was cut off keeps working locally.</dd>
       </dl>
       <ul class="ev">
         <li><span class="status s-designed">designed</span><span>goatcore, decision records 1205 and 1237</span></li>
@@ -1409,13 +1412,13 @@ the run resuming.
       <div class="sr" role="listitem"><span class="sw">Shared data sealed for named readers; the platform holds no key</span><span class="sc"></span><span class="sc on s-inuse" data-s="in use" role="img" aria-label="in use"></span><span class="sc"></span><span class="sc"></span></div>
       <div class="sr" role="listitem"><span class="sw">No central broker on the data fabric</span><span class="sc"></span><span class="sc on s-inuse" data-s="in use" role="img" aria-label="in use"></span><span class="sc"></span><span class="sc"></span></div>
       <div class="sr" role="listitem"><span class="sw">A deploy refuses what it cannot verify</span><span class="sc"></span><span class="sc on s-inuse" data-s="in use" role="img" aria-label="in use"></span><span class="sc"></span><span class="sc"></span></div>
-      <div class="sr" role="listitem"><span class="sw">Two key exchanges offered first on the data fabric</span><span class="sc"></span><span class="sc on s-inuse" data-s="in use" role="img" aria-label="in use"></span><span class="sc"></span><span class="sc"></span></div>
+      <div class="sr" role="listitem"><span class="sw">Post-quantum key exchange preferred on the data fabric</span><span class="sc"></span><span class="sc on s-inuse" data-s="in use" role="img" aria-label="in use"></span><span class="sc"></span><span class="sc"></span></div>
       <div class="sr" role="listitem"><span class="sw">A declared table of roles, enforced</span><span class="sc"></span><span class="sc"></span><span class="sc on s-built" data-s="built" role="img" aria-label="built"></span><span class="sc"></span></div>
       <div class="sr" role="listitem"><span class="sw">A partner is verified without being granted anything</span><span class="sc"></span><span class="sc"></span><span class="sc on s-built" data-s="built" role="img" aria-label="built"></span><span class="sc"></span></div>
       <div class="sr" role="listitem"><span class="sw">An identity can be revoked, a machine held for review</span><span class="sc"></span><span class="sc"></span><span class="sc on s-built" data-s="built" role="img" aria-label="built"></span><span class="sc"></span></div>
-      <div class="sr" role="listitem"><span class="sw">Two key exchanges on mesh tunnels</span><span class="sc"></span><span class="sc"></span><span class="sc on s-built" data-s="built" role="img" aria-label="built"></span><span class="sc"></span></div>
+      <div class="sr" role="listitem"><span class="sw">Post-quantum key exchange on mesh tunnels</span><span class="sc"></span><span class="sc"></span><span class="sc on s-built" data-s="built" role="img" aria-label="built"></span><span class="sc"></span></div>
       <div class="sr" role="listitem"><span class="sw">Decoy names and web paths</span><span class="sc"></span><span class="sc"></span><span class="sc on s-built" data-s="built" role="img" aria-label="built"></span><span class="sc"></span></div>
-      <div class="sr" role="listitem"><span class="sw">Two key exchanges between organizations</span><span class="sc"></span><span class="sc"></span><span class="sc"></span><span class="sc on s-designed" data-s="designed" role="img" aria-label="designed"></span></div>
+      <div class="sr" role="listitem"><span class="sw">Post-quantum key exchange between organizations</span><span class="sc"></span><span class="sc"></span><span class="sc"></span><span class="sc on s-designed" data-s="designed" role="img" aria-label="designed"></span></div>
       <div class="sr" role="listitem"><span class="sw">Decoys on the data fabric, decoy credentials</span><span class="sc"></span><span class="sc"></span><span class="sc"></span><span class="sc on s-designed" data-s="designed" role="img" aria-label="designed"></span></div>
       <div class="sr" role="listitem"><span class="sw">Secrets replaced as part of a rebuild</span><span class="sc"></span><span class="sc"></span><span class="sc"></span><span class="sc on s-designed" data-s="designed" role="img" aria-label="designed"></span></div>
       <div class="sr" role="listitem"><span class="sw">A site keeps working when it is cut off</span><span class="sc"></span><span class="sc"></span><span class="sc"></span><span class="sc on s-designed" data-s="designed" role="img" aria-label="designed"></span></div>
