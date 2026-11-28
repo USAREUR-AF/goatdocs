@@ -121,10 +121,11 @@ def html():
         "Traffic is encrypted once. Whoever breaks or holds that one key reads everything.",
         "A message is wrapped up to three times, and each layer's keys are held by different parties.",
         "Breaking one layer shows the next layer, not your data.",
-        [("in use", "the mesh tunnel, and the data fabric link with its hybrid post-quantum key exchange"),
-         ("in use", "sealing for named readers, for the data sets an owner seals inside a goatnet"),
-         ("built", "a post-quantum key exchange for mesh tunnels, not enabled"),
-         ("designed", "its standardized replacement, being selected")],
+        [("in use", "Mesh tunnel: WireGuard between two machines"),
+         ("built", "Mesh tunnel: a post-quantum key exchange for it, not enabled"),
+         ("designed", "Mesh tunnel: a standardized post-quantum key exchange to replace that one, being selected"),
+         ("in use", "Data fabric link: TLS 1.3 with a hybrid post-quantum key exchange"),
+         ("in use", "Grant encryption: a data set sealed for named readers, turned on per data set")],
         figure_wide() + "\n" + figure_narrow(), mark())
 
 

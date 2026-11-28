@@ -1428,10 +1428,11 @@ environments:
         <div><dt>For you</dt><dd class="you">Breaking one layer shows the next layer, not your data.</dd></div>
       </dl>
       <ul class="ev">
-        <li><span class="status s-inuse">in use</span><span>the mesh tunnel, and the data fabric link with its hybrid post-quantum key exchange</span></li>
-        <li><span class="status s-inuse">in use</span><span>sealing for named readers, for the data sets an owner seals inside a goatnet</span></li>
-        <li><span class="status s-built">built</span><span>a post-quantum key exchange for mesh tunnels, not enabled</span></li>
-        <li><span class="status s-designed">designed</span><span>its standardized replacement, being selected</span></li>
+        <li><span class="status s-inuse">in use</span><span>Mesh tunnel: WireGuard between two machines</span></li>
+        <li><span class="status s-built">built</span><span>Mesh tunnel: a post-quantum key exchange for it, not enabled</span></li>
+        <li><span class="status s-designed">designed</span><span>Mesh tunnel: a standardized post-quantum key exchange to replace that one, being selected</span></li>
+        <li><span class="status s-inuse">in use</span><span>Data fabric link: TLS 1.3 with a hybrid post-quantum key exchange</span></li>
+        <li><span class="status s-inuse">in use</span><span>Grant encryption: a data set sealed for named readers, turned on per data set</span></li>
       </ul>
     </div>
     <figure class="full"><div class="frame"><svg class="viz wide" viewBox="0 0 1120 743" role="img" aria-label="An onion of three layers around one message. The outer layer is the mesh tunnel between two machines, a WireGuard tunnel whose keys only those two machines hold. Inside it is the data fabric link between a program and a router, which prefers a hybrid post-quantum key exchange and applies access rules by identity. Inside that is grant encryption, which the owner can turn on to seal a data set for named readers, so that routers and the platform hold no key. At the center is the message itself, a small readable record. Opening it takes all three keys, and each is held by a different party." font-family="var(--sans)">
