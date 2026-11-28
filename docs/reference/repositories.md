@@ -32,6 +32,8 @@ For equipment, sensors, partners and feeds that are not goat: each one brings da
 - [open-billie](https://github.com/USAREUR-AF/open-billie): Open Billie: sensor-neutral node platform that builds sensor kid packages and publishes normalized tracks (CoT, ASTERIX CAT062, SAPIENT) onto a Zenoh fabric. Apache-2.0.
 - [first-bite](https://github.com/USAREUR-AF/first-bite): Decode binary messages off the wire against a declarative dictionary and publish them as JSON
 - [vendor-bridges](https://github.com/USAREUR-AF/vendor-bridges): Bridges between the goat fabric and vendor systems, one package per vendor. Open standards (CoT, SAPIENT, ASTERIX) go through goat-transformers. Part of goat.
+- [goatrope](https://github.com/USAREUR-AF/goatrope): Build one small machine on one Ethernet link into a passive tap, a decode-and-send stage, or a relay
+- [scapegoat](https://github.com/USAREUR-AF/scapegoat): Plays the C2 side of a sensor link for sensors that wait to be spoken to first: keeps the link alive, shows whether the sensor answers, copies its traffic to other programs. Protocol plugins; Python standard library only. Apache-2.0.
 
 ## Examples
 

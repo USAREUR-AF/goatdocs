@@ -40,6 +40,8 @@ repositories = [
   "open-billie",
   "first-bite",
   "vendor-bridges",
+  "goatrope",
+  "scapegoat",
 ]
 
 [[section]]
