@@ -1,0 +1,580 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>sec4laymen: our security work, in plain words</title>
+<meta name="description" content="What the goat team builds and why it matters, explained with no technical background needed: a private network that a group can set up itself, keep hidden, and rebuild from a clean start.">
+<style>
+/* Layout: a letter on the kitchen table. Warm paper, dark ink, one calm teal for what is ours.
+   System fonts only; light and dark through prefers-color-scheme. */
+:root {
+  --paper: #f6f3ec; --panel: #fffdf8; --ink: #22303a; --quiet: #55626b; --rule: #ddd6c8; --line: #8b959c;
+  --accent: #1c6c76; --accent-soft: #d6eae8; --on-accent: #ffffff; --soft: #ece7dc;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  --serif: Georgia, "Iowan Old Style", "Times New Roman", serif;
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #151b1f; --panel: #1c2429; --ink: #ebe8e0; --quiet: #a6b0b6; --rule: #2e3940; --line: #7f8b92;
+    --accent: #74c5cb; --accent-soft: #18333a; --on-accent: #0c1518; --soft: #232c32;
+  }
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 18px/1.62 var(--sans); }
+a { color: var(--accent); text-underline-offset: 3px; }
+.top { border-bottom: 1px solid var(--rule); font-size: 15px; }
+.top .wrap { display: flex; justify-content: space-between; gap: 16px; padding-top: 12px; padding-bottom: 12px; }
+.top a { text-decoration: none; }
+.wrap { max-width: 720px; margin: 0 auto; padding: 0 20px; }
+.hero { padding: 40px 0 28px; }
+.kicker { font-size: 14px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin: 0 0 10px; }
+h1 { font: 700 34px/1.18 var(--serif); margin: 0 0 16px; letter-spacing: -.01em; }
+.lede { font-size: 20px; line-height: 1.5; color: var(--quiet); margin: 0 0 20px; }
+.btns { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 8px; }
+.btn { display: inline-block; padding: 11px 18px; border-radius: 999px; border: 1.5px solid var(--accent); text-decoration: none; font-weight: 600; font-size: 16px; }
+.btn.fill { background: var(--accent); color: var(--on-accent); }
+figure { margin: 22px 0 6px; }
+figure svg { display: block; width: 100%; height: auto; background: var(--panel); border: 1px solid var(--rule); border-radius: 18px; }
+figcaption { font-size: 15px; color: var(--quiet); margin-top: 8px; }
+section { padding: 34px 0 10px; border-top: 1px solid var(--rule); }
+.num { font: 700 14px/1 var(--sans); letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin: 0 0 8px; }
+h2 { font: 700 27px/1.22 var(--serif); margin: 0 0 12px; letter-spacing: -.005em; }
+p { margin: 0 0 16px; }
+dfn { font-style: normal; font-weight: 700; background: linear-gradient(transparent 62%, var(--accent-soft) 62%); }
+.short { background: var(--soft); border-radius: 14px; padding: 14px 18px; margin: 6px 0 20px; }
+.short b { display: block; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin-bottom: 2px; }
+.short p { margin: 0; }
+.state { font-size: 16px; color: var(--quiet); border-left: 3px solid var(--accent); padding: 2px 0 2px 14px; margin: 0 0 18px; }
+.nums { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 4px 0 18px; }
+.nums div { background: var(--panel); border: 1px solid var(--rule); border-radius: 14px; padding: 14px 16px; }
+.nums b { display: block; font: 700 22px/1.2 var(--serif); color: var(--accent); }
+.nums span.l { display: block; font-size: 15px; color: var(--quiet); margin-top: 4px; }
+dl.words { margin: 0; }
+dl.words dt { font-weight: 700; margin-top: 14px; }
+dl.words dd { margin: 2px 0 0; color: var(--quiet); }
+footer { border-top: 1px solid var(--rule); margin-top: 30px; padding: 22px 0 40px; font-size: 15px; color: var(--quiet); }
+footer a { margin-right: 16px; }
+.svg-t { font-family: var(--sans); fill: var(--ink); }
+.svg-q { font-family: var(--sans); fill: var(--quiet); }
+@media (min-width: 760px) {
+  body { font-size: 19px; }
+  h1 { font-size: 44px; }
+  h2 { font-size: 31px; }
+  .hero { padding-top: 56px; }
+}
+@media (max-width: 400px) { .nums { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<!-- Written by docs/goat/sec4laymen/build.py from its own text, figures.py and ../security/run.json; edit those, then run the script. -->
+<div class="top"><div class="wrap"><a href="../">&larr; All goat pages</a><a href="../security/">The technical version</a></div></div>
+<header class="hero">
+  <div class="wrap">
+    <p class="kicker">sec4laymen &middot; our work, in plain words</p>
+    <h1>We build a private way for a group's computers to talk to each other.</h1>
+    <p class="lede">The group can set it up itself, keep it hidden from strangers, and set it up again from a clean start with less than an hour of machine work.</p>
+    <p class="lede">This page is for our families and friends. You do not need any technical background, and every special word is explained the first time it appears.</p>
+    <div class="btns"><a class="btn fill" href="#why">Start reading</a><a class="btn" href="#words">Words used here</a></div>
+    <figure><svg viewBox="0 0 360 206" role="img" aria-label="Three houses joined by a dotted private route that runs above the public streets. A locked envelope travels along the route." fill="none" stroke-linecap="round" stroke-linejoin="round">
+<path d="M24 150 H336 M92 150 V186 M228 150 V186 M24 186 H336" stroke="var(--rule)" stroke-width="7"/>
+<path d="M64 116 C64 40 180 26 180 70 M180 70 C180 26 296 40 296 116 M64 124 C120 168 240 168 296 124" stroke="var(--accent)" stroke-width="3" stroke-dasharray="1 7"/>
+<path d="M41.0 150 V120 L64 101.4 L87.0 120 V150 Z" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2.4"/>
+<path d="M59 150 v-13 h10 v13" stroke="var(--accent)" stroke-width="2"/>
+<rect x="71" y="125" width="9" height="9" rx="1.5" fill="var(--accent)" stroke="none"/>
+<path d="M157.0 104 V74 L180 55.4 L203.0 74 V104 Z" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2.4"/>
+<path d="M175 104 v-13 h10 v13" stroke="var(--accent)" stroke-width="2"/>
+<rect x="187" y="79" width="9" height="9" rx="1.5" fill="var(--accent)" stroke="none"/>
+<path d="M273.0 150 V120 L296 101.4 L319.0 120 V150 Z" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2.4"/>
+<path d="M291 150 v-13 h10 v13" stroke="var(--accent)" stroke-width="2"/>
+<rect x="303" y="125" width="9" height="9" rx="1.5" fill="var(--accent)" stroke="none"/>
+<rect x="102.0" y="41.0" width="32" height="22" rx="3" fill="var(--panel)" stroke="var(--ink)" stroke-width="2"/>
+<path d="M103.5 43.0 L118 54 L132.5 43.0" stroke="var(--ink)" stroke-width="2"/>
+<circle cx="132.0" cy="59.56" r="9.36" fill="var(--panel)" stroke="none"/>
+<path d="M128.76 57.86 v-2.88 a3.2399999999999998 3.2399999999999998 0 0 1 6.4799999999999995 0 v2.88" stroke="var(--accent)" stroke-width="1.6"/>
+<rect x="126.6" y="57.86" width="10.799999999999999" height="8.28" rx="1.7" fill="var(--accent)" stroke="none"/>
+<rect x="228.0" y="149.0" width="32" height="22" rx="3" fill="var(--panel)" stroke="var(--ink)" stroke-width="2"/>
+<path d="M229.5 151.0 L244 162 L258.5 151.0" stroke="var(--ink)" stroke-width="2"/>
+<circle cx="258.0" cy="167.56" r="9.36" fill="var(--panel)" stroke="none"/>
+<path d="M254.76 165.86 v-2.88 a3.2399999999999998 3.2399999999999998 0 0 1 6.4799999999999995 0 v2.88" stroke="var(--accent)" stroke-width="1.6"/>
+<rect x="252.6" y="165.86" width="10.799999999999999" height="8.28" rx="1.7" fill="var(--accent)" stroke="none"/>
+</svg></figure>
+  </div>
+</header>
+<section id="why">
+  <div class="wrap">
+    <p class="num">Why it matters</p>
+    <h2>Some people cannot afford to lose touch</h2>
+    <figure><svg viewBox="0 0 360 204" role="img" aria-label="Two things that go wrong. On the left, a stranger reads a letter that passes between two houses. On the right, the line between two houses is cut." fill="none" stroke-linecap="round" stroke-linejoin="round">
+<path d="M180 16 V176" stroke="var(--rule)" stroke-width="2" stroke-dasharray="2 6"/>
+<path d="M25.0 112 V82 L48 63.4 L71.0 82 V112 Z" fill="var(--panel)" stroke="var(--ink)" stroke-width="2.4"/>
+<path d="M43 112 v-13 h10 v13" stroke="var(--ink)" stroke-width="2"/>
+<path d="M109.0 112 V82 L132 63.4 L155.0 82 V112 Z" fill="var(--panel)" stroke="var(--ink)" stroke-width="2.4"/>
+<path d="M127 112 v-13 h10 v13" stroke="var(--ink)" stroke-width="2"/>
+<path d="M71 96 H109" stroke="var(--line)" stroke-width="2.4"/>
+<rect x="75.0" y="60.0" width="30" height="20" rx="3" fill="var(--panel)" stroke="var(--ink)" stroke-width="2"/>
+<path d="M76.5 62.0 L90 72 L103.5 62.0" stroke="var(--ink)" stroke-width="2"/>
+<circle cx="90" cy="137.0" r="6.0" fill="var(--panel)" stroke="var(--quiet)" stroke-width="2.2"/><path d="M81.0 164 v-8.0 a9.0 9.0 0 0 1 18.0 0 v8.0" fill="var(--panel)" stroke="var(--quiet)" stroke-width="2.2"/>
+<path d="M90 126 V84" stroke="var(--quiet)" stroke-width="2" stroke-dasharray="2 5"/>
+<text x="90" y="190" font-size="13.5" class="svg-q" text-anchor="middle" stroke="none">read by a stranger</text>
+<path d="M205.0 112 V82 L228 63.4 L251.0 82 V112 Z" fill="var(--panel)" stroke="var(--ink)" stroke-width="2.4"/>
+<path d="M223 112 v-13 h10 v13" stroke="var(--ink)" stroke-width="2"/>
+<path d="M289.0 112 V82 L312 63.4 L335.0 82 V112 Z" fill="var(--panel)" stroke="var(--ink)" stroke-width="2.4"/>
+<path d="M307 112 v-13 h10 v13" stroke="var(--ink)" stroke-width="2"/>
+<path d="M251 96 H262 M278 96 H289" stroke="var(--line)" stroke-width="2.4"/>
+<path d="M264 88 l6 16 M270 88 l6 16" stroke="var(--ink)" stroke-width="2.4"/>
+<text x="270" y="190" font-size="13.5" class="svg-q" text-anchor="middle" stroke="none">cut off</text>
+</svg></figure>
+    <p>Think of the people whose work depends on staying in touch with each other: a rescue team, a hospital, a ship's crew, people working far from home. They share maps, positions, warnings and orders through computers.</p>
+    <p>Two things can go badly wrong. A stranger can break in, and then read what is sent, change it, or shut things off. Or the connection to the outside world can be cut, and everything that depended on it stops.</p>
+    <p>Most designs guard against the first problem with a strong front gate, and have no answer to the second. Our team's work is a different design. It is hard to find, it checks everyone every time, it keeps what is sent locked, it is designed to keep working when it is cut off, and if something does go wrong it can be wiped and set up again quickly.</p>
+    <div class="short"><b>In one sentence</b><p>We make it hard to break in, and quick to start again clean if someone does.</p></div>
+  </div>
+</section>
+<section id="basics">
+  <div class="wrap">
+    <p class="num">First, five ordinary words</p>
+    <h2>Computers send each other letters</h2>
+    <figure><svg viewBox="0 0 360 196" role="img" aria-label="A small town of streets. The houses are computers, the post office is a server, and a letter on the street is a message." fill="none" stroke-linecap="round" stroke-linejoin="round">
+<path d="M20 76 H340 M20 150 H340 M96 30 V182 M240 30 V182" stroke="var(--rule)" stroke-width="8"/>
+<path d="M25.0 70 V40 L48 21.4 L71.0 40 V70 Z" fill="var(--panel)" stroke="var(--ink)" stroke-width="2.4"/>
+<path d="M43 70 v-13 h10 v13" stroke="var(--ink)" stroke-width="2"/>
+<path d="M147.0 70 V40 L170 21.4 L193.0 40 V70 Z" fill="var(--panel)" stroke="var(--ink)" stroke-width="2.4"/>
+<path d="M165 70 v-13 h10 v13" stroke="var(--ink)" stroke-width="2"/>
+<path d="M277.0 144 V114 L300 95.4 L323.0 114 V144 Z" fill="var(--panel)" stroke="var(--ink)" stroke-width="2.4"/>
+<path d="M295 144 v-13 h10 v13" stroke="var(--ink)" stroke-width="2"/>
+<path d="M25.0 144 V114 L48 95.4 L71.0 114 V144 Z" fill="var(--panel)" stroke="var(--ink)" stroke-width="2.4"/>
+<path d="M43 144 v-13 h10 v13" stroke="var(--ink)" stroke-width="2"/>
+<path d="M146 150 V112 H206 V150 Z" fill="var(--panel)" stroke="var(--ink)" stroke-width="2.4"/>
+<path d="M140 112 H212 M158 150 v-16 h12 v16 M184 124 h12 v10 h-12 z" stroke="var(--ink)" stroke-width="2"/>
+<path d="M206 112 V92 h13 l-4 5 l4 5 h-13" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/>
+<rect x="226.0" y="36.5" width="28" height="19" rx="3" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/>
+<path d="M227.5 38.5 L240 48 L252.5 38.5" stroke="var(--accent)" stroke-width="2"/>
+<text x="48" y="172" font-size="13.5" class="svg-q" text-anchor="middle" stroke="none">computer</text>
+<text x="176" y="172" font-size="13.5" class="svg-q" text-anchor="middle" stroke="none">server</text>
+<text x="284" y="51" font-size="13.5" class="svg-q" text-anchor="middle" stroke="none">message</text>
+</svg></figure>
+    <p>A <dfn>program</dfn> is a set of instructions that a computer follows, the way a cook follows a recipe.</p>
+    <p>A <dfn>message</dfn> is anything one computer sends to another: a line of text, a position on a map, a photograph, a reading from an instrument. You can think of each message as a letter.</p>
+    <p>A <dfn>computer network</dfn> is a group of computers that can send messages to each other, the way houses on connected streets can send each other letters.</p>
+    <p>The <dfn>internet</dfn> is the largest network there is: the public streets that almost every computer in the world shares.</p>
+    <p>A <dfn>server</dfn> is a computer whose job is to run programs for many other computers. It is to a network what a post office is to a town.</p>
+    <div class="short"><b>In one sentence</b><p>A network is streets, computers are houses, and messages are letters.</p></div>
+  </div>
+</section>
+<section id="locks">
+  <div class="wrap">
+    <p class="num">Locks and keys</p>
+    <h2>Locking a message, and the difference between unlocking and translating</h2>
+    <figure><svg viewBox="0 0 360 228" role="img" aria-label="Two rows. Decode: a page in one alphabet becomes a page in another, with no key. Decrypt: a locked box and a key become an open box with the page inside." fill="none" stroke-linecap="round" stroke-linejoin="round">
+<text x="22" y="30" font-size="13.5" class="svg-t" text-anchor="start" stroke="none" font-weight="700">Decode: translate. No secret is needed.</text>
+<rect x="61.0" y="62.0" width="26" height="32" rx="3" fill="var(--panel)" stroke="var(--ink)" stroke-width="2"/>
+<path d="M66.0 71.0 q3 -4 5 0 t5 0 t5 0" stroke="var(--quiet)" stroke-width="1.8"/>
+<path d="M66.0 78.0 q3 -4 5 0 t5 0 t5 0" stroke="var(--quiet)" stroke-width="1.8"/>
+<path d="M66.0 85.0 q3 -4 5 0 t5 0 t5 0" stroke="var(--quiet)" stroke-width="1.8"/>
+<path d="M110 78 L224.0 78.0" stroke="var(--quiet)" stroke-width="2.2"/><path d="M232 78 L224.0 73.5 L224.0 82.5 Z" fill="var(--quiet)" stroke="var(--quiet)" stroke-width="1"/>
+<rect x="257.0" y="62.0" width="26" height="32" rx="3" fill="var(--panel)" stroke="var(--ink)" stroke-width="2"/>
+<path d="M262.0 71.0 h16" stroke="var(--quiet)" stroke-width="1.8"/>
+<path d="M262.0 78.0 h16" stroke="var(--quiet)" stroke-width="1.8"/>
+<path d="M262.0 85.0 h11" stroke="var(--quiet)" stroke-width="1.8"/>
+<path d="M150 66 h10 m-5 -5 v10 M176 66 h10 M176 72 h10" stroke="var(--quiet)" stroke-width="0"/>
+<text x="171" y="68" font-size="13.5" class="svg-q" text-anchor="middle" stroke="none">same words,</text>
+<text x="171" y="98" font-size="13.5" class="svg-q" text-anchor="middle" stroke="none">another alphabet</text>
+<path d="M20 124 H340" stroke="var(--rule)" stroke-width="2" stroke-dasharray="2 6"/>
+<text x="22" y="152" font-size="13.5" class="svg-t" text-anchor="start" stroke="none" font-weight="700">Decrypt: unlock. Only the key opens it.</text>
+<rect x="52" y="178" width="46" height="32" rx="4" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2.4"/>
+<path d="M70.5 191.25 v-4.0 a4.5 4.5 0 0 1 9.0 0 v4.0" stroke="var(--accent)" stroke-width="2.2"/>
+<rect x="67.5" y="191.25" width="15.0" height="11.5" rx="2.4" fill="var(--accent)" stroke="none"/>
+<circle cx="128" cy="194" r="6.0" stroke="var(--accent)" stroke-width="2.4"/><path d="M134.0 194 h17.0 M145.0 194 v5.5 M150.0 194 v4.0" stroke="var(--accent)" stroke-width="2.4"/>
+<path d="M170 194 L224.0 194.0" stroke="var(--quiet)" stroke-width="2.2"/><path d="M232 194 L224.0 189.5 L224.0 198.5 Z" fill="var(--quiet)" stroke="var(--quiet)" stroke-width="1"/>
+<rect x="247" y="186" width="46" height="24" rx="4" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2.4"/>
+<path d="M247 186 l8 -14 h46 l-8 14" fill="var(--panel)" stroke="var(--accent)" stroke-width="2.4"/>
+<rect x="259.0" y="163.0" width="22" height="26" rx="3" fill="var(--panel)" stroke="var(--ink)" stroke-width="2"/>
+<path d="M264.0 172.0 h12" stroke="var(--quiet)" stroke-width="1.8"/>
+<path d="M264.0 179.0 h7" stroke="var(--quiet)" stroke-width="1.8"/>
+</svg></figure>
+    <p><dfn>Encryption</dfn> is scrambling a message so that it looks like nonsense to everyone except the person meant to read it. It is the same idea as putting a letter in a locked box. On this page, when we say a message is <dfn>sealed</dfn>, we mean it is encrypted.</p>
+    <p>A <dfn>key</dfn> is what opens the box. On a computer a key is a very long secret number. Whoever has the right key can open the box. Nobody else can.</p>
+    <p>To <dfn>decrypt</dfn> a message is to unlock it with the key and read it.</p>
+    <p>To <dfn>decode</dfn> a message is something different, and people often confuse the two. Decoding is translating. Different machines write the same information in different ways, like people writing in different languages, and decoding turns one machine's way of writing into another's. No secret is involved. Anyone who knows the language can decode. Only the holder of the key can decrypt.</p>
+    <div class="short"><b>In one sentence</b><p>Decrypting is unlocking with a secret key; decoding is translating, and needs no secret.</p></div>
+  </div>
+</section>
+<section id="route">
+  <div class="wrap">
+    <p class="num">A private route</p>
+    <h2>Our network is a sealed route laid across the public roads</h2>
+    <figure><svg viewBox="0 0 360 212" role="img" aria-label="A grid of public streets with houses. A teal route runs along the same streets between two teal houses, and a locked envelope travels inside it." fill="none" stroke-linecap="round" stroke-linejoin="round">
+<path d="M20 60 H340 M20 122 H340 M20 184 H340 M70 26 V200 M180 26 V200 M290 26 V200" stroke="var(--rule)" stroke-width="8"/>
+<path d="M105.0 54 V28 L125 11.9 L145.0 28 V54 Z" fill="var(--panel)" stroke="var(--ink)" stroke-width="2.4"/>
+<path d="M120 54 v-13 h10 v13" stroke="var(--ink)" stroke-width="2"/>
+<path d="M215.0 116 V90 L235 73.9 L255.0 90 V116 Z" fill="var(--panel)" stroke="var(--ink)" stroke-width="2.4"/>
+<path d="M230 116 v-13 h10 v13" stroke="var(--ink)" stroke-width="2"/>
+<path d="M105.0 178 V152 L125 135.9 L145.0 152 V178 Z" fill="var(--panel)" stroke="var(--ink)" stroke-width="2.4"/>
+<path d="M120 178 v-13 h10 v13" stroke="var(--ink)" stroke-width="2"/>
+<path d="M303.0 54 V30 L320 15.1 L337.0 30 V54 Z" fill="var(--panel)" stroke="var(--ink)" stroke-width="2.4"/>
+<path d="M315 54 v-13 h10 v13" stroke="var(--ink)" stroke-width="2"/>
+<path d="M70 108 V60 H180 V122 H290 V170" stroke="var(--accent)" stroke-width="8"/>
+<path d="M70 108 V60 H180 V122 H290 V170" stroke="var(--panel)" stroke-width="2.4" stroke-dasharray="1 7"/>
+<path d="M20.0 116 V90 L40 73.9 L60.0 90 V116 Z" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2.4"/>
+<path d="M35 116 v-13 h10 v13" stroke="var(--accent)" stroke-width="2"/>
+<rect x="47" y="95" width="9" height="9" rx="1.5" fill="var(--accent)" stroke="none"/>
+<path d="M298.0 178 V152 L318 135.9 L338.0 152 V178 Z" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2.4"/>
+<path d="M313 178 v-13 h10 v13" stroke="var(--accent)" stroke-width="2"/>
+<rect x="325" y="157" width="9" height="9" rx="1.5" fill="var(--accent)" stroke="none"/>
+<rect x="167.0" y="83.0" width="26" height="18" rx="3" fill="var(--panel)" stroke="var(--accent)" stroke-width="2"/>
+<path d="M168.5 85.0 L180 94 L191.5 85.0" stroke="var(--accent)" stroke-width="2"/>
+<circle cx="191.0" cy="97.56" r="9.36" fill="var(--panel)" stroke="none"/>
+<path d="M187.76 95.86 v-2.88 a3.2399999999999998 3.2399999999999998 0 0 1 6.4799999999999995 0 v2.88" stroke="var(--accent)" stroke-width="1.6"/>
+<rect x="185.6" y="95.86" width="10.799999999999999" height="8.28" rx="1.7" fill="var(--accent)" stroke="none"/>
+</svg></figure>
+    <p>Messages have to travel over something. A <dfn>link</dfn>, also called a <dfn>transport</dfn>, is whatever carries them: a cable in the ground, a mobile phone network, a satellite.</p>
+    <p>The <dfn>underlay</dfn> is the name for those shared links taken together. It is the public road system that everyone uses.</p>
+    <p>An <dfn>overlay</dfn> is a private route laid across those public roads. The letters still travel on the same roads as everyone else's, but each one is locked, and only the houses that belong to the route can open them. The network our team builds is an overlay, and it can ride on any link that is available.</p>
+    <div class="short"><b>In one sentence</b><p>We do not build new roads; we build a private, locked route across the roads that already exist.</p></div>
+  </div>
+</section>
+<section id="hidden">
+  <div class="wrap">
+    <p class="num">Hidden</p>
+    <h2>A house with no door on the street</h2>
+    <figure><svg viewBox="0 0 360 194" role="img" aria-label="A street of houses. Three have a door on the street. The teal house has no door, and a stranger knocking at its wall gets no answer." fill="none" stroke-linecap="round" stroke-linejoin="round">
+<path d="M18 150 H342" stroke="var(--rule)" stroke-width="2.4"/>
+<path d="M23.0 150 V112 L48 88.4 L73.0 112 V150 Z" fill="var(--panel)" stroke="var(--ink)" stroke-width="2.4"/>
+<path d="M43 150 v-13 h10 v13" stroke="var(--ink)" stroke-width="2"/>
+<path d="M87.0 150 V112 L112 88.4 L137.0 112 V150 Z" fill="var(--panel)" stroke="var(--ink)" stroke-width="2.4"/>
+<path d="M107 150 v-13 h10 v13" stroke="var(--ink)" stroke-width="2"/>
+<path d="M195.0 150 V104 L226 75.5 L257.0 104 V150 Z" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2.4"/>
+<rect x="233" y="109" width="9" height="9" rx="1.5" fill="var(--accent)" stroke="none"/>
+<path d="M285.0 150 V112 L310 88.4 L335.0 112 V150 Z" fill="var(--panel)" stroke="var(--ink)" stroke-width="2.4"/>
+<path d="M305 150 v-13 h10 v13" stroke="var(--ink)" stroke-width="2"/>
+<circle cx="170" cy="123.0" r="6.0" fill="var(--panel)" stroke="var(--quiet)" stroke-width="2.2"/><path d="M161.0 150 v-8.0 a9.0 9.0 0 0 1 18.0 0 v8.0" fill="var(--panel)" stroke="var(--quiet)" stroke-width="2.2"/>
+<path d="M184 128 l8 -3 M184 134 h9 M184 140 l8 3" stroke="var(--quiet)" stroke-width="2"/>
+<text x="226" y="178" font-size="13.5" class="svg-q" text-anchor="middle" stroke="none">no door, and no answer</text>
+</svg></figure>
+    <p>Most of what you use on the internet, such as a shop's website, has a public address. It is like a shop with a door on the street: anyone can find it, walk up and try the handle.</p>
+    <p>The computers in our network have no door on the street. If a stranger sends one of them a message, it does not reply at all, not even to say no. A stranger who goes looking finds nothing that answers.</p>
+    <p>There is one exception, and it is on purpose. A new computer needs some way to join, so the network has a single public name that is used only for joining. The newcomer must present a key that works one time. After that it talks to the other computers directly, and the name is not used again.</p>
+    <div class="short"><b>In one sentence</b><p>A stranger who knocks gets no answer, because there is no door to knock on.</p></div>
+  </div>
+</section>
+<section id="own">
+  <div class="wrap">
+    <p class="num">Your own computers</p>
+    <h2>Everything that matters stays on computers you own</h2>
+    <figure><svg viewBox="0 0 360 228" role="img" aria-label="Two sites, each a house that holds its own computers and its own key. Between them a rented computer in the sky carries a locked envelope and holds no key." fill="none" stroke-linecap="round" stroke-linejoin="round">
+<path d="M142 66 a17 17 0 0 1 14 -27 a23 23 0 0 1 44 3 a16 16 0 0 1 14 24 Z" fill="var(--panel)" stroke="var(--line)" stroke-width="2.2" stroke-dasharray="4 5"/>
+<rect x="167.0" y="45.0" width="26" height="18" rx="3" fill="var(--panel)" stroke="var(--accent)" stroke-width="2"/>
+<path d="M168.5 47.0 L180 56 L191.5 47.0" stroke="var(--accent)" stroke-width="2"/>
+<circle cx="191.0" cy="59.56" r="9.36" fill="var(--panel)" stroke="none"/>
+<path d="M187.76 57.86 v-2.88 a3.2399999999999998 3.2399999999999998 0 0 1 6.4799999999999995 0 v2.88" stroke="var(--accent)" stroke-width="1.6"/>
+<rect x="185.6" y="57.86" width="10.799999999999999" height="8.28" rx="1.7" fill="var(--accent)" stroke="none"/>
+<path d="M22 196 V128 L78 96 L134 128 V196 Z" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2.4"/>
+<path d="M226 196 V128 L282 96 L338 128 V196 Z" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2.4"/>
+<rect x="38.0" y="165.0" width="24.0" height="16.0" rx="2.5" fill="var(--panel)" stroke="var(--accent)" stroke-width="2"/><path d="M43.0 186 h14.0 M50 186 v-5.0" stroke="var(--accent)" stroke-width="2"/>
+<rect x="94.0" y="165.0" width="24.0" height="16.0" rx="2.5" fill="var(--panel)" stroke="var(--accent)" stroke-width="2"/><path d="M99.0 186 h14.0 M106 186 v-5.0" stroke="var(--accent)" stroke-width="2"/>
+<circle cx="64" cy="142" r="5.4" stroke="var(--accent)" stroke-width="2.2"/><path d="M69.4 142 h15.3 M79.3 142 v4.95 M83.8 142 v3.6" stroke="var(--accent)" stroke-width="2.2"/>
+<rect x="242.0" y="165.0" width="24.0" height="16.0" rx="2.5" fill="var(--panel)" stroke="var(--accent)" stroke-width="2"/><path d="M247.0 186 h14.0 M254 186 v-5.0" stroke="var(--accent)" stroke-width="2"/>
+<rect x="298.0" y="165.0" width="24.0" height="16.0" rx="2.5" fill="var(--panel)" stroke="var(--accent)" stroke-width="2"/><path d="M303.0 186 h14.0 M310 186 v-5.0" stroke="var(--accent)" stroke-width="2"/>
+<circle cx="268" cy="142" r="5.4" stroke="var(--accent)" stroke-width="2.2"/><path d="M273.4 142 h15.3 M283.3 142 v4.95 M287.8 142 v3.6" stroke="var(--accent)" stroke-width="2.2"/>
+<path d="M104 104 L143.6 74.8" stroke="var(--accent)" stroke-width="2.4" stroke-dasharray="1 6"/><path d="M150 70 L140.9 71.1 L146.2 78.4 Z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1"/>
+<path d="M212 70 L249.7 99.1" stroke="var(--accent)" stroke-width="2.4" stroke-dasharray="1 6"/><path d="M256 104 L252.4 95.5 L246.9 102.7 Z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1"/>
+<text x="180" y="20" font-size="13.5" class="svg-q" text-anchor="middle" stroke="none">a rented computer carries it, with no key</text>
+<text x="78" y="216" font-size="13.5" class="svg-q" text-anchor="middle" stroke="none">one site, its own key</text>
+<text x="282" y="216" font-size="13.5" class="svg-q" text-anchor="middle" stroke="none">another, its own key</text>
+</svg></figure>
+    <p>A <dfn>site</dfn> is one place and the group of computers there: an office, a vehicle, a camp.</p>
+    <p>In our design, each site runs everything it needs on its own computers, which its owner holds and controls. The information stays there.</p>
+    <p>Sometimes two computers cannot reach each other directly. Then a <dfn>relay</dfn> helps. A relay is a rented computer somewhere on the internet that passes sealed letters along. It is like a courier who carries a locked box from one house to another. The courier has no key, so the courier cannot read what is inside or change it, and any courier can be replaced by another.</p>
+    <div class="short"><b>In one sentence</b><p>Rented computers only carry locked boxes; the keys and the contents never leave your own machines.</p></div>
+  </div>
+</section>
+<section id="trust">
+  <div class="wrap">
+    <p class="num">Checking everyone, every time</p>
+    <h2>No inside and no outside</h2>
+    <figure><svg viewBox="0 0 360 226" role="img" aria-label="Two buildings. In the first, one guard stands at the front door and every room inside is open. In the second, every door has its own lock." fill="none" stroke-linecap="round" stroke-linejoin="round">
+<text x="90" y="28" font-size="13.5" class="svg-t" text-anchor="middle" stroke="none" font-weight="700">One guard at the door</text>
+<rect x="20" y="46" width="140" height="112" rx="5" fill="var(--panel)" stroke="var(--ink)" stroke-width="2.4"/>
+<path d="M20 102 H160 M90 46 V158" stroke="var(--ink)" stroke-width="2.2"/>
+<path d="M46 102 H64" stroke="var(--panel)" stroke-width="5"/>
+<path d="M116 102 H134" stroke="var(--panel)" stroke-width="5"/>
+<path d="M90 65 V83" stroke="var(--panel)" stroke-width="5"/>
+<path d="M90 121 V139" stroke="var(--panel)" stroke-width="5"/>
+<path d="M48 158 H64" stroke="var(--panel)" stroke-width="5"/>
+<circle cx="56" cy="173.7" r="5.4" fill="var(--panel)" stroke="var(--ink)" stroke-width="2.2"/><path d="M47.9 198 v-7.2 a8.1 8.1 0 0 1 16.2 0 v7.2" fill="var(--panel)" stroke="var(--ink)" stroke-width="2.2"/>
+<text x="90" y="214" font-size="13.5" class="svg-q" text-anchor="middle" stroke="none">every room is open</text>
+<text x="270" y="28" font-size="13.5" class="svg-t" text-anchor="middle" stroke="none" font-weight="700">Every door checks</text>
+<rect x="200" y="46" width="140" height="112" rx="5" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2.4"/>
+<path d="M200 102 H340 M270 46 V158" stroke="var(--accent)" stroke-width="2.2"/>
+<circle cx="235" cy="100.3" r="11.049999999999999" fill="var(--accent-soft)" stroke="none"/>
+<path d="M231.175 98.1125 v-3.4 a3.8249999999999997 3.8249999999999997 0 0 1 7.6499999999999995 0 v3.4" stroke="var(--accent)" stroke-width="1.9"/>
+<rect x="228.625" y="98.1125" width="12.75" height="9.775" rx="2.0" fill="var(--accent)" stroke="none"/>
+<circle cx="305" cy="100.3" r="11.049999999999999" fill="var(--accent-soft)" stroke="none"/>
+<path d="M301.175 98.1125 v-3.4 a3.8249999999999997 3.8249999999999997 0 0 1 7.6499999999999995 0 v3.4" stroke="var(--accent)" stroke-width="1.9"/>
+<rect x="298.625" y="98.1125" width="12.75" height="9.775" rx="2.0" fill="var(--accent)" stroke="none"/>
+<circle cx="270" cy="72.3" r="11.049999999999999" fill="var(--accent-soft)" stroke="none"/>
+<path d="M266.175 70.1125 v-3.4 a3.8249999999999997 3.8249999999999997 0 0 1 7.6499999999999995 0 v3.4" stroke="var(--accent)" stroke-width="1.9"/>
+<rect x="263.625" y="70.1125" width="12.75" height="9.775" rx="2.0" fill="var(--accent)" stroke="none"/>
+<circle cx="270" cy="128.3" r="11.049999999999999" fill="var(--accent-soft)" stroke="none"/>
+<path d="M266.175 126.1125 v-3.4 a3.8249999999999997 3.8249999999999997 0 0 1 7.6499999999999995 0 v3.4" stroke="var(--accent)" stroke-width="1.9"/>
+<rect x="263.625" y="126.1125" width="12.75" height="9.775" rx="2.0" fill="var(--accent)" stroke="none"/>
+<path d="M228 158 H244" stroke="var(--accent-soft)" stroke-width="5"/>
+<circle cx="236" cy="156.3" r="11.049999999999999" fill="var(--accent-soft)" stroke="none"/>
+<path d="M232.175 154.1125 v-3.4 a3.8249999999999997 3.8249999999999997 0 0 1 7.6499999999999995 0 v3.4" stroke="var(--accent)" stroke-width="1.9"/>
+<rect x="229.625" y="154.1125" width="12.75" height="9.775" rx="2.0" fill="var(--accent)" stroke="none"/>
+<text x="270" y="214" font-size="13.5" class="svg-q" text-anchor="middle" stroke="none">every door is locked</text>
+</svg></figure>
+    <p>Many networks work like a building with one guard at the front door. Once you are past the guard, every room is open to you. If a stranger gets past the guard once, the stranger can go everywhere.</p>
+    <p>Ours works like a building where every single door checks your badge, every time. Being inside the building earns you nothing.</p>
+    <p>The badge is called an <dfn>identity</dfn>: proof of exactly who or what is asking. A person has one. So does each computer, and so does each program.</p>
+    <p>This approach has a name, <dfn>zero trust</dfn>. It means that nothing is trusted because of where it is. Each time one thing wants to talk to another, four questions are asked. Who is asking? Is there a written rule that allows these two to talk? Is this particular action allowed? Is the badge still good, or has it been taken away? If any answer is no, nothing happens.</p>
+    <div class="short"><b>In one sentence</b><p>There is no trusted inside to sneak into, because every door checks every visitor.</p></div>
+  </div>
+</section>
+<section id="layers">
+  <div class="wrap">
+    <p class="num">More than one lock</p>
+    <h2>A message is locked for the journey, and can be locked again for its readers</h2>
+    <figure><svg viewBox="0 0 360 200" role="img" aria-label="A message inside two envelopes, one inside the other. The outer one is locked for the journey between two computers. The inner one is locked for the named readers." fill="none" stroke-linecap="round" stroke-linejoin="round">
+<rect x="22" y="26" width="196" height="150" rx="16" fill="var(--panel)" stroke="var(--ink)" stroke-width="2.6"/>
+<rect x="50" y="52" width="140" height="98" rx="12" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2.6"/>
+<rect x="93.0" y="78.0" width="54" height="46" rx="3" fill="var(--panel)" stroke="var(--ink)" stroke-width="2"/>
+<path d="M98.0 87.0 h44" stroke="var(--quiet)" stroke-width="1.8"/>
+<path d="M98.0 94.0 h44" stroke="var(--quiet)" stroke-width="1.8"/>
+<path d="M98.0 101.0 h44" stroke="var(--quiet)" stroke-width="1.8"/>
+<path d="M98.0 108.0 h39" stroke="var(--quiet)" stroke-width="1.8"/>
+<circle cx="218" cy="49.9" r="13.65" fill="var(--panel)" stroke="none"/>
+<path d="M213.275 46.9625 v-4.2 a4.7250000000000005 4.7250000000000005 0 0 1 9.450000000000001 0 v4.2" stroke="var(--ink)" stroke-width="2.3"/>
+<rect x="210.125" y="46.9625" width="15.75" height="12.075000000000001" rx="2.5" fill="var(--ink)" stroke="none"/>
+<circle cx="190" cy="129.9" r="13.65" fill="var(--accent-soft)" stroke="none"/>
+<path d="M185.275 126.9625 v-4.2 a4.7250000000000005 4.7250000000000005 0 0 1 9.450000000000001 0 v4.2" stroke="var(--accent)" stroke-width="2.3"/>
+<rect x="182.125" y="126.9625" width="15.75" height="12.075000000000001" rx="2.5" fill="var(--accent)" stroke="none"/>
+<path d="M234 52 H250 M206 132 H250 M148 101 H236 q14 0 14 0" stroke="var(--line)" stroke-width="1.8"/>
+<text x="256" y="49" font-size="13.5" class="svg-t" text-anchor="start" stroke="none">a lock for the</text>
+<text x="256" y="65" font-size="13.5" class="svg-t" text-anchor="start" stroke="none">journey</text>
+<text x="256" y="97" font-size="13.5" class="svg-t" text-anchor="start" stroke="none">the message</text>
+<text x="256" y="129" font-size="13.5" class="svg-t" text-anchor="start" stroke="none">a lock for its</text>
+<text x="256" y="145" font-size="13.5" class="svg-t" text-anchor="start" stroke="none">named readers</text>
+</svg></figure>
+    <p>Every message between two of our computers travels inside a lock that only those two computers can open.</p>
+    <p>Sensitive information can get a second lock. The owner seals it for a named list of readers, and only those readers hold keys. The computers that carry and store it in between hold no key at all. That includes the servers that our own programs run on.</p>
+    <p>The same is true for the place where secrets such as passwords are kept. A secret is locked on your own computer or phone before it is stored, so the store cannot read what it is holding.</p>
+    <div class="short"><b>In one sentence</b><p>If someone steals a server, what they get is a pile of locked boxes.</p></div>
+  </div>
+</section>
+<section id="verified">
+  <div class="wrap">
+    <p class="num">Nothing unchecked runs</p>
+    <h2>Every program is checked before it is allowed to start</h2>
+    <figure><svg viewBox="0 0 360 220" role="img" aria-label="Two rows. A jar with its seal intact is checked and goes onto a computer. A jar with a broken seal is checked and stopped before it reaches the computer." fill="none" stroke-linecap="round" stroke-linejoin="round">
+<rect x="33" y="42" width="38" height="34" rx="4" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2.4"/>
+<path d="M33 59 H71" stroke="var(--accent)" stroke-width="2.4"/>
+<circle cx="52" cy="59" r="7.5" fill="var(--accent)" stroke="none"/>
+<path d="M82 60 L138.0 60.0" stroke="var(--accent)" stroke-width="2.2"/><path d="M146 60 L138.0 55.5 L138.0 64.5 Z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1"/>
+<circle cx="180" cy="60" r="20" fill="var(--panel)" stroke="var(--accent)" stroke-width="2.2"/>
+<circle cx="176" cy="56" r="7" stroke="var(--accent)" stroke-width="2.2"/><path d="M181 61 l7 7" stroke="var(--accent)" stroke-width="2.6"/>
+<path d="M206 60 L260.0 60.0" stroke="var(--accent)" stroke-width="2.2"/><path d="M268 60 L260.0 55.5 L260.0 64.5 Z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1"/>
+<rect x="285.0" y="47.75" width="30.0" height="20.0" rx="2.5" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/><path d="M291.25 74 h17.5 M300 74 v-6.25" stroke="var(--accent)" stroke-width="2"/>
+<circle cx="326" cy="42" r="10" fill="var(--accent)" stroke="none"/><path d="M321.5 42 l3.3 3.6 l6.0 -7.0" stroke="var(--on-accent)" stroke-width="2.4"/>
+<text x="180" y="100" font-size="13.5" class="svg-q" text-anchor="middle" stroke="none">seal and contents match: it runs</text>
+<path d="M20 116 H340" stroke="var(--rule)" stroke-width="2" stroke-dasharray="2 6"/>
+<rect x="33" y="146" width="38" height="34" rx="4" fill="var(--panel)" stroke="var(--quiet)" stroke-width="2.4"/>
+<path d="M33 163 H46 M59 163 H71" stroke="var(--quiet)" stroke-width="2.4"/>
+<path d="M46 158 l5 4 l-4 4 l6 4" stroke="var(--ink)" stroke-width="2.2"/>
+<path d="M82 164 L138.0 164.0" stroke="var(--quiet)" stroke-width="2.2"/><path d="M146 164 L138.0 159.5 L138.0 168.5 Z" fill="var(--quiet)" stroke="var(--quiet)" stroke-width="1"/>
+<circle cx="180" cy="164" r="20" fill="var(--panel)" stroke="var(--ink)" stroke-width="2.2"/>
+<circle cx="176" cy="160" r="7" stroke="var(--ink)" stroke-width="2.2"/><path d="M181 165 l7 7" stroke="var(--ink)" stroke-width="2.6"/>
+<path d="M222 146 V182" stroke="var(--ink)" stroke-width="4"/>
+<rect x="285.0" y="151.75" width="30.0" height="20.0" rx="2.5" fill="var(--panel)" stroke="var(--line)" stroke-width="2"/><path d="M291.25 178 h17.5 M300 178 v-6.25" stroke="var(--line)" stroke-width="2"/>
+<text x="180" y="206" font-size="13.5" class="svg-q" text-anchor="middle" stroke="none">seal broken or contents changed: refused</text>
+</svg></figure>
+    <p>Programs are written by people as text. A <dfn>build</dfn> turns that text into a program a computer can run, the way baking turns a recipe into bread.</p>
+    <p>A <dfn>release</dfn> is one finished, numbered version of a program that is ready for others to use.</p>
+    <p>An <dfn>image</dfn> is a complete, packed copy of a program with everything it needs, ready to run. Think of a sealed package from a factory.</p>
+    <p>A <dfn>deployment</dfn> is the act of putting a program onto the computers where it will run.</p>
+    <p>Before anything is put onto a computer, it is checked the way you would check that sealed package. Is the maker's seal on it, and is the seal real? Are the contents exactly what the label says, with nothing added or swapped? If either check fails, the program is refused and never starts.</p>
+    <div class="short"><b>In one sentence</b><p>A program that has been tampered with is refused before it reaches a single computer.</p></div>
+  </div>
+</section>
+<section id="quantum">
+  <div class="wrap">
+    <p class="num">A problem from the future</p>
+    <h2>Locked messages copied today could be opened years from now</h2>
+    <figure><svg viewBox="0 0 360 218" role="img" aria-label="A line from today to years later. Today a locked box is copied and the copy is kept. Years later one of its two locks has been opened and the second lock still holds." fill="none" stroke-linecap="round" stroke-linejoin="round">
+<path d="M24 152 H322" stroke="var(--rule)" stroke-width="2.4"/>
+<path d="M300 152 L330.0 152.0" stroke="var(--line)" stroke-width="2.2"/><path d="M338 152 L330.0 147.5 L330.0 156.5 Z" fill="var(--line)" stroke="var(--line)" stroke-width="1"/>
+<circle cx="62" cy="152" r="5" fill="var(--ink)" stroke="none"/><circle cx="262" cy="152" r="5" fill="var(--ink)" stroke="none"/>
+<text x="62" y="176" font-size="13" class="svg-t" text-anchor="middle" stroke="none" font-weight="700">today</text>
+<text x="262" y="176" font-size="13" class="svg-t" text-anchor="middle" stroke="none" font-weight="700">years later</text>
+<rect x="41" y="69" width="42" height="30" rx="4" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2.4"/>
+<path d="M57.725 81.5375 v-3.8 a4.2749999999999995 4.2749999999999995 0 0 1 8.549999999999999 0 v3.8" stroke="var(--accent)" stroke-width="2.1"/>
+<rect x="54.875" y="81.5375" width="14.25" height="10.924999999999999" rx="2.3" fill="var(--accent)" stroke="none"/>
+<rect x="41" y="25" width="42" height="30" rx="4" fill="none" stroke="var(--quiet)" stroke-width="2.4" stroke-dasharray="3 5"/>
+<text x="96" y="28" font-size="13.5" class="svg-q" text-anchor="start" stroke="none">a copy is taken and kept</text>
+<path d="M90 44 C160 46 196 62 234 84" stroke="var(--quiet)" stroke-width="2" stroke-dasharray="2 6"/>
+<rect x="241" y="81" width="42" height="30" rx="4" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2.4"/>
+<path d="M246.175 94.1125 v-3.4 a3.8249999999999997 3.8249999999999997 0 0 1 7.6499999999999995 0" stroke="var(--quiet)" stroke-width="1.9"/>
+<rect x="243.625" y="94.1125" width="12.75" height="9.775" rx="2.0" fill="var(--quiet)" stroke="none"/>
+<path d="M270.175 94.1125 v-3.4 a3.8249999999999997 3.8249999999999997 0 0 1 7.6499999999999995 0 v3.4" stroke="var(--accent)" stroke-width="1.9"/>
+<rect x="267.625" y="94.1125" width="12.75" height="9.775" rx="2.0" fill="var(--accent)" stroke="none"/>
+<text x="262" y="132" font-size="13.5" class="svg-q" text-anchor="middle" stroke="none">one lock still holds</text>
+<text x="180" y="204" font-size="13.5" class="svg-q" text-anchor="middle" stroke="none">Two locks together: an old kind and a new kind.</text>
+</svg></figure>
+    <p>A new kind of computer, called a quantum computer, is being developed. It is expected to be able to break some of the locks that protect messages today.</p>
+    <p>That creates a danger now, not only later. Someone can copy locked messages today, keep them, and wait. This is called <dfn>harvest now, decrypt later</dfn>. For information that must stay private for many years, a lock that will fail in ten years is already not good enough.</p>
+    <p><dfn>Post-quantum</dfn> locks are designed to hold even against such a computer. Our design uses two locks together: the usual kind, and a post-quantum kind. To read the message, someone would have to break both.</p>
+        <p class="state">Where this stands: the two locks together are working today on the part of the network that delivers messages between programs. For the connections between computers it is built and not yet switched on. For connections between different organizations it is planned.</p>
+    <div class="short"><b>In one sentence</b><p>We add a second lock that is built to hold against the code-breaking computers of the future.</p></div>
+  </div>
+</section>
+<section id="decoys">
+  <div class="wrap">
+    <p class="num">Decoys</p>
+    <h2>A door that leads nowhere, and rings a bell</h2>
+    <figure><svg viewBox="0 0 360 192" role="img" aria-label="A wall with three doors. Two are real. The third is a decoy that leads nowhere, and a bell rings above it when a stranger tries it." fill="none" stroke-linecap="round" stroke-linejoin="round">
+<path d="M18 150 H342 M18 58 H342" stroke="var(--rule)" stroke-width="2.4"/>
+<rect x="47" y="76" width="38" height="74" rx="3" fill="var(--panel)" stroke="var(--ink)" stroke-width="2.4"/><circle cx="76" cy="116" r="2.6" fill="var(--ink)" stroke="none"/>
+<rect x="141" y="76" width="38" height="74" rx="3" fill="var(--panel)" stroke="var(--ink)" stroke-width="2.4"/><circle cx="170" cy="116" r="2.6" fill="var(--ink)" stroke="none"/>
+<rect x="243" y="76" width="38" height="74" rx="3" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2.4" stroke-dasharray="3 5"/><circle cx="272" cy="116" r="2.6" fill="var(--accent)" stroke="none"/>
+<path d="M250 44 a12 12 0 0 1 24 0 v8 l5 6 h-34 l5 -6 z" fill="var(--accent)" stroke="var(--accent)" stroke-width="2"/>
+<circle cx="262" cy="62" r="2.6" fill="var(--accent)" stroke="none"/>
+<path d="M240 34 q-7 10 0 22 M284 34 q7 10 0 22 M232 28 q-11 16 0 34 M292 28 q11 16 0 34" stroke="var(--accent)" stroke-width="2"/>
+<circle cx="304" cy="124.35" r="5.699999999999999" fill="var(--panel)" stroke="var(--quiet)" stroke-width="2.2"/><path d="M295.45 150 v-7.6 a8.549999999999999 8.549999999999999 0 0 1 17.099999999999998 0 v7.6" fill="var(--panel)" stroke="var(--quiet)" stroke-width="2.2"/>
+<text x="113" y="176" font-size="13.5" class="svg-q" text-anchor="middle" stroke="none">real doors</text>
+<text x="262" y="176" font-size="13.5" class="svg-q" text-anchor="middle" stroke="none">a door to nowhere</text>
+</svg></figure>
+    <p>A <dfn>decoy</dfn> is something that looks real and useful but that nobody has any reason to touch: a name or an address that leads nowhere.</p>
+    <p>The people and programs that belong on the network never go near a decoy. So when someone does touch one, there is only one explanation. An alarm goes to the person on duty at once.</p>
+    <p>Ordinary alarms have to notice something unusual among everything normal, so a quiet intruder can go unseen for a long time. An alarm from a decoy is never set off by normal work.</p>
+        <p class="state">Where this stands: decoy names and addresses are built. More kinds of decoy are planned.</p>
+    <div class="short"><b>In one sentence</b><p>Anyone who tries a decoy door has told us they do not belong.</p></div>
+  </div>
+</section>
+<section id="rebuild">
+  <div class="wrap">
+    <p class="num">Starting again clean</p>
+    <h2>A whole site can be wiped and set up again with less than an hour of machine work</h2>
+    <figure><svg viewBox="0 0 360 194" role="img" aria-label="Three steps. A house that is in doubt. The same house taken down, shown as a dotted outline. The house built again from its plan, with a check mark." fill="none" stroke-linecap="round" stroke-linejoin="round">
+<path d="M18 126 H342" stroke="var(--rule)" stroke-width="2.4"/>
+<path d="M29.0 126 V82 L60 54.7 L91.0 82 V126 Z" fill="var(--panel)" stroke="var(--ink)" stroke-width="2.4"/>
+<path d="M52 98 q2 -10 10 -8 q9 3 0 12 v4 M62 114 v1" stroke="var(--ink)" stroke-width="2.6"/>
+<path d="M102 96 L130.0 96.0" stroke="var(--quiet)" stroke-width="2.2"/><path d="M138 96 L130.0 91.5 L130.0 100.5 Z" fill="var(--quiet)" stroke="var(--quiet)" stroke-width="1"/>
+<path d="M149.0 126 V82 L180 54.7 L211.0 82 V126 Z" fill="none" stroke="var(--ink)" stroke-width="2.4" stroke-dasharray="3 5"/>
+<path d="M222 96 L250.0 96.0" stroke="var(--accent)" stroke-width="2.2"/><path d="M258 96 L250.0 91.5 L250.0 100.5 Z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1"/>
+<path d="M269.0 126 V82 L300 54.7 L331.0 82 V126 Z" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2.4"/>
+<path d="M295 126 v-13 h10 v13" stroke="var(--accent)" stroke-width="2"/>
+<rect x="307" y="87" width="9" height="9" rx="1.5" fill="var(--accent)" stroke="none"/>
+<circle cx="328" cy="62" r="11" fill="var(--accent)" stroke="none"/><path d="M323.1 62 l3.6 4.0 l6.6 -7.7" stroke="var(--on-accent)" stroke-width="2.4"/>
+<text x="60" y="150" font-size="13.5" class="svg-q" text-anchor="middle" stroke="none">in doubt</text>
+<text x="180" y="150" font-size="13.5" class="svg-q" text-anchor="middle" stroke="none">taken down</text>
+<text x="300" y="150" font-size="13.5" class="svg-q" text-anchor="middle" stroke="none">built again</text>
+<text x="180" y="180" font-size="13.5" class="svg-q" text-anchor="middle" stroke="none">The same written plan builds it each time.</text>
+</svg></figure>
+    <p>If your phone behaves strangely and you suspect something bad is on it, the surest fix is to erase it and set it up again from a clean start. Cleaning it by hand leaves you wondering what you missed.</p>
+    <p>For a whole site full of computers and programs, starting again has always been slow and painful: days of work, done rarely, by a procedure nobody has practiced. So people avoid it, and an intruder who got in stays in.</p>
+    <p>In our design, a site is fully described by a written plan. A <dfn>rebuild</dfn> means setting the whole site up again from that plan. One instruction does it: it prepares the computers, locks what is stored on them, starts every program, connects the site to the network, and then runs a set of checks to prove that everything works.</p>
+    <div class="nums">
+      <div><b><span data-measure="build">38 minutes 12 seconds</span></b><span class="l">of machine working time to set up a whole site, measured on real computers</span></div>
+      <div><b><span data-measure="down">5 minutes 54 seconds</span></b><span class="l">to take a site down, measured on real computers</span></div>
+    </div>
+    <p class="state">Where this stands: both times above are measured. The team's requirement for its next major version is the whole job, from start to finish with no pauses, in <span data-measure="req-site">60</span> minutes or less. That is still being worked on.</p>
+    <div class="short"><b>In one sentence</b><p>When in doubt about a machine, we do not clean it; we rebuild it, and that takes minutes, not days.</p></div>
+  </div>
+</section>
+<section id="alone">
+  <div class="wrap">
+    <p class="num">Cut off, and still working</p>
+    <h2>A site keeps working when its connection is cut</h2>
+    <figure><svg viewBox="0 0 360 206" role="img" aria-label="Three houses. Two are still connected. The line to the third is cut, and its lights are still on." fill="none" stroke-linecap="round" stroke-linejoin="round">
+<path d="M87 140 C110 128 132 120 153 114" stroke="var(--line)" stroke-width="2.6"/>
+<path d="M207 114 L228 122 M252 131 L275 140" stroke="var(--line)" stroke-width="2.6"/>
+<path d="M232 114 l4 20 M244 118 l4 20" stroke="var(--ink)" stroke-width="2.6"/>
+<path d="M33.0 158 V118 L60 93.2 L87.0 118 V158 Z" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2.4"/>
+<path d="M55 158 v-13 h10 v13" stroke="var(--accent)" stroke-width="2"/>
+<rect x="67" y="123" width="9" height="9" rx="1.5" fill="var(--accent)" stroke="none"/>
+<path d="M153.0 124 V84 L180 59.2 L207.0 84 V124 Z" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2.4"/>
+<path d="M175 124 v-13 h10 v13" stroke="var(--accent)" stroke-width="2"/>
+<rect x="187" y="89" width="9" height="9" rx="1.5" fill="var(--accent)" stroke="none"/>
+<path d="M275.0 158 V118 L302 93.2 L329.0 118 V158 Z" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2.4"/>
+<path d="M297 158 v-13 h10 v13" stroke="var(--accent)" stroke-width="2"/>
+<rect x="309" y="123" width="9" height="9" rx="1.5" fill="var(--accent)" stroke="none"/>
+<path d="M318 96 l4 -9 M302 92 v-10 M286 96 l-4 -9" stroke="var(--accent)" stroke-width="2.2"/>
+<text x="120" y="190" font-size="13.5" class="svg-q" text-anchor="middle" stroke="none">still connected</text>
+<text x="296" y="190" font-size="13.5" class="svg-q" text-anchor="middle" stroke="none">cut off, lights on</text>
+</svg></figure>
+    <p>Picture a town with its own generator and its own well. When a storm takes down the lines to the rest of the country, the lights stay on.</p>
+    <p>A site in our design is meant to be like that town. Each site carries everything it needs. If its connection to the other sites is cut, the people there keep working.</p>
+    <p>This has a second benefit. A site that does not depend on a long connection does not have to send anything outward at all. A site that is silent is much harder for anyone to find.</p>
+    <p>One more piece is planned. If a site can no longer be trusted, the main site can cut it away from the others. From then on nothing it sends reaches anyone else, which protects the rest. But the site that was cut away is not shut down. The people there keep their own systems and keep working. It comes back only after it has been rebuilt.</p>
+        <p class="state">Where this stands: this part is planned. Pieces of it are built and tested.</p>
+    <div class="short"><b>In one sentence</b><p>Losing the connection does not stop a site, and protecting everyone else does not mean destroying one part.</p></div>
+  </div>
+</section>
+<section id="open">
+  <div class="wrap">
+    <p class="num">Open to inspection</p>
+    <h2>Anyone can read how it works</h2>
+    <figure><svg viewBox="0 0 360 194" role="img" aria-label="On the left, a document under a magnifying glass: the design is public. On the right, a key kept in a locked box: the keys are secret." fill="none" stroke-linecap="round" stroke-linejoin="round">
+<rect x="50.0" y="33.0" width="96" height="118" rx="3" fill="var(--panel)" stroke="var(--ink)" stroke-width="2"/>
+<path d="M66 60 h64 M66 76 h64 M66 92 h44 M66 108 h64 M66 124 h52" stroke="var(--quiet)" stroke-width="2"/>
+<circle cx="150" cy="118" r="26" fill="var(--panel)" fill-opacity="0.55" stroke="var(--accent)" stroke-width="3"/>
+<path d="M169 137 l20 20" stroke="var(--accent)" stroke-width="5"/>
+<text x="98" y="176" font-size="13.5" class="svg-t" text-anchor="middle" stroke="none" font-weight="700">the design: public</text>
+<rect x="232" y="62" width="86" height="60" rx="8" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2.4"/>
+<circle cx="256" cy="92" r="6.6000000000000005" stroke="var(--accent)" stroke-width="2.6"/><path d="M262.6 92 h18.700000000000003 M274.7 92 v6.050000000000001 M280.2 92 v4.4" stroke="var(--accent)" stroke-width="2.6"/>
+<circle cx="318" cy="60.0" r="13.0" fill="var(--panel)" stroke="none"/>
+<path d="M313.5 57.25 v-4.0 a4.5 4.5 0 0 1 9.0 0 v4.0" stroke="var(--accent)" stroke-width="2.2"/>
+<rect x="310.5" y="57.25" width="15.0" height="11.5" rx="2.4" fill="var(--accent)" stroke="none"/>
+<text x="275" y="176" font-size="13.5" class="svg-t" text-anchor="middle" stroke="none" font-weight="700">the keys: secret</text>
+</svg></figure>
+    <p>All of this work is published. The instructions, the designs and the tests are public, and anyone may read them, use them and check them.</p>
+    <p>That can sound backwards. Would it not be safer to keep it secret? A lock is only good if it still holds when everyone knows exactly how it is made. Only the keys are secret. Showing the design lets many more people look for weaknesses and tell us, which makes the work stronger.</p>
+    <p>If you would like to see the same ideas with the technical detail, read <a href="../security/">the security page</a>.</p>
+    <div class="short"><b>In one sentence</b><p>The design is public; only the keys are secret.</p></div>
+  </div>
+</section>
+<section id="words">
+  <div class="wrap">
+    <p class="num">Words used here</p>
+    <h2>Every special word on this page</h2>
+    <dl class="words">
+      <dt>Build</dt><dd>Turning the text that people write into a program a computer can run.</dd>
+      <dt>Computer network</dt><dd>A group of computers that can send each other messages.</dd>
+      <dt>Decode</dt><dd>To translate a message from one machine's way of writing into another's. No secret is needed.</dd>
+      <dt>Decoy</dt><dd>Something that looks real, that nobody has a reason to touch, and that raises an alarm when touched.</dd>
+      <dt>Decrypt</dt><dd>To unlock a sealed message with its key and read it.</dd>
+      <dt>Deployment</dt><dd>Putting a program onto the computers where it will run.</dd>
+      <dt>Encryption</dt><dd>Scrambling a message so that only the holder of the right key can read it.</dd>
+      <dt>Harvest now, decrypt later</dt><dd>Copying locked messages today in order to open them years later with a stronger machine.</dd>
+      <dt>Identity</dt><dd>Proof of exactly who or what is asking: a person, a computer or a program.</dd>
+      <dt>Image</dt><dd>A complete, packed copy of a program, ready to run.</dd>
+      <dt>Internet</dt><dd>The largest network: the public roads that almost every computer shares.</dd>
+      <dt>Key</dt><dd>A long secret number that locks and unlocks a message.</dd>
+      <dt>Link, or transport</dt><dd>Whatever carries the messages: a cable, a phone network, a satellite.</dd>
+      <dt>Message</dt><dd>Anything one computer sends to another.</dd>
+      <dt>Overlay</dt><dd>A private, locked route laid across the public roads.</dd>
+      <dt>Post-quantum</dt><dd>A lock designed to hold against the code-breaking computers of the future.</dd>
+      <dt>Program</dt><dd>A set of instructions that a computer follows.</dd>
+      <dt>Rebuild</dt><dd>Setting a whole site up again from its written plan, from a clean start.</dd>
+      <dt>Relay</dt><dd>A rented computer that passes sealed messages along and cannot read them.</dd>
+      <dt>Release</dt><dd>One finished, numbered version of a program.</dd>
+      <dt>Sealed</dt><dd>Encrypted.</dd>
+      <dt>Server</dt><dd>A computer whose job is to run programs for many other computers.</dd>
+      <dt>Site</dt><dd>One place and the group of computers there.</dd>
+      <dt>Underlay</dt><dd>The shared links that everyone uses, taken together.</dd>
+      <dt>Zero trust</dt><dd>Nothing is trusted because of where it is; every request is checked.</dd>
+    </dl>
+  </div>
+</section>
+<footer>
+  <div class="wrap">
+    <p><a href="../security/">The technical version</a><a href="https://github.com/USAREUR-AF/goatcore">Repository</a><a href="https://github.com/USAREUR-AF/goatcore/blob/main/LICENSE">Apache License 2.0</a><a href="https://github.com/USAREUR-AF/goatcore/blob/main/SECURITY.md">Security policy</a></p>
+    <p>Portions written by U.S. Federal government employees within the scope of their employment are in the public domain in the United States. Part of <a href="https://github.com/USAREUR-AF/goatcore">goat</a>.</p>
+  </div>
+</footer>
+</body>
+</html>
