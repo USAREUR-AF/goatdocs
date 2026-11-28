@@ -996,6 +996,7 @@ environments:
         <a class="idea" href="#self-documenting"><svg class="mark mark-self-documenting" viewBox="0 0 96 96" role="img" aria-label="A page with three ticked lines."><path d="M22 8H62L78 24V88H22Z" class="mkf"/><path d="M62 8V24H78" class="mk mkt"/><path d="M32 42l5 5l9 -10M32 60l5 5l9 -10M32 78l5 5l9 -10" class="mka mkt"/><path d="M54 44H68M54 62H68M54 80H68" class="mk mkt"/></svg><b>Documents itself</b><span>Your evidence is current because it is the system.</span></a>
         <a class="idea" href="#quantum"><svg class="mark mark-quantum" viewBox="0 0 96 96" role="img" aria-label="A padlock with two shackles, one inside the other."><path d="M24 46V34a24 24 0 0 1 48 0V46" class="mk"/><path d="M36 46V36a12 12 0 0 1 24 0V46" class="mka"/><rect x="16" y="46" width="64" height="40" rx="6" class="mkf"/><circle cx="48" cy="64" r="5" class="mkfi"/></svg><b>Post-quantum</b><span>Traffic recorded today stays closed later.</span></a>
         <a class="idea" href="#decoy"><svg class="mark mark-decoy" viewBox="0 0 96 96" role="img" aria-label="A door standing by itself, with nothing around it, and a bell that rings."><path d="M6 84H90" class="mk mkd"/><rect x="26" y="20" width="34" height="64" rx="4" class="mkf"/><circle cx="51" cy="54" r="3.5" class="mkfi"/><path d="M72 34h16l-2.5 -3.5v-5a5.5 5.5 0 0 0 -11 0v5z" class="mkfa"/><path d="M68 16q-4 6 -1 12M92 16q4 6 1 12" class="mka mkt"/></svg><b>Decoys</b><span>Touching a decoy raises an alarm.</span></a>
+        <a class="idea" href="#timing"><svg class="mark mark-timing" viewBox="0 0 96 96" role="img" aria-label="A clock face with a short hand and a long hand, and a mark at the start."><circle cx="48" cy="50" r="36" class="mk"/><path d="M48 50V26" class="mk"/><path d="M48 50L66 60" class="mka"/><path d="M40 6H56" class="mk"/><circle cx="48" cy="50" r="5" class="mkfa"/></svg><b>A race of clocks</b><span>You are back on a known clean system sooner than intruders usually stay.</span></a>
         <a class="idea" href="#rebuild"><svg class="mark mark-rebuild" viewBox="0 0 96 96" role="img" aria-label="A dashed outline of a shape, the same shape drawn solid again, and a turning arrow between them."><rect x="10" y="50" width="30" height="30" rx="6" class="mk mkd"/><rect x="54" y="50" width="30" height="30" rx="6" class="mkf"/><path d="M25 40A24 24 0 0 1 66 30" class="mka"/><path d="M70 44L71 27L57 34Z" class="mkfa"/></svg><b>Rebuild</b><span>Every machine returns to a known clean state.</span></a>
         <a class="idea" href="#island"><svg class="mark mark-island" viewBox="0 0 96 96" role="img" aria-label="A site inside its own ring. The link that leaves it is cut."><circle cx="40" cy="52" r="28" class="mka"/><rect x="27" y="39" width="26" height="26" rx="6" class="mkf"/><path d="M62 30L70 22M78 14L88 4" class="mk"/></svg><b>Stands alone</b><span>A lost link does not stop a site.</span></a>
         <a class="idea" href="#hub"><svg class="mark mark-hub" viewBox="0 0 96 96" role="img" aria-label="A hub with three links. One link is ended, and the site at its end is still there."><circle cx="48" cy="26" r="12" class="mkf"/><path d="M38 36L20 62M48 38V62" class="mk"/><path d="M58 36L66 48" class="mk"/><path d="M58 54L74 44" class="mka"/><circle cx="18" cy="72" r="8" class="mkf"/><circle cx="48" cy="72" r="8" class="mkf"/><circle cx="78" cy="72" r="8" class="mkf"/></svg><b>A severed site</b><span>Cut from the others, it still works alone.</span></a>
@@ -2096,6 +2097,201 @@ environments:
 <rect x="288" y="208" width="176" height="52" rx="8" class="bxk"/>
 <text x="376.0" y="240.0" text-anchor="middle" class="t" font-size="15" font-weight="700">the operator on call</text>
 </svg></div></figure>
+  </div>
+</section>
+
+<section class="scene center" id="timing">
+  <div class="wrap">
+    <div class="say wide">
+      <div class="mk-anchor" aria-hidden="true"><svg class="mark mark-timing" viewBox="0 0 96 96" role="img" aria-label="A clock face with a short hand and a long hand, and a mark at the start."><circle cx="48" cy="50" r="36" class="mk"/><path d="M48 50V26" class="mk"/><path d="M48 50L66 60" class="mka"/><path d="M40 6H56" class="mk"/><circle cx="48" cy="50" r="5" class="mkfa"/></svg></div>
+      <p class="eyebrow">The race</p>
+      <h2>Security is a race of clocks, and a fast rebuild resets it</h2>
+      <p class="known"><i>Known as: time to exploit, breakout time, dwell time, mean time to detect, mean time to recover, defender's dilemma</i></p>
+      <dl class="cols">
+        <div><dt>Usually</dt><dd class="usual">Defense is a race, and the attacker's clocks have moved much further than the defender's.</dd></div>
+        <div><dt>Here</dt><dd class="here">A site is taken down in about 6 minutes, faster than an intruder's average time to start moving, and built again in under an hour. Other defenses slow the attacker or speed up detection; a fast rebuild resets the race.</dd></div>
+        <div><dt>For you</dt><dd class="you">You are back on a known clean system sooner than intruders usually stay.</dd></div>
+      </dl>
+      <ul class="ev">
+        <li><span class="status s-measured">measured</span><span>a site taken down in 5 min 54 s; a whole site built in 38 min 12 s of machine time</span></li>
+      </ul>
+    </div>
+    <figure class="full"><div class="frame"><svg class="viz wide" viewBox="0 0 1120 756" role="img" aria-label="A race of clocks on one logarithmic time axis, from seconds to more than a year. An attacker&#x27;s clocks, each with an earlier value and a current value: the average time to exploit a flaw, 63 days then and 5 days now; the average time from a first foothold to moving through the network, 1 hour 58 minutes then and 29 minutes now, with the fastest seen at 27 seconds; the median time inside before being noticed, 416 days then and 14 days now. A defender&#x27;s usual clocks: 55 days to fix half of the critical flaws once a fix exists; a mean of 241 days to identify and contain a data breach; more than a month to recover after ransomware for 34 organizations in 100. The clocks measured here: a site taken down in 5 minutes 54 seconds, which is faster than the average time to start moving; and a whole site built again in 38 minutes 12 seconds, which is of the same order as that time and far faster than every usual defender clock and than the time intruders usually stay." font-family="var(--sans)">
+<defs><marker id="tm-ah" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="12" refX="11" refY="6" orient="auto"><path d="M1 1 L12 6 L1 11 z" fill="var(--ink)"/></marker></defs>
+<path d="M385.5 40 V704" fill="none" stroke="var(--rule)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 5"/>
+<text x="385.5" y="32.0" font-size="13.5" font-weight="600" fill="var(--quiet)" text-anchor="middle">1 minute</text>
+<text x="385.5" y="722.0" font-size="13.5" font-weight="600" fill="var(--quiet)" text-anchor="middle">1 minute</text>
+<path d="M592.3 40 V704" fill="none" stroke="var(--rule)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 5"/>
+<text x="592.3" y="32.0" font-size="13.5" font-weight="600" fill="var(--quiet)" text-anchor="middle">1 hour</text>
+<text x="592.3" y="722.0" font-size="13.5" font-weight="600" fill="var(--quiet)" text-anchor="middle">1 hour</text>
+<path d="M752.9 40 V704" fill="none" stroke="var(--rule)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 5"/>
+<text x="752.9" y="32.0" font-size="13.5" font-weight="600" fill="var(--quiet)" text-anchor="middle">1 day</text>
+<text x="752.9" y="722.0" font-size="13.5" font-weight="600" fill="var(--quiet)" text-anchor="middle">1 day</text>
+<path d="M851.2 40 V704" fill="none" stroke="var(--rule)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 5"/>
+<text x="851.2" y="32.0" font-size="13.5" font-weight="600" fill="var(--quiet)" text-anchor="middle">1 week</text>
+<text x="851.2" y="722.0" font-size="13.5" font-weight="600" fill="var(--quiet)" text-anchor="middle">1 week</text>
+<path d="M924.7 40 V704" fill="none" stroke="var(--rule)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 5"/>
+<text x="924.7" y="32.0" font-size="13.5" font-weight="600" fill="var(--quiet)" text-anchor="middle">1 month</text>
+<text x="924.7" y="722.0" font-size="13.5" font-weight="600" fill="var(--quiet)" text-anchor="middle">1 month</text>
+<path d="M1015.7 40 V704" fill="none" stroke="var(--rule)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 5"/>
+<text x="1015.7" y="32.0" font-size="13.5" font-weight="600" fill="var(--quiet)" text-anchor="middle">6 months</text>
+<text x="1015.7" y="722.0" font-size="13.5" font-weight="600" fill="var(--quiet)" text-anchor="middle">6 months</text>
+<rect x="24.0" y="52.0" width="1072.0" height="232.0" rx="10" fill="none" stroke="var(--ink)" stroke-width="2.6"/>
+<text x="40.0" y="76.0" font-size="13.5" font-weight="700" fill="var(--ink)" letter-spacing="1.5">AN ATTACKER&#x27;S CLOCKS</text>
+<text x="44.0" y="112.0" font-size="15" font-weight="600" fill="var(--ink)">Average time to exploit a flaw,</text>
+<text x="44.0" y="130.0" font-size="15" font-weight="600" fill="var(--ink)">counted from its fix</text>
+<path d="M330 116.0 H1076" fill="none" stroke="var(--rule)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M950.1 116.0 H850.2" fill="none" stroke="var(--ink)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#tm-ah)"/>
+<circle cx="962.1" cy="116.0" r="8" fill="var(--paper)" stroke="var(--ink)" stroke-width="2" stroke-dasharray="3 3"/>
+<text x="962.1" y="100.0" font-size="12.5" fill="var(--quiet)" text-anchor="middle">63 days, 2018 to 2019</text>
+<circle cx="834.2" cy="116.0" r="10" fill="var(--ink)" stroke="none" stroke-width="0"/>
+<text x="834.2" y="146.0" font-size="14" font-weight="700" fill="var(--ink)" text-anchor="middle">5 days, 2023</text>
+<text x="44.0" y="176.0" font-size="15" font-weight="600" fill="var(--ink)">Average time from a first foothold</text>
+<text x="44.0" y="194.0" font-size="15" font-weight="600" fill="var(--ink)">to moving through the network</text>
+<path d="M330 180.0 H1076" fill="none" stroke="var(--rule)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M614.5 180.0 H571.6" fill="none" stroke="var(--ink)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#tm-ah)"/>
+<circle cx="626.5" cy="180.0" r="8" fill="var(--paper)" stroke="var(--ink)" stroke-width="2" stroke-dasharray="3 3"/>
+<text x="626.5" y="164.0" font-size="12.5" fill="var(--quiet)" text-anchor="middle">1 h 58 min, 2017</text>
+<circle cx="555.6" cy="180.0" r="10" fill="var(--ink)" stroke="none" stroke-width="0"/>
+<text x="555.6" y="210.0" font-size="14" font-weight="700" fill="var(--ink)" text-anchor="middle">29 min, 2025</text>
+<path d="M345.2 171.0 L353.2 180.0 L345.2 189.0 L337.2 180.0 Z" fill="var(--paper)" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="335.2" y="164.0" font-size="12.5" fill="var(--quiet)">fastest seen: 27 s</text>
+<text x="44.0" y="240.0" font-size="15" font-weight="600" fill="var(--ink)">Median time inside</text>
+<text x="44.0" y="258.0" font-size="15" font-weight="600" fill="var(--ink)">before being noticed</text>
+<path d="M330 244.0 H1076" fill="none" stroke="var(--rule)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M1045.5 244.0 H902.2" fill="none" stroke="var(--ink)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#tm-ah)"/>
+<circle cx="1057.5" cy="244.0" r="8" fill="var(--paper)" stroke="var(--ink)" stroke-width="2" stroke-dasharray="3 3"/>
+<text x="1069.5" y="228.0" font-size="12.5" fill="var(--quiet)" text-anchor="end">416 days, 2011</text>
+<circle cx="886.2" cy="244.0" r="10" fill="var(--ink)" stroke="none" stroke-width="0"/>
+<text x="886.2" y="274.0" font-size="14" font-weight="700" fill="var(--ink)" text-anchor="middle">14 days, 2025</text>
+<rect x="24.0" y="296.0" width="1072.0" height="232.0" rx="10" fill="none" stroke="var(--line)" stroke-width="2" stroke-dasharray="7 5"/>
+<text x="40.0" y="320.0" font-size="13.5" font-weight="700" fill="var(--quiet)" letter-spacing="1.5">A DEFENDER&#x27;S CLOCKS, USUALLY</text>
+<text x="44.0" y="356.0" font-size="15" font-weight="600" fill="var(--ink)">To fix half of the critical flaws,</text>
+<text x="44.0" y="374.0" font-size="15" font-weight="600" fill="var(--ink)">once a fix exists</text>
+<path d="M330 360.0 H1076" fill="none" stroke="var(--rule)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="946.3" y="351.0" width="18.0" height="18.0" rx="3" fill="var(--panel)" stroke="var(--quiet)" stroke-width="2.4"/>
+<path d="M949.2899398294953 366.0L961.2899398294953 354.0M949.2899398294953 360.0L955.2899398294953 354.0M955.2899398294953 366.0L961.2899398294953 360.0" fill="none" stroke="var(--quiet)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="955.3" y="390.0" font-size="14" font-weight="700" fill="var(--ink)" text-anchor="middle">55 days</text>
+<text x="44.0" y="420.0" font-size="15" font-weight="600" fill="var(--ink)">Mean time to identify and</text>
+<text x="44.0" y="438.0" font-size="15" font-weight="600" fill="var(--ink)">contain a data breach</text>
+<path d="M330 424.0 H1076" fill="none" stroke="var(--rule)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="1020.9" y="415.0" width="18.0" height="18.0" rx="3" fill="var(--panel)" stroke="var(--quiet)" stroke-width="2.4"/>
+<path d="M1023.9237703495091 430.0L1035.9237703495091 418.0M1023.9237703495091 424.0L1029.9237703495091 418.0M1029.9237703495091 430.0L1035.9237703495091 424.0" fill="none" stroke="var(--quiet)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="1017.9" y="454.0" font-size="14" font-weight="700" fill="var(--ink)" text-anchor="end">241 days</text>
+<text x="44.0" y="484.0" font-size="15" font-weight="600" fill="var(--ink)">To recover after</text>
+<text x="44.0" y="502.0" font-size="15" font-weight="600" fill="var(--ink)">ransomware</text>
+<path d="M330 488.0 H1076" fill="none" stroke="var(--rule)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M936.7 488.0 H1070.0" fill="none" stroke="var(--quiet)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 6" marker-end="url(#tm-ah)"/>
+<rect x="915.7" y="479.0" width="18.0" height="18.0" rx="3" fill="var(--panel)" stroke="var(--quiet)" stroke-width="2.4"/>
+<path d="M918.6710925724227 494.0L930.6710925724227 482.0M918.6710925724227 488.0L924.6710925724227 482.0M924.6710925724227 494.0L930.6710925724227 488.0" fill="none" stroke="var(--quiet)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="924.7" y="518.0" font-size="14" font-weight="700" fill="var(--ink)" text-anchor="middle">more than a month, for 34 in 100</text>
+<rect x="24.0" y="540.0" width="1072.0" height="156.0" rx="10" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2.6"/>
+<text x="40.0" y="564.0" font-size="13.5" font-weight="700" fill="var(--accent)" letter-spacing="1.5">THE CLOCKS MEASURED HERE</text>
+<text x="44.0" y="599.0" font-size="15" font-weight="700" fill="var(--ink)">A site taken down</text>
+<path d="M330 594.0 H1076" fill="none" stroke="var(--rule)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="475.2" cy="594.0" r="13" fill="var(--accent)" stroke="var(--ink)" stroke-width="2.4"/>
+<text x="475.2" y="624.0" font-size="16" font-weight="700" fill="var(--ink)" text-anchor="middle">5 min 54 s</text>
+<text x="44.0" y="655.0" font-size="15" font-weight="700" fill="var(--ink)">A whole site built again</text>
+<path d="M330 650.0 H1076" fill="none" stroke="var(--rule)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="569.5" cy="650.0" r="13" fill="var(--accent)" stroke="var(--ink)" stroke-width="2.4"/>
+<text x="569.5" y="680.0" font-size="16" font-weight="700" fill="var(--ink)" text-anchor="middle">38 min 12 s</text>
+<circle cx="44.0" cy="742.0" r="7" fill="var(--paper)" stroke="var(--ink)" stroke-width="2" stroke-dasharray="3 3"/>
+<text x="60.0" y="747.0" font-size="13.5" fill="var(--quiet)">earlier</text>
+<circle cx="134.0" cy="742.0" r="8" fill="var(--ink)" stroke="none" stroke-width="0"/>
+<text x="150.0" y="747.0" font-size="13.5" fill="var(--quiet)">now</text>
+<text x="1096.0" y="747.0" font-size="13.5" fill="var(--quiet)" text-anchor="end" font-style="italic">each step on this axis is many times the one before it</text>
+</svg>
+<svg class="viz narrow" viewBox="0 0 464 1090" role="img" aria-label="A race of clocks on one logarithmic time axis, from seconds to more than a year. An attacker&#x27;s clocks, each with an earlier value and a current value: the average time to exploit a flaw, 63 days then and 5 days now; the average time from a first foothold to moving through the network, 1 hour 58 minutes then and 29 minutes now, with the fastest seen at 27 seconds; the median time inside before being noticed, 416 days then and 14 days now. A defender&#x27;s usual clocks: 55 days to fix half of the critical flaws once a fix exists; a mean of 241 days to identify and contain a data breach; more than a month to recover after ransomware for 34 organizations in 100. The clocks measured here: a site taken down in 5 minutes 54 seconds, which is faster than the average time to start moving; and a whole site built again in 38 minutes 12 seconds, which is of the same order as that time and far faster than every usual defender clock and than the time intruders usually stay." font-family="var(--sans)">
+<defs><marker id="tmn-ah" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="12" refX="11" refY="6" orient="auto"><path d="M1 1 L12 6 L1 11 z" fill="var(--ink)"/></marker></defs>
+<path d="M60.2 30 V1040" fill="none" stroke="var(--rule)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 5"/>
+<text x="60.2" y="22.0" font-size="13" font-weight="600" fill="var(--quiet)" text-anchor="middle">1 min</text>
+<text x="60.2" y="1058.0" font-size="13" font-weight="600" fill="var(--quiet)" text-anchor="middle">1 min</text>
+<path d="M172.8 30 V1040" fill="none" stroke="var(--rule)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 5"/>
+<text x="172.8" y="22.0" font-size="13" font-weight="600" fill="var(--quiet)" text-anchor="middle">1 h</text>
+<text x="172.8" y="1058.0" font-size="13" font-weight="600" fill="var(--quiet)" text-anchor="middle">1 h</text>
+<path d="M260.1 30 V1040" fill="none" stroke="var(--rule)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 5"/>
+<text x="260.1" y="22.0" font-size="13" font-weight="600" fill="var(--quiet)" text-anchor="middle">1 d</text>
+<text x="260.1" y="1058.0" font-size="13" font-weight="600" fill="var(--quiet)" text-anchor="middle">1 d</text>
+<path d="M313.6 30 V1040" fill="none" stroke="var(--rule)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 5"/>
+<text x="313.6" y="22.0" font-size="13" font-weight="600" fill="var(--quiet)" text-anchor="middle">1 wk</text>
+<text x="313.6" y="1058.0" font-size="13" font-weight="600" fill="var(--quiet)" text-anchor="middle">1 wk</text>
+<path d="M353.6 30 V1040" fill="none" stroke="var(--rule)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 5"/>
+<text x="353.6" y="22.0" font-size="13" font-weight="600" fill="var(--quiet)" text-anchor="middle">1 mo</text>
+<text x="353.6" y="1058.0" font-size="13" font-weight="600" fill="var(--quiet)" text-anchor="middle">1 mo</text>
+<path d="M403.2 30 V1040" fill="none" stroke="var(--rule)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 5"/>
+<text x="403.2" y="22.0" font-size="13" font-weight="600" fill="var(--quiet)" text-anchor="middle">6 mo</text>
+<text x="403.2" y="1058.0" font-size="13" font-weight="600" fill="var(--quiet)" text-anchor="middle">6 mo</text>
+<rect x="6.0" y="42.0" width="452.0" height="350.0" rx="10" fill="none" stroke="var(--ink)" stroke-width="2.6"/>
+<text x="22.0" y="66.0" font-size="13.5" font-weight="700" fill="var(--ink)" letter-spacing="1.5">AN ATTACKER&#x27;S CLOCKS</text>
+<text x="20.0" y="90.0" font-size="14.5" font-weight="600" fill="var(--ink)">Average time to exploit a flaw, counted from its fix</text>
+<path d="M30 128 H436" fill="none" stroke="var(--rule)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M362.0 128 H320.4" fill="none" stroke="var(--ink)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#tmn-ah)"/>
+<circle cx="374.0" cy="128.0" r="8" fill="var(--paper)" stroke="var(--ink)" stroke-width="2" stroke-dasharray="3 3"/>
+<text x="386.0" y="112.0" font-size="12.5" fill="var(--quiet)" text-anchor="end">63 days, 2018 to 2019</text>
+<circle cx="304.4" cy="128.0" r="10" fill="var(--ink)" stroke="none" stroke-width="0"/>
+<text x="304.4" y="158.0" font-size="14" font-weight="700" fill="var(--ink)" text-anchor="middle">5 days, 2023</text>
+<text x="20.0" y="194.0" font-size="14" font-weight="600" fill="var(--ink)">Average time from foothold to moving through the network</text>
+<path d="M30 232 H436" fill="none" stroke="var(--rule)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M179.4 232 H168.8" fill="none" stroke="var(--ink)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#tmn-ah)"/>
+<circle cx="191.4" cy="232.0" r="8" fill="var(--paper)" stroke="var(--ink)" stroke-width="2" stroke-dasharray="3 3"/>
+<text x="191.4" y="216.0" font-size="12.5" fill="var(--quiet)" text-anchor="middle">1 h 58 min, 2017</text>
+<circle cx="152.8" cy="232.0" r="10" fill="var(--ink)" stroke="none" stroke-width="0"/>
+<text x="140.8" y="262.0" font-size="14" font-weight="700" fill="var(--ink)">29 min, 2025</text>
+<path d="M38.3 223 L46.3 232 L38.3 241 L30.3 232 Z" fill="var(--paper)" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="28.3" y="261.0" font-size="12.5" fill="var(--quiet)">fastest: 27 s</text>
+<text x="20.0" y="298.0" font-size="14.5" font-weight="600" fill="var(--ink)">Median time inside before being noticed</text>
+<path d="M30 336 H436" fill="none" stroke="var(--rule)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M413.9 336 H348.7" fill="none" stroke="var(--ink)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#tmn-ah)"/>
+<circle cx="425.9" cy="336.0" r="8" fill="var(--paper)" stroke="var(--ink)" stroke-width="2" stroke-dasharray="3 3"/>
+<text x="437.9" y="320.0" font-size="12.5" fill="var(--quiet)" text-anchor="end">416 days, 2011</text>
+<circle cx="332.7" cy="336.0" r="10" fill="var(--ink)" stroke="none" stroke-width="0"/>
+<text x="332.7" y="366.0" font-size="14" font-weight="700" fill="var(--ink)" text-anchor="middle">14 days, 2025</text>
+<rect x="6.0" y="406.0" width="452.0" height="350.0" rx="10" fill="none" stroke="var(--line)" stroke-width="2" stroke-dasharray="7 5"/>
+<text x="22.0" y="430.0" font-size="13.5" font-weight="700" fill="var(--quiet)" letter-spacing="1.5">A DEFENDER&#x27;S CLOCKS, USUALLY</text>
+<text x="20.0" y="454.0" font-size="14.5" font-weight="600" fill="var(--ink)">To fix half of the critical flaws, once a fix exists</text>
+<path d="M30 492 H436" fill="none" stroke="var(--rule)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="361.3" y="483.0" width="18.0" height="18.0" rx="3" fill="var(--panel)" stroke="var(--quiet)" stroke-width="2.4"/>
+<path d="M364.3052487543902 498L376.3052487543902 486M364.3052487543902 492L370.3052487543902 486M370.3052487543902 498L376.3052487543902 492" fill="none" stroke="var(--quiet)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="370.3" y="522.0" font-size="14" font-weight="700" fill="var(--ink)" text-anchor="middle">55 days</text>
+<text x="20.0" y="558.0" font-size="14.5" font-weight="600" fill="var(--ink)">Mean time to identify and contain a data breach</text>
+<path d="M30 596 H436" fill="none" stroke="var(--rule)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="401.9" y="587.0" width="18.0" height="18.0" rx="3" fill="var(--panel)" stroke="var(--quiet)" stroke-width="2.4"/>
+<path d="M404.9236605387409 602L416.9236605387409 590M404.9236605387409 596L410.9236605387409 590M410.9236605387409 602L416.9236605387409 596" fill="none" stroke="var(--quiet)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="398.9" y="626.0" font-size="14" font-weight="700" fill="var(--ink)" text-anchor="end">241 days</text>
+<text x="20.0" y="662.0" font-size="14.5" font-weight="600" fill="var(--ink)">To recover after ransomware</text>
+<path d="M30 700 H436" fill="none" stroke="var(--rule)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M365.6 700 H430.0" fill="none" stroke="var(--quiet)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 6" marker-end="url(#tmn-ah)"/>
+<rect x="344.6" y="691.0" width="18.0" height="18.0" rx="3" fill="var(--panel)" stroke="var(--quiet)" stroke-width="2.4"/>
+<path d="M347.6413720970558 706L359.6413720970558 694M347.6413720970558 700L353.6413720970558 694M353.6413720970558 706L359.6413720970558 700" fill="none" stroke="var(--quiet)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="450.0" y="730.0" font-size="14" font-weight="700" fill="var(--ink)" text-anchor="end">more than a month, for 34 in 100</text>
+<rect x="6.0" y="770.0" width="452.0" height="260.0" rx="10" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2.6"/>
+<text x="22.0" y="794.0" font-size="13.5" font-weight="700" fill="var(--accent)" letter-spacing="1.5">THE CLOCKS MEASURED HERE</text>
+<text x="20.0" y="818.0" font-size="14.5" font-weight="700" fill="var(--ink)">A site taken down</text>
+<path d="M30 856 H436" fill="none" stroke="var(--rule)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="109.0" cy="856.0" r="13" fill="var(--accent)" stroke="var(--ink)" stroke-width="2.4"/>
+<text x="109.0" y="886.0" font-size="16" font-weight="700" fill="var(--ink)" text-anchor="middle">5 min 54 s</text>
+<text x="20.0" y="926.0" font-size="14.5" font-weight="700" fill="var(--ink)">A whole site built again</text>
+<path d="M30 964 H436" fill="none" stroke="var(--rule)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="160.4" cy="964.0" r="13" fill="var(--accent)" stroke="var(--ink)" stroke-width="2.4"/>
+<text x="160.4" y="994.0" font-size="16" font-weight="700" fill="var(--ink)" text-anchor="middle">38 min 12 s</text>
+<circle cx="20.0" cy="1076.0" r="7" fill="var(--paper)" stroke="var(--ink)" stroke-width="2" stroke-dasharray="3 3"/>
+<text x="36.0" y="1081.0" font-size="13.5" fill="var(--quiet)">earlier</text>
+<circle cx="110.0" cy="1076.0" r="8" fill="var(--ink)" stroke="none" stroke-width="0"/>
+<text x="126.0" y="1081.0" font-size="13.5" fill="var(--quiet)">now</text>
+</svg></div></figure>
+    <p class="known"><a href="notes/#clocks">Where the numbers come from</a></p>
+    <div class="cases">
+      <h3>The clocks in real cases</h3>
+      <ul>
+        <li><span class="when">2017</span><span><b>Equifax:</b> undetected for 76 days.</span></li>
+        <li><span class="when">2020</span><span><b>SolarWinds:</b> about nine months from the hidden code to detection.</span></li>
+        <li><span class="when">2021</span><span><b>The Log4j flaw:</b> 400 attempts a second, five days after disclosure.</span></li>
+        <li><span class="when">2023</span><span><b>The British Library:</b> restoration still under way after four months.</span></li>
+        <li><span class="when">September to November 2026</span><span><b>Maileva, a subsidiary of La Poste:</b> about two months from the attack to the announcement.</span></li>
+        <li><span class="when">November 2026</span><span><b>SAP:</b> no time has been published.</span></li>
+      </ul>
+      <p class="note"><a href="notes/#cases">What each source states</a></p>
+    </div>
   </div>
 </section>
 

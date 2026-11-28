@@ -1,11 +1,12 @@
 # Scenes ready to wire in
 
-Each module exposes `html()`, `figure_wide()`, `figure_narrow()`, `mark()` and `ALT`. `html()` returns the whole
+Each module exposes `html()`, `figure_wide()`, `figure_narrow()`, `mark()`, `ALT` and `notes()`. A scene's prose is three short blocks (about 70 words at most); everything else is in `notes()`, one anchored section per topic, for the appendix page `notes/` (anchors: `clocks`, `cases`, `estimate`, `layers`, `custody`, `boundary`, `evidence`, `air-gap`). `html()` returns the whole
 section in the page's own classes, with both figure variants already inside it. Add the rules in `scenes.css`
 to the page's css. Render any scene alone with `python3 scenes/preview.py <name>` (PNGs in `scenes/preview/`).
 
 | Scene | File | Section id | Status words used | Notes |
 |---|---|---|---|---|
+| Security is a race of clocks, and a fast rebuild resets it | `timing.py` | `timing` | measured (the two clocks here) | Goes directly before the rebuild scene. Every clock value and every case was read in its primary document; `timing-sources.md` has the URL, title, date and verbatim quote for each. Labels use each document's own words (average, median, mean). Eight cases, one line each under the figure, sources in `notes()`; case marks are kept off the figure. The figure and text say what is true: the take-down is faster than the average time to start moving; the rebuild is of the same order as that, and far faster than the usual defender clocks |
 | Three layers around every message (the onion) | `layers.py` | `layers` | in use (mesh tunnel; data fabric link; grant encryption where an owner turns it on); designed (a standardized post-quantum key exchange for the mesh tunnel) | Grant encryption graded "in use" on the operator's correction of 28 Nov: decision record 1208 (Accepted) and the pinned key service; records 1094 and 1106 still read Proposed in the tree |
 | Sealed once, and closed for the whole path | `path.py` | `path` | in use (direct connections; relay as fallback) | Second part of the layers idea. Holds the path figure, the worked estimate (four rows) and the "With real links" block. Every number is labelled an estimate; the assumptions and sources are printed. No measured direct-against-relayed figure exists in the public tree, so none is printed. The clause that satellite links commonly give no public address and accept no inbound connection is a general fact, not taken from the tree |
 | Your hardware, in your custody | `custody.py` | `custody` | in use | Decision record 1192 for "no host site has a public address" |
