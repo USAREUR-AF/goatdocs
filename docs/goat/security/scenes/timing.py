@@ -202,7 +202,7 @@ def html():
         "timing", "The race", "Security is a race of clocks, and a fast rebuild resets it",
         "time to exploit, breakout time, dwell time, mean time to detect, mean time to recover, defender's dilemma",
         "Defense is a race, and the attacker's clocks have moved much further than the defender's.",
-        "A site is taken down in about 6 minutes, faster than an intruder's average time to start moving, and built again in under an hour. Other defenses slow the attacker or speed up detection; a fast rebuild resets the race.",
+        "A site is taken down in about 6 minutes, faster than an intruder's average time to start moving, and built again in under an hour. Other defenses slow the attacker or speed up detection. A fast rebuild resets the race.",
         "You are back on a known clean system sooner than intruders usually stay.",
         [("measured", "a site taken down in 5 min 54 s; a whole site built in 38 min 12 s of machine time")],
         figure_wide() + "\n" + figure_narrow(), mark())

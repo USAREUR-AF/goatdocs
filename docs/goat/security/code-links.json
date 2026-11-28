@@ -1,0 +1,703 @@
+{
+ "repository": "https://github.com/USAREUR-AF/goatcore",
+ "commit": "4c005767a217577407c0d4e051f4bb5183651bb7",
+ "date": "28 November 2026",
+ "claims": [
+  {
+   "claim": "A whole site built by one command",
+   "code": [
+    [
+     "the standup command",
+     "crates/goatbuilder/src/main.rs",
+     408,
+     415
+    ],
+    [
+     "the record of the measurement",
+     "docs/design/goatbuilder-v1-gate.md",
+     99,
+     99
+    ]
+   ],
+   "test": [
+    [
+     "a rehearsal of every phase in order",
+     "crates/goatbuilder/src/standup.rs",
+     3017,
+     3042
+    ]
+   ],
+   "note": ""
+  },
+  {
+   "claim": "A site taken down by one command",
+   "code": [
+    [
+     "the teardown command",
+     "crates/goatbuilder/src/standup.rs",
+     2031,
+     2041
+    ],
+    [
+     "the record of the measurement",
+     "docs/design/goatbuilder-v1-gate.md",
+     99,
+     99
+    ]
+   ],
+   "test": [
+    [
+     "a rehearsal of the teardown",
+     "crates/goatbuilder/src/standup.rs",
+     2964,
+     2983
+    ]
+   ],
+   "note": ""
+  },
+  {
+   "claim": "Every site runs on hardware its owner holds",
+   "code": [
+    [
+     "decision record 1192",
+     "docs/adr/1192-wg-cp0-paused-public-dns-entry-point.md",
+     30,
+     35
+    ]
+   ],
+   "test": [],
+   "note": "A property of how a goatnet is deployed. The decision record states that no host site has a public address."
+  },
+  {
+   "claim": "A cloud holds relays only, and a relay reads nothing",
+   "code": [
+    [
+     "the relay's dispatch of port 443, which holds no key",
+     "ops/ansible/templates/haproxy-ingress.cfg.j2",
+     4,
+     18
+    ]
+   ],
+   "test": [],
+   "note": ""
+  },
+  {
+   "claim": "A private mesh overlay that rides on any link",
+   "code": [
+    [
+     "direct paths offered to every peer",
+     "ops/ansible/templates/management.json.j2",
+     57,
+     69
+    ],
+    [
+     "relays offered as the fallback",
+     "ops/ansible/templates/management.json.j2",
+     85,
+     91
+    ]
+   ],
+   "test": [
+    [
+     "the health report tells a direct link from a relayed one",
+     "crates/goat-cli/src/cmd/health.rs",
+     2118,
+     2145
+    ]
+   ],
+   "note": ""
+  },
+  {
+   "claim": "Mesh tunnels on a common open protocol",
+   "code": [
+    [
+     "the mesh uses the kernel's own WireGuard",
+     "ops/ansible/roles/wireguard-kmod/tasks/main.yml",
+     11,
+     16
+    ]
+   ],
+   "test": [],
+   "note": "The tunnel code is WireGuard's and NetBird's, outside this repository."
+  },
+  {
+   "claim": "No answer to a packet that cannot be authenticated",
+   "code": [],
+   "test": [],
+   "note": "A property of the WireGuard protocol, not of goat's code: wireguard.com, Protocol."
+  },
+  {
+   "claim": "No site has a public address",
+   "code": [
+    [
+     "decision record 1192",
+     "docs/adr/1192-wg-cp0-paused-public-dns-entry-point.md",
+     30,
+     35
+    ]
+   ],
+   "test": [
+    [
+     "a check that every public address of a goatnet is a declared relay",
+     "ops/ci/check-no-foreign-goatnet-config.py",
+     270,
+     283
+    ]
+   ],
+   "note": ""
+  },
+  {
+   "claim": "Service names are known inside only",
+   "code": [
+    [
+     "the name server listens on the mesh only",
+     "ops/ansible/roles/mesh-coredns/templates/Corefile.j2",
+     1,
+     16
+    ],
+    [
+     "decision record 0312",
+     "docs/adr/0312-dns-two-tier.md",
+     34,
+     38
+    ]
+   ],
+   "test": [],
+   "note": ""
+  },
+  {
+   "claim": "An identity for each person, machine and workload",
+   "code": [
+    [
+     "people: sign-in tokens checked against the identity provider",
+     "ops/ansible/templates/management.json.j2",
+     106,
+     117
+    ],
+    [
+     "workloads: an identity issued to each one",
+     "ops/ansible/roles/spire/tasks/main.yml",
+     419,
+     432
+    ],
+    [
+     "machines: a WireGuard identity, in the table of credentials",
+     "docs/design/identity-access-and-onboarding-reference.md",
+     22,
+     27
+    ]
+   ],
+   "test": [],
+   "note": ""
+  },
+  {
+   "claim": "No connection without a declared rule",
+   "code": [
+    [
+     "the default allow-all rule is switched off",
+     "ops/ansible/templates/management.json.j2",
+     44,
+     49
+    ]
+   ],
+   "test": [
+    [
+     "a check that fails if that setting is removed",
+     "ops/ci/check-no-default-allow.sh",
+     53,
+     56
+    ]
+   ],
+   "note": ""
+  },
+  {
+   "claim": "Access rules generated from a reviewed declaration",
+   "code": [
+    [
+     "the generator",
+     "ops/warrant/generate.py",
+     2,
+     17
+    ],
+    [
+     "its comparison with the committed rules",
+     "ops/warrant/generate.py",
+     202,
+     224
+    ]
+   ],
+   "test": [
+    [
+     "a check that the committed rules equal the generated ones",
+     "ops/ci/check-warrant-registry.py",
+     23,
+     25
+    ]
+   ],
+   "note": ""
+  },
+  {
+   "claim": "The secret store cannot read what it holds",
+   "code": [
+    [
+     "decision record 1212",
+     "docs/adr/1212-team-secrets-never-decryptable-on-the-server.md",
+     18,
+     18
+    ]
+   ],
+   "test": [],
+   "note": "The link to code is left out by request; the decision record states the property."
+  },
+  {
+   "claim": "Shared data sealed for named readers; the platform holds no key",
+   "code": [
+    [
+     "the data key is sealed once for each reader",
+     "ops/grant-crypto/envelope/bundle.go",
+     40,
+     60
+    ]
+   ],
+   "test": [
+    [
+     "a reader opens only its own entry, and an outsider opens none",
+     "ops/grant-crypto/envelope/envelope_test.go",
+     253,
+     301
+    ]
+   ],
+   "note": ""
+  },
+  {
+   "claim": "No central broker on the data fabric",
+   "code": [
+    [
+     "the design statement",
+     "docs/design/zenoh-brokerless-consequences.md",
+     15,
+     21
+    ]
+   ],
+   "test": [],
+   "note": ""
+  },
+  {
+   "claim": "Three layers of encryption, each with its own keys",
+   "code": [
+    [
+     "the mesh tunnel",
+     "ops/ansible/roles/wireguard-kmod/tasks/main.yml",
+     11,
+     16
+    ],
+    [
+     "the data fabric link, with certificates required at both ends",
+     "ops/ansible/roles/goat-zenoh/templates/config.json5.j2",
+     242,
+     253
+    ],
+    [
+     "sealing for named readers",
+     "ops/grant-crypto/envelope/bundle.go",
+     40,
+     60
+    ]
+   ],
+   "test": [
+    [
+     "the sealing layer",
+     "ops/grant-crypto/envelope/envelope_test.go",
+     253,
+     301
+    ]
+   ],
+   "note": ""
+  },
+  {
+   "claim": "Machines connect directly; a relay is a fallback",
+   "code": [
+    [
+     "direct paths offered to every peer",
+     "ops/ansible/templates/management.json.j2",
+     57,
+     69
+    ],
+    [
+     "the health report grades a relayed link as fallback",
+     "crates/goat-cli/src/cmd/health.rs",
+     908,
+     937
+    ]
+   ],
+   "test": [
+    [
+     "the health report tells a direct link from a relayed one",
+     "crates/goat-cli/src/cmd/health.rs",
+     2118,
+     2145
+    ]
+   ],
+   "note": "The choice of the direct path is made by the NetBird client, outside this repository."
+  },
+  {
+   "claim": "A deploy refuses what it cannot verify",
+   "code": [
+    [
+     "the checks made before anything is written",
+     "crates/goatbuilder/src/release_file.rs",
+     6,
+     15
+    ]
+   ],
+   "test": [
+    [
+     "a changed digest, a wrong signer or an unlisted file is refused",
+     "crates/goatbuilder/src/release_file.rs",
+     719,
+     733
+    ]
+   ],
+   "note": ""
+  },
+  {
+   "claim": "Post-quantum key exchange preferred on the data fabric",
+   "code": [
+    [
+     "the router image offered by default",
+     "ops/ansible/roles/goat-zenoh/defaults/main.yml",
+     38,
+     44
+    ]
+   ],
+   "test": [
+    [
+     "a probe that fails unless the combined exchange is offered first and used",
+     "ops/zenoh/pqc-image/fips-probe/src/main.rs",
+     96,
+     115
+    ]
+   ],
+   "note": ""
+  },
+  {
+   "claim": "A declared table of roles, enforced",
+   "code": [
+    [
+     "the table and its rules of use",
+     "ops/permissions/group-permissions.yml",
+     15,
+     24
+    ],
+    [
+     "the check a service makes against the table",
+     "ops/goat-id-console/internal/permissions/permissions.go",
+     165,
+     184
+    ]
+   ],
+   "test": [
+    [
+     "an unknown or blocked group is refused",
+     "ops/goat-id-console/internal/permissions/permissions_test.go",
+     85,
+     115
+    ]
+   ],
+   "note": ""
+  },
+  {
+   "claim": "Federation between two environments, set up and backed out by one command",
+   "code": [
+    [
+     "the federate command",
+     "crates/goatbuilder/src/main.rs",
+     564,
+     580
+    ],
+    [
+     "the back-out, step by step",
+     "crates/goatbuilder/src/federate/backout.rs",
+     1,
+     27
+    ]
+   ],
+   "test": [
+    [
+     "a second back-out finds nothing to remove",
+     "crates/goatbuilder/src/federate/backout.rs",
+     2503,
+     2526
+    ]
+   ],
+   "note": ""
+  },
+  {
+   "claim": "A simple boundary node: one stream, one way, to one destination",
+   "code": [
+    [
+     "what may leave",
+     "ops/simple-bn/simple_bn_sender.py",
+     1078,
+     1083
+    ],
+    [
+     "the refusal of anything else",
+     "ops/simple-bn/simple_bn_sender.py",
+     1181,
+     1197
+    ]
+   ],
+   "test": [
+    [
+     "malformed and undeclared messages are refused",
+     "ops/simple-bn/tests/test_relay.py",
+     41,
+     57
+    ]
+   ],
+   "note": ""
+  },
+  {
+   "claim": "Security records in an open format, with a forwarder to your own collector",
+   "code": [
+    [
+     "records put into the OCSF schema",
+     "ops/ansible/roles/goat-logship/templates/vector.yaml.j2",
+     126,
+     165
+    ],
+    [
+     "the forwarder to a collector, switched on by one setting",
+     "ops/ansible/roles/goat-logship/templates/vector.yaml.j2",
+     631,
+     652
+    ]
+   ],
+   "test": [],
+   "note": "The forwarder sends the records as CEF over syslog."
+  },
+  {
+   "claim": "A partner is verified without being granted anything",
+   "code": [
+    [
+     "only public bundles cross; authorization stays separate",
+     "ops/ansible/roles/spire/templates/server.conf.j2",
+     20,
+     25
+    ]
+   ],
+   "test": [
+    [
+     "a check that each partner's authority stays in its own file",
+     "ops/ci/check-per-partner-trust-isolation.sh",
+     2,
+     8
+    ]
+   ],
+   "note": ""
+  },
+  {
+   "claim": "An identity can be revoked, a machine held for review",
+   "code": [
+    [
+     "revoke",
+     "crates/goat-cli/src/cmd/admin.rs",
+     190,
+     204
+    ],
+    [
+     "hold: remove a machine from every other group",
+     "crates/goat-cli/src/cmd/members.rs",
+     75,
+     79
+    ]
+   ],
+   "test": [
+    [
+     "a held machine is left in the quarantine group alone",
+     "crates/goat-cli/src/cmd/warrant_membership.rs",
+     4162,
+     4180
+    ]
+   ],
+   "note": ""
+  },
+  {
+   "claim": "A post-quantum key exchange for mesh tunnels, not enabled",
+   "code": [
+    [
+     "one setting, off by default",
+     "ops/ansible/group_vars/all.yml",
+     29,
+     40
+    ]
+   ],
+   "test": [
+    [
+     "a check of the setting, and what it cannot prove",
+     "ops/ci/check-rosenpass-pq-actually-negotiated.sh",
+     12,
+     23
+    ]
+   ],
+   "note": ""
+  },
+  {
+   "claim": "Decoy names and web paths",
+   "code": [
+    [
+     "decoys planted from the declaration",
+     "ops/decoy/decoy.py",
+     211,
+     235
+    ],
+    [
+     "decoy names answered by the name server",
+     "ops/ansible/roles/mesh-coredns/templates/Corefile.j2",
+     19,
+     34
+    ],
+    [
+     "the alert",
+     "ops/ansible/roles/decoy/files/decoy-alerts.yml",
+     4,
+     17
+    ]
+   ],
+   "test": [
+    [
+     "only decoy names are answered",
+     "ops/decoy/test_decoy.py",
+     113,
+     128
+    ]
+   ],
+   "note": ""
+  },
+  {
+   "claim": "Post-quantum key exchange between organizations",
+   "code": [
+    [
+     "decision record 0601",
+     "docs/adr/0601-fips-pqc-boundary-node.md",
+     46,
+     49
+    ]
+   ],
+   "test": [],
+   "note": "Designed: the link is to the decision record."
+  },
+  {
+   "claim": "The standardized replacement for the mesh tunnels' post-quantum key exchange",
+   "code": [
+    [
+     "the note that tracks the upstream proposal",
+     "docs/design/upstream-netbird-wireguard-watch.md",
+     51,
+     51
+    ]
+   ],
+   "test": [],
+   "note": "Designed: no decision record yet; the link is to the tracking note."
+  },
+  {
+   "claim": "Decoys on the data fabric, decoy credentials",
+   "code": [
+    [
+     "the design document",
+     "docs/design/deception-layer.md",
+     176,
+     181
+    ]
+   ],
+   "test": [],
+   "note": "Designed: the link is to the design document."
+  },
+  {
+   "claim": "Secrets replaced as part of a rebuild",
+   "code": [
+    [
+     "decision record 1237",
+     "docs/adr/1237-a-site-is-rebuilt-from-nothing-and-a-combed-extract-of-its-identities.md",
+     74,
+     78
+    ]
+   ],
+   "test": [],
+   "note": "Designed: the link is to the decision record, which is proposed."
+  },
+  {
+   "claim": "A site keeps working when it is cut off",
+   "code": [
+    [
+     "decision record 1165",
+     "docs/adr/1165-island-mode-multi-writer-every-site-admits.md",
+     14,
+     21
+    ]
+   ],
+   "test": [
+    [
+     "two sites cut apart both issue a key, and both keys survive",
+     "ops/postgres/spock/tests/partition-harness/scenarios/netbird-c1-setup-key-both-sides.sh",
+     2,
+     22
+    ]
+   ],
+   "note": "Designed: the link is to the decision record. The test of the cut link is built."
+  },
+  {
+   "claim": "The hub severs a site; the site works alone",
+   "code": [
+    [
+     "decision record 1205",
+     "docs/adr/1205-the-highest-echelon-site-overrides-and-can-sever-every-other-site.md",
+     95,
+     105
+    ],
+    [
+     "the sever directive",
+     "ops/ansible/roles/spock-hub-directives/files/spock-hub-directives.sh",
+     110,
+     122
+    ]
+   ],
+   "test": [
+    [
+     "after a sever, nothing the severed site writes arrives",
+     "ops/postgres/spock/tests/partition-harness/scenarios/hub-sever-site-stops-its-writes.sh",
+     2,
+     24
+    ]
+   ],
+   "note": "Designed: the directive and its test are built; no deployment applies it yet."
+  },
+  {
+   "claim": "A site built again from a checked export",
+   "code": [
+    [
+     "decision record 1237",
+     "docs/adr/1237-a-site-is-rebuilt-from-nothing-and-a-combed-extract-of-its-identities.md",
+     91,
+     97
+    ]
+   ],
+   "test": [],
+   "note": "Designed: the link is to the decision record, which is proposed."
+  },
+  {
+   "claim": "One signed bundle that carries a release to a site that is cut off",
+   "code": [
+    [
+     "decision record 1277",
+     "docs/adr/1277-one-signed-site-bundle-is-the-cold-start-artifact.md",
+     42,
+     56
+    ]
+   ],
+   "test": [],
+   "note": "Designed: the link is to the decision record."
+  }
+ ]
+}

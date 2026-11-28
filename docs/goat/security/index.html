@@ -375,6 +375,7 @@ ul.ev code { font-size: 13.5px; }
 .blunder .fix + .fix { margin-top: 12px; border-top: 0; padding-top: 0; }
 .scene .more { margin: 22px 0 0; font-size: 16px; }
 .estimate .est-h { margin: 14px 0 0; }
+.scene .incode { margin: 10px 0 0; font-size: 14.5px; }
 /* Additions the scene modules need. The first lane includes this file's rules in the page's css. */
 .scene .known, .band .known { margin: -12px 0 18px; font-size: 14.5px; color: var(--quiet); }
 .known i { font-style: italic; }
@@ -830,6 +831,8 @@ environments:
         <li><span class="status s-designed">designed</span><span>a site that keeps working with no link at all</span></li>
         <li><span class="status s-designed">designed</span><span>one signed bundle that carries a release to a site that is cut off</span></li>
       </ul>
+      <p class="incode"><a href="notes/#code-one-signed-bundle-that-carries-a-release-to-a-si">in the code</a></p>
+      <p class="incode"><a href="notes/#code-no-connection-without-a-declared-rule">in the code</a></p>
     </div>
     <figure class="full"><div class="frame"><svg class="viz wide" viewBox="0 0 1120 500" role="img" aria-label="Two drawings. First, an island with water all round it. Inside the island every party is joined freely to every other. Three small boats cross the water toward it: a drive, a maintenance laptop and an update. Second, an open field with no water and no shore: each party has its own identity and each connection between two parties has its own lock." font-family="var(--sans)">
 <defs><marker id="ag-ah" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="12" refX="11" refY="6" orient="auto"><path d="M1 1 L12 6 L1 11 z" fill="var(--ink)"/></marker></defs>
@@ -1020,6 +1023,7 @@ environments:
       <ul class="ev">
         <li><span class="status s-inuse">in use</span><span>every site on its owner's hardware; relays as the only thing in a cloud</span></li>
       </ul>
+      <p class="incode"><a href="notes/#code-every-site-runs-on-hardware-its-owner-holds">in the code</a></p>
     </div>
     <figure class="full"><div class="frame"><svg class="viz wide" viewBox="0 0 1120 610" role="img" aria-label="Two sites drawn as solid plates, each holding four things: services, identity, keys and data. This is the owner&#x27;s hardware, and everything lives there. Above them a thin band is a cloud, and it holds one thing: a relay. A sealed connection between the two sites passes through the relay without being opened. Beside the relay two short lists say what it can see, which is sealed traffic, two addresses, and how much and when, and what it cannot see, which is contents, keys, identities and data. A second relay is drawn faintly: any relay can be replaced with no loss." font-family="var(--sans)">
 <defs><marker id="cu-ah" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="12" refX="11" refY="6" orient="auto"><path d="M1 1 L12 6 L1 11 z" fill="var(--ink)"/></marker></defs>
@@ -1154,6 +1158,7 @@ environments:
       <ul class="ev">
         <li><span class="status s-inuse">in use</span><span>"No host site has a public address." goatcore, decision record 1192</span></li>
       </ul>
+      <p class="incode"><a href="notes/#code-no-site-has-a-public-address">in the code</a></p>
     </div>
     <figure><div class="frame"><svg id="fig-join" class="viz" viewBox="8 0 464 332" role="img" aria-label="Joining, in four steps. One: a new device contacts the goatnet&#x27;s one public name. Two: a relay behind that name passes the encrypted connection through, and cannot read it. Three: the device presents a key that works once to the service that admits it, which is inside a site and has no address of its own. Four: the device gets its identity on the mesh, and the list of parties it may reach.">
 <rect x="338" y="30" width="126" height="124" rx="14" class="bxd"/>
@@ -1214,6 +1219,7 @@ environments:
       <ul class="ev">
         <li><span class="status s-inuse">in use</span><span>"devices that have already joined keep talking" goatcore, decision record 0201</span></li>
       </ul>
+      <p class="incode"><a href="notes/#code-machines-connect-directly-a-relay-is-a-fallback">in the code</a></p>
     </div>
     <figure><div class="frame"><svg id="fig-after" class="viz" viewBox="8 0 464 414" role="img" aria-label="After joining. Your device has direct encrypted connections to other devices, each connection with its own lock. Two devices that cannot reach each other directly are joined through a relay, which carries encrypted traffic it cannot read. Services are reached by names known only inside the mesh. The service that admitted the device is not in the path. From the internet, an observer sees encrypted packets between addresses, and nothing answers a probe.">
 <path d="M70 96L214 50" class="link" data-lint="nohead"/>
@@ -1270,6 +1276,7 @@ environments:
       <ul class="ev">
         <li><span class="status s-inuse">in use</span><span>"The server does not even respond at all to an unauthorized client; it is silent and invisible." wireguard.com, Protocol</span></li>
       </ul>
+      <p class="incode"><a href="notes/#code-no-answer-to-a-packet-that-cannot-be-authenticat">in the code</a></p>
     </div>
     <figure><div class="frame"><svg id="fig-silent" class="viz" viewBox="8 0 464 278" role="img" aria-label="Two exchanges. A stranger sends a packet that the goat machine cannot authenticate, and gets no answer. A known machine sends a packet that the goat machine can authenticate, and the tunnel opens.">
 <rect x="16" y="16" width="150" height="62" rx="8" class="bxd"/>
@@ -1310,6 +1317,7 @@ environments:
         <li><span class="status s-inuse">in use</span><span>identities; declared rules, applied and checked by every stand-up</span></li>
         <li><span class="status s-built">built</span><span>the table of roles, revocation, review</span></li>
       </ul>
+      <p class="incode"><a href="notes/#code-no-connection-without-a-declared-rule">in the code</a></p>
     </div>
     <figure><div class="frame"><svg id="fig-identity" class="viz" viewBox="8 0 464 538" role="img" aria-label="A request from a person, a machine or a workload passes four checks before it reaches a service. One: who is asking; the identity is proven, each kind in its own way. Two: is there a declared rule; with no rule there is no connection, and a position on the network grants nothing. Three: may this role do this; a declared table of roles is enforced. Four: is the identity still in good standing, meaning not revoked and not held for review. A request that fails one check stops there.">
 <rect x="16" y="16" width="144" height="58" rx="8" class="bx"/>
@@ -1378,6 +1386,7 @@ environments:
       <ul class="ev">
         <li><span class="status s-inuse">in use</span><span>the secret store; no central broker; sealing for named readers, in use for the data sets an owner seals</span></li>
       </ul>
+      <p class="incode"><a href="notes/#code-shared-data-sealed-for-named-readers-the-platfor">in the code</a></p>
     </div>
     <figure><div class="frame"><svg id="fig-readers" class="viz" viewBox="8 0 464 312" role="img" aria-label="A secret is encrypted on your device before it reaches the secret store, which holds it and cannot read it. A shared message is sealed by the sender, carried by the data fabric, and opened only by a named reader. The fabric holds no key and has no central broker: machines pass the sealed message on.">
 <text x="16" y="24" class="t" font-size="16" font-weight="700">A secret</text>
@@ -1433,6 +1442,7 @@ environments:
         <li><span class="status s-built">built</span><span>a post-quantum key exchange for mesh tunnels, not enabled</span></li>
         <li><span class="status s-designed">designed</span><span>its standardized replacement, being selected</span></li>
       </ul>
+      <p class="incode"><a href="notes/#code-three-layers-of-encryption-each-with-its-own-key">in the code</a></p>
     </div>
     <figure class="full"><div class="frame"><svg class="viz wide" viewBox="0 0 1120 743" role="img" aria-label="An onion of three layers around one message. The outer layer is the mesh tunnel between two machines, a WireGuard tunnel whose keys only those two machines hold. Inside it is the data fabric link between a program and a router, which prefers a hybrid post-quantum key exchange and applies access rules by identity. Inside that is grant encryption, which the owner can turn on to seal a data set for named readers, so that routers and the platform hold no key. At the center is the message itself, a small readable record. Opening it takes all three keys, and each is held by a different party." font-family="var(--sans)">
 <defs><marker id="ly-ah" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="12" refX="11" refY="6" orient="auto"><path d="M1 1 L12 6 L1 11 z" fill="var(--ink)"/></marker></defs>
@@ -1588,6 +1598,7 @@ environments:
       <ul class="ev">
         <li><span class="status s-inuse">in use</span><span>direct connections between machines; a relay only as a fallback, carrying what it cannot read</span></li>
       </ul>
+      <p class="incode"><a href="notes/#code-machines-connect-directly-a-relay-is-a-fallback">in the code</a></p>
     </div>
     <figure class="full"><div class="frame"><svg class="viz wide" viewBox="0 0 1120 500" role="img" aria-label="Two paths between the same two sites. The usual path is long: it leaves the first site, passes a gateway, an aggregation point, a distant hub and another gateway, and at each of those stops the traffic is opened and wrapped again. The path here is one direct line between the two sites with its locks closed the whole way. A relay is drawn as a second carrier for when no direct line exists, and it stays closed too." font-family="var(--sans)">
 <defs><marker id="pt-ah" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="12" refX="11" refY="6" orient="auto"><path d="M1 1 L12 6 L1 11 z" fill="var(--ink)"/></marker></defs>
@@ -1794,6 +1805,7 @@ environments:
       <ul class="ev">
         <li><span class="status s-inuse">in use</span><span>goatbuilder 0.8.0: each refusal has an error code, and <code>goatbuilder explain &lt;code&gt;</code> gives the cause and the fix</span></li>
       </ul>
+      <p class="incode"><a href="notes/#code-a-deploy-refuses-what-it-cannot-verify">in the code</a></p>
     </div>
     <figure><div class="frame"><svg id="fig-chain" class="viz" viewBox="8 0 464 518" role="img" aria-label="The chain from a commit to a running machine. A commit is signed by its author. The release list, which says which release runs where, is signed. An image is named by its content hash. Before a deploy changes a machine it checks the signature on the release list, the content hash of every image, that the source matches the repository, and that the earlier stage runs this release. If one check fails, the deploy refuses and nothing changes.">
 <rect x="16" y="16" width="448" height="58" rx="8" class="bx"/>
@@ -1846,6 +1858,7 @@ environments:
         <li><span class="status s-built">built</span><span>the declaration, the generated rules, the records and the audit trail, for assessors working under the Risk Management Framework and for security engineers</span></li>
         <li><span class="status s-built">built</span><span>security records in OCSF, sent off each machine, with a forwarder to your own collector</span></li>
       </ul>
+      <p class="incode"><a href="notes/#code-security-records-in-an-open-format-with-a-forwar">in the code</a></p>
     </div>
     <figure class="full"><div class="frame"><svg class="viz wide" viewBox="0 0 1120 640" role="img" aria-label="At the center, one declaration: a document listing the machines, the exact versions by content hash, the allowed connections, who may do what, and the signed, reviewed changes. An arrow from it to the left builds the running system. An arrow from it to the right goes to the assessor, who reads the same files. The running system leaves records: deploy and check records, an audit trail, security events in OCSF, and service events over OpenTelemetry. Those records flow to your monitoring platform, connected by setting one address. Outside the system, drawn with dashed lines, are three checks that an organization still runs from outside: vulnerability scans, configuration baselines and web application testing." font-family="var(--sans)">
 <defs><marker id="sd-ah" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="12" refX="11" refY="6" orient="auto"><path d="M1 1 L12 6 L1 11 z" fill="var(--ink)"/></marker></defs>
@@ -2019,6 +2032,7 @@ environments:
         <li><span class="status s-designed">designed</span><span>its standardized replacement, being selected</span></li>
         <li><span class="status s-designed">designed</span><span>links between organizations</span></li>
       </ul>
+      <p class="incode"><a href="notes/#code-post-quantum-key-exchange-preferred-on-the-data">in the code</a></p>
     </div>
     <figure><div class="frame"><svg id="fig-quantum" class="viz" viewBox="8 0 464 382" role="img" aria-label="Today two machines agree on a key, and a recorder keeps the encrypted traffic. Years later, with a quantum computer, a recording protected by one key exchange of the usual kind opens. A recording protected by two key exchanges, the usual kind and one built to resist that computer, stays closed, because both must be broken to read the traffic.">
 <text x="16" y="24" class="t" font-size="16" font-weight="700">Today</text>
@@ -2070,6 +2084,7 @@ environments:
         <li><span class="status s-built">built</span><span>decoy names and web paths</span></li>
         <li><span class="status s-designed">designed</span><span>decoys on the data fabric, decoy credentials</span></li>
       </ul>
+      <p class="incode"><a href="notes/#code-decoy-names-and-web-paths">in the code</a></p>
     </div>
     <figure><div class="frame"><svg id="fig-decoy" class="viz" viewBox="8 0 464 276" role="img" aria-label="A site offers real names, real web paths and real services, and also a decoy that nothing has a reason to use. When an intruder uses the decoy, the first use raises an alert, and the alert reaches the operator on call.">
 <text x="16" y="24" class="t" font-size="16" font-weight="700">What a site offers</text>
@@ -2109,12 +2124,13 @@ environments:
       <p class="known"><i>Known as: time to exploit, breakout time, dwell time, mean time to detect, mean time to recover, defender's dilemma</i></p>
       <dl class="cols">
         <div><dt>Usually</dt><dd class="usual">Defense is a race, and the attacker's clocks have moved much further than the defender's.</dd></div>
-        <div><dt>Here</dt><dd class="here">A site is taken down in about 6 minutes, faster than an intruder's average time to start moving, and built again in under an hour. Other defenses slow the attacker or speed up detection; a fast rebuild resets the race.</dd></div>
+        <div><dt>Here</dt><dd class="here">A site is taken down in about 6 minutes, faster than an intruder's average time to start moving, and built again in under an hour. Other defenses slow the attacker or speed up detection. A fast rebuild resets the race.</dd></div>
         <div><dt>For you</dt><dd class="you">You are back on a known clean system sooner than intruders usually stay.</dd></div>
       </dl>
       <ul class="ev">
         <li><span class="status s-measured">measured</span><span>a site taken down in 5 min 54 s; a whole site built in 38 min 12 s of machine time</span></li>
       </ul>
+      <p class="incode"><a href="notes/#code-a-site-taken-down-by-one-command">in the code</a></p>
     </div>
     <figure class="full"><div class="frame"><svg class="viz wide" viewBox="0 0 1120 756" role="img" aria-label="A race of clocks on one logarithmic time axis, from seconds to more than a year. An attacker&#x27;s clocks, each with an earlier value and a current value: the average time to exploit a flaw, 63 days then and 5 days now; the average time from a first foothold to moving through the network, 1 hour 58 minutes then and 29 minutes now, with the fastest seen at 27 seconds; the median time inside before being noticed, 416 days then and 14 days now. A defender&#x27;s usual clocks: 55 days to fix half of the critical flaws once a fix exists; a mean of 241 days to identify and contain a data breach; more than a month to recover after ransomware for 34 organizations in 100. The clocks measured here: a site taken down in 5 minutes 54 seconds, which is faster than the average time to start moving; and a whole site built again in 38 minutes 12 seconds, which is of the same order as that time and far faster than every usual defender clock and than the time intruders usually stay." font-family="var(--sans)">
 <defs><marker id="tm-ah" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="12" refX="11" refY="6" orient="auto"><path d="M1 1 L12 6 L1 11 z" fill="var(--ink)"/></marker></defs>
@@ -2373,6 +2389,8 @@ environments:
         <li><span class="status s-designed">designed</span><span>goatcore, decision record 1165</span></li>
         <li><span class="status s-built">built</span><span>the tests for mesh control and sign-in under a cut link</span></li>
       </ul>
+      <p class="incode"><a href="notes/#code-a-site-keeps-working-when-it-is-cut-off">in the code</a></p>
+      <p class="incode"><a href="notes/#code-a-whole-site-built-by-one-command">in the code</a></p>
     </div>
     <figure><div class="frame"><svg id="fig-island" class="viz" viewBox="8 0 464 312" role="img" aria-label="A site whose link to the other sites is cut. Inside the site, sign-in, the mesh, data and access changes all keep running. Nothing has to leave the site for it to keep working.">
 <rect x="16" y="16" width="150" height="56" rx="8" class="bx"/>
@@ -2417,6 +2435,7 @@ environments:
         <li><span class="status s-designed">designed</span><span>goatcore, decision records 1205 and 1237</span></li>
         <li><span class="status s-built">built</span><span>the sever directive, tested with a cut link</span></li>
       </ul>
+      <p class="incode"><a href="notes/#code-the-hub-severs-a-site-the-site-works-alone">in the code</a></p>
     </div>
     <figure><div class="frame"><svg id="fig-hub" class="viz" viewBox="8 0 464 330" role="img" aria-label="The hub, the site with authority, severs a site. The link between the severed site and the others is ended, and nothing the severed site writes afterward reaches another site. The severed site still works, alone, for the people there. To rejoin, it is built again and loaded from the hub.">
 <rect x="152" y="16" width="176" height="56" rx="8" class="bxa"/>
@@ -2465,6 +2484,7 @@ environments:
         <li><span class="status s-designed">designed</span><span>sealing data for named readers across a boundary between two environments</span></li>
         <li><span class="status s-built">built</span><span>the simple boundary node, as a machine type</span></li>
       </ul>
+      <p class="incode"><a href="notes/#code-federation-between-two-environments-set-up-and-b">in the code</a></p>
     </div>
     <figure class="full"><div class="frame"><svg class="viz wide" viewBox="0 0 1120 470" role="img" aria-label="Two owners&#x27; environments, drawn as two plates with a gap between them. A federation boundary node stands at the edge of each. From the first owner, two sets of data that the owner released travel to the node and cross to the other side through one sealed tunnel between the two nodes. A third set, not released, stops before the node and does not cross. On the other side the receiving node makes two separate checks, first whether it recognizes the sender and then whether the sender is authorized, before the released data arrives." font-family="var(--sans)">
 <defs><marker id="bf-ah" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="12" refX="11" refY="6" orient="auto"><path d="M1 1 L12 6 L1 11 z" fill="var(--ink)"/></marker></defs>
