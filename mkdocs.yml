@@ -58,6 +58,9 @@ exclude_docs: |
   goat/security/scenes/*.py
   goat/security/scenes/*.css
   goat/security/scenes/*.md
+  goat/sec4laymen/README.md
+  goat/sec4laymen/build.py
+  goat/sec4laymen/figures.py
   goat/pages/README.md
   goat/pages/page.html
   goat/pages/build.py
