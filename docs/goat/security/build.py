@@ -66,7 +66,7 @@ STATUS = [
 ORDER = ["measured", "in use", "built", "designed"]
 
 # Scenes written as one module each in scenes/: the module returns its whole section and its mark.
-SCENES = ["layers", "path", "custody", "self_documenting", "boundary", "air_gap", "grade"]
+SCENES = ["layers", "path", "custody", "self_documenting", "boundary", "air_gap", "grade", "timing"]
 
 
 def read(*p):

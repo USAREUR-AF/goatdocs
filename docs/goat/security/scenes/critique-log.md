@@ -46,3 +46,8 @@ five paragraphs; the timing scene keeps one line per case and moves the sources 
 |---|---|---|
 | timing, wide | "416 days, 2011" was clipped at the right edge; the last value touched the band | Label anchored to its marker's left near the edge; taller band |
 | timing | Case marks on the axis would crowd the figure | Kept off the figure; the cases are one line each under it |
+
+## Round 5: sources read, and the last unread renders
+Every timing value and case was read in its primary document (`timing-sources.md`). Labels changed to the documents'
+own words; "nearly 14 months" dropped (neither source states it); the SAP line cut to what the
+company itself said.
