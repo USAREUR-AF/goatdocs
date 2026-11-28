@@ -240,12 +240,12 @@
    "measured": 0
   },
   {
-   "name": "open-entity-gateway",
-   "url": "https://usareur-af.github.io/open-entity-gateway/",
+   "name": "vendor-bridges",
+   "url": "https://usareur-af.github.io/vendor-bridges/",
    "shows": "what the gateway prints for one record",
    "kind": "site",
-   "repo": "https://github.com/USAREUR-AF/open-entity-gateway",
-   "slug": "open-entity-gateway",
+   "repo": "https://github.com/USAREUR-AF/vendor-bridges",
+   "slug": "vendor-bridges",
    "title": "open-entity-gateway",
    "tagline": "Bridges between the goat fabric and vendor systems.",
    "lede": "Each bridge is its own package that speaks one vendor's software kit: Anduril Lattice and Picogrid ECN today. A mapping file says how a record becomes a track; the bridge sends it in the vendor's form.",

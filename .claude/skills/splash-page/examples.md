@@ -15,7 +15,7 @@ catalogue of them, built from this list by goatdocs `docs/goat/pages/`. Read the
 | saltlick | https://usareur-af.github.io/saltlick/ | a directory session recorded against a real instance | `build.py` builds the program and records the session |
 | goat-client | https://usareur-af.github.io/goat-client/ | the real daemon, CLI and handshake, replayed | daemon, CLI and handshake in one stage |
 | goatrodeo | https://usareur-af.github.io/goatrodeo/ | the real game | the product itself as the stage |
-| open-entity-gateway | https://usareur-af.github.io/open-entity-gateway/ | what the gateway prints for one record | one record, end to end, as the stage |
+| vendor-bridges | https://usareur-af.github.io/vendor-bridges/ | what the gateway prints for one record | one record, end to end, as the stage |
 | zagros-moon-pod | https://usareur-af.github.io/zagros-moon-pod/ | what crosses the pod router | a boundary as the stage |
 | goat-cloud | https://usareur-af.github.io/goat-cloud/ | an ownership register: every cloud resource has an owner | smallest site: one `index.html` with styles inline, `fitcheck.py`, `README.md`; serif for statements, mono for what a machine reads |
 | goatrope | https://usareur-af.github.io/goatrope/ | a rope figure drawn by `build.py`, state drawn rather than colored | `page.html` → `index.html` with `build.py --check`; SPDX headers |
