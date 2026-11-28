@@ -59,7 +59,7 @@ section.scene { padding: 88px 0; border-top: 1px solid var(--rule); }
 .facts .n { display: block; font: 800 clamp(30px, 4.4vw, 54px)/1.05 var(--mono); color: var(--accent); letter-spacing: -0.02em; }
 .facts .l { display: block; font-size: 17px; margin-top: 6px; }
 @media (max-width: 640px) { .facts { grid-template-columns: minmax(0, 1fr); } .facts > div + div { border-left: 0; border-top: 1px solid var(--rule); } }
-.reqs { display: flex; flex-wrap: wrap; gap: 10px 26px; margin: 0; padding: 0; list-style: none; font-size: 16px; }
+.reqs { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; font-size: 16px; }
 .reqs li .status { margin: 0 8px 0 0; vertical-align: 1px; }
 .h3 { font: 700 13px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--quiet); margin: 0 0 12px; }
 .two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 36px; }
@@ -176,3 +176,4 @@ ul.ev code { font-size: 13.5px; }
 @media (max-width: 760px) {
   .sr .sc.s-inuse::after { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
 }
+.blunder .fix + .fix { margin-top: 12px; border-top: 0; padding-top: 0; }

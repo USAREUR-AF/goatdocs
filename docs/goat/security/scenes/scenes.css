@@ -1,0 +1,14 @@
+/* Additions the scene modules need. The first lane includes this file's rules in the page's css. */
+.scene .known, .band .known { margin: -12px 0 18px; font-size: 14.5px; color: var(--quiet); }
+.known i { font-style: italic; }
+.scene figure.full + figure.full { margin-top: 28px; }
+/* the invitation */
+.grade .wrap { max-width: 860px; }
+.grade h2 { margin-bottom: 14px; }
+.grade p.lead { font-size: 20px; line-height: 1.5; }
+.grade ul { padding-left: 20px; font-size: 17px; line-height: 1.55; }
+.grade .mk-anchor svg.mark { width: 76px; height: 76px; }
+/* the worked estimate under the path figure */
+.estimate .est-h { margin: 0 0 12px; font-size: 16px; }
+.estimate ul.est { margin: 18px 0 0; padding-left: 20px; font-size: 16px; line-height: 1.5; display: grid; gap: 8px; max-width: 62em; }
+.estimate .assume { margin: 16px 0 0; font-size: 14.5px; line-height: 1.5; color: var(--quiet); max-width: 66em; }

@@ -232,7 +232,7 @@ def render():
       <div><b>{m("build", M)}</b><span class="l">of machine working time to set up a whole site, measured on real computers</span></div>
       <div><b>{m("down", M)}</b><span class="l">to take a site down, measured on real computers</span></div>
     </div>
-""" + S(f'Where this stands: both times above are measured. The team\'s requirement for its next major version is the whole job, from start to finish with no pauses, in {m("req-site", M)} minutes or less. That is still being worked on.'),
+""" + S(f'Where this stands: both times above are measured. The team\'s requirement for its next major version is the whole job, from start to finish with no pauses, in {m("req-site", M)} minutes or less. The team is working toward that now.'),
         "When in doubt about a machine, we do not clean it; we rebuild it, and that takes minutes, not days."))
 
     parts.append(section("alone", "Cut off, and still working", "A site keeps working when its connection is cut", F.alone(), "",
@@ -266,6 +266,7 @@ def render():
         ("Overlay", "A private, locked route laid across the public roads."),
         ("Post-quantum", "A lock designed to hold against the code-breaking computers of the future."),
         ("Program", "A set of instructions that a computer follows."),
+        ("Quantum computer", "A new kind of computer, still being developed, that is expected to break some of today's locks."),
         ("Rebuild", "Setting a whole site up again from its written plan, from a clean start."),
         ("Relay", "A rented computer that passes sealed messages along and cannot read them."),
         ("Release", "One finished, numbered version of a program."),
