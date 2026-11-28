@@ -132,7 +132,7 @@ def render():
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>sec4laymen: our security work, in plain words</title>
+<title>Our security work, in plain words</title>
 <meta name="description" content="What the goat team builds and why it matters, explained with no technical background needed: a private network that a group can set up itself, keep hidden, and rebuild from a clean start.">
 <style>{CSS}</style>
 </head>
@@ -141,10 +141,10 @@ def render():
 <div class="top"><div class="wrap"><a href="../">&larr; All goat pages</a><a href="../security/">The technical version</a></div></div>
 <header class="hero">
   <div class="wrap">
-    <p class="kicker">sec4laymen &middot; our work, in plain words</p>
+    <p class="kicker">Our security work, in plain words</p>
     <h1>We build a private way for a group's computers to talk to each other.</h1>
     <p class="lede">The group can set it up itself, keep it hidden from strangers, and set it up again from a clean start with less than an hour of machine work.</p>
-    <div class="btns"><a class="btn fill" href="#why">Start reading</a><a class="btn" href="#words">Words used here</a></div>
+    <div class="btns"><a class="btn fill" href="#why">Start reading</a><a class="btn" href="#words">Words used here</a><a class="btn" href="../security/">The technical version</a></div>
     <figure>{F.hero()}</figure>
   </div>
 </header>""")
@@ -244,7 +244,7 @@ def render():
     parts.append(section("open", "Open to inspection", "Anyone can read how it works", F.open_(), "",
         P("All of this work is published. The instructions, the designs and the tests are public, and anyone may read them, use them and check them.",
           "That can sound backwards. Would it not be safer to keep it secret? A lock is only good if it still holds when everyone knows exactly how it is made. Only the keys are secret. Showing the design lets many more people look for weaknesses and tell us, which makes the work stronger.",
-          'If you would like to see the same ideas with the technical detail, read <a href="../security/">the security page</a>.'),
+          'For readers who want the technical detail, the same ideas are on <a href="../security/">the security page</a>, with figures, the measurements, and links to the code.'),
         "The design is public; only the keys are secret."))
 
     words = [
