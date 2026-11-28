@@ -53,7 +53,8 @@ def fed_wide():
     # the one tunnel between the two nodes
     f.path(f"M{nx1 + 75} {ny} H{nx2 - 75}", stroke=ACC, sw=6)
     f.lock((nx1 + nx2) / 2, ny, 1.05, ACC)
-    f.t((nx1 + nx2) / 2, ny - 34, "one sealed tunnel", 13.5, 400, QUIET, anchor="middle")
+    f.t((nx1 + nx2) / 2, ny - 46, "one sealed", 13.5, 400, QUIET, anchor="middle")
+    f.t((nx1 + nx2) / 2, ny - 29, "tunnel", 13.5, 400, QUIET, anchor="middle")
     f.t((nx1 + nx2) / 2, ny + 44, "between the", 13.5, 400, QUIET, anchor="middle")
     f.t((nx1 + nx2) / 2, ny + 62, "two nodes", 13.5, 400, QUIET, anchor="middle")
     # on the other side: two separate checks, then the readers
