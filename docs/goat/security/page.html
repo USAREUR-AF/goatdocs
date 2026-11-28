@@ -110,6 +110,7 @@ environments:
     <h2>The ideas, each with its own figure</h2>
     <p class="sub">Each section below shows what is usual, what goat does, and what that changes for the person who runs it.</p>
     <div class="ideas">
+        <a class="idea" href="#custody">{{SCENE_MARK_CUSTODY}}<b>Your hardware</b><span>Nothing you need to protect is ever in someone else's building.</span></a>
         <a class="idea" href="#join">{{MARK_OUTSIDE}}<b>Little to find</b><span>Your services are not listed where an outsider can look.</span></a>
         <a class="idea" href="#silent">{{MARK_SILENT}}<b>A quiet protocol</b><span>A probe of your address gets no reply.</span></a>
         <a class="idea" href="#zero-trust">{{MARK_ZERO_TRUST}}<b>Zero trust</b><span>Every connection is checked, and every rule is written down.</span></a>
@@ -125,6 +126,8 @@ environments:
   </div>
 </section>
 
+{{SCENE_CUSTODY}}
+
 <section class="scene" id="join">
   <div class="wrap">
     <div class="say">
@@ -134,7 +137,7 @@ environments:
       <p class="known"><i>Known as: overlay network, software-defined perimeter, attack surface reduction</i></p>
       <dl>
         <dt>Usually</dt><dd class="usual">Services have public addresses, protected by a filter and a login page. Anyone can find them and test them.</dd>
-        <dt>Here</dt><dd class="here">A goatnet has one public name, and it is used only to join. A relay behind the name passes the encrypted connection to the site and cannot read it. The device presents a key that works once, and gets its identity and the list of parties it may reach.</dd>
+        <dt>Here</dt><dd class="here">A goatnet has one public name, and it is used only to join. A relay behind the name passes the encrypted connection to the site and cannot read it.</dd>
         <dt>For you</dt><dd class="you">Only one name of yours is public, and it is used only to join.</dd>
       </dl>
       <ul class="ev">
@@ -152,9 +155,9 @@ environments:
       <h2>After joining, devices talk directly and nothing is public</h2>
       <p class="known"><i>Known as: peer-to-peer mesh, overlay network, attack surface reduction</i></p>
       <dl>
-        <dt>Usually</dt><dd class="usual">Traffic goes through a central gateway that has a public address, and the gateway must stay up for anything to work.</dd>
-        <dt>Here</dt><dd class="here">Devices that have joined connect to each other directly, each connection encrypted by itself. A relay is used only when two devices cannot reach each other, and it carries traffic it cannot read. Services have names that exist only inside. The service that admitted a device is no longer in its path.</dd>
-        <dt>For you</dt><dd class="you">An outside observer sees encrypted packets between addresses, and your devices keep talking when the admitting service is unreachable.</dd>
+        <dt>Usually</dt><dd class="usual">Traffic goes through a central gateway with a public address, and the gateway must stay up.</dd>
+        <dt>Here</dt><dd class="here">Devices that have joined connect to each other directly over the mesh (NetBird, which sets up WireGuard tunnels), each connection encrypted by itself. A relay is used only when two devices cannot reach each other, and it carries traffic it cannot read.</dd>
+        <dt>For you</dt><dd class="you">An outside observer sees only encrypted packets, and your devices keep talking when the admitting service is unreachable.</dd>
       </dl>
       <ul class="ev">
         <li><span class="status s-inuse">in use</span><span>"devices that have already joined keep talking" goatcore, decision record 0201</span></li>
@@ -193,8 +196,7 @@ environments:
       <p class="known"><i>Known as: zero trust architecture (ZTA), least privilege, mutual authentication, policy as code</i></p>
       <dl>
         <dt>Usually</dt><dd class="usual">A device inside the network is trusted because of where it is.</dd>
-        <dt>Here</dt><dd class="here">Every request passes four checks. Who is asking: a person, a machine and a program each prove their identity in their own way. Is there a rule: a connection needs a declared rule, and with no rule there is no connection. Is it allowed: a declared table says what each role may do. Is the identity still good: an identity can be revoked, and a machine can be held for review.</dd>
-        <dd class="here" style="margin-top:10px">The rules in force are generated from a declaration that is reviewed like code. A partner's identities can be verified without being granted anything.</dd>
+        <dt>Here</dt><dd class="here">Every request passes four checks: who is asking, whether a declared rule allows the connection, what the role may do, and whether the identity is still good. With no rule there is no connection.</dd>
         <dt>For you</dt><dd class="you">Access is written down in one place that you can read, review and change.</dd>
       </dl>
       <ul class="ev">
@@ -215,7 +217,7 @@ environments:
       <p class="known"><i>Known as: zero-knowledge storage, client-side encryption, end-to-end encryption</i></p>
       <dl>
         <dt>Usually</dt><dd class="usual">A secret store can read every secret it holds, and a message broker can read every message. Whoever takes that server has all of it.</dd>
-        <dt>Here</dt><dd class="here">A secret is encrypted on your device before it is stored, so the store cannot read it. Shared data is sealed for named readers, and the platform holds no key for it. The data fabric that carries it holds no key and has no central broker.</dd>
+        <dt>Here</dt><dd class="here">A secret is encrypted on your device before it is stored, so the store cannot read it. Shared data on the data fabric (Zenoh) is sealed once, and its key is sealed separately for each named reader.</dd>
         <dt>For you</dt><dd class="you">A stolen server holds only sealed data.</dd>
       </dl>
       <ul class="ev">
@@ -239,7 +241,7 @@ environments:
       <p class="known"><i>Known as: software supply chain security, signed provenance, content addressing</i></p>
       <dl>
         <dt>Usually</dt><dd class="usual">A machine runs whatever was last installed on it, and an image name can point to different content over time.</dd>
-        <dt>Here</dt><dd class="here">A signed list says which release runs where. Every image is named by its content hash. Before a deploy changes a machine, it checks the signature, the hash, the source and the order of stages.</dd>
+        <dt>Here</dt><dd class="here">A signed list says which release runs where, and every image is named by its content hash. Before a deploy changes a machine, it checks the signature, the hash, the source and the order of stages.</dd>
         <dt>For you</dt><dd class="you">A changed image or an edited configuration is refused before it reaches a machine.</dd>
       </dl>
       <ul class="ev">
@@ -259,12 +261,13 @@ environments:
       <p class="known"><i>Known as: post-quantum cryptography (PQC), hybrid key exchange, harvest now, decrypt later</i></p>
       <dl>
         <dt>Usually</dt><dd class="usual">Encrypted traffic can be recorded now and kept. A future quantum computer could open what today's key exchange protects.</dd>
-        <dt>Here</dt><dd class="here">The routers of the data fabric prefer a combined key exchange: the usual kind together with one built to resist a quantum computer. A client that supports the combination gets it, and reading that traffic means breaking both. A client that does not support it connects the usual way.</dd>
+        <dt>Here</dt><dd class="here">The routers of the data fabric prefer a combined key exchange: the usual kind together with one built to resist a quantum computer. A client that supports the combination gets it, and reading that traffic means breaking both.</dd>
         <dt>For you</dt><dd class="you">Data that must stay private for years is protected against a later reader.</dd>
       </dl>
       <ul class="ev">
         <li><span class="status s-inuse">in use</span><span>the data fabric</span></li>
-        <li><span class="status s-built">built</span><span>mesh tunnels</span></li>
+        <li><span class="status s-built">built</span><span>a post-quantum key exchange for mesh tunnels, not enabled</span></li>
+        <li><span class="status s-designed">designed</span><span>its standardized replacement, being selected</span></li>
         <li><span class="status s-designed">designed</span><span>links between organizations</span></li>
       </ul>
     </div>
@@ -303,7 +306,7 @@ environments:
       <p class="known"><i>Known as: immutable infrastructure, infrastructure as code, cyber recovery</i></p>
         <dl>
           <dt>Usually</dt><dd class="usual">A compromised machine is cleaned in place, and the cleaning is trusted. A full rebuild takes days, so it is avoided.</dd>
-          <dt>Here</dt><dd class="here">A site is described by a declaration in a repository. One command builds the whole site from it, and the same command builds it again: machines prepared and encrypted, services, relays, identity, the mesh, and checks that prove it works.</dd>
+          <dt>Here</dt><dd class="here">A site is described by a declaration in a repository. One command builds the whole site from it, and the same command builds it again.</dd>
           <dt>For you</dt><dd class="you">A rebuild is an ordinary, practiced operation, not a painful reaction to a disaster. When you have a doubt about a machine, you rebuild it.</dd>
         </dl>
       </div>
@@ -319,32 +322,7 @@ environments:
           {{WATERFALL}}
       </ol>
     </div>
-    <div>
-      <p class="h3">Required for release 1.0</p>
-      <ul class="reqs">
-        <li>A first site, start to finish, in <span data-measure="req-site">-</span> or less: in progress.</li>
-        <li>A machine added in <span data-measure="req-node">-</span> or less: in progress.</li>
-        <li>A site taken down in <span data-measure="req-down">-</span> or less: measured, <span data-measure="down">-</span>.</li>
-      </ul>
-    </div>
-    <div class="two">
-      <div>
-        <p class="h3">A rebuild removes</p>
-        <ul>
-          <li><b>Programs and files left on a machine</b><span class="d">The machine is installed again and built from the declaration.</span></li>
-          <li><b>A machine's place on the mesh</b><span class="d">Each machine joins again with a key that works once.</span></li>
-          <li><b>Running services</b><span class="d">One command stops every service of a site and keeps the record of each.</span></li>
-        </ul>
-      </div>
-      <div>
-        <p class="h3">Other parts of the design handle</p>
-        <ul>
-          <li><b>A stolen secret</b><span class="d">A rebuild from an export carries no secret, password hash or private key from the old site; each is issued again.</span><span class="status s-designed">designed</span></li>
-          <li><b>A changed source or image</b><span class="d">The deploy checks refuse it.</span><span class="status s-inuse">in use</span></li>
-          <li><b>Data that was already copied</b><span class="d">Sealing for named readers limits what a copy reveals.</span><span class="status s-inuse">in use</span></li>
-        </ul>
-      </div>
-    </div>
+    <p class="more"><a href="notes/#rebuild">What a rebuild removes, and what release 1.0 requires.</a></p>
   </div>
 </section>
 
@@ -356,9 +334,9 @@ environments:
       <h2>Cut off, a site keeps working, and it can stay silent</h2>
       <p class="known"><i>Known as: disconnected operations (DDIL), local-first, partition tolerance, emission control</i></p>
       <dl>
-        <dt>Usually</dt><dd class="usual">Sites depend on a central service and on a long link to it. When the link fails they stop. While the link works, it can be found, jammed or followed.</dd>
-        <dt>Here</dt><dd class="here">Every site runs the same services, and keeps admitting people, enrolling machines and changing access while it is cut off. A site that needs no link back does not have to transmit off-site at all.</dd>
-        <dt>For you</dt><dd class="you">A lost link does not stop a site, and a site that sends nothing shows less in the radio spectrum, to signals collection and on the network.</dd>
+        <dt>Usually</dt><dd class="usual">Sites depend on a long link to a central service. When the link fails they stop, and while it works it can be found, jammed or followed.</dd>
+        <dt>Here</dt><dd class="here">Every site runs the same services and keeps working while it is cut off. A site that needs no link back does not have to transmit off-site at all.</dd>
+        <dt>For you</dt><dd class="you">A lost link does not stop a site, and a silent site is harder to find.</dd>
       </dl>
       <ul class="ev">
         <li><span class="status s-designed">designed</span><span>goatcore, decision record 1165</span></li>
@@ -377,9 +355,9 @@ environments:
       <h2>Severed, a site works alone</h2>
       <p class="known"><i>Known as: isolation, containment, cyber recovery</i></p>
       <dl>
-        <dt>Usually</dt><dd class="usual">A site that may be compromised stays connected until someone is sure, or it is shut down and the people there lose their systems.</dd>
-        <dt>Here</dt><dd class="here">The hub can sever a site that it no longer trusts. From then on, nothing that site writes reaches any other site. The severed site keeps running locally, so the people there are not left without their systems. It rejoins only after it is built again and loaded from the hub.</dd>
-        <dt>For you</dt><dd class="you">You can cut one site off to protect the others, and the site that was cut off keeps working locally.</dd>
+        <dt>Usually</dt><dd class="usual">A site that may be compromised stays connected, or it is shut down and its people lose their systems.</dd>
+        <dt>Here</dt><dd class="here">The hub can sever a site that it no longer trusts, and nothing that site writes then reaches any other site. The severed site keeps running locally, and rejoins only after it is built again and loaded from the hub.</dd>
+        <dt>For you</dt><dd class="you">You protect the other sites without switching off the severed one.</dd>
       </dl>
       <ul class="ev">
         <li><span class="status s-designed">designed</span><span>goatcore, decision records 1205 and 1237</span></li>
@@ -419,7 +397,7 @@ environments:
 
 <footer>
   <div class="wrap">
-    <p><a href="https://github.com/USAREUR-AF/goatcore">Repository</a><a href="https://github.com/USAREUR-AF/goatcore/blob/main/LICENSE">Apache License 2.0</a><a href="https://github.com/USAREUR-AF/goatcore/blob/main/SECURITY.md">Security policy</a></p>
+    <p><a href="https://github.com/USAREUR-AF/goatcore">Repository</a><a href="https://github.com/USAREUR-AF/goatcore/blob/main/LICENSE">Apache License 2.0</a><a href="https://github.com/USAREUR-AF/goatcore/blob/main/SECURITY.md">Security policy</a><a href="notes/">Notes and sources</a></p>
     <p>Portions written by U.S. Federal government employees within the scope of their employment are in the public domain in the United States. Part of <a href="https://github.com/USAREUR-AF/goatcore">goat</a>.</p>
   </div>
 </footer>

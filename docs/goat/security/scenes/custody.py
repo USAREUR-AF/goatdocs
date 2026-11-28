@@ -114,8 +114,15 @@ def html():
     return scene(
         "custody", "Custody", "Your hardware, in your custody",
         "data sovereignty, on-premises, positive control",
-        "Services, identity, keys and data are placed in a provider's cloud. The provider's staff, its other customers and its outages become part of your system.",
-        "The whole environment runs on hardware you control and keep custody of at all times: its services, its identity, its keys and its data. A cloud is used for one thing only, relays that carry traffic. A relay passes connections that are encrypted from end to end by the two parties that hold the keys. It holds no key, it cannot read or change what it carries, it stores nothing, and it can be replaced at any time.",
+        "Services, identity, keys and data are placed in a provider's cloud.",
+        "Everything runs on hardware you control and keep. A cloud holds only relays, which carry sealed traffic they cannot read.",
         "Nothing you need to protect is ever in someone else's building.",
         [("in use", "every site on its owner's hardware; relays as the only thing in a cloud")],
         figure_wide() + "\n" + figure_narrow(), mark())
+
+
+def notes():
+    return """<section id="custody"><h2>Why a relay in a cloud is safe</h2>
+<p>A relay passes connections that are encrypted from end to end by the two parties that hold the keys. It holds no key, it cannot read or change what it carries, and it stores nothing.</p>
+<p>A relay can be replaced or moved at any time. Losing one loses no data and no identity.</p>
+</section>"""

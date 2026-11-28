@@ -1,6 +1,6 @@
 """Scene: three layers of encryption around every message, drawn as an onion with the readable
 message at the center. Grades, from the public tree (goatcore main, 28 Nov 2026):
-  mesh tunnel        in use   (WireGuard; a post-quantum key exchange for the tunnel: designed)
+  mesh tunnel        in use   (WireGuard; a post-quantum key exchange for the tunnel: built, not enabled; its standardized replacement: designed)
   data fabric link   in use   (docs/design/zenoh-pqc-tls.md: the hybrid exchange is the router default)
   grant encryption   in use   (ADR 1208, Accepted, makes it part of the sharing model, and the key service is a
                               pinned fleet component; ADRs 1094 and 1106 still read Proposed and are being
@@ -16,16 +16,16 @@ ALT = ("An onion of three layers around one message. The outer layer is the mesh
        "readable record. Opening it takes all three keys, and each is held by a different party.")
 
 LAYERS = [
-    ("3", "Mesh tunnel", "between two machines",
-     "Every packet between two machines travels in a WireGuard tunnel, encrypted with ChaCha20-Poly1305.",
+    ("3", "Mesh tunnel \u00b7 NetBird over WireGuard", "between two machines",
+     "Every packet between two machines travels in a WireGuard tunnel, set up by NetBird and encrypted with ChaCha20-Poly1305.",
      "Keys held by the two machines, and no one else.",
-     [("in use", ""), ("designed", "a standardized post-quantum key exchange for the tunnel")]),
-    ("2", "Data fabric link", "between a program and a router",
-     "Each link to a router is TLS 1.3 and prefers a hybrid post-quantum key exchange. Access rules, by identity, decide who may publish or read each topic.",
+     [("in use", ""), ("built", "a post-quantum key exchange, not enabled"), ("designed", "its standardized replacement")]),
+    ("2", "Data fabric link \u00b7 Zenoh", "between a program and a router",
+     "Each link to a Zenoh router is TLS 1.3 and prefers a hybrid post-quantum key exchange. Access rules, by identity, decide who may publish or read each topic.",
      "Keys held by the two ends of the link.",
      [("in use", "")]),
     ("1", "Grant encryption", "from the owner to named readers",
-     "The owner can seal a data set for named readers with hybrid encryption. It is turned on per data set.",
+     "The owner seals a data set once. The key that opens it is then sealed separately for each named reader, with that reader's own key. So several readers can open the same data, each with a different key, and a reader can be added or removed without changing anyone else's key. It is turned on per data set.",
      "Keys held by the named readers. Routers and the platform hold none.",
      [("in use", "for the data sets an owner seals")]),
 ]
@@ -78,15 +78,16 @@ def _block(f, lx, y, layer, chars):
 
 def figure_wide():
     f = Fig(1120, 652, ALT, uid="ly")
-    cx, cy, R = 296, 312, [270, 206, 142, 80]
+    cx, cy, R = 296, 330, [270, 206, 142, 80]
     _onion(f, cx, cy, R)
-    lx, ys, angs = 644, [34, 232, 434], [-56, -16, 22]
-    for layer, y, r, a in zip(LAYERS, ys, R[:3], angs):
+    lx, y, angs = 644, 24, [-56, -16, 22]
+    for layer, r, a in zip(LAYERS, R[:3], angs):      # each block starts where the one above it ended
         ex, ey = cx + r * math.cos(math.radians(a)), cy + r * math.sin(math.radians(a))
         f.path(f"M{ex:.1f} {ey:.1f} L{lx - 74} {y + 8} L{lx - 18} {y + 8}", sw=1.6)
         f.lock(ex, ey)
-        _block(f, lx, y, layer, 54)
-    f.t(24, 634, "Opening a message takes all three keys, and each is held by a different party.", 16, 400, QUIET)
+        y = _block(f, lx, y, layer, 54) + 20
+    f.h = round(max(y + 8, cy + R[0] + 56))
+    f.t(24, f.h - 18, "Opening a message takes all three keys, and each is held by a different party.", 16, 400, QUIET)
     return f.svg()
 
 
@@ -117,10 +118,18 @@ def html():
     return scene(
         "layers", "Three layers", "Three layers around every message",
         "defense in depth, end-to-end encryption, hybrid key exchange",
-        "Traffic is encrypted once, by the network or by the application. Whoever breaks or holds that one key reads everything.",
-        "A message can be wrapped three times: sealed for its named readers, then carried over a data fabric link, then carried in a mesh tunnel between two machines. Each layer has its own keys, held by different parties.",
+        "Traffic is encrypted once. Whoever breaks or holds that one key reads everything.",
+        "A message is wrapped up to three times, and each layer's keys are held by different parties.",
         "Breaking one layer shows the next layer, not your data.",
         [("in use", "the mesh tunnel, and the data fabric link with its hybrid post-quantum key exchange"),
          ("in use", "sealing for named readers, for the data sets an owner seals inside a goatnet"),
-         ("designed", "a standardized post-quantum key exchange for the mesh tunnel")],
+         ("built", "a post-quantum key exchange for mesh tunnels, not enabled"),
+         ("designed", "its standardized replacement, being selected")],
         figure_wide() + "\n" + figure_narrow(), mark())
+
+
+def notes():
+    return """<section id="layers"><h2>The three layers</h2>
+<p>The mesh tunnel is WireGuard, with ChaCha20-Poly1305, between two machines. The data fabric link is TLS 1.3 between a program and a router, and it prefers a hybrid post-quantum key exchange. Sealing for named readers uses hybrid encryption, and the platform holds no key.</p>
+<p>The layers cover different spans. Sealing runs from the owner to the readers. The link and the tunnel each run between two ends on the owner's own machines.</p>
+</section>"""

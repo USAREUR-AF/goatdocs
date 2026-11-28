@@ -127,10 +127,18 @@ def html():
     return scene(
         "self-documenting", "Evidence", "The system documents itself",
         "compliance as code, continuous monitoring, audit trail, security information and event management (SIEM)",
-        "The description of a system is written by hand, beside the system, for an assessment. It is out of date as soon as the system changes.",
-        "The environment is built from a declaration, so the declaration is the description: the machines, the exact version of everything by content hash, the connections that are allowed, who may do what, and every change as a signed, reviewed commit. Deploys and checks leave their own records. An assessor working under the Risk Management Framework, or a security engineer, reads the same files the system runs from. Logs and audit records are already produced in open formats, OCSF and OpenTelemetry, ready to send to the monitoring platform your organization uses.",
-        "Your evidence is current because it is the system. Connecting your monitoring is setting an address.",
-        [("built", "the declaration, the generated rules, the deploy and check records, the audit trail"),
-         ("built", "security records normalized to OCSF and sent off each machine, with a forwarder to your own collector"),
-         ("built", "not replaced: vulnerability scans (ACAS), configuration baselines (STIG) and web application testing (Burp) are run from outside, as before")],
+        "A system's description is written by hand for an assessment, and it is out of date as soon as the system changes.",
+        "The system is built from a declaration, so the declaration is the description. Its logs are already in open formats, ready for your monitoring platform.",
+        "Your evidence is current because it is the system.",
+        [("built", "the declaration, the generated rules, the records and the audit trail, for assessors working under the Risk Management Framework and for security engineers"),
+         ("built", "security records in OCSF, sent off each machine, with a forwarder to your own collector"),
+         ("built", "not replaced: vulnerability scans (ACAS), configuration baselines (STIG) and web application testing (Burp) are still run from outside")],
         figure_wide() + "\n" + figure_narrow(), mark())
+
+
+def notes():
+    return """<section id="evidence"><h2>What an assessor can read</h2>
+<p>The declaration states the machines, the exact version of everything by content hash, the connections that are allowed, and who may do what. Every change is a signed, reviewed commit. Deploys and checks leave their own records.</p>
+<p>A collector on every machine gathers the system journal, the audit log, the data fabric's audit records and the access logs. It normalizes them to OCSF and sends them off the machine. A forwarder to an organization's own collector is switched on by setting one address. Services also emit events over OpenTelemetry.</p>
+<p>Vulnerability scans (ACAS), configuration baselines (STIG) and web application testing (Burp) are outside tools that an organization still runs.</p>
+</section>"""

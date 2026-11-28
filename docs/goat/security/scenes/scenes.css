@@ -12,3 +12,17 @@
 .estimate .est-h { margin: 0 0 12px; font-size: 16px; }
 .estimate ul.est { margin: 18px 0 0; padding-left: 20px; font-size: 16px; line-height: 1.5; display: grid; gap: 8px; max-width: 62em; }
 .estimate .assume { margin: 16px 0 0; font-size: 14.5px; line-height: 1.5; color: var(--quiet); max-width: 66em; }
+/* the sources under the race of clocks */
+.sources { margin-top: 18px; font-size: 14.5px; line-height: 1.5; color: var(--quiet); max-width: 70em; }
+.sources ul { margin: 8px 0 0; padding-left: 20px; display: grid; gap: 5px; }
+.sources b { color: var(--ink); }
+/* real cases under the race of clocks */
+.cases { margin-top: 30px; max-width: 74em; }
+.cases h3 { font-size: 20px; margin: 0 0 6px; }
+.cases .note { margin: 0 0 12px; font-size: 14.5px; color: var(--quiet); }
+.cases ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.cases li { display: grid; grid-template-columns: 124px minmax(0, 1fr); gap: 14px; font-size: 16px; line-height: 1.45; }
+.cases .when { font: 700 13px var(--mono); letter-spacing: .04em; color: var(--quiet); padding-top: 3px; }
+.cases .clock { font-weight: 600; }
+.cases .src { display: block; font-size: 14px; color: var(--quiet); margin-top: 2px; }
+@media (max-width: 600px) { .cases li { grid-template-columns: minmax(0, 1fr); gap: 2px; } }

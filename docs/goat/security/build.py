@@ -29,6 +29,8 @@ HEAD = "<!-- Written by docs/goat/security/build.py from page.html, figures.py a
 STATUS = [
     ("A whole site built by one command", "measured"),
     ("A site taken down by one command", "measured"),
+    ("Every site runs on hardware its owner holds", "in use"),
+    ("A cloud holds relays only, and a relay reads nothing", "in use"),
     ("A private mesh overlay that rides on any link", "in use"),
     ("Mesh tunnels on a common open protocol", "in use"),
     ("No answer to a packet that cannot be authenticated", "in use"),
@@ -47,9 +49,10 @@ STATUS = [
     ("A declared table of roles, enforced", "built"),
     ("A partner is verified without being granted anything", "built"),
     ("An identity can be revoked, a machine held for review", "built"),
-    ("Post-quantum key exchange on mesh tunnels", "built"),
+    ("A post-quantum key exchange for mesh tunnels, not enabled", "built"),
     ("Decoy names and web paths", "built"),
     ("Post-quantum key exchange between organizations", "designed"),
+    ("The standardized replacement for the mesh tunnels' post-quantum key exchange", "designed"),
     ("Decoys on the data fabric, decoy credentials", "designed"),
     ("Secrets replaced as part of a rebuild", "designed"),
     ("A site keeps working when it is cut off", "designed"),
@@ -59,7 +62,7 @@ STATUS = [
 ORDER = ["measured", "in use", "built", "designed"]
 
 # Scenes written as one module each in scenes/: the module returns its whole section and its mark.
-SCENES = ["layers", "path"]
+SCENES = ["layers", "path", "custody"]
 
 
 def read(*p):
@@ -169,6 +172,7 @@ def render():
     fill["FIG_BOUNDARIES"] = position_fig.position_figure()
     for key, fn in figs.MARKS.items():
         fill[key] = fn()
+    notes = []
     sys.path.insert(0, os.path.join(HERE, "scenes"))   # the scene modules import their shared kit by name
     for name in SCENES:
         spec = importlib.util.spec_from_file_location("scene_" + name, os.path.join(HERE, "scenes", name + ".py"))
@@ -176,6 +180,8 @@ def render():
         spec.loader.exec_module(mod)
         fill["SCENE_" + name.upper()] = mod.html()
         fill["SCENE_MARK_" + name.upper()] = mod.mark()
+        if hasattr(mod, "notes"):
+            notes.append(mod.notes())
     page = read(HERE, "page.html")
     for key, value in fill.items():
         page = page.replace("{{" + key + "}}", value)
@@ -185,24 +191,34 @@ def render():
         if key not in m:
             sys.exit(f"page.html: data-measure=\"{key}\" has no measure in build.py")
         return match.group(1) + html.escape(m[key]) + match.group(3)
-    page = re.sub(r'(<[a-z]+[^>]*\bdata-measure="([^"]+)"[^>]*>)[^<]*(<)', put, page)
-    return HEAD + page
+    measure = r'(<[a-z]+[^>]*\bdata-measure="([^"]+)"[^>]*>)[^<]*(<)'
+    page = re.sub(measure, put, page)
+    # the notes page: the scenes' own notes in page order, then the notes kept beside this script
+    body = "\n".join(notes) + "\n" + read(HERE, "notes-own.html")
+    toc = "".join(f'<a href="#{i}">{html.escape(t)}</a>' for i, t in re.findall(r'<section id="([^"]+)"><h2>([^<]+)</h2>', body))
+    note = read(HERE, "notes-page.html")
+    for key, value in {"ICON": icon, "CSS": fill["CSS"], "TOC": toc, "NOTES": body}.items():
+        note = note.replace("{{" + key + "}}", value)
+    note = re.sub(measure, put, note)
+    return HEAD + page, HEAD.replace("page.html, figures.py and run.json", "notes-page.html, notes-own.html and the scenes") + note
 
 
 def main():
     check = "--check" in sys.argv[1:]
-    page = render()
+    page, note = render()
     bad = 0
-    if check:
-        if not os.path.exists(OUT) or read(OUT) != page:
-            print("docs/goat/security/index.html is not current: run python3 -I docs/goat/security/build.py")
+    for out, text in ((OUT, page), (os.path.join(HERE, "notes", "index.html"), note)):
+        if check:
+            if not os.path.exists(out) or read(out) != text:
+                print(f"{os.path.relpath(out, ROOT)} is not current: run python3 -I docs/goat/security/build.py")
+                bad += 1
+        else:
+            os.makedirs(os.path.dirname(out), exist_ok=True)
+            with open(out, "w") as f:
+                f.write(text)
+        if "{{" in text:
+            print(f"{os.path.relpath(out, ROOT)}: a {{{{...}}}} marker was not filled")
             bad += 1
-    else:
-        with open(OUT, "w") as f:
-            f.write(page)
-    if "{{" in page:
-        print("docs/goat/security: a {{...}} marker was not filled")
-        bad += 1
     # run.json is public: stage names, seconds and plain descriptions, and nothing that names a deployment
     if re.search(r"\b\d{1,3}(\.\d{1,3}){3}\b|[A-Za-z0-9-]+\.(net|com|mil|org)\b|@", read(HERE, "run.json")):
         print("docs/goat/security/run.json: an address, a domain name or a mail address; the record names no deployment")

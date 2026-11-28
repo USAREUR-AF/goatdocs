@@ -373,6 +373,8 @@ ul.ev code { font-size: 13.5px; }
   .sr .sc.s-inuse::after { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
 }
 .blunder .fix + .fix { margin-top: 12px; border-top: 0; padding-top: 0; }
+.scene .more { margin: 22px 0 0; font-size: 16px; }
+.estimate .est-h { margin: 14px 0 0; }
 /* Additions the scene modules need. The first lane includes this file's rules in the page's css. */
 .scene .known, .band .known { margin: -12px 0 18px; font-size: 14.5px; color: var(--quiet); }
 .known i { font-style: italic; }
@@ -387,6 +389,20 @@ ul.ev code { font-size: 13.5px; }
 .estimate .est-h { margin: 0 0 12px; font-size: 16px; }
 .estimate ul.est { margin: 18px 0 0; padding-left: 20px; font-size: 16px; line-height: 1.5; display: grid; gap: 8px; max-width: 62em; }
 .estimate .assume { margin: 16px 0 0; font-size: 14.5px; line-height: 1.5; color: var(--quiet); max-width: 66em; }
+/* the sources under the race of clocks */
+.sources { margin-top: 18px; font-size: 14.5px; line-height: 1.5; color: var(--quiet); max-width: 70em; }
+.sources ul { margin: 8px 0 0; padding-left: 20px; display: grid; gap: 5px; }
+.sources b { color: var(--ink); }
+/* real cases under the race of clocks */
+.cases { margin-top: 30px; max-width: 74em; }
+.cases h3 { font-size: 20px; margin: 0 0 6px; }
+.cases .note { margin: 0 0 12px; font-size: 14.5px; color: var(--quiet); }
+.cases ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.cases li { display: grid; grid-template-columns: 124px minmax(0, 1fr); gap: 14px; font-size: 16px; line-height: 1.45; }
+.cases .when { font: 700 13px var(--mono); letter-spacing: .04em; color: var(--quiet); padding-top: 3px; }
+.cases .clock { font-weight: 600; }
+.cases .src { display: block; font-size: 14px; color: var(--quiet); margin-top: 2px; }
+@media (max-width: 600px) { .cases li { grid-template-columns: minmax(0, 1fr); gap: 2px; } }
 
 </style>
 <style>/* goat-tree: the same strip on every goat landing page, back to the catalogue of them all */
@@ -802,6 +818,7 @@ environments:
     <h2>The ideas, each with its own figure</h2>
     <p class="sub">Each section below shows what is usual, what goat does, and what that changes for the person who runs it.</p>
     <div class="ideas">
+        <a class="idea" href="#custody"><svg class="mark mark-custody" viewBox="0 0 96 96" role="img" aria-label="A box resting in a cradle, held from below."><path d="M10 40V64Q10 86 32 86H64Q86 86 86 64V40" class="mk"/><rect x="28" y="22" width="40" height="40" rx="6" class="mkf"/><circle cx="48" cy="42" r="6" class="mkfa"/></svg><b>Your hardware</b><span>Nothing you need to protect is ever in someone else's building.</span></a>
         <a class="idea" href="#join"><svg class="mark mark-outside" viewBox="0 0 96 96" role="img" aria-label="A building with no door on the street. The way in runs under the ground."><path d="M8 58H88" class="mk"/><path d="M30 58V28L50 14L70 28V58" class="mk"/><path d="M8 80Q50 92 50 58" class="mka mkd"/><circle cx="50" cy="42" r="5" class="mkfa"/></svg><b>Little to find</b><span>Your services are not listed where an outsider can look.</span></a>
         <a class="idea" href="#silent"><svg class="mark mark-silent" viewBox="0 0 96 96" role="img" aria-label="A signal sent toward a point, and no answer coming back."><circle cx="74" cy="48" r="9" class="mkf"/><path d="M12 48H24" class="mk"/><path d="M34 30Q46 48 34 66" class="mk"/><path d="M48 22Q64 48 48 74" class="mk mkd"/></svg><b>A quiet protocol</b><span>A probe of your address gets no reply.</span></a>
         <a class="idea" href="#zero-trust"><svg class="mark mark-zero-trust" viewBox="0 0 96 96" role="img" aria-label="A line between two points, stopped at a gate in the middle."><circle cx="14" cy="48" r="7" class="mkf"/><circle cx="82" cy="48" r="7" class="mkf"/><path d="M23 48H36M60 48H73" class="mk"/><circle cx="48" cy="48" r="17" class="mka"/><path d="M48 39V57" class="mka"/></svg><b>Zero trust</b><span>Every connection is checked, and every rule is written down.</span></a>
@@ -817,6 +834,140 @@ environments:
   </div>
 </section>
 
+<section class="scene center" id="custody">
+  <div class="wrap">
+    <div class="say wide">
+      <div class="mk-anchor" aria-hidden="true"><svg class="mark mark-custody" viewBox="0 0 96 96" role="img" aria-label="A box resting in a cradle, held from below."><path d="M10 40V64Q10 86 32 86H64Q86 86 86 64V40" class="mk"/><rect x="28" y="22" width="40" height="40" rx="6" class="mkf"/><circle cx="48" cy="42" r="6" class="mkfa"/></svg></div>
+      <p class="eyebrow">Custody</p>
+      <h2>Your hardware, in your custody</h2>
+      <p class="known"><i>Known as: data sovereignty, on-premises, positive control</i></p>
+      <dl class="cols">
+        <div><dt>Usually</dt><dd class="usual">Services, identity, keys and data are placed in a provider's cloud.</dd></div>
+        <div><dt>Here</dt><dd class="here">Everything runs on hardware you control and keep. A cloud holds only relays, which carry sealed traffic they cannot read.</dd></div>
+        <div><dt>For you</dt><dd class="you">Nothing you need to protect is ever in someone else's building.</dd></div>
+      </dl>
+      <ul class="ev">
+        <li><span class="status s-inuse">in use</span><span>every site on its owner's hardware; relays as the only thing in a cloud</span></li>
+      </ul>
+    </div>
+    <figure class="full"><div class="frame"><svg class="viz wide" viewBox="0 0 1120 610" role="img" aria-label="Two sites drawn as solid plates, each holding four things: services, identity, keys and data. This is the owner&#x27;s hardware, and everything lives there. Above them a thin band is a cloud, and it holds one thing: a relay. A sealed connection between the two sites passes through the relay without being opened. Beside the relay two short lists say what it can see, which is sealed traffic, two addresses, and how much and when, and what it cannot see, which is contents, keys, identities and data. A second relay is drawn faintly: any relay can be replaced with no loss." font-family="var(--sans)">
+<defs><marker id="cu-ah" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="12" refX="11" refY="6" orient="auto"><path d="M1 1 L12 6 L1 11 z" fill="var(--ink)"/></marker></defs>
+<rect x="20.0" y="18.0" width="1080.0" height="176.0" rx="12" fill="none" stroke="var(--line)" stroke-width="1.8" stroke-dasharray="6 6"/>
+<text x="40.0" y="46.0" font-size="14" font-weight="700" fill="var(--quiet)" letter-spacing="1.5">A CLOUD: RELAYS ONLY</text>
+<text x="96.0" y="84.0" font-size="15" font-weight="700" fill="var(--ink)">A relay can see</text>
+<text x="96.0" y="108.0" font-size="15" fill="var(--quiet)">sealed traffic</text>
+<text x="96.0" y="128.7" font-size="15" fill="var(--quiet)">two addresses</text>
+<text x="96.0" y="149.4" font-size="15" fill="var(--quiet)">how much, and when</text>
+<text x="800.0" y="84.0" font-size="15" font-weight="700" fill="var(--ink)">A relay cannot see</text>
+<text x="800.0" y="108.0" font-size="15" fill="var(--quiet)">contents</text>
+<text x="800.0" y="128.7" font-size="15" fill="var(--quiet)">keys</text>
+<text x="800.0" y="149.4" font-size="15" fill="var(--quiet)">identities</text>
+<text x="800.0" y="170.1" font-size="15" fill="var(--quiet)">data</text>
+<path d="M300 262 C300 150 430 104 534 104" fill="none" stroke="var(--accent)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M586 104 C690 104 820 150 820 262" fill="none" stroke="var(--accent)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="560.0" cy="104.0" r="26" fill="var(--paper)" stroke="var(--ink)" stroke-width="2.6"/>
+<path d="M541 104 H579" stroke="var(--accent)" stroke-width="5" stroke-linecap="round"/>
+<g transform="translate(560.0 104.0) scale(0.82)"><circle r="14" fill="var(--paper)" stroke="var(--accent)" stroke-width="2.2"/><rect x="-5.5" y="-1.5" width="11" height="9" rx="2" fill="var(--accent)"/><path d="M-3.4 -1.5 v-3 a3.4 3.4 0 0 1 6.8 0 v3" fill="none" stroke="var(--accent)" stroke-width="2"/></g>
+<text x="560.0" y="154.0" font-size="14" fill="var(--quiet)" text-anchor="middle" font-style="italic">passes it through, closed</text>
+<circle cx="664.0" cy="70.0" r="17" fill="var(--paper)" stroke="var(--ink)" stroke-width="2.6" stroke-dasharray="4 4"/>
+<text x="688.0" y="44.0" font-size="13.5" fill="var(--quiet)">a spare: any relay can be replaced</text>
+<rect x="40.0" y="262.0" width="460.0" height="250.0" rx="14" fill="var(--accent-soft)" stroke="var(--ink)" stroke-width="3"/>
+<text x="58.0" y="290.0" font-size="14" font-weight="700" fill="var(--ink)" letter-spacing="1.5">A SITE</text>
+<rect x="62.7" y="315.7" width="196.0" height="74.0" rx="8" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.8"/>
+<g fill="none" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="74.66666666666667" y="339.66666666666663" width="28" height="10" rx="2"/><rect x="74.66666666666667" y="355.66666666666663" width="28" height="10" rx="2"/></g><circle cx="80.66666666666667" cy="344.66666666666663" r="1.8" fill="var(--ink)"/><circle cx="80.66666666666667" cy="360.66666666666663" r="1.8" fill="var(--ink)"/>
+<text x="114.7" y="358.2" font-size="16" font-weight="600" fill="var(--ink)">services</text>
+<rect x="281.3" y="315.7" width="196.0" height="74.0" rx="8" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.8"/>
+<g fill="none" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="307.3333333333333" cy="345.66666666666663" r="6.5"/><path d="M294.3333333333333 366.66666666666663 a13 11 0 0 1 26 0"/></g>
+<text x="333.3" y="358.2" font-size="16" font-weight="600" fill="var(--ink)">identity</text>
+<rect x="62.7" y="409.0" width="196.0" height="74.0" rx="8" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.8"/>
+<g fill="none" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="79.66666666666667" cy="445.99999999999994" r="6.5"/><path d="M86.16666666666667 445.99999999999994H103.66666666666667M97.66666666666667 445.99999999999994v6M102.66666666666667 445.99999999999994v5"/></g>
+<text x="114.7" y="451.5" font-size="16" font-weight="600" fill="var(--ink)">keys</text>
+<rect x="281.3" y="409.0" width="196.0" height="74.0" rx="8" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.8"/>
+<g fill="none" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="307.3333333333333" cy="435.99999999999994" rx="13" ry="5"/><path d="M294.3333333333333 435.99999999999994v20a13 5 0 0 0 26 0v-20"/><path d="M294.3333333333333 445.99999999999994a13 5 0 0 0 26 0"/></g>
+<text x="333.3" y="451.5" font-size="16" font-weight="600" fill="var(--ink)">data</text>
+<rect x="620.0" y="262.0" width="460.0" height="250.0" rx="14" fill="var(--accent-soft)" stroke="var(--ink)" stroke-width="3"/>
+<text x="638.0" y="290.0" font-size="14" font-weight="700" fill="var(--ink)" letter-spacing="1.5">ANOTHER SITE</text>
+<rect x="642.7" y="315.7" width="196.0" height="74.0" rx="8" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.8"/>
+<g fill="none" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="654.6666666666666" y="339.66666666666663" width="28" height="10" rx="2"/><rect x="654.6666666666666" y="355.66666666666663" width="28" height="10" rx="2"/></g><circle cx="660.6666666666666" cy="344.66666666666663" r="1.8" fill="var(--ink)"/><circle cx="660.6666666666666" cy="360.66666666666663" r="1.8" fill="var(--ink)"/>
+<text x="694.7" y="358.2" font-size="16" font-weight="600" fill="var(--ink)">services</text>
+<rect x="861.3" y="315.7" width="196.0" height="74.0" rx="8" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.8"/>
+<g fill="none" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="887.3333333333333" cy="345.66666666666663" r="6.5"/><path d="M874.3333333333333 366.66666666666663 a13 11 0 0 1 26 0"/></g>
+<text x="913.3" y="358.2" font-size="16" font-weight="600" fill="var(--ink)">identity</text>
+<rect x="642.7" y="409.0" width="196.0" height="74.0" rx="8" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.8"/>
+<g fill="none" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="659.6666666666666" cy="445.99999999999994" r="6.5"/><path d="M666.1666666666666 445.99999999999994H683.6666666666666M677.6666666666666 445.99999999999994v6M682.6666666666666 445.99999999999994v5"/></g>
+<text x="694.7" y="451.5" font-size="16" font-weight="600" fill="var(--ink)">keys</text>
+<rect x="861.3" y="409.0" width="196.0" height="74.0" rx="8" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.8"/>
+<g fill="none" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="887.3333333333333" cy="435.99999999999994" rx="13" ry="5"/><path d="M874.3333333333333 435.99999999999994v20a13 5 0 0 0 26 0v-20"/><path d="M874.3333333333333 445.99999999999994a13 5 0 0 0 26 0"/></g>
+<text x="913.3" y="451.5" font-size="16" font-weight="600" fill="var(--ink)">data</text>
+<text x="560.0" y="540.0" font-size="14" font-weight="700" fill="var(--ink)" text-anchor="middle" letter-spacing="1.5">YOUR HARDWARE, IN YOUR CUSTODY: EVERYTHING LIVES HERE</text>
+<g transform="translate(300.0 262.0) scale(1.0)"><circle r="14" fill="var(--paper)" stroke="var(--accent)" stroke-width="2.2"/><rect x="-5.5" y="-1.5" width="11" height="9" rx="2" fill="var(--accent)"/><path d="M-3.4 -1.5 v-3 a3.4 3.4 0 0 1 6.8 0 v3" fill="none" stroke="var(--accent)" stroke-width="2"/></g>
+<g transform="translate(820.0 262.0) scale(1.0)"><circle r="14" fill="var(--paper)" stroke="var(--accent)" stroke-width="2.2"/><rect x="-5.5" y="-1.5" width="11" height="9" rx="2" fill="var(--accent)"/><path d="M-3.4 -1.5 v-3 a3.4 3.4 0 0 1 6.8 0 v3" fill="none" stroke="var(--accent)" stroke-width="2"/></g>
+<path d="M500 400 H620" fill="none" stroke="var(--accent)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<g transform="translate(560.0 400.0) scale(0.9)"><circle r="14" fill="var(--paper)" stroke="var(--accent)" stroke-width="2.2"/><rect x="-5.5" y="-1.5" width="11" height="9" rx="2" fill="var(--accent)"/><path d="M-3.4 -1.5 v-3 a3.4 3.4 0 0 1 6.8 0 v3" fill="none" stroke="var(--accent)" stroke-width="2"/></g>
+<text x="560.0" y="368.0" font-size="13.5" fill="var(--quiet)" text-anchor="middle">directly,</text>
+<text x="560.0" y="446.0" font-size="13.5" fill="var(--quiet)" text-anchor="middle">when they can</text>
+<text x="560.0" y="464.0" font-size="13.5" fill="var(--quiet)" text-anchor="middle">reach each other</text>
+<text x="40.0" y="576.0" font-size="16" fill="var(--quiet)">The two ends hold the keys. A relay holds no key, stores nothing, and cannot read or change what it carries.</text>
+<text x="40.0" y="600.0" font-size="16" fill="var(--quiet)">Losing a relay loses no data and no identity.</text>
+</svg>
+<svg class="viz narrow" viewBox="0 0 464 800" role="img" aria-label="Two sites drawn as solid plates, each holding four things: services, identity, keys and data. This is the owner&#x27;s hardware, and everything lives there. Above them a thin band is a cloud, and it holds one thing: a relay. A sealed connection between the two sites passes through the relay without being opened. Beside the relay two short lists say what it can see, which is sealed traffic, two addresses, and how much and when, and what it cannot see, which is contents, keys, identities and data. A second relay is drawn faintly: any relay can be replaced with no loss." font-family="var(--sans)">
+<defs><marker id="cun-ah" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="12" refX="11" refY="6" orient="auto"><path d="M1 1 L12 6 L1 11 z" fill="var(--ink)"/></marker></defs>
+<rect x="8.0" y="10.0" width="448.0" height="176.0" rx="12" fill="none" stroke="var(--line)" stroke-width="1.8" stroke-dasharray="6 6"/>
+<text x="24.0" y="38.0" font-size="13" font-weight="700" fill="var(--quiet)" letter-spacing="1.4">A CLOUD: RELAYS ONLY</text>
+<path d="M118 252 C118 150 150 96 206 96" fill="none" stroke="var(--accent)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M258 96 C314 96 346 150 346 252" fill="none" stroke="var(--accent)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="232.0" cy="96.0" r="26" fill="var(--paper)" stroke="var(--ink)" stroke-width="2.6"/>
+<path d="M213 96 H251" stroke="var(--accent)" stroke-width="5" stroke-linecap="round"/>
+<g transform="translate(232.0 96.0) scale(0.82)"><circle r="14" fill="var(--paper)" stroke="var(--accent)" stroke-width="2.2"/><rect x="-5.5" y="-1.5" width="11" height="9" rx="2" fill="var(--accent)"/><path d="M-3.4 -1.5 v-3 a3.4 3.4 0 0 1 6.8 0 v3" fill="none" stroke="var(--accent)" stroke-width="2"/></g>
+<text x="232.0" y="148.0" font-size="14" fill="var(--quiet)" text-anchor="middle" font-style="italic">passes it through, closed</text>
+<rect x="8.0" y="252.0" width="220.0" height="286.0" rx="14" fill="var(--accent-soft)" stroke="var(--ink)" stroke-width="3"/>
+<text x="26.0" y="280.0" font-size="13" font-weight="700" fill="var(--ink)" letter-spacing="1.5">A SITE</text>
+<rect x="26.0" y="300.2" width="184.0" height="50.0" rx="8" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.8"/>
+<g fill="none" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="34.0" y="312.2" width="28" height="10" rx="2"/><rect x="34.0" y="328.2" width="28" height="10" rx="2"/></g><circle cx="40.0" cy="317.2" r="1.8" fill="var(--ink)"/><circle cx="40.0" cy="333.2" r="1.8" fill="var(--ink)"/>
+<text x="70.0" y="330.7" font-size="14" font-weight="600" fill="var(--ink)">services</text>
+<rect x="26.0" y="358.6" width="184.0" height="50.0" rx="8" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.8"/>
+<g fill="none" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="48.0" cy="376.59999999999997" r="6.5"/><path d="M35.0 397.59999999999997 a13 11 0 0 1 26 0"/></g>
+<text x="70.0" y="389.1" font-size="14" font-weight="600" fill="var(--ink)">identity</text>
+<rect x="26.0" y="417.0" width="184.0" height="50.0" rx="8" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.8"/>
+<g fill="none" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="39.0" cy="442.0" r="6.5"/><path d="M45.5 442.0H63.0M57.0 442.0v6M62.0 442.0v5"/></g>
+<text x="70.0" y="447.5" font-size="14" font-weight="600" fill="var(--ink)">keys</text>
+<rect x="26.0" y="475.4" width="184.0" height="50.0" rx="8" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.8"/>
+<g fill="none" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="48.0" cy="490.4" rx="13" ry="5"/><path d="M35.0 490.4v20a13 5 0 0 0 26 0v-20"/><path d="M35.0 500.4a13 5 0 0 0 26 0"/></g>
+<text x="70.0" y="505.9" font-size="14" font-weight="600" fill="var(--ink)">data</text>
+<rect x="236.0" y="252.0" width="220.0" height="286.0" rx="14" fill="var(--accent-soft)" stroke="var(--ink)" stroke-width="3"/>
+<text x="254.0" y="280.0" font-size="13" font-weight="700" fill="var(--ink)" letter-spacing="1.5">ANOTHER SITE</text>
+<rect x="254.0" y="300.2" width="184.0" height="50.0" rx="8" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.8"/>
+<g fill="none" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="262.0" y="312.2" width="28" height="10" rx="2"/><rect x="262.0" y="328.2" width="28" height="10" rx="2"/></g><circle cx="268.0" cy="317.2" r="1.8" fill="var(--ink)"/><circle cx="268.0" cy="333.2" r="1.8" fill="var(--ink)"/>
+<text x="298.0" y="330.7" font-size="14" font-weight="600" fill="var(--ink)">services</text>
+<rect x="254.0" y="358.6" width="184.0" height="50.0" rx="8" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.8"/>
+<g fill="none" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="276.0" cy="376.59999999999997" r="6.5"/><path d="M263.0 397.59999999999997 a13 11 0 0 1 26 0"/></g>
+<text x="298.0" y="389.1" font-size="14" font-weight="600" fill="var(--ink)">identity</text>
+<rect x="254.0" y="417.0" width="184.0" height="50.0" rx="8" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.8"/>
+<g fill="none" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="267.0" cy="442.0" r="6.5"/><path d="M273.5 442.0H291.0M285.0 442.0v6M290.0 442.0v5"/></g>
+<text x="298.0" y="447.5" font-size="14" font-weight="600" fill="var(--ink)">keys</text>
+<rect x="254.0" y="475.4" width="184.0" height="50.0" rx="8" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.8"/>
+<g fill="none" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="276.0" cy="490.4" rx="13" ry="5"/><path d="M263.0 490.4v20a13 5 0 0 0 26 0v-20"/><path d="M263.0 500.4a13 5 0 0 0 26 0"/></g>
+<text x="298.0" y="505.9" font-size="14" font-weight="600" fill="var(--ink)">data</text>
+<g transform="translate(118.0 252.0) scale(1.0)"><circle r="14" fill="var(--paper)" stroke="var(--accent)" stroke-width="2.2"/><rect x="-5.5" y="-1.5" width="11" height="9" rx="2" fill="var(--accent)"/><path d="M-3.4 -1.5 v-3 a3.4 3.4 0 0 1 6.8 0 v3" fill="none" stroke="var(--accent)" stroke-width="2"/></g>
+<g transform="translate(346.0 252.0) scale(1.0)"><circle r="14" fill="var(--paper)" stroke="var(--accent)" stroke-width="2.2"/><rect x="-5.5" y="-1.5" width="11" height="9" rx="2" fill="var(--accent)"/><path d="M-3.4 -1.5 v-3 a3.4 3.4 0 0 1 6.8 0 v3" fill="none" stroke="var(--accent)" stroke-width="2"/></g>
+<text x="232.0" y="566.0" font-size="13" font-weight="700" fill="var(--ink)" text-anchor="middle" letter-spacing="1.4">YOUR HARDWARE, IN YOUR CUSTODY</text>
+<text x="232.0" y="585.0" font-size="13" font-weight="700" fill="var(--ink)" text-anchor="middle" letter-spacing="1.4">EVERYTHING LIVES HERE</text>
+<text x="24.0" y="624.0" font-size="15" font-weight="700" fill="var(--ink)">A relay can see</text>
+<text x="24.0" y="648.0" font-size="15" fill="var(--quiet)">sealed traffic</text>
+<text x="24.0" y="668.7" font-size="15" fill="var(--quiet)">two addresses</text>
+<text x="24.0" y="689.4" font-size="15" fill="var(--quiet)">how much, and when</text>
+<text x="250.0" y="624.0" font-size="15" font-weight="700" fill="var(--ink)">A relay cannot see</text>
+<text x="250.0" y="648.0" font-size="15" fill="var(--quiet)">contents</text>
+<text x="250.0" y="668.7" font-size="15" fill="var(--quiet)">keys</text>
+<text x="250.0" y="689.4" font-size="15" fill="var(--quiet)">identities</text>
+<text x="250.0" y="710.1" font-size="15" fill="var(--quiet)">data</text>
+<text x="14.0" y="744.0" font-size="15" fill="var(--quiet)">The two ends hold the keys. A relay holds no key,</text>
+<text x="14.0" y="764.7" font-size="15" fill="var(--quiet)">stores nothing, and cannot read or change what it</text>
+<text x="14.0" y="785.4" font-size="15" fill="var(--quiet)">carries. Losing a relay loses no data and no identity.</text>
+</svg></div></figure>
+  </div>
+</section>
+
 <section class="scene" id="join">
   <div class="wrap">
     <div class="say">
@@ -826,7 +977,7 @@ environments:
       <p class="known"><i>Known as: overlay network, software-defined perimeter, attack surface reduction</i></p>
       <dl>
         <dt>Usually</dt><dd class="usual">Services have public addresses, protected by a filter and a login page. Anyone can find them and test them.</dd>
-        <dt>Here</dt><dd class="here">A goatnet has one public name, and it is used only to join. A relay behind the name passes the encrypted connection to the site and cannot read it. The device presents a key that works once, and gets its identity and the list of parties it may reach.</dd>
+        <dt>Here</dt><dd class="here">A goatnet has one public name, and it is used only to join. A relay behind the name passes the encrypted connection to the site and cannot read it.</dd>
         <dt>For you</dt><dd class="you">Only one name of yours is public, and it is used only to join.</dd>
       </dl>
       <ul class="ev">
@@ -885,9 +1036,9 @@ environments:
       <h2>After joining, devices talk directly and nothing is public</h2>
       <p class="known"><i>Known as: peer-to-peer mesh, overlay network, attack surface reduction</i></p>
       <dl>
-        <dt>Usually</dt><dd class="usual">Traffic goes through a central gateway that has a public address, and the gateway must stay up for anything to work.</dd>
-        <dt>Here</dt><dd class="here">Devices that have joined connect to each other directly, each connection encrypted by itself. A relay is used only when two devices cannot reach each other, and it carries traffic it cannot read. Services have names that exist only inside. The service that admitted a device is no longer in its path.</dd>
-        <dt>For you</dt><dd class="you">An outside observer sees encrypted packets between addresses, and your devices keep talking when the admitting service is unreachable.</dd>
+        <dt>Usually</dt><dd class="usual">Traffic goes through a central gateway with a public address, and the gateway must stay up.</dd>
+        <dt>Here</dt><dd class="here">Devices that have joined connect to each other directly over the mesh (NetBird, which sets up WireGuard tunnels), each connection encrypted by itself. A relay is used only when two devices cannot reach each other, and it carries traffic it cannot read.</dd>
+        <dt>For you</dt><dd class="you">An outside observer sees only encrypted packets, and your devices keep talking when the admitting service is unreachable.</dd>
       </dl>
       <ul class="ev">
         <li><span class="status s-inuse">in use</span><span>"devices that have already joined keep talking" goatcore, decision record 0201</span></li>
@@ -981,8 +1132,7 @@ environments:
       <p class="known"><i>Known as: zero trust architecture (ZTA), least privilege, mutual authentication, policy as code</i></p>
       <dl>
         <dt>Usually</dt><dd class="usual">A device inside the network is trusted because of where it is.</dd>
-        <dt>Here</dt><dd class="here">Every request passes four checks. Who is asking: a person, a machine and a program each prove their identity in their own way. Is there a rule: a connection needs a declared rule, and with no rule there is no connection. Is it allowed: a declared table says what each role may do. Is the identity still good: an identity can be revoked, and a machine can be held for review.</dd>
-        <dd class="here" style="margin-top:10px">The rules in force are generated from a declaration that is reviewed like code. A partner's identities can be verified without being granted anything.</dd>
+        <dt>Here</dt><dd class="here">Every request passes four checks: who is asking, whether a declared rule allows the connection, what the role may do, and whether the identity is still good. With no rule there is no connection.</dd>
         <dt>For you</dt><dd class="you">Access is written down in one place that you can read, review and change.</dd>
       </dl>
       <ul class="ev">
@@ -1051,7 +1201,7 @@ environments:
       <p class="known"><i>Known as: zero-knowledge storage, client-side encryption, end-to-end encryption</i></p>
       <dl>
         <dt>Usually</dt><dd class="usual">A secret store can read every secret it holds, and a message broker can read every message. Whoever takes that server has all of it.</dd>
-        <dt>Here</dt><dd class="here">A secret is encrypted on your device before it is stored, so the store cannot read it. Shared data is sealed for named readers, and the platform holds no key for it. The data fabric that carries it holds no key and has no central broker.</dd>
+        <dt>Here</dt><dd class="here">A secret is encrypted on your device before it is stored, so the store cannot read it. Shared data on the data fabric (Zenoh) is sealed once, and its key is sealed separately for each named reader.</dd>
         <dt>For you</dt><dd class="you">A stolen server holds only sealed data.</dd>
       </dl>
       <ul class="ev">
@@ -1102,79 +1252,87 @@ environments:
       <h2>Three layers around every message</h2>
       <p class="known"><i>Known as: defense in depth, end-to-end encryption, hybrid key exchange</i></p>
       <dl class="cols">
-        <div><dt>Usually</dt><dd class="usual">Traffic is encrypted once, by the network or by the application. Whoever breaks or holds that one key reads everything.</dd></div>
-        <div><dt>Here</dt><dd class="here">A message can be wrapped three times: sealed for its named readers, then carried over a data fabric link, then carried in a mesh tunnel between two machines. Each layer has its own keys, held by different parties.</dd></div>
+        <div><dt>Usually</dt><dd class="usual">Traffic is encrypted once. Whoever breaks or holds that one key reads everything.</dd></div>
+        <div><dt>Here</dt><dd class="here">A message is wrapped up to three times, and each layer's keys are held by different parties.</dd></div>
         <div><dt>For you</dt><dd class="you">Breaking one layer shows the next layer, not your data.</dd></div>
       </dl>
       <ul class="ev">
         <li><span class="status s-inuse">in use</span><span>the mesh tunnel, and the data fabric link with its hybrid post-quantum key exchange</span></li>
         <li><span class="status s-inuse">in use</span><span>sealing for named readers, for the data sets an owner seals inside a goatnet</span></li>
-        <li><span class="status s-designed">designed</span><span>a standardized post-quantum key exchange for the mesh tunnel</span></li>
+        <li><span class="status s-built">built</span><span>a post-quantum key exchange for mesh tunnels, not enabled</span></li>
+        <li><span class="status s-designed">designed</span><span>its standardized replacement, being selected</span></li>
       </ul>
     </div>
-    <figure class="full"><div class="frame"><svg class="viz wide" viewBox="0 0 1120 652" role="img" aria-label="An onion of three layers around one message. The outer layer is the mesh tunnel between two machines, a WireGuard tunnel whose keys only those two machines hold. Inside it is the data fabric link between a program and a router, which prefers a hybrid post-quantum key exchange and applies access rules by identity. Inside that is grant encryption, which the owner can turn on to seal a data set for named readers, so that routers and the platform hold no key. At the center is the message itself, a small readable record. Opening it takes all three keys, and each is held by a different party." font-family="var(--sans)">
+    <figure class="full"><div class="frame"><svg class="viz wide" viewBox="0 0 1120 743" role="img" aria-label="An onion of three layers around one message. The outer layer is the mesh tunnel between two machines, a WireGuard tunnel whose keys only those two machines hold. Inside it is the data fabric link between a program and a router, which prefers a hybrid post-quantum key exchange and applies access rules by identity. Inside that is grant encryption, which the owner can turn on to seal a data set for named readers, so that routers and the platform hold no key. At the center is the message itself, a small readable record. Opening it takes all three keys, and each is held by a different party." font-family="var(--sans)">
 <defs><marker id="ly-ah" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="12" refX="11" refY="6" orient="auto"><path d="M1 1 L12 6 L1 11 z" fill="var(--ink)"/></marker></defs>
-<circle cx="296.0" cy="312.0" r="270" fill="var(--panel)" stroke="var(--ink)" stroke-width="3"/>
-<circle cx="296.0" cy="312.0" r="206" fill="var(--accent-soft)" stroke="var(--ink)" stroke-width="2.4"/>
-<circle cx="296.0" cy="312.0" r="142" fill="var(--panel)" stroke="var(--ink)" stroke-width="2.4"/>
-<path id="ly-arc0" d="M85.7 214.0 A232.0 232.0 0 0 1 506.3 214.0" fill="none"/>
+<circle cx="296.0" cy="330.0" r="270" fill="var(--panel)" stroke="var(--ink)" stroke-width="3"/>
+<circle cx="296.0" cy="330.0" r="206" fill="var(--accent-soft)" stroke="var(--ink)" stroke-width="2.4"/>
+<circle cx="296.0" cy="330.0" r="142" fill="var(--panel)" stroke="var(--ink)" stroke-width="2.4"/>
+<path id="ly-arc0" d="M85.7 232.0 A232.0 232.0 0 0 1 506.3 232.0" fill="none"/>
 <text font-size="13" font-weight="700" fill="var(--quiet)" letter-spacing="3"><textPath href="#ly-arc0" startOffset="50%" text-anchor="middle">MESH TUNNEL</textPath></text>
-<path id="ly-arc1" d="M143.7 241.0 A168.0 168.0 0 0 1 448.3 241.0" fill="none"/>
+<path id="ly-arc1" d="M143.7 259.0 A168.0 168.0 0 0 1 448.3 259.0" fill="none"/>
 <text font-size="13" font-weight="700" fill="var(--quiet)" letter-spacing="3"><textPath href="#ly-arc1" startOffset="50%" text-anchor="middle">DATA FABRIC LINK</textPath></text>
-<path id="ly-arc2" d="M200.8 267.6 A105.0 105.0 0 0 1 391.2 267.6" fill="none"/>
+<path id="ly-arc2" d="M200.8 285.6 A105.0 105.0 0 0 1 391.2 285.6" fill="none"/>
 <text font-size="13" font-weight="700" fill="var(--quiet)" letter-spacing="3"><textPath href="#ly-arc2" startOffset="50%" text-anchor="middle">GRANT ENCRYPTION</textPath></text>
-<circle cx="296.0" cy="312.0" r="80" fill="var(--accent)" stroke="var(--ink)" stroke-width="2.4"/>
-<text x="296.0" y="269.4" font-size="14" font-weight="700" fill="var(--on-accent)" text-anchor="middle">the message</text>
-<rect x="241.6" y="278.4" width="108.8" height="67.2" rx="4" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.6"/>
-<text x="250.6" y="297.4" font-size="12" fill="var(--ink)" font-family="var(--mono)">station  07</text>
-<text x="250.6" y="313.9" font-size="12" fill="var(--ink)" font-family="var(--mono)">temp   21.4 C</text>
-<text x="250.6" y="330.4" font-size="12" fill="var(--ink)" font-family="var(--mono)">time 14:02:11</text>
-<path d="M447.0 88.2 L570 42 L626 42" fill="none" stroke="var(--ink)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-<g transform="translate(447.0 88.2) scale(1.0)"><circle r="14" fill="var(--paper)" stroke="var(--ink)" stroke-width="2.2"/><rect x="-5.5" y="-1.5" width="11" height="9" rx="2" fill="var(--ink)"/><path d="M-3.4 -1.5 v-3 a3.4 3.4 0 0 1 6.8 0 v3" fill="none" stroke="var(--ink)" stroke-width="2"/></g>
-<circle cx="644.0" cy="42.0" r="15" fill="var(--ink)" stroke="none" stroke-width="0"/>
-<text x="644.0" y="47.5" font-size="15" font-weight="700" fill="var(--paper)" text-anchor="middle">3</text>
-<text x="672.0" y="41.0" font-size="19" font-weight="700" fill="var(--ink)">Mesh tunnel</text>
-<text x="672.0" y="62.0" font-size="14" fill="var(--quiet)" font-style="italic">between two machines</text>
-<text x="672.0" y="89.0" font-size="15" fill="var(--ink)">Every packet between two machines travels in a</text>
-<text x="672.0" y="109.7" font-size="15" fill="var(--ink)">WireGuard tunnel, encrypted with ChaCha20-Poly1305.</text>
-<g transform="translate(684.0 127.4) scale(0.9)" fill="none" stroke="var(--accent)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="-9" cy="0" r="5.5"/><path d="M-3.5 0H13M8 0v5M12.5 0v4"/></g>
-<text x="706.0" y="132.4" font-size="14" fill="var(--quiet)">Keys held by the two machines, and no one else.</text>
-<rect x="672.0" y="146.7" width="61.6" height="19.0" rx="3" fill="var(--ink)" stroke="var(--ink)" stroke-width="1.4"/>
-<text x="702.8" y="160.7" font-size="11.5" font-weight="700" fill="var(--paper)" text-anchor="middle" font-family="var(--mono)" letter-spacing="0.6">IN USE</text>
-<rect x="672.0" y="172.7" width="76.8" height="19.0" rx="3" fill="none" stroke="var(--ink)" stroke-width="1.4" stroke-dasharray="3 3"/>
-<text x="710.4" y="186.7" font-size="11.5" font-weight="700" fill="var(--ink)" text-anchor="middle" font-family="var(--mono)" letter-spacing="0.6">DESIGNED</text>
-<text x="758.8" y="187.2" font-size="13.5" fill="var(--quiet)">a standardized post-quantum key exchange for</text>
-<text x="758.8" y="205.8" font-size="13.5" fill="var(--quiet)">the tunnel</text>
-<path d="M494.0 255.2 L570 240 L626 240" fill="none" stroke="var(--ink)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-<g transform="translate(494.0 255.2) scale(1.0)"><circle r="14" fill="var(--paper)" stroke="var(--ink)" stroke-width="2.2"/><rect x="-5.5" y="-1.5" width="11" height="9" rx="2" fill="var(--ink)"/><path d="M-3.4 -1.5 v-3 a3.4 3.4 0 0 1 6.8 0 v3" fill="none" stroke="var(--ink)" stroke-width="2"/></g>
-<circle cx="644.0" cy="240.0" r="15" fill="var(--ink)" stroke="none" stroke-width="0"/>
-<text x="644.0" y="245.6" font-size="15" font-weight="700" fill="var(--paper)" text-anchor="middle">2</text>
-<text x="672.0" y="239.0" font-size="19" font-weight="700" fill="var(--ink)">Data fabric link</text>
-<text x="672.0" y="260.0" font-size="14" fill="var(--quiet)" font-style="italic">between a program and a router</text>
-<text x="672.0" y="287.0" font-size="15" fill="var(--ink)">Each link to a router is TLS 1.3 and prefers a hybrid</text>
-<text x="672.0" y="307.7" font-size="15" fill="var(--ink)">post-quantum key exchange. Access rules, by identity,</text>
-<text x="672.0" y="328.4" font-size="15" fill="var(--ink)">decide who may publish or read each topic.</text>
-<g transform="translate(684.0 346.1) scale(0.9)" fill="none" stroke="var(--accent)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="-9" cy="0" r="5.5"/><path d="M-3.5 0H13M8 0v5M12.5 0v4"/></g>
-<text x="706.0" y="351.1" font-size="14" fill="var(--quiet)">Keys held by the two ends of the link.</text>
-<rect x="672.0" y="365.4" width="61.6" height="19.0" rx="3" fill="var(--ink)" stroke="var(--ink)" stroke-width="1.4"/>
-<text x="702.8" y="379.4" font-size="11.5" font-weight="700" fill="var(--paper)" text-anchor="middle" font-family="var(--mono)" letter-spacing="0.6">IN USE</text>
-<path d="M427.7 365.2 L570 442 L626 442" fill="none" stroke="var(--ink)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-<g transform="translate(427.7 365.2) scale(1.0)"><circle r="14" fill="var(--paper)" stroke="var(--ink)" stroke-width="2.2"/><rect x="-5.5" y="-1.5" width="11" height="9" rx="2" fill="var(--ink)"/><path d="M-3.4 -1.5 v-3 a3.4 3.4 0 0 1 6.8 0 v3" fill="none" stroke="var(--ink)" stroke-width="2"/></g>
-<circle cx="644.0" cy="442.0" r="15" fill="var(--ink)" stroke="none" stroke-width="0"/>
-<text x="644.0" y="447.6" font-size="15" font-weight="700" fill="var(--paper)" text-anchor="middle">1</text>
-<text x="672.0" y="441.0" font-size="19" font-weight="700" fill="var(--ink)">Grant encryption</text>
-<text x="672.0" y="462.0" font-size="14" fill="var(--quiet)" font-style="italic">from the owner to named readers</text>
-<text x="672.0" y="489.0" font-size="15" fill="var(--ink)">The owner can seal a data set for named readers with</text>
-<text x="672.0" y="509.7" font-size="15" fill="var(--ink)">hybrid encryption. It is turned on per data set.</text>
-<g transform="translate(684.0 527.4) scale(0.9)" fill="none" stroke="var(--accent)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="-9" cy="0" r="5.5"/><path d="M-3.5 0H13M8 0v5M12.5 0v4"/></g>
-<text x="706.0" y="532.4" font-size="14" fill="var(--quiet)">Keys held by the named readers. Routers and the</text>
-<text x="706.0" y="551.7" font-size="14" fill="var(--quiet)">platform hold none.</text>
-<rect x="672.0" y="566.0" width="61.6" height="19.0" rx="3" fill="var(--ink)" stroke="var(--ink)" stroke-width="1.4"/>
-<text x="702.8" y="580.0" font-size="11.5" font-weight="700" fill="var(--paper)" text-anchor="middle" font-family="var(--mono)" letter-spacing="0.6">IN USE</text>
-<text x="743.6" y="580.5" font-size="13.5" fill="var(--quiet)">for the data sets an owner seals</text>
-<text x="24.0" y="634.0" font-size="16" fill="var(--quiet)">Opening a message takes all three keys, and each is held by a different party.</text>
+<circle cx="296.0" cy="330.0" r="80" fill="var(--accent)" stroke="var(--ink)" stroke-width="2.4"/>
+<text x="296.0" y="287.4" font-size="14" font-weight="700" fill="var(--on-accent)" text-anchor="middle">the message</text>
+<rect x="241.6" y="296.4" width="108.8" height="67.2" rx="4" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.6"/>
+<text x="250.6" y="315.4" font-size="12" fill="var(--ink)" font-family="var(--mono)">station  07</text>
+<text x="250.6" y="331.9" font-size="12" fill="var(--ink)" font-family="var(--mono)">temp   21.4 C</text>
+<text x="250.6" y="348.4" font-size="12" fill="var(--ink)" font-family="var(--mono)">time 14:02:11</text>
+<path d="M447.0 106.2 L570 32 L626 32" fill="none" stroke="var(--ink)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<g transform="translate(447.0 106.2) scale(1.0)"><circle r="14" fill="var(--paper)" stroke="var(--ink)" stroke-width="2.2"/><rect x="-5.5" y="-1.5" width="11" height="9" rx="2" fill="var(--ink)"/><path d="M-3.4 -1.5 v-3 a3.4 3.4 0 0 1 6.8 0 v3" fill="none" stroke="var(--ink)" stroke-width="2"/></g>
+<circle cx="644.0" cy="32.0" r="15" fill="var(--ink)" stroke="none" stroke-width="0"/>
+<text x="644.0" y="37.5" font-size="15" font-weight="700" fill="var(--paper)" text-anchor="middle">3</text>
+<text x="672.0" y="31.0" font-size="19" font-weight="700" fill="var(--ink)">Mesh tunnel · NetBird over WireGuard</text>
+<text x="672.0" y="52.0" font-size="14" fill="var(--quiet)" font-style="italic">between two machines</text>
+<text x="672.0" y="79.0" font-size="15" fill="var(--ink)">Every packet between two machines travels in a</text>
+<text x="672.0" y="99.7" font-size="15" fill="var(--ink)">WireGuard tunnel, set up by NetBird and encrypted with</text>
+<text x="672.0" y="120.4" font-size="15" fill="var(--ink)">ChaCha20-Poly1305.</text>
+<g transform="translate(684.0 138.1) scale(0.9)" fill="none" stroke="var(--accent)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="-9" cy="0" r="5.5"/><path d="M-3.5 0H13M8 0v5M12.5 0v4"/></g>
+<text x="706.0" y="143.1" font-size="14" fill="var(--quiet)">Keys held by the two machines, and no one else.</text>
+<rect x="672.0" y="157.4" width="61.6" height="19.0" rx="3" fill="var(--ink)" stroke="var(--ink)" stroke-width="1.4"/>
+<text x="702.8" y="171.4" font-size="11.5" font-weight="700" fill="var(--paper)" text-anchor="middle" font-family="var(--mono)" letter-spacing="0.6">IN USE</text>
+<rect x="672.0" y="183.4" width="54.0" height="19.0" rx="3" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.4"/>
+<text x="699.0" y="197.4" font-size="11.5" font-weight="700" fill="var(--ink)" text-anchor="middle" font-family="var(--mono)" letter-spacing="0.6">BUILT</text>
+<text x="736.0" y="197.9" font-size="13.5" fill="var(--quiet)">a post-quantum key exchange, not enabled</text>
+<rect x="672.0" y="209.4" width="76.8" height="19.0" rx="3" fill="none" stroke="var(--ink)" stroke-width="1.4" stroke-dasharray="3 3"/>
+<text x="710.4" y="223.4" font-size="11.5" font-weight="700" fill="var(--ink)" text-anchor="middle" font-family="var(--mono)" letter-spacing="0.6">DESIGNED</text>
+<text x="758.8" y="223.9" font-size="13.5" fill="var(--quiet)">its standardized replacement</text>
+<path d="M494.0 273.2 L570 276.41999999999996 L626 276.41999999999996" fill="none" stroke="var(--ink)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<g transform="translate(494.0 273.2) scale(1.0)"><circle r="14" fill="var(--paper)" stroke="var(--ink)" stroke-width="2.2"/><rect x="-5.5" y="-1.5" width="11" height="9" rx="2" fill="var(--ink)"/><path d="M-3.4 -1.5 v-3 a3.4 3.4 0 0 1 6.8 0 v3" fill="none" stroke="var(--ink)" stroke-width="2"/></g>
+<circle cx="644.0" cy="276.4" r="15" fill="var(--ink)" stroke="none" stroke-width="0"/>
+<text x="644.0" y="282.0" font-size="15" font-weight="700" fill="var(--paper)" text-anchor="middle">2</text>
+<text x="672.0" y="275.4" font-size="19" font-weight="700" fill="var(--ink)">Data fabric link · Zenoh</text>
+<text x="672.0" y="296.4" font-size="14" fill="var(--quiet)" font-style="italic">between a program and a router</text>
+<text x="672.0" y="323.4" font-size="15" fill="var(--ink)">Each link to a Zenoh router is TLS 1.3 and prefers a</text>
+<text x="672.0" y="344.1" font-size="15" fill="var(--ink)">hybrid post-quantum key exchange. Access rules, by</text>
+<text x="672.0" y="364.8" font-size="15" fill="var(--ink)">identity, decide who may publish or read each topic.</text>
+<g transform="translate(684.0 382.5) scale(0.9)" fill="none" stroke="var(--accent)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="-9" cy="0" r="5.5"/><path d="M-3.5 0H13M8 0v5M12.5 0v4"/></g>
+<text x="706.0" y="387.5" font-size="14" fill="var(--quiet)">Keys held by the two ends of the link.</text>
+<rect x="672.0" y="401.8" width="61.6" height="19.0" rx="3" fill="var(--ink)" stroke="var(--ink)" stroke-width="1.4"/>
+<text x="702.8" y="415.8" font-size="11.5" font-weight="700" fill="var(--paper)" text-anchor="middle" font-family="var(--mono)" letter-spacing="0.6">IN USE</text>
+<path d="M427.7 383.2 L570 468.84 L626 468.84" fill="none" stroke="var(--ink)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<g transform="translate(427.7 383.2) scale(1.0)"><circle r="14" fill="var(--paper)" stroke="var(--ink)" stroke-width="2.2"/><rect x="-5.5" y="-1.5" width="11" height="9" rx="2" fill="var(--ink)"/><path d="M-3.4 -1.5 v-3 a3.4 3.4 0 0 1 6.8 0 v3" fill="none" stroke="var(--ink)" stroke-width="2"/></g>
+<circle cx="644.0" cy="468.8" r="15" fill="var(--ink)" stroke="none" stroke-width="0"/>
+<text x="644.0" y="474.4" font-size="15" font-weight="700" fill="var(--paper)" text-anchor="middle">1</text>
+<text x="672.0" y="467.8" font-size="19" font-weight="700" fill="var(--ink)">Grant encryption</text>
+<text x="672.0" y="488.8" font-size="14" fill="var(--quiet)" font-style="italic">from the owner to named readers</text>
+<text x="672.0" y="515.8" font-size="15" fill="var(--ink)">The owner seals a data set once. The key that opens it</text>
+<text x="672.0" y="536.5" font-size="15" fill="var(--ink)">is then sealed separately for each named reader, with</text>
+<text x="672.0" y="557.2" font-size="15" fill="var(--ink)">that reader&#x27;s own key. So several readers can open the</text>
+<text x="672.0" y="577.9" font-size="15" fill="var(--ink)">same data, each with a different key, and a reader can</text>
+<text x="672.0" y="598.6" font-size="15" fill="var(--ink)">be added or removed without changing anyone else&#x27;s</text>
+<text x="672.0" y="619.3" font-size="15" fill="var(--ink)">key. It is turned on per data set.</text>
+<g transform="translate(684.0 637.0) scale(0.9)" fill="none" stroke="var(--accent)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="-9" cy="0" r="5.5"/><path d="M-3.5 0H13M8 0v5M12.5 0v4"/></g>
+<text x="706.0" y="642.0" font-size="14" fill="var(--quiet)">Keys held by the named readers. Routers and the</text>
+<text x="706.0" y="661.4" font-size="14" fill="var(--quiet)">platform hold none.</text>
+<rect x="672.0" y="675.7" width="61.6" height="19.0" rx="3" fill="var(--ink)" stroke="var(--ink)" stroke-width="1.4"/>
+<text x="702.8" y="689.7" font-size="11.5" font-weight="700" fill="var(--paper)" text-anchor="middle" font-family="var(--mono)" letter-spacing="0.6">IN USE</text>
+<text x="743.6" y="690.2" font-size="13.5" fill="var(--quiet)">for the data sets an owner seals</text>
+<text x="24.0" y="725.0" font-size="16" fill="var(--quiet)">Opening a message takes all three keys, and each is held by a different party.</text>
 </svg>
-<svg class="viz narrow" viewBox="0 0 464 1099" role="img" aria-label="An onion of three layers around one message. The outer layer is the mesh tunnel between two machines, a WireGuard tunnel whose keys only those two machines hold. Inside it is the data fabric link between a program and a router, which prefers a hybrid post-quantum key exchange and applies access rules by identity. Inside that is grant encryption, which the owner can turn on to seal a data set for named readers, so that routers and the platform hold no key. At the center is the message itself, a small readable record. Opening it takes all three keys, and each is held by a different party." font-family="var(--sans)">
+<svg class="viz narrow" viewBox="0 0 464 1211" role="img" aria-label="An onion of three layers around one message. The outer layer is the mesh tunnel between two machines, a WireGuard tunnel whose keys only those two machines hold. Inside it is the data fabric link between a program and a router, which prefers a hybrid post-quantum key exchange and applies access rules by identity. Inside that is grant encryption, which the owner can turn on to seal a data set for named readers, so that routers and the platform hold no key. At the center is the message itself, a small readable record. Opening it takes all three keys, and each is held by a different party." font-family="var(--sans)">
 <defs><marker id="lyn-ah" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="12" refX="11" refY="6" orient="auto"><path d="M1 1 L12 6 L1 11 z" fill="var(--ink)"/></marker></defs>
 <circle cx="232.0" cy="222.0" r="212" fill="var(--panel)" stroke="var(--ink)" stroke-width="3"/>
 <circle cx="232.0" cy="222.0" r="162" fill="var(--accent-soft)" stroke="var(--ink)" stroke-width="2.4"/>
@@ -1196,43 +1354,50 @@ environments:
 <g transform="translate(172.6 317.0) scale(0.92)"><circle r="14" fill="var(--paper)" stroke="var(--ink)" stroke-width="2.2"/><rect x="-5.5" y="-1.5" width="11" height="9" rx="2" fill="var(--ink)"/><path d="M-3.4 -1.5 v-3 a3.4 3.4 0 0 1 6.8 0 v3" fill="none" stroke="var(--ink)" stroke-width="2"/></g>
 <circle cx="30.0" cy="482.0" r="15" fill="var(--ink)" stroke="none" stroke-width="0"/>
 <text x="30.0" y="487.6" font-size="15" font-weight="700" fill="var(--paper)" text-anchor="middle">3</text>
-<text x="58.0" y="481.0" font-size="19" font-weight="700" fill="var(--ink)">Mesh tunnel</text>
+<text x="58.0" y="481.0" font-size="19" font-weight="700" fill="var(--ink)">Mesh tunnel · NetBird over WireGuard</text>
 <text x="58.0" y="502.0" font-size="14" fill="var(--quiet)" font-style="italic">between two machines</text>
 <text x="58.0" y="529.0" font-size="15" fill="var(--ink)">Every packet between two machines travels in a</text>
-<text x="58.0" y="549.7" font-size="15" fill="var(--ink)">WireGuard tunnel, encrypted with ChaCha20-Poly1305.</text>
-<g transform="translate(70.0 567.4) scale(0.9)" fill="none" stroke="var(--accent)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="-9" cy="0" r="5.5"/><path d="M-3.5 0H13M8 0v5M12.5 0v4"/></g>
-<text x="92.0" y="572.4" font-size="14" fill="var(--quiet)">Keys held by the two machines, and no one else.</text>
-<rect x="58.0" y="586.7" width="61.6" height="19.0" rx="3" fill="var(--ink)" stroke="var(--ink)" stroke-width="1.4"/>
-<text x="88.8" y="600.7" font-size="11.5" font-weight="700" fill="var(--paper)" text-anchor="middle" font-family="var(--mono)" letter-spacing="0.6">IN USE</text>
-<rect x="58.0" y="612.7" width="76.8" height="19.0" rx="3" fill="none" stroke="var(--ink)" stroke-width="1.4" stroke-dasharray="3 3"/>
-<text x="96.4" y="626.7" font-size="11.5" font-weight="700" fill="var(--ink)" text-anchor="middle" font-family="var(--mono)" letter-spacing="0.6">DESIGNED</text>
-<text x="144.8" y="627.2" font-size="13.5" fill="var(--quiet)">a standardized post-quantum key exchange for</text>
-<text x="144.8" y="645.9" font-size="13.5" fill="var(--quiet)">the tunnel</text>
-<circle cx="30.0" cy="691.7" r="15" fill="var(--ink)" stroke="none" stroke-width="0"/>
-<text x="30.0" y="697.3" font-size="15" font-weight="700" fill="var(--paper)" text-anchor="middle">2</text>
-<text x="58.0" y="690.7" font-size="19" font-weight="700" fill="var(--ink)">Data fabric link</text>
-<text x="58.0" y="711.7" font-size="14" fill="var(--quiet)" font-style="italic">between a program and a router</text>
-<text x="58.0" y="738.7" font-size="15" fill="var(--ink)">Each link to a router is TLS 1.3 and prefers a hybrid</text>
-<text x="58.0" y="759.4" font-size="15" fill="var(--ink)">post-quantum key exchange. Access rules, by identity,</text>
-<text x="58.0" y="780.1" font-size="15" fill="var(--ink)">decide who may publish or read each topic.</text>
-<g transform="translate(70.0 797.8) scale(0.9)" fill="none" stroke="var(--accent)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="-9" cy="0" r="5.5"/><path d="M-3.5 0H13M8 0v5M12.5 0v4"/></g>
-<text x="92.0" y="802.8" font-size="14" fill="var(--quiet)">Keys held by the two ends of the link.</text>
-<rect x="58.0" y="817.1" width="61.6" height="19.0" rx="3" fill="var(--ink)" stroke="var(--ink)" stroke-width="1.4"/>
-<text x="88.8" y="831.1" font-size="11.5" font-weight="700" fill="var(--paper)" text-anchor="middle" font-family="var(--mono)" letter-spacing="0.6">IN USE</text>
-<circle cx="30.0" cy="878.1" r="15" fill="var(--ink)" stroke="none" stroke-width="0"/>
-<text x="30.0" y="883.7" font-size="15" font-weight="700" fill="var(--paper)" text-anchor="middle">1</text>
-<text x="58.0" y="877.1" font-size="19" font-weight="700" fill="var(--ink)">Grant encryption</text>
-<text x="58.0" y="898.1" font-size="14" fill="var(--quiet)" font-style="italic">from the owner to named readers</text>
-<text x="58.0" y="925.1" font-size="15" fill="var(--ink)">The owner can seal a data set for named readers with</text>
-<text x="58.0" y="945.8" font-size="15" fill="var(--ink)">hybrid encryption. It is turned on per data set.</text>
-<g transform="translate(70.0 963.5) scale(0.9)" fill="none" stroke="var(--accent)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="-9" cy="0" r="5.5"/><path d="M-3.5 0H13M8 0v5M12.5 0v4"/></g>
-<text x="92.0" y="968.5" font-size="14" fill="var(--quiet)">Keys held by the named readers. Routers and the</text>
-<text x="92.0" y="987.9" font-size="14" fill="var(--quiet)">platform hold none.</text>
-<rect x="58.0" y="1002.2" width="61.6" height="19.0" rx="3" fill="var(--ink)" stroke="var(--ink)" stroke-width="1.4"/>
-<text x="88.8" y="1016.2" font-size="11.5" font-weight="700" fill="var(--paper)" text-anchor="middle" font-family="var(--mono)" letter-spacing="0.6">IN USE</text>
-<text x="129.6" y="1016.7" font-size="13.5" fill="var(--quiet)">for the data sets an owner seals</text>
-<text x="14.0" y="1061.2" font-size="15" fill="var(--quiet)">Opening a message takes all three keys,</text>
-<text x="14.0" y="1081.9" font-size="15" fill="var(--quiet)">and each is held by a different party.</text>
+<text x="58.0" y="549.7" font-size="15" fill="var(--ink)">WireGuard tunnel, set up by NetBird and encrypted with</text>
+<text x="58.0" y="570.4" font-size="15" fill="var(--ink)">ChaCha20-Poly1305.</text>
+<g transform="translate(70.0 588.1) scale(0.9)" fill="none" stroke="var(--accent)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="-9" cy="0" r="5.5"/><path d="M-3.5 0H13M8 0v5M12.5 0v4"/></g>
+<text x="92.0" y="593.1" font-size="14" fill="var(--quiet)">Keys held by the two machines, and no one else.</text>
+<rect x="58.0" y="607.4" width="61.6" height="19.0" rx="3" fill="var(--ink)" stroke="var(--ink)" stroke-width="1.4"/>
+<text x="88.8" y="621.4" font-size="11.5" font-weight="700" fill="var(--paper)" text-anchor="middle" font-family="var(--mono)" letter-spacing="0.6">IN USE</text>
+<rect x="58.0" y="633.4" width="54.0" height="19.0" rx="3" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.4"/>
+<text x="85.0" y="647.4" font-size="11.5" font-weight="700" fill="var(--ink)" text-anchor="middle" font-family="var(--mono)" letter-spacing="0.6">BUILT</text>
+<text x="122.0" y="647.9" font-size="13.5" fill="var(--quiet)">a post-quantum key exchange, not enabled</text>
+<rect x="58.0" y="659.4" width="76.8" height="19.0" rx="3" fill="none" stroke="var(--ink)" stroke-width="1.4" stroke-dasharray="3 3"/>
+<text x="96.4" y="673.4" font-size="11.5" font-weight="700" fill="var(--ink)" text-anchor="middle" font-family="var(--mono)" letter-spacing="0.6">DESIGNED</text>
+<text x="144.8" y="673.9" font-size="13.5" fill="var(--quiet)">its standardized replacement</text>
+<circle cx="30.0" cy="720.4" r="15" fill="var(--ink)" stroke="none" stroke-width="0"/>
+<text x="30.0" y="726.0" font-size="15" font-weight="700" fill="var(--paper)" text-anchor="middle">2</text>
+<text x="58.0" y="719.4" font-size="19" font-weight="700" fill="var(--ink)">Data fabric link · Zenoh</text>
+<text x="58.0" y="740.4" font-size="14" fill="var(--quiet)" font-style="italic">between a program and a router</text>
+<text x="58.0" y="767.4" font-size="15" fill="var(--ink)">Each link to a Zenoh router is TLS 1.3 and prefers a</text>
+<text x="58.0" y="788.1" font-size="15" fill="var(--ink)">hybrid post-quantum key exchange. Access rules, by</text>
+<text x="58.0" y="808.8" font-size="15" fill="var(--ink)">identity, decide who may publish or read each topic.</text>
+<g transform="translate(70.0 826.5) scale(0.9)" fill="none" stroke="var(--accent)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="-9" cy="0" r="5.5"/><path d="M-3.5 0H13M8 0v5M12.5 0v4"/></g>
+<text x="92.0" y="831.5" font-size="14" fill="var(--quiet)">Keys held by the two ends of the link.</text>
+<rect x="58.0" y="845.8" width="61.6" height="19.0" rx="3" fill="var(--ink)" stroke="var(--ink)" stroke-width="1.4"/>
+<text x="88.8" y="859.8" font-size="11.5" font-weight="700" fill="var(--paper)" text-anchor="middle" font-family="var(--mono)" letter-spacing="0.6">IN USE</text>
+<circle cx="30.0" cy="906.8" r="15" fill="var(--ink)" stroke="none" stroke-width="0"/>
+<text x="30.0" y="912.4" font-size="15" font-weight="700" fill="var(--paper)" text-anchor="middle">1</text>
+<text x="58.0" y="905.8" font-size="19" font-weight="700" fill="var(--ink)">Grant encryption</text>
+<text x="58.0" y="926.8" font-size="14" fill="var(--quiet)" font-style="italic">from the owner to named readers</text>
+<text x="58.0" y="953.8" font-size="15" fill="var(--ink)">The owner seals a data set once. The key that opens it</text>
+<text x="58.0" y="974.5" font-size="15" fill="var(--ink)">is then sealed separately for each named reader, with</text>
+<text x="58.0" y="995.2" font-size="15" fill="var(--ink)">that reader&#x27;s own key. So several readers can open the</text>
+<text x="58.0" y="1015.9" font-size="15" fill="var(--ink)">same data, each with a different key, and a reader can</text>
+<text x="58.0" y="1036.6" font-size="15" fill="var(--ink)">be added or removed without changing anyone else&#x27;s</text>
+<text x="58.0" y="1057.3" font-size="15" fill="var(--ink)">key. It is turned on per data set.</text>
+<g transform="translate(70.0 1075.0) scale(0.9)" fill="none" stroke="var(--accent)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="-9" cy="0" r="5.5"/><path d="M-3.5 0H13M8 0v5M12.5 0v4"/></g>
+<text x="92.0" y="1080.0" font-size="14" fill="var(--quiet)">Keys held by the named readers. Routers and the</text>
+<text x="92.0" y="1099.4" font-size="14" fill="var(--quiet)">platform hold none.</text>
+<rect x="58.0" y="1113.7" width="61.6" height="19.0" rx="3" fill="var(--ink)" stroke="var(--ink)" stroke-width="1.4"/>
+<text x="88.8" y="1127.7" font-size="11.5" font-weight="700" fill="var(--paper)" text-anchor="middle" font-family="var(--mono)" letter-spacing="0.6">IN USE</text>
+<text x="129.6" y="1128.2" font-size="13.5" fill="var(--quiet)">for the data sets an owner seals</text>
+<text x="14.0" y="1172.7" font-size="15" fill="var(--quiet)">Opening a message takes all three keys,</text>
+<text x="14.0" y="1193.4" font-size="15" fill="var(--quiet)">and each is held by a different party.</text>
 </svg></div></figure>
   </div>
 </section>
@@ -1245,9 +1410,9 @@ environments:
       <h2>Sealed once, and closed for the whole path</h2>
       <p class="known"><i>Known as: end-to-end encryption, direct path, hairpin routing, encapsulation overhead</i></p>
       <dl class="cols">
-        <div><dt>Usually</dt><dd class="usual">On large enterprise and government networks, each organization brings its own overlay and rides shared lines. Overlays stack. At each boundary between environments the traffic is unwrapped and wrapped again, and traffic between two sites overseas can be routed through gateways on another continent. Every stop adds delay, a place where it can fail, and a place where it is exposed.</dd></div>
-        <div><dt>Here</dt><dd class="here">Protection is applied at the ends and stays on. Machines connect directly to each other, so traffic takes the short path between them. No outside gateway or relay ever opens the traffic, and sealed data stays sealed from its owner to its readers. One common substrate means one set of layers, applied the same way everywhere, with no re-wrapping in the middle.</dd></div>
-        <div><dt>For you</dt><dd class="you">The same design choice makes traffic safer and faster.</dd></div>
+        <div><dt>Usually</dt><dd class="usual">Traffic between two sites is sent the long way round, through gateways that open it and seal it again at every stop.</dd></div>
+        <div><dt>Here</dt><dd class="here">Protection is applied once, at the two ends. Machines connect directly, and nothing in the middle opens the traffic.</dd></div>
+        <div><dt>For you</dt><dd class="you">Two machines side by side answer each other in about a millisecond, not a quarter of a second.</dd></div>
       </dl>
       <ul class="ev">
         <li><span class="status s-inuse">in use</span><span>direct connections between machines; a relay only as a fallback, carrying what it cannot read</span></li>
@@ -1334,7 +1499,6 @@ environments:
 <text x="218.0" y="617.0" font-size="13.5" fill="var(--quiet)">stays closed</text>
 </svg></div></figure>
     <figure class="full estimate"><div class="frame">
-      <p class="est-h"><b>A rough estimate; the assumptions are listed.</b> None of these numbers is a measurement.</p>
 <svg class="viz wide" viewBox="0 0 1120 480" role="img" aria-label="Three bars on one time scale, each the round trip between two machines that are ten kilometres apart. Direct, machine to machine: about one to two milliseconds. Through a regional relay, the fallback, with nothing opened on the way: about fifteen milliseconds. A typical government or military network, as a worked example, through a gateway on another continent and back: about two hundred and ten to two hundred and thirty milliseconds. The same network reached over a satellite service whose ground entry point is on the far side of another continent: about three hundred and ninety to four hundred and sixty milliseconds. These are estimates from the listed assumptions, not measurements." font-family="var(--sans)">
 <defs><marker id="es-ah" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="12" refX="11" refY="6" orient="auto"><path d="M1 1 L12 6 L1 11 z" fill="var(--ink)"/></marker></defs>
 <text x="24.0" y="30.0" font-size="17" font-weight="700" fill="var(--ink)">Round trip between two machines 10 km apart</text>
@@ -1419,15 +1583,6 @@ environments:
 <g transform="translate(206.3 449.0) scale(0.74)"><circle r="14" fill="var(--paper)" stroke="var(--ink)" stroke-width="2.2" stroke-dasharray="3 3"/><rect x="-5.5" y="-0.5" width="11" height="9" rx="2" fill="none" stroke="var(--ink)" stroke-width="2"/><path d="M-3.4 -0.5 v-4 a3.4 3.4 0 0 1 6.8 0" fill="none" stroke="var(--ink)" stroke-width="2"/></g>
 <text x="434.4" y="454.5" font-size="15" font-weight="700" fill="var(--ink)" text-anchor="end">about 390 to 460 ms</text>
 </svg>
-      <ul class="est">
-        <li><b>About one hundred times the delay</b> for two machines that are next to each other, when their traffic is sent to another continent and back.</li>
-        <li><b>A new secure connection</b> needs about three round trips before the first reply arrives: about 5 ms direct, about 650 ms the long way.</li>
-        <li><b>A task that makes 50 exchanges in sequence</b> takes about 0.1 s direct, and about 11 s the long way. On a line with some loss, sustained throughput falls roughly in proportion to the round-trip time.</li>
-        <li><b>Encryption is not the cost.</b> One modern processor core seals or opens on the order of 1 to 3 gigabytes per second. The costs of stacked overlays and middle stops are the delay above, the extra header bytes (each tunnel adds roughly 50 to 80 bytes to a 1,500-byte packet, so three stacked tunnels use more than a tenth of every packet and risk splitting it), and the number of machines that must all be working: eight stops that are each up 99.9 percent of the time give a path that is up about 99.2 percent, roughly 70 hours down in a year.</li>
-        <li><b>Over a satellite service whose ground entry point is on the far side of another continent</b> the long way grows again: about 390 to 460 ms for the round trip, about 1.2 to 1.4 s for a new secure connection, and about 20 to 23 s for the 50 exchanges. That is several hundred times the delay. With one common substrate, two machines at the same site talk over the local network and never use the satellite link, which then carries only what has to leave the site. Such links commonly give a terminal no public address and accept no inbound connection; the mesh needs neither, because every machine connects outward.</li>
-        <li><b>Here</b> the three layers are applied at the ends only: six seal-or-open operations in total, and none in the middle.</li>
-      </ul>
-      <p class="est-h" style="margin-top:26px"><b>With real links.</b> Delay, variation in delay and loss multiply each other, so the long way behaves several times worse in use than the bars above show, and some applications stop working.</p>
 <svg class="viz wide" viewBox="0 0 1120 150" role="img" aria-label="Two bars: the sustained throughput of one connection when one packet in a hundred is lost. At a round trip of 2 milliseconds, about 70 megabits per second. At a round trip of 450 milliseconds, about 0.3 megabits per second. The loss rate is the same in both. These are estimates from a standard formula." font-family="var(--sans)">
 <defs><marker id="lo-ah" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="12" refX="11" refY="6" orient="auto"><path d="M1 1 L12 6 L1 11 z" fill="var(--ink)"/></marker></defs>
 <text x="24.0" y="28.0" font-size="17" font-weight="700" fill="var(--ink)">Throughput of one connection when 1 packet in 100 is lost</text>
@@ -1448,12 +1603,7 @@ environments:
 <rect x="14.0" y="124.0" width="5.0" height="26.0" rx="3" fill="var(--ink)" stroke="var(--ink)" stroke-width="2"/>
 <text x="31.0" y="142.5" font-size="15" font-weight="700" fill="var(--ink)">about 0.3 megabits per second</text>
 </svg>
-      <ul class="est">
-        <li><b>A lost packet costs at least one more round trip</b> to repair: about 2 ms direct, about 450 ms the long way. When a timer has to run out first, the wait is set from the round-trip time and how much it varies; on the long way that is on the order of one second, and it doubles with each repeated loss.</li>
-        <li><b>Throughput falls with delay at the same loss rate.</b> One connection sustains roughly 1.22 &times; packet size &divide; (round-trip time &times; the square root of the loss rate). With 1 percent loss and 1,460-byte packets that is about 70 megabits per second at 2 ms, and about 0.3 megabits per second at 450 ms: more than two hundred times less.</li>
-        <li><b>Some uses have a limit, and past it they fail.</b> Conversational voice is planned for about 150 ms one way; the estimate above is 195 to 230 ms before any buffering. Anything that expects an answer within a fixed short time, such as a heartbeat, a lock, a control exchange or a handshake with a time limit, fails once delay and retries pass that limit. The result is not a slower application. It is one that does not work.</li>
-      </ul>
-      <p class="assume"><i>Assumptions:</i> light in optical fibre covers about 200 km per millisecond; a real route is about 1.5 times the straight-line distance; the two machines are 10 km apart; a regional relay is 500 km away; the distant gateway is 6,700 km away, about the distance from central Europe to the eastern United States; a middle stop that opens, inspects and seals traffic again costs about 1 to 2 ms, and such a route has 4 to 8 of them; for the satellite case, a hop in low orbit adds about 10 to 20 ms, the ground entry point is about 9,000 km away, and from there the traffic passes 6 to 10 stops and about 30 ms of travel before it turns back. The throughput relation is that of Mathis and others (1997); the timer rules are those of RFC 6298; the voice figure is from ITU-T G.114.</p>
+      <p class="est-h">A rough estimate. <a href="notes/#estimate">How it was worked out.</a></p>
     </div></figure>
   </div>
 </section>
@@ -1467,7 +1617,7 @@ environments:
       <p class="known"><i>Known as: software supply chain security, signed provenance, content addressing</i></p>
       <dl>
         <dt>Usually</dt><dd class="usual">A machine runs whatever was last installed on it, and an image name can point to different content over time.</dd>
-        <dt>Here</dt><dd class="here">A signed list says which release runs where. Every image is named by its content hash. Before a deploy changes a machine, it checks the signature, the hash, the source and the order of stages.</dd>
+        <dt>Here</dt><dd class="here">A signed list says which release runs where, and every image is named by its content hash. Before a deploy changes a machine, it checks the signature, the hash, the source and the order of stages.</dd>
         <dt>For you</dt><dd class="you">A changed image or an edited configuration is refused before it reaches a machine.</dd>
       </dl>
       <ul class="ev">
@@ -1518,12 +1668,13 @@ environments:
       <p class="known"><i>Known as: post-quantum cryptography (PQC), hybrid key exchange, harvest now, decrypt later</i></p>
       <dl>
         <dt>Usually</dt><dd class="usual">Encrypted traffic can be recorded now and kept. A future quantum computer could open what today's key exchange protects.</dd>
-        <dt>Here</dt><dd class="here">The routers of the data fabric prefer a combined key exchange: the usual kind together with one built to resist a quantum computer. A client that supports the combination gets it, and reading that traffic means breaking both. A client that does not support it connects the usual way.</dd>
+        <dt>Here</dt><dd class="here">The routers of the data fabric prefer a combined key exchange: the usual kind together with one built to resist a quantum computer. A client that supports the combination gets it, and reading that traffic means breaking both.</dd>
         <dt>For you</dt><dd class="you">Data that must stay private for years is protected against a later reader.</dd>
       </dl>
       <ul class="ev">
         <li><span class="status s-inuse">in use</span><span>the data fabric</span></li>
-        <li><span class="status s-built">built</span><span>mesh tunnels</span></li>
+        <li><span class="status s-built">built</span><span>a post-quantum key exchange for mesh tunnels, not enabled</span></li>
+        <li><span class="status s-designed">designed</span><span>its standardized replacement, being selected</span></li>
         <li><span class="status s-designed">designed</span><span>links between organizations</span></li>
       </ul>
     </div>
@@ -1617,7 +1768,7 @@ environments:
       <p class="known"><i>Known as: immutable infrastructure, infrastructure as code, cyber recovery</i></p>
         <dl>
           <dt>Usually</dt><dd class="usual">A compromised machine is cleaned in place, and the cleaning is trusted. A full rebuild takes days, so it is avoided.</dd>
-          <dt>Here</dt><dd class="here">A site is described by a declaration in a repository. One command builds the whole site from it, and the same command builds it again: machines prepared and encrypted, services, relays, identity, the mesh, and checks that prove it works.</dd>
+          <dt>Here</dt><dd class="here">A site is described by a declaration in a repository. One command builds the whole site from it, and the same command builds it again.</dd>
           <dt>For you</dt><dd class="you">A rebuild is an ordinary, practiced operation, not a painful reaction to a disaster. When you have a doubt about a machine, you rebuild it.</dd>
         </dl>
       </div>
@@ -1665,32 +1816,7 @@ environments:
           <li class="wsum"><span class="wn"><b>Whole site</b><small>all stages, plus 1 min 30 s between them.</small></span><span class="wt"><i style="left:0;width:100%"></i></span><span class="wd">38:12</span></li>
       </ol>
     </div>
-    <div>
-      <p class="h3">Required for release 1.0</p>
-      <ul class="reqs">
-        <li>A first site, start to finish, in <span data-measure="req-site">60 min</span> or less: in progress.</li>
-        <li>A machine added in <span data-measure="req-node">15 min</span> or less: in progress.</li>
-        <li>A site taken down in <span data-measure="req-down">15 min</span> or less: measured, <span data-measure="down">5 min 54 s</span>.</li>
-      </ul>
-    </div>
-    <div class="two">
-      <div>
-        <p class="h3">A rebuild removes</p>
-        <ul>
-          <li><b>Programs and files left on a machine</b><span class="d">The machine is installed again and built from the declaration.</span></li>
-          <li><b>A machine's place on the mesh</b><span class="d">Each machine joins again with a key that works once.</span></li>
-          <li><b>Running services</b><span class="d">One command stops every service of a site and keeps the record of each.</span></li>
-        </ul>
-      </div>
-      <div>
-        <p class="h3">Other parts of the design handle</p>
-        <ul>
-          <li><b>A stolen secret</b><span class="d">A rebuild from an export carries no secret, password hash or private key from the old site; each is issued again.</span><span class="status s-designed">designed</span></li>
-          <li><b>A changed source or image</b><span class="d">The deploy checks refuse it.</span><span class="status s-inuse">in use</span></li>
-          <li><b>Data that was already copied</b><span class="d">Sealing for named readers limits what a copy reveals.</span><span class="status s-inuse">in use</span></li>
-        </ul>
-      </div>
-    </div>
+    <p class="more"><a href="notes/#rebuild">What a rebuild removes, and what release 1.0 requires.</a></p>
   </div>
 </section>
 
@@ -1702,9 +1828,9 @@ environments:
       <h2>Cut off, a site keeps working, and it can stay silent</h2>
       <p class="known"><i>Known as: disconnected operations (DDIL), local-first, partition tolerance, emission control</i></p>
       <dl>
-        <dt>Usually</dt><dd class="usual">Sites depend on a central service and on a long link to it. When the link fails they stop. While the link works, it can be found, jammed or followed.</dd>
-        <dt>Here</dt><dd class="here">Every site runs the same services, and keeps admitting people, enrolling machines and changing access while it is cut off. A site that needs no link back does not have to transmit off-site at all.</dd>
-        <dt>For you</dt><dd class="you">A lost link does not stop a site, and a site that sends nothing shows less in the radio spectrum, to signals collection and on the network.</dd>
+        <dt>Usually</dt><dd class="usual">Sites depend on a long link to a central service. When the link fails they stop, and while it works it can be found, jammed or followed.</dd>
+        <dt>Here</dt><dd class="here">Every site runs the same services and keeps working while it is cut off. A site that needs no link back does not have to transmit off-site at all.</dd>
+        <dt>For you</dt><dd class="you">A lost link does not stop a site, and a silent site is harder to find.</dd>
       </dl>
       <ul class="ev">
         <li><span class="status s-designed">designed</span><span>goatcore, decision record 1165</span></li>
@@ -1746,9 +1872,9 @@ environments:
       <h2>Severed, a site works alone</h2>
       <p class="known"><i>Known as: isolation, containment, cyber recovery</i></p>
       <dl>
-        <dt>Usually</dt><dd class="usual">A site that may be compromised stays connected until someone is sure, or it is shut down and the people there lose their systems.</dd>
-        <dt>Here</dt><dd class="here">The hub can sever a site that it no longer trusts. From then on, nothing that site writes reaches any other site. The severed site keeps running locally, so the people there are not left without their systems. It rejoins only after it is built again and loaded from the hub.</dd>
-        <dt>For you</dt><dd class="you">You can cut one site off to protect the others, and the site that was cut off keeps working locally.</dd>
+        <dt>Usually</dt><dd class="usual">A site that may be compromised stays connected, or it is shut down and its people lose their systems.</dd>
+        <dt>Here</dt><dd class="here">The hub can sever a site that it no longer trusts, and nothing that site writes then reaches any other site. The severed site keeps running locally, and rejoins only after it is built again and loaded from the hub.</dd>
+        <dt>For you</dt><dd class="you">You protect the other sites without switching off the severed one.</dd>
       </dl>
       <ul class="ev">
         <li><span class="status s-designed">designed</span><span>goatcore, decision records 1205 and 1237</span></li>
@@ -1792,6 +1918,8 @@ environments:
     <div class="sgrid" role="list" aria-label="The status of each part of the design"><div class="sr shead" aria-hidden="true"><span class="sw"></span><span class="sh">measured</span><span class="sh">in use</span><span class="sh">built</span><span class="sh">designed</span></div>
       <div class="sr" role="listitem"><span class="sw">A whole site built by one command</span><span class="sc on s-measured" data-s="measured" role="img" aria-label="measured"></span><span class="sc"></span><span class="sc"></span><span class="sc"></span></div>
       <div class="sr" role="listitem"><span class="sw">A site taken down by one command</span><span class="sc on s-measured" data-s="measured" role="img" aria-label="measured"></span><span class="sc"></span><span class="sc"></span><span class="sc"></span></div>
+      <div class="sr" role="listitem"><span class="sw">Every site runs on hardware its owner holds</span><span class="sc"></span><span class="sc on s-inuse" data-s="in use" role="img" aria-label="in use"></span><span class="sc"></span><span class="sc"></span></div>
+      <div class="sr" role="listitem"><span class="sw">A cloud holds relays only, and a relay reads nothing</span><span class="sc"></span><span class="sc on s-inuse" data-s="in use" role="img" aria-label="in use"></span><span class="sc"></span><span class="sc"></span></div>
       <div class="sr" role="listitem"><span class="sw">A private mesh overlay that rides on any link</span><span class="sc"></span><span class="sc on s-inuse" data-s="in use" role="img" aria-label="in use"></span><span class="sc"></span><span class="sc"></span></div>
       <div class="sr" role="listitem"><span class="sw">Mesh tunnels on a common open protocol</span><span class="sc"></span><span class="sc on s-inuse" data-s="in use" role="img" aria-label="in use"></span><span class="sc"></span><span class="sc"></span></div>
       <div class="sr" role="listitem"><span class="sw">No answer to a packet that cannot be authenticated</span><span class="sc"></span><span class="sc on s-inuse" data-s="in use" role="img" aria-label="in use"></span><span class="sc"></span><span class="sc"></span></div>
@@ -1810,9 +1938,10 @@ environments:
       <div class="sr" role="listitem"><span class="sw">A declared table of roles, enforced</span><span class="sc"></span><span class="sc"></span><span class="sc on s-built" data-s="built" role="img" aria-label="built"></span><span class="sc"></span></div>
       <div class="sr" role="listitem"><span class="sw">A partner is verified without being granted anything</span><span class="sc"></span><span class="sc"></span><span class="sc on s-built" data-s="built" role="img" aria-label="built"></span><span class="sc"></span></div>
       <div class="sr" role="listitem"><span class="sw">An identity can be revoked, a machine held for review</span><span class="sc"></span><span class="sc"></span><span class="sc on s-built" data-s="built" role="img" aria-label="built"></span><span class="sc"></span></div>
-      <div class="sr" role="listitem"><span class="sw">Post-quantum key exchange on mesh tunnels</span><span class="sc"></span><span class="sc"></span><span class="sc on s-built" data-s="built" role="img" aria-label="built"></span><span class="sc"></span></div>
+      <div class="sr" role="listitem"><span class="sw">A post-quantum key exchange for mesh tunnels, not enabled</span><span class="sc"></span><span class="sc"></span><span class="sc on s-built" data-s="built" role="img" aria-label="built"></span><span class="sc"></span></div>
       <div class="sr" role="listitem"><span class="sw">Decoy names and web paths</span><span class="sc"></span><span class="sc"></span><span class="sc on s-built" data-s="built" role="img" aria-label="built"></span><span class="sc"></span></div>
       <div class="sr" role="listitem"><span class="sw">Post-quantum key exchange between organizations</span><span class="sc"></span><span class="sc"></span><span class="sc"></span><span class="sc on s-designed" data-s="designed" role="img" aria-label="designed"></span></div>
+      <div class="sr" role="listitem"><span class="sw">The standardized replacement for the mesh tunnels&#x27; post-quantum key exchange</span><span class="sc"></span><span class="sc"></span><span class="sc"></span><span class="sc on s-designed" data-s="designed" role="img" aria-label="designed"></span></div>
       <div class="sr" role="listitem"><span class="sw">Decoys on the data fabric, decoy credentials</span><span class="sc"></span><span class="sc"></span><span class="sc"></span><span class="sc on s-designed" data-s="designed" role="img" aria-label="designed"></span></div>
       <div class="sr" role="listitem"><span class="sw">Secrets replaced as part of a rebuild</span><span class="sc"></span><span class="sc"></span><span class="sc"></span><span class="sc on s-designed" data-s="designed" role="img" aria-label="designed"></span></div>
       <div class="sr" role="listitem"><span class="sw">A site keeps working when it is cut off</span><span class="sc"></span><span class="sc"></span><span class="sc"></span><span class="sc on s-designed" data-s="designed" role="img" aria-label="designed"></span></div>
@@ -1842,7 +1971,7 @@ environments:
 
 <footer>
   <div class="wrap">
-    <p><a href="https://github.com/USAREUR-AF/goatcore">Repository</a><a href="https://github.com/USAREUR-AF/goatcore/blob/main/LICENSE">Apache License 2.0</a><a href="https://github.com/USAREUR-AF/goatcore/blob/main/SECURITY.md">Security policy</a></p>
+    <p><a href="https://github.com/USAREUR-AF/goatcore">Repository</a><a href="https://github.com/USAREUR-AF/goatcore/blob/main/LICENSE">Apache License 2.0</a><a href="https://github.com/USAREUR-AF/goatcore/blob/main/SECURITY.md">Security policy</a><a href="notes/">Notes and sources</a></p>
     <p>Portions written by U.S. Federal government employees within the scope of their employment are in the public domain in the United States. Part of <a href="https://github.com/USAREUR-AF/goatcore">goat</a>.</p>
   </div>
 </footer>

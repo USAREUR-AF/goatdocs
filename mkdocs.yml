@@ -53,6 +53,8 @@ exclude_docs: |
   goat/security/figs.css
   goat/security/critique-log.md
   goat/security/run.json
+  goat/security/notes-page.html
+  goat/security/notes-own.html
   goat/security/scenes/*.py
   goat/security/scenes/*.css
   goat/security/scenes/*.md
