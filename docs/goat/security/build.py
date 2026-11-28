@@ -40,6 +40,8 @@ STATUS = [
     ("The secret store cannot read what it holds", "in use"),
     ("Shared data sealed for named readers; the platform holds no key", "in use"),
     ("No central broker on the data fabric", "in use"),
+    ("Three layers of encryption, each with its own keys", "in use"),
+    ("Machines connect directly; a relay is a fallback", "in use"),
     ("A deploy refuses what it cannot verify", "in use"),
     ("Post-quantum key exchange preferred on the data fabric", "in use"),
     ("A declared table of roles, enforced", "built"),
@@ -55,6 +57,9 @@ STATUS = [
     ("A site built again from a checked export", "designed"),
 ]
 ORDER = ["measured", "in use", "built", "designed"]
+
+# Scenes written as one module each in scenes/: the module returns its whole section and its mark.
+SCENES = ["layers", "path"]
 
 
 def read(*p):
@@ -153,7 +158,7 @@ def render():
     for _, _, sec in rows:
         t += sec
         replay["ends"].append(t)
-    fill = {"ICON": icon, "CSS": read(HERE, "extra.css") + css + read(HERE, "figs.css") + read(HERE, "extra-tail.css"),
+    fill = {"ICON": icon, "CSS": read(HERE, "extra.css") + css + read(HERE, "figs.css") + read(HERE, "extra-tail.css") + read(HERE, "scenes", "scenes.css"),
             "JS": read(HERE, "replay.js"), "STAGE": stage(rows, total, d, m, figs),
             "WATERFALL": waterfall(rows, total, d, True), "STATUS": status_grid(),
             "RUN": json.dumps(replay, separators=(",", ":")).replace("</", "<\\/")}
@@ -164,6 +169,13 @@ def render():
     fill["FIG_BOUNDARIES"] = position_fig.position_figure()
     for key, fn in figs.MARKS.items():
         fill[key] = fn()
+    sys.path.insert(0, os.path.join(HERE, "scenes"))   # the scene modules import their shared kit by name
+    for name in SCENES:
+        spec = importlib.util.spec_from_file_location("scene_" + name, os.path.join(HERE, "scenes", name + ".py"))
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        fill["SCENE_" + name.upper()] = mod.html()
+        fill["SCENE_MARK_" + name.upper()] = mod.mark()
     page = read(HERE, "page.html")
     for key, value in fill.items():
         page = page.replace("{{" + key + "}}", value)
