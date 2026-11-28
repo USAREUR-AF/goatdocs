@@ -55,6 +55,7 @@ exclude_docs: |
   goat/security/run.json
   goat/security/notes-page.html
   goat/security/notes-own.html
+  goat/security/code-links.json
   goat/security/scenes/*.py
   goat/security/scenes/*.css
   goat/security/scenes/*.md

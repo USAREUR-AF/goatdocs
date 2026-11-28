@@ -78,7 +78,7 @@ section.scene { padding: 88px 0; border-top: 1px solid var(--rule); }
 
 /* where each part stands: one row a part, one column a status */
 .sgrid { border: 1px solid var(--rule); background: var(--panel); }
-.sr { display: grid; grid-template-columns: minmax(0, 1fr) repeat(4, 8.2em); align-items: center; border-top: 1px solid var(--rule); }
+.sr { display: grid; grid-template-columns: minmax(0, 1fr) repeat(5, 7.4em); align-items: center; border-top: 1px solid var(--rule); }
 .sr:first-child { border-top: 0; }
 .sr .sw { padding: 9px 16px; font-size: 16px; }
 .sr .sh { font: 700 11.5px var(--mono); letter-spacing: .05em; text-transform: uppercase; color: var(--quiet); text-align: center; padding: 10px 4px; }
@@ -179,3 +179,7 @@ ul.ev code { font-size: 13.5px; }
 .blunder .fix + .fix { margin-top: 12px; border-top: 0; padding-top: 0; }
 .scene .more { margin: 22px 0 0; font-size: 16px; }
 .estimate .est-h { margin: 14px 0 0; }
+.scene .incode { margin: 10px 0 0; font-size: 14.5px; }
+.status.s-planned { background: none; border-style: dotted; color: var(--quiet); }
+.sr .sc.s-planned::before { border-style: dotted; border-color: var(--line); }
+@media (max-width: 760px) { .sr .sc.s-planned::after { border-style: dotted; } }

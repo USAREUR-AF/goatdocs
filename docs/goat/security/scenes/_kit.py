@@ -75,8 +75,8 @@ class Fig:
         if word == "in use":
             self.rect(x, y - 13, w, 19, 3, INK, INK, 1.4)
             fill = PAPER
-        elif word == "designed":
-            self.rect(x, y - 13, w, 19, 3, "none", INK, 1.4, dash="3 3")
+        elif word in ("designed", "planned"):
+            self.rect(x, y - 13, w, 19, 3, "none", INK, 1.4, dash="3 3" if word == "designed" else "1 3")
             fill = INK
         else:
             self.rect(x, y - 13, w, 19, 3, SOFT, ACC, 1.4)
@@ -98,7 +98,7 @@ def mark(name, label, body):
 
 def scene(sid, eyebrow, title, known, usually, here, you, status, figure_html, mark_html, full=True):
     """One scene's section, in the page's own classes. status: [(word, text)]."""
-    cls = {"in use": "s-inuse", "built": "s-built", "designed": "s-designed", "measured": "s-measured"}
+    cls = {"in use": "s-inuse", "built": "s-built", "designed": "s-designed", "measured": "s-measured", "planned": "s-planned"}
     rows = "\n".join(f'        <li><span class="status {cls[w]}">{w}</span><span>{t}</span></li>' for w, t in status)
     say = f'''      <div class="mk-anchor" aria-hidden="true">{mark_html}</div>
       <p class="eyebrow">{eyebrow}</p>

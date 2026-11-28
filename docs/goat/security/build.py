@@ -49,21 +49,21 @@ STATUS = [
     ("A declared table of roles, enforced", "built"),
     ("Federation between two environments, set up and backed out by one command", "built"),
     ("A simple boundary node: one stream, one way, to one destination", "built"),
-    ("Security records in an open format, with a forwarder to your own collector", "built"),
+    ("Security records normalized to OCSF, and forwarded to your collector as CEF over syslog", "built"),
     ("A partner is verified without being granted anything", "built"),
     ("An identity can be revoked, a machine held for review", "built"),
     ("A post-quantum key exchange for mesh tunnels, not enabled", "built"),
     ("Decoy names and web paths", "built"),
     ("Post-quantum key exchange between organizations", "designed"),
-    ("The standardized replacement for the mesh tunnels' post-quantum key exchange", "designed"),
     ("Decoys on the data fabric, decoy credentials", "designed"),
     ("Secrets replaced as part of a rebuild", "designed"),
     ("A site keeps working when it is cut off", "designed"),
     ("The hub severs a site; the site works alone", "designed"),
     ("A site built again from a checked export", "designed"),
     ("One signed bundle that carries a release to a site that is cut off", "designed"),
+    ("A standardized post-quantum key exchange for mesh tunnels; options are being evaluated", "planned"),
 ]
-ORDER = ["measured", "in use", "built", "designed"]
+ORDER = ["measured", "in use", "built", "designed", "planned"]
 
 # Scenes written as one module each in scenes/: the module returns its whole section and its mark.
 SCENES = ["layers", "path", "custody", "self_documenting", "boundary", "air_gap", "grade", "timing"]
@@ -152,6 +152,63 @@ def status_grid():
             f'<div class="sr shead" aria-hidden="true"><span class="sw"></span>{head}</div>\n      ' + "\n      ".join(rows) + "</div>")
 
 
+# Each scene links to the row of the code table that shows its claim: scene id -> the claim, in STATUS's words.
+IN_THE_CODE = {
+    "position": "No connection without a declared rule",
+    "air-gap": "One signed bundle that carries a release to a site that is cut off",
+    "custody": "Every site runs on hardware its owner holds",
+    "join": "No site has a public address",
+    "after": "Machines connect directly; a relay is a fallback",
+    "silent": "No answer to a packet that cannot be authenticated",
+    "zero-trust": "No connection without a declared rule",
+    "readers": "Shared data sealed for named readers; the platform holds no key",
+    "layers": "Three layers of encryption, each with its own keys",
+    "path": "Machines connect directly; a relay is a fallback",
+    "chain": "A deploy refuses what it cannot verify",
+    "self-documenting": "Security records normalized to OCSF, and forwarded to your collector as CEF over syslog",
+    "quantum": "Post-quantum key exchange preferred on the data fabric",
+    "decoy": "Decoy names and web paths",
+    "timing": "A site taken down by one command",
+    "rebuild": "A whole site built by one command",
+    "island": "A site keeps working when it is cut off",
+    "hub": "The hub severs a site; the site works alone",
+    "boundary": "Federation between two environments, set up and backed out by one command",
+}
+
+
+def code_table():
+    """The section "Where each claim is shown in the code": one row for each row of the status figure."""
+    d = json.loads(read(HERE, "code-links.json"))
+    by = {c["claim"]: c for c in d["claims"]}
+    missing = [w for w, _ in STATUS if w not in by] + [c for c in by if c not in dict(STATUS)]
+    if missing:
+        sys.exit("code-links.json and STATUS in build.py do not list the same claims: " + "; ".join(missing))
+    base = f'{d["repository"]}/blob/{d["commit"]}/'
+
+    def links(items):
+        def one(label, p, a, b_):
+            if p.startswith("https://"):
+                return f'<a href="{p}">{html.escape(label)}</a>'
+            return f'<a href="{base}{p}#L{a}' + (f'-L{b_}' if a != b_ else "") + f'">{html.escape(label)}</a>'
+        return "<br>".join(one(*i) for i in items)
+    rows = []
+    for n, (what, st) in enumerate(sorted(STATUS, key=lambda r: ORDER.index(r[1])), 1):
+        c = by[what]
+        note = f'<span class="cn">{html.escape(c["note"])}</span>' if c["note"] else ""
+        code = links(c["code"]) + ("<br>" if c["code"] and note else "") + note
+        rows.append(f'<tr id="{code_id(what)}"><td>{html.escape(what)}</td><td>{st}</td><td>{code}</td><td>{links(c["test"]) or ("none" if c["code"] else "")}</td></tr>')
+    return (f'<section id="code"><h2>Where each claim is shown in the code</h2>\n'
+            f'<p>One row for each row of the status figure on the security page. Every link goes to the public repository at commit '
+            f'<a href="{d["repository"]}/commit/{d["commit"]}"><code>{d["commit"][:8]}</code></a> of {d["date"]}, so the line numbers stay true.</p>\n'
+            f'<p>A claim that is designed links to its decision record or design document.</p>\n'
+            f'<div class="tw"><table>\n<tr><th>Claim</th><th>Status</th><th>Where it is shown</th><th>Test</th></tr>\n'
+            + "\n".join(rows) + "\n</table></div>\n</section>")
+
+
+def code_id(what):
+    return "code-" + re.sub(r"[^a-z0-9]+", "-", what.lower()).strip("-")[:48].strip("-")
+
+
 def render():
     d = json.loads(read(HERE, "run.json"))
     rows, total = stages(d)
@@ -198,7 +255,13 @@ def render():
     measure = r'(<[a-z]+[^>]*\bdata-measure="([^"]+)"[^>]*>)[^<]*(<)'
     page = re.sub(measure, put, page)
     # the notes page: the scenes' own notes in page order, then the notes kept beside this script
-    body = "\n".join(notes) + "\n" + read(HERE, "notes-own.html")
+    body = "\n".join(notes) + "\n" + read(HERE, "notes-own.html") + "\n" + code_table()
+    for sid, what in IN_THE_CODE.items():        # one small link in each scene, after its status rows
+        hit = re.search(r'<section class="scene[^"]*" id="%s">.*?<ul class="ev">.*?</ul>' % re.escape(sid), page, flags=re.S)
+        if not hit:
+            sys.exit(f"build.py: scene {sid} has no status rows to put the code link after")
+        page = page[:hit.end()] + f'\n      <p class="incode"><a href="notes/#{code_id(what)}">in the code</a></p>' + page[hit.end():]
+    body = re.sub(r'(?<!<div class="tw">)<table>(.*?)</table>', r'<div class="tw"><table>\1</table></div>', body, flags=re.S)   # a wide table scrolls by itself
     toc = "".join(f'<a href="#{i}">{html.escape(t)}</a>' for i, t in re.findall(r'<section id="([^"]+)"><h2>([^<]+)</h2>', body))
     note = read(HERE, "notes-page.html")
     for key, value in {"ICON": icon, "CSS": fill["CSS"], "TOC": toc, "NOTES": body}.items():

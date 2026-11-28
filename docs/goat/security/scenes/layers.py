@@ -1,6 +1,6 @@
 """Scene: three layers of encryption around every message, drawn as an onion with the readable
 message at the center. Grades, from the public tree (goatcore main, 28 Nov 2026):
-  mesh tunnel        in use   (WireGuard; a post-quantum key exchange for the tunnel: built, not enabled; its standardized replacement: designed)
+  mesh tunnel        in use   (WireGuard; a post-quantum key exchange for the tunnel: built, not enabled; a standardized replacement: planned)
   data fabric link   in use   (docs/design/zenoh-pqc-tls.md: the hybrid exchange is the router default)
   grant encryption   in use   (ADR 1208, Accepted, makes it part of the sharing model, and the key service is a
                               pinned fleet component; ADRs 1094 and 1106 still read Proposed and are being
@@ -19,7 +19,7 @@ LAYERS = [
     ("3", "Mesh tunnel \u00b7 NetBird over WireGuard", "between two machines",
      "Every packet between two machines travels in a WireGuard tunnel, set up by NetBird and encrypted with ChaCha20-Poly1305.",
      "Keys held by the two machines, and no one else.",
-     [("in use", ""), ("built", "a post-quantum key exchange, not enabled"), ("designed", "its standardized replacement")]),
+     [("in use", ""), ("built", "a post-quantum key exchange, not enabled"), ("planned", "a standardized replacement")]),
     ("2", "Data fabric link \u00b7 Zenoh", "between a program and a router",
      "Each link to a Zenoh router is TLS 1.3 and prefers a hybrid post-quantum key exchange. Access rules, by identity, decide who may publish or read each topic.",
      "Keys held by the two ends of the link.",
@@ -124,7 +124,7 @@ def html():
         [("in use", "the mesh tunnel, and the data fabric link with its hybrid post-quantum key exchange"),
          ("in use", "sealing for named readers, for the data sets an owner seals inside a goatnet"),
          ("built", "a post-quantum key exchange for mesh tunnels, not enabled"),
-         ("designed", "its standardized replacement, being selected")],
+         ("planned", "a standardized post-quantum key exchange for mesh tunnels; options are being evaluated")],
         figure_wide() + "\n" + figure_narrow(), mark())
 
 
