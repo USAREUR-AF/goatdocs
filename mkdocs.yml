@@ -41,6 +41,13 @@ exclude_docs: |
   goat/splash-page/extra-tail.css
   goat/splash-page/replay.js
   goat/splash-page/icon.svg
+  goat/rebuild/README.md
+  goat/rebuild/page.html
+  goat/rebuild/build.py
+  goat/rebuild/extra.css
+  goat/rebuild/extra-tail.css
+  goat/rebuild/replay.js
+  goat/rebuild/icon.svg
   goat/pages/README.md
   goat/pages/page.html
   goat/pages/build.py

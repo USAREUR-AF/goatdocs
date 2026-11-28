@@ -1,0 +1,322 @@
+{
+  "run": "4",
+  "date": "2026-11-28",
+  "release": "0.8.0, built from the main branch",
+  "where": "real machines on a bench: one core machine, two monitoring machines, relays in a cloud, one alarm machine outside the site",
+  "clock": "from the first phase to a passing acceptance suite",
+  "target_s": 3600,
+  "steps": [
+    {
+      "phase": 1,
+      "name": "configuration check",
+      "seconds": 4
+    },
+    {
+      "phase": 1,
+      "name": "every input is set",
+      "seconds": 3
+    },
+    {
+      "phase": 1,
+      "name": "mesh access rules are declared",
+      "seconds": 0
+    },
+    {
+      "phase": 1,
+      "name": "route to the machines",
+      "seconds": 0
+    },
+    {
+      "phase": 1,
+      "name": "machine check",
+      "seconds": 21
+    },
+    {
+      "phase": 2,
+      "name": "machine baseline and disk encryption",
+      "seconds": 187
+    },
+    {
+      "phase": 3,
+      "name": "per-site secrets generated",
+      "seconds": 0
+    },
+    {
+      "phase": 4,
+      "name": "certificates issued",
+      "seconds": 4
+    },
+    {
+      "phase": 4,
+      "name": "name snapshot signed",
+      "seconds": 0
+    },
+    {
+      "phase": 5,
+      "name": "management stack",
+      "seconds": 215
+    },
+    {
+      "phase": 5,
+      "name": "link to the relays",
+      "seconds": 27
+    },
+    {
+      "phase": 6,
+      "name": "sign-in services",
+      "seconds": 113
+    },
+    {
+      "phase": 6,
+      "name": "account seeded, first enrollment key",
+      "seconds": 152
+    },
+    {
+      "phase": 7,
+      "name": "public certificate",
+      "seconds": 71
+    },
+    {
+      "phase": 7,
+      "name": "relay list from the declaration",
+      "seconds": 39
+    },
+    {
+      "phase": 7,
+      "name": "relay tier",
+      "seconds": 402
+    },
+    {
+      "phase": 8,
+      "name": "machines enrolled on the mesh",
+      "seconds": 17
+    },
+    {
+      "phase": 8,
+      "name": "mesh addresses recorded",
+      "seconds": 0
+    },
+    {
+      "phase": 8,
+      "name": "off-site alarm machine enrolled",
+      "seconds": 57
+    },
+    {
+      "phase": 8,
+      "name": "its mesh address recorded",
+      "seconds": 0
+    },
+    {
+      "phase": 9,
+      "name": "data router",
+      "seconds": 59
+    },
+    {
+      "phase": 9,
+      "name": "workload identity server",
+      "seconds": 38
+    },
+    {
+      "phase": 10,
+      "name": "mesh dashboard",
+      "seconds": 43
+    },
+    {
+      "phase": 10,
+      "name": "sign-in clients registered",
+      "seconds": 16
+    },
+    {
+      "phase": 10,
+      "name": "sign-in fence for the dashboard",
+      "seconds": 35
+    }
+  ],
+  "unattended_total_s": 1593,
+  "unattended_end_s": 1599,
+  "person": {
+    "phase": 11,
+    "name": "administrator's first sign-in",
+    "done_at_s": 1752,
+    "stopped_s": 42
+  },
+  "late_steps": [
+    {
+      "phase": 12,
+      "name": "declared access rules applied",
+      "seconds": 53
+    },
+    {
+      "phase": 12,
+      "name": "site machines placed in their group",
+      "seconds": 87
+    },
+    {
+      "phase": 12,
+      "name": "live rules match the declaration",
+      "seconds": 2
+    },
+    {
+      "phase": 12,
+      "name": "service identities created",
+      "seconds": 8
+    },
+    {
+      "phase": 12,
+      "name": "service identities verified",
+      "seconds": 7
+    },
+    {
+      "phase": 12,
+      "name": "mesh account baseline",
+      "seconds": 20
+    },
+    {
+      "phase": 12,
+      "name": "mesh name service",
+      "seconds": 58
+    },
+    {
+      "phase": 12,
+      "name": "portal",
+      "seconds": 68
+    },
+    {
+      "phase": 12,
+      "name": "inputs for the later steps are set",
+      "seconds": 3
+    },
+    {
+      "phase": 12,
+      "name": "state mirror",
+      "seconds": 0
+    },
+    {
+      "phase": 12,
+      "name": "onboarding front desk",
+      "seconds": 24
+    },
+    {
+      "phase": 12,
+      "name": "onboarding runner",
+      "seconds": 35
+    },
+    {
+      "phase": 12,
+      "name": "key distribution for per-reader encryption",
+      "seconds": 46
+    },
+    {
+      "phase": 12,
+      "name": "synthetic publishers (declared off)",
+      "seconds": 0
+    },
+    {
+      "phase": 12,
+      "name": "off-site alarm watcher",
+      "seconds": 64
+    },
+    {
+      "phase": 12,
+      "name": "acceptance probe identity",
+      "seconds": 14
+    },
+    {
+      "phase": 13,
+      "name": "acceptance suite",
+      "seconds": 99
+    }
+  ],
+  "stops": [
+    {
+      "n": 1,
+      "phase": 11,
+      "at_s": 1599,
+      "cause": "test harness",
+      "reason": "The program that stands in for the administrator had lost its browser download."
+    },
+    {
+      "n": 2,
+      "phase": 12,
+      "at_s": 2130,
+      "cause": "tool",
+      "reason": "The secret store refused a write to an item that had been half cleared before the run."
+    },
+    {
+      "n": 3,
+      "phase": 12,
+      "at_s": 2385,
+      "cause": "tool",
+      "reason": "The mesh name step checked the management service against the site's own certificate authority. The service had a public certificate."
+    },
+    {
+      "n": 4,
+      "phase": 12,
+      "at_s": 2531,
+      "cause": "test harness",
+      "reason": "A helper script of the run overwrote the correction for stop 3."
+    },
+    {
+      "n": 5,
+      "phase": 12,
+      "at_s": 2816,
+      "cause": "tool",
+      "reason": "A later step did not receive the tokens that an earlier step of the same run had created."
+    },
+    {
+      "n": 6,
+      "phase": 12,
+      "at_s": 2849,
+      "cause": "process",
+      "reason": "The configuration repository changed during the run. The source check refused the tree, as designed."
+    },
+    {
+      "n": 7,
+      "phase": 12,
+      "at_s": 3483,
+      "cause": "tool",
+      "reason": "A step needed a command-line program on the machine, and no step installs it."
+    },
+    {
+      "n": 8,
+      "phase": 13,
+      "at_s": 4132,
+      "cause": "tool",
+      "reason": "First acceptance run: 38 passed, 1 failed, 5 undecided. The data router was published on the wrong address."
+    },
+    {
+      "n": 9,
+      "phase": 13,
+      "at_s": 4276,
+      "cause": "tool",
+      "reason": "A file that the run wrote into its own tree made the next step refuse the tree."
+    },
+    {
+      "n": 10,
+      "phase": 14,
+      "at_s": 4948,
+      "cause": "tool",
+      "reason": "The last phase failed on the alarm machine outside the site, and did not finish."
+    }
+  ],
+  "acceptance": {
+    "at_s": 4860,
+    "pass": 42,
+    "fail": 0,
+    "unknown": 2
+  },
+  "unfinished": {
+    "phase": 14,
+    "name": "connection to shared monitoring"
+  },
+  "teardown": {
+    "date": "2026-11-27",
+    "seconds": 354,
+    "checks": 57,
+    "target_s": 900
+  },
+  "node": {
+    "target_s": 900,
+    "state": "not yet timed"
+  }
+}

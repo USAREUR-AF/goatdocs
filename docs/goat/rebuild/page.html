@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>rebuild: rebuild time as a security control</title>
+<meta name="description" content="goat is built so that a whole site can be taken down and built again from its declaration. This page shows the measured times on real machines, and the status of each security property that a fast rebuild supports.">
+<link rel="icon" href="{{ICON}}">
+<style>
+{{CSS}}
+</style>
+<style>/* goat-tree: the same strip on every goat landing page, back to the catalogue of them all */
+.goat-tree{font:600 13px/1.3 ui-monospace,"SF Mono",Menlo,Consolas,monospace;letter-spacing:.02em;padding:7px max(20px,env(safe-area-inset-left,0px));border-bottom:1px solid color-mix(in srgb,currentColor 18%,transparent);background:color-mix(in srgb,currentColor 5%,transparent)}
+.goat-tree a{color:inherit;text-decoration:none}.goat-tree a:hover,.goat-tree a:focus-visible{text-decoration:underline;text-underline-offset:3px}
+@media print{.goat-tree{display:none}}</style>
+</head>
+<body>
+<nav class="goat-tree" aria-label="goat pages"><a href="https://usareur-af.github.io/goatdocs/goat/pages/"><span aria-hidden="true">&larr;</span> All goat pages</a></nav>
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="#top"><img src="{{ICON}}" width="28" height="28" alt="">rebuild</a>
+    <nav aria-label="Sections">
+      <a href="#what">What it is</a><a href="#run">The run</a><a href="#limits">What it removes</a><a href="#status">Status</a><a href="#start">Start</a>
+      <a href="../">goat</a>
+      <a class="gh" href="https://github.com/USAREUR-AF/goatcore">GitHub</a>
+    </nav>
+  </header>
+</div>
+
+<main id="top">
+<section class="hero" aria-labelledby="name">
+<pre class="bgcode" aria-hidden="true">| C1 | A founder site goes from declared to verified
+     | in 60 minutes or less, a new node in 15,
+     | a burn-down in 15
+
+## Where the day goes
+
+Past buildouts took a day or more. Most of that
+time was not a play running. It was a run stopping
+on a defect, the defect being fixed on main, and
+the run resuming. Each defect cost a stop, a
+diagnosis, a pull request and a resume. The
+runtime itself is the second cost.
+
+| Targets | founder site declared -> verified
+          | <= 60 min; one new node <= 15 min;
+          | burn-down to nothing, records kept
+          | <= 15 min</pre>
+  <div class="wrap hero-grid">
+    <div>
+      <p class="prompt">&gt;_ goatbuilder standup zagros --site alpha<span class="cur" aria-hidden="true"></span></p>
+      <h1 class="wordmark" id="name">rebuild</h1>
+      <p class="tagline">Rebuild time as a security control.</p>
+      <p class="lede">goat is built so that a whole site can be taken down and built again from its declaration. A site that is rebuilt quickly gives an intruder no lasting place on it, and makes recovery an ordinary operation. This page shows the times measured on real machines, including the target that is not met yet.</p>
+      <div class="buttons">
+        <a class="btn star" href="https://github.com/USAREUR-AF/goatcore"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M12 2.8l2.8 5.8 6.4.9-4.6 4.5 1.1 6.3L12 17.3l-5.7 3 1.1-6.3-4.6-4.5 6.4-.9z"/></svg>Star on GitHub</a>
+        <a class="btn" href="#run">The run</a>
+        <a class="btn" href="#status">Status of each part</a>
+        <a class="btn" href="https://github.com/USAREUR-AF/goatcore/blob/main/docs/design/goatbuilder-v1-gate.md">The requirements</a>
+      </div>
+      <div class="cmd"><pre data-box="command"><span class="ln"><span class="dollar">$ </span><code id="c-start">./goatbuilder standup zagros <span class="w">--site</span> alpha <span class="w">--mock</span> "$WORK" <span class="w">--ack</span> "you" <span class="w">--yes</span></code></span></pre><button class="copy" type="button" data-copy="c-start">Copy</button></div>
+      <p class="under">A rehearsal on the fixture in the repository. <a href="#start">Quick start</a> has the lines that come before it.</p>
+    </div>
+
+    {{STAGE}}
+  </div>
+
+  <div class="wrap">
+    <div class="numbers">
+      <div><span class="n" data-measure="teardown">-</span><span class="l">to take a site down</span><span class="tg">target <span data-measure="teardown-target">-</span>: <span data-measure="teardown-verdict">-</span></span><code>goatbuilder teardown --services, <span data-measure="teardown-checks">-</span> checks</code></div>
+      <div><span class="n" data-measure="signin">-</span><span class="l">from the first phase to the first sign-in</span><code>run.json: person.done_at_s</code></div>
+      <div><span class="n" data-measure="accept">-</span><span class="l">to a passing acceptance suite</span><span class="tg">target <span data-measure="accept-target">-</span>: <span data-measure="accept-verdict">-</span></span><code>run.json: acceptance.at_s</code></div>
+      <div><span class="n" data-measure="clean">-</span><span class="l">the same steps with no stop</span><code>the sum of every "phase N took" line of the passing steps</code></div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="what">
+  <div class="wrap">
+    <h2>What it is</h2>
+    <p class="sub">Most defenses try to keep an intruder out, and then to find and remove one who got in. goat adds another control: the time it takes to rebuild. Every site is described by a declaration in a repository. <a href="../goatbuilder/">goatbuilder</a>, the command-line tool in <a href="https://github.com/USAREUR-AF/goatcore">goatcore</a>, builds the site from that declaration, checks it against an acceptance suite, and can take it down again. The shorter that cycle is, the less a compromise costs.</p>
+    <div class="cards">
+      <div class="card"><h3>A suspected compromise is answered by a rebuild</h3><p>Cleaning a compromised machine means proving that nothing was left behind. Building it again from the declaration does not depend on that proof. The declaration is signed, every image is named by its content hash, and a deploy refuses anything else.</p></div>
+      <div class="card"><h3>A foothold lasts only until the next rebuild</h3><p>An intruder who gains a place on a machine keeps it until the machine is rebuilt. When a rebuild takes minutes, the operator chooses how long that is.</p></div>
+      <div class="card"><h3>Recovery is the first install, run again</h3><p>The command that builds a site the first time is the command that rebuilds it. It is timed on real machines and every stop is recorded. A stop caused by the tool becomes a correction to the tool, so the recovery procedure is one that has been run.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="run">
+  <div class="wrap feature">
+    <div>
+      <h2>Run <span data-measure="run">-</span> took <span data-measure="accept">-</span>. Its steps took <span data-measure="clean">-</span>.</h2>
+      <p>The target is a first site, from the first phase to a passing acceptance suite, in <span data-measure="accept-target">-</span>. Run <span data-measure="run">-</span> was made on real machines on a bench: one core machine, two monitoring machines, relays in a cloud, and one alarm machine outside the site.</p>
+      <p>Phases 1 to 10, <span data-measure="unattended-steps">-</span> steps, ran unattended with no stop in <span data-measure="unattended">-</span>. The slowest step was the <span data-measure="slowest">-</span>, at <span data-measure="slowest-s">-</span>. The administrator's first sign-in was complete <span data-measure="signin">-</span> after the start.</p>
+      <p>The acceptance suite passed <span data-measure="accept">-</span> after the start: <span data-measure="pass">-</span> checks passed, <span data-measure="fail">-</span> failed and <span data-measure="unknown">-</span> could not be decided. That is <span data-measure="accept-over">-</span>. The steps that passed took <span data-measure="clean">-</span> in total. The other <span data-measure="lost">-</span> went to <span data-measure="stops">-</span> stops, each followed by a correction and a resumed run. The last phase, which connects the site to shared monitoring, did not finish.</p>
+      <pre class="json" data-box="output"><span class="ln">ok    time          phase 9 took 38s (exit 0)</span><span class="ln">standup: ok (90 checks)</span><span class="ln">teardown: ok (57 checks)</span></pre>
+      <p class="under">Three lines of the tool's own output from these runs. The whole record is <a href="run.json"><code>run.json</code></a>.</p>
+    </div>
+    <div>
+      <div class="scroll">
+      <table>
+        <thead><tr><th class="c">Stop</th><th class="c">Phase</th><th>What stopped the run</th><th class="c">Cause</th></tr></thead>
+        <tbody>
+{{STOPS}}
+        </tbody>
+      </table>
+      </div>
+      <p class="under"><span data-measure="stops-tool">-</span> stops were caused by the tool, and each has a correction in review or an open issue in goatcore. <span data-measure="stops-other">-</span> were caused by the test harness or by the way the run was made. A run meets the target when it has no stop.</p>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="targets">
+  <div class="wrap">
+    <h2>Three time targets are requirements for release 1.0, and one is met</h2>
+    <p class="sub">The targets are one row, C1, of the public <a href="https://github.com/USAREUR-AF/goatcore/blob/main/docs/design/goatbuilder-v1-gate.md">list of requirements for goatbuilder 1.0</a>. The row passes when all three are met on real machines. The design that the targets come from is <a href="https://github.com/USAREUR-AF/goatcore/blob/main/docs/design/goatbuilder-speed.md">goatbuilder-speed.md</a>.</p>
+    <div class="tiles">
+      <div class="tile"><span class="status s-measured">Measured: <span data-measure="teardown-verdict">-</span></span><h3>A site is taken down in <span data-measure="teardown-target">-</span> or less</h3><p><span data-measure="teardown">-</span>, with <span data-measure="teardown-checks">-</span> checks passed. The measured run stopped every service of the site and kept its stored data and its records. Taking down the steps that hold data is refused until each has a declared way down.</p></div>
+      <div class="tile"><span class="status s-measured">Measured: <span data-measure="accept-verdict">-</span></span><h3>A first site is built in <span data-measure="accept-target">-</span> or less</h3><p><span data-measure="accept">-</span> in run <span data-measure="run">-</span>, with <span data-measure="stops">-</span> stops. The same steps with no stop take <span data-measure="clean">-</span>.</p></div>
+      <div class="tile"><span class="status s-notbuilt">Not yet timed</span><h3>One more machine joins in <span data-measure="node-target">-</span> or less</h3><p>The clock starts from a machine with its operating system installed and reachable. A first attempt stopped in phase 3 and is not counted.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="limits">
+  <div class="wrap">
+    <h2>A rebuild removes what is on the machines. Three other risks are handled by other parts.</h2>
+    <p class="sub">Each line carries the status of the part that does the work.</p>
+    <div class="two">
+      <div>
+        <h3>A rebuild removes</h3>
+        <div class="scroll"><table>
+          <tbody>
+            <tr><td>Programs and files left on a machine</td><td><span class="status s-built">Built</span> The machine is installed again and the stand-up builds it from the declaration: baseline, disk encryption, then every service. The install seed for each class of machine is built and still in trial.</td></tr>
+            <tr><td>The machine's place on the mesh</td><td><span class="status s-built">Built</span> Each machine enrolls again in phase 8 with a key that works once.</td></tr>
+            <tr><td>Running services and their containers</td><td><span class="status s-measured">Measured</span> <code>teardown --services</code> stops every service of a site and appends a record for each. No earlier record is removed.</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+      <div>
+        <h3>A rebuild does not remove</h3>
+        <div class="scroll"><table>
+          <tbody>
+            <tr><td>A stolen secret that is still valid</td><td><span class="status s-notbuilt">Not built</span> A stand-up creates the site secrets that are missing and does not replace the ones that exist. Replacing them is a separate, deliberate step, and it is not yet part of a rebuild.</td></tr>
+            <tr><td>A changed source or image</td><td><span class="status s-built">Built</span> A deploy checks the signature on the goatnet's release list, refuses an image that is not named by its content hash, and refuses a tree that differs from the repository. Stop 6 of this run was that refusal.</td></tr>
+            <tr><td>Data that was already copied</td><td><span class="status s-built">Built</span> Shared data can be encrypted for named readers. The platform holds no key, and only those readers can decrypt. This limits what a copy reveals. It cannot recall what a reader has already decrypted.</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="status">
+  <div class="wrap">
+    <h2>A fast rebuild makes these properties routine, and each one has a status</h2>
+    <p class="sub">A property that depends on a slow rebuild that is rarely practiced is used only in an emergency. With a rebuild that is fast and practiced, the same property is an ordinary operation. Some of these are in use and some are designs.</p>
+    <p class="legend"><span><span class="status s-measured">Measured</span>a named run passed</span><span><span class="status s-built">Built</span>in the tree and in use</span><span><span class="status s-designed">Designed</span>decided, not built</span><span><span class="status s-notbuilt">Not built</span>nothing exists yet</span></p>
+    <div class="tiles">
+      <div class="tile"><span class="status s-built">Built</span><h3>No site has a public address</h3><p>A device finds a goatnet through one public name that is answered by relays in a cloud. The relays pass the encrypted connection through without reading it, and joining needs a short-lived key.</p><p class="src"><a href="https://github.com/USAREUR-AF/goatcore/blob/main/docs/adr/1192-wg-cp0-paused-public-dns-entry-point.md">Decision record 1192</a></p></div>
+      <div class="tile"><span class="status s-built">Built</span><h3>Each person, machine and workload has its own identity</h3><p>People and services sign in through the site's own identity provider. A machine holds its own mesh key. A workload gets a certificate from a server that the stand-up installs in phase 9.</p><p class="src"><a href="../../design/architecture-spine/">Architecture, row 6</a></p></div>
+      <div class="tile"><span class="status s-built">Built</span><h3>The secret store cannot read what it holds</h3><p>Secrets are encrypted on the person's device before they reach the store. No secret value is kept in a file: files hold references, and a value is resolved for one command at a time.</p></div>
+      <div class="tile"><span class="status s-built">Built</span><h3>A deploy refuses a release it cannot verify</h3><p>Since release 0.8.0 a deploy checks the signed release list and the content hash of every image before it reaches a machine, and updates a later stage only after the earlier one.</p><p class="src"><a href="../goatbuilder/">goatbuilder</a></p></div>
+      <div class="tile"><span class="status s-built">Built</span><h3>Decoy names and web paths raise an alert on first use</h3><p>A goatnet can carry decoys that nothing has a reason to use, so any use is treated as hostile. Built for names and web requests. Designed, not built: decoys on the data fabric, and decoy credentials issued by a provider.</p><p class="src"><a href="https://github.com/USAREUR-AF/goatcore/blob/main/docs/design/deception-layer.md">deception-layer.md</a></p></div>
+      <div class="tile"><span class="status s-designed">Designed</span><h3>A site keeps working when it is cut off</h3><p>Every site is to keep admitting people, enrolling machines and changing access while it is cut off, and to merge when the link returns. The partition tests are built for mesh control and sign-in. The portal and the administration console are not built for it, and none of the six requirements is measured.</p><p class="src"><a href="https://github.com/USAREUR-AF/goatcore/blob/main/docs/design/island-mode-multi-writer.md">island-mode-multi-writer.md</a></p></div>
+      <div class="tile"><span class="status s-designed">Designed</span><h3>The hub can sever a site</h3><p>The site with the highest authority removes another site from the goatnet. From then on, nothing the removed site writes reaches any other site, and it returns only by being rebuilt and loaded again from the hub. Decided; the work follows release 1.0.</p><p class="src"><a href="https://github.com/USAREUR-AF/goatcore/blob/main/docs/adr/1205-the-highest-echelon-site-overrides-and-can-sever-every-other-site.md">Decision record 1205</a></p></div>
+      <div class="tile"><span class="status s-designed">Designed</span><h3>A site is rebuilt from nothing and a checked export</h3><p>A site, or a whole goatnet, is built again from nothing, using an export of its people, machines and processes that is checked before it is loaded. Proposed; the work follows release 1.0.</p><p class="src"><a href="https://github.com/USAREUR-AF/goatcore/blob/main/docs/adr/1237-a-site-is-rebuilt-from-nothing-and-a-combed-extract-of-its-identities.md">Decision record 1237</a></p></div>
+      <div class="tile"><span class="status s-designed">Built, not enabled</span><h3>A second key exchange for the mesh tunnels</h3><p>A key exchange that is designed to resist a quantum computer is built for the tunnels between machines. It is switched off on every goatnet until a defect in it is resolved.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="start">
+  <div class="wrap">
+    <h2>Quick start</h2>
+    <p class="sub">A rehearsal of a first site, its teardown and its rebuild, on the fixture in the repository. It needs <code>git</code> and <code>curl</code>. The stand-up and the teardown change nothing outside one temporary directory.</p>
+    <pre class="block" data-box="command"><span class="ln">git clone <span class="w">https://github.com/usareur-af/goatcore</span> &amp;&amp; cd goatcore
+</span><span class="ln">OS="$(uname -s | tr '[:upper:]' '[:lower:]')"; ARCH="$(uname -m | sed <span class="w">'s/x86_64/amd64/;</span> <span class="w">s/aarch64/arm64/')"</span>
+</span><span class="ln">curl <span class="w">-fsSL</span> <span class="w">-o</span> goatbuilder <span class="w">"https://github.com/usareur-af/goatcore/releases/download/goatbuilder/v0.8.0/goatbuilder-$OS-$ARCH"</span>
+</span><span class="ln">chmod +x goatbuilder
+</span><span class="ln">WORK="$(mktemp -d)/zagros"
+</span><span class="ln">cp <span class="w">-R</span> <span class="w">ops/goatbuilder/fixtures/goatnet-from-scratch/01-founder</span> "$WORK"
+</span><span class="ln">./goatbuilder standup zagros <span class="w">--site</span> alpha <span class="w">--mock</span> "$WORK" <span class="w">--ack</span> "you" <span class="w">--yes</span>
+</span><span class="ln">./goatbuilder teardown zagros <span class="w">--site</span> alpha <span class="w">--mock</span> "$WORK"
+</span><span class="ln">./goatbuilder standup zagros <span class="w">--site</span> alpha <span class="w">--mock</span> "$WORK" <span class="w">--ack</span> "you" <span class="w">--yes</span></span></pre>
+    <p>The stand-up ends with <code>standup: ok (14 checks)</code> and the teardown with <code>teardown: ok (9 checks)</code>. On real machines the same commands run without <code>--mock</code>, and print the time of every phase.</p>
+    <p><a href="../goatbuilder/">goatbuilder</a> &middot; <a href="https://github.com/USAREUR-AF/goatcore/blob/main/docs/reference/goatbuilder/README.md">The goatbuilder book</a> &middot; <a href="https://github.com/USAREUR-AF/goatcore/blob/main/CONTRIBUTING.md">Contributing</a></p>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><a href="https://github.com/USAREUR-AF/goatcore">Repository</a><a href="https://github.com/USAREUR-AF/goatcore/blob/main/LICENSE">Apache License 2.0</a><a href="https://github.com/USAREUR-AF/goatcore/blob/main/SECURITY.md">Security policy</a></p>
+    <p>Portions written by U.S. Federal government employees within the scope of their employment are in the public domain in the United States. Part of <a href="https://github.com/USAREUR-AF/goatcore">goat</a>.</p>
+  </div>
+</footer>
+<script type="application/json" id="run-data">{{RUN}}</script>
+<script>
+{{JS}}
+</script>
+</body>
+</html>
