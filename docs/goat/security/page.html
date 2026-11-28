@@ -98,7 +98,7 @@ environments:
     <div class="blunders">
       <div class="blunder">{{MARK_OUTSIDE}}<h3>A door on the public internet</h3><p class="cost">A service or a gateway that anyone can reach is one that anyone can probe.</p><p class="fix"><span class="status s-inuse">in use</span>No service has a public address. The private overlay does not answer what it cannot authenticate.</p></div>
       <div class="blunder">{{MARK_ZERO_TRUST}}<h3>Trust by location</h3><p class="cost">Whatever gets inside a boundary is trusted there.</p><p class="fix"><span class="status s-inuse">in use</span>There is no inside. Every connection has its own keys and its own rule.</p></div>
-      <div class="blunder">{{MARK_ISLAND}}<h3>A distant center</h3><p class="cost">A far cloud and a long link back to it: cut the link and the site stops, and the link can be found and followed.</p><p class="fix"><span class="status s-inuse">in use</span>Each site runs everything it needs on its own machines.</p><p class="fix"><span class="status s-designed">designed</span>A site keeps working with no link at all.</p></div>
+      <div class="blunder">{{MARK_ISLAND}}<h3>A distant center</h3><p class="cost">A far cloud and a long link back to it: cut the link and the site stops, and the link can be found and followed.</p><p class="fix"><span class="status s-inuse">in use</span>Each site runs everything it needs on its own machines, and its machines keep talking with no link.</p><p class="fix"><span class="status s-designed">designed</span>Administration changes at a cut-off site.</p></div>
       <div class="blunder">{{MARK_ORDINARY}}<h3>Special parts</h3><p class="cost">Special encryption, special lines and special hardware mark who is there, and take months to replace.</p><p class="fix"><span class="status s-inuse">in use</span>Ordinary computers, a common open protocol, and any link that carries packets.</p></div>
       <div class="blunder">{{MARK_REBUILD}}<h3>Recovery as a rare emergency</h3><p class="cost">A compromised system is cleaned in place and restored slowly, by a procedure that nobody practices.</p><p class="fix"><span class="status s-measured">measured</span>A whole site is rebuilt from its declaration in minutes, as a routine operation.</p></div>
     </div>
@@ -349,8 +349,9 @@ environments:
         <dt>For you</dt><dd class="you">A lost link does not stop a site, and a silent site is harder to find.</dd>
       </dl>
       <ul class="ev">
-        <li><span class="status s-designed">designed</span><span>goatcore, decision record 1165</span></li>
-        <li><span class="status s-built">built</span><span>the tests for mesh control and sign-in under a cut link</span></li>
+        <li><span class="status s-inuse">in use</span><span>machines that have joined keep talking to each other with no link to any other site</span></li>
+        <li><span class="status s-built">built</span><span>each site runs its own sign-in and mesh control, both tested with the link cut</span></li>
+        <li><span class="status s-designed">designed</span><span>changes made in the portal and the administration console at a site that is cut off, merged when the link returns</span></li>
       </ul>
     </div>
     <figure><div class="frame">{{FIG_ISLAND}}</div></figure>
@@ -370,8 +371,8 @@ environments:
         <dt>For you</dt><dd class="you">You protect the other sites without switching off the severed one.</dd>
       </dl>
       <ul class="ev">
-        <li><span class="status s-designed">designed</span><span>goatcore, decision records 1205 and 1237</span></li>
-        <li><span class="status s-built">built</span><span>the sever directive, tested with a cut link</span></li>
+        <li><span class="status s-built">built</span><span>the hub's sever directive: nothing a severed site writes reaches another site, tested with the link cut</span></li>
+        <li><span class="status s-designed">designed</span><span>a severed site rejoins after it is built again and loaded from the hub</span></li>
       </ul>
     </div>
     <figure><div class="frame">{{FIG_HUB}}</div></figure>

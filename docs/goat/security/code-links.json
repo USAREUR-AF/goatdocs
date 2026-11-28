@@ -628,7 +628,58 @@
    "note": "Decision record, proposed."
   },
   {
-   "claim": "A site keeps working when it is cut off",
+   "claim": "Machines that have joined keep talking with no link to any other site",
+   "code": [
+    [
+     "decision record 0201",
+     "docs/adr/0201-enrollment-vs-mesh-op-separation.md",
+     14,
+     20
+    ],
+    [
+     "a joining site runs its own mesh name service",
+     ".github/release-notes/goatbuilder.md",
+     9,
+     9
+    ]
+   ],
+   "test": [],
+   "note": ""
+  },
+  {
+   "claim": "Each site runs its own sign-in and mesh control, tested with the link cut",
+   "code": [
+    [
+     "mesh control: two sites cut apart both issue a key",
+     "ops/postgres/spock/tests/partition-harness/scenarios/netbird-c1-setup-key-both-sides.sh",
+     2,
+     22
+    ],
+    [
+     "sign-in: the same account made at two sites cut apart",
+     "ops/postgres/spock/tests/partition-harness/scenarios/kratos-c4-same-email-both-sides.sh",
+     2,
+     8
+    ]
+   ],
+   "test": [
+    [
+     "mesh control, with the link cut",
+     "ops/postgres/spock/tests/partition-harness/scenarios/netbird-c1-setup-key-both-sides.sh",
+     2,
+     22
+    ],
+    [
+     "sign-in, with the link cut",
+     "ops/postgres/spock/tests/partition-harness/scenarios/kratos-c4-same-email-both-sides.sh",
+     2,
+     8
+    ]
+   ],
+   "note": ""
+  },
+  {
+   "claim": "Administration changes at a site that is cut off, merged when the link returns",
    "code": [
     [
      "decision record 1165",
@@ -637,25 +688,12 @@
      21
     ]
    ],
-   "test": [
-    [
-     "two sites cut apart both issue a key, and both keys survive",
-     "ops/postgres/spock/tests/partition-harness/scenarios/netbird-c1-setup-key-both-sides.sh",
-     2,
-     22
-    ]
-   ],
-   "note": "Decision record; the test is built."
+   "test": [],
+   "note": "Decision record."
   },
   {
-   "claim": "The hub severs a site; the site works alone",
+   "claim": "The hub's sever directive: nothing a severed site writes reaches another site",
    "code": [
-    [
-     "decision record 1205",
-     "docs/adr/1205-the-highest-echelon-site-overrides-and-can-sever-every-other-site.md",
-     95,
-     105
-    ],
     [
      "the sever directive",
      "ops/ansible/roles/spock-hub-directives/files/spock-hub-directives.sh",
@@ -671,7 +709,20 @@
      24
     ]
    ],
-   "note": "The directive and its test are built."
+   "note": ""
+  },
+  {
+   "claim": "A severed site rejoins after it is built again and loaded from the hub",
+   "code": [
+    [
+     "decision record 1205",
+     "docs/adr/1205-the-highest-echelon-site-overrides-and-can-sever-every-other-site.md",
+     95,
+     105
+    ]
+   ],
+   "test": [],
+   "note": "Decision record."
   },
   {
    "claim": "A site built again from a checked export",

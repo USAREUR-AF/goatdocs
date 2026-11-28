@@ -560,6 +560,7 @@ environments:
         <div><dt>Here</dt><dd class="here">goat draws none. Each connection between two parties, whether people, machines or programs, has its own keys and its own rule, set by who the two are and what they are doing. When either changes, the protection on that connection changes with it.</dd></div>
         <div><dt>For you</dt><dd class="you">There is no trusted zone to get into.</dd></div>
       </dl>
+      <p class="incode"><a href="notes/#code-no-connection-without-a-declared-rule">in the code</a></p>
     </div>
     <figure class="full"><div class="frame"><style>
 .pf{--l0:#1f8a55;--l1:#11868c;--l2:#2a6fc0;--l3:#6b8f1a;--l4:#5c7183;--l5:#0f7460;--l6:#2f8fb8;--l7:#7f8f2a;--pf-net:#e4e6da;--pf-zone:#e6ecdf;--pf-one:#4d564f}
@@ -810,7 +811,7 @@ environments:
     <div class="blunders">
       <div class="blunder"><svg class="mark mark-outside" viewBox="0 0 96 96" role="img" aria-label="A building with no door on the street. The way in runs under the ground."><path d="M8 58H88" class="mk"/><path d="M30 58V28L50 14L70 28V58" class="mk"/><path d="M8 80Q50 92 50 58" class="mka mkd"/><circle cx="50" cy="42" r="5" class="mkfa"/></svg><h3>A door on the public internet</h3><p class="cost">A service or a gateway that anyone can reach is one that anyone can probe.</p><p class="fix"><span class="status s-inuse">in use</span>No service has a public address. The private overlay does not answer what it cannot authenticate.</p></div>
       <div class="blunder"><svg class="mark mark-zero-trust" viewBox="0 0 96 96" role="img" aria-label="A line between two points, stopped at a gate in the middle."><circle cx="14" cy="48" r="7" class="mkf"/><circle cx="82" cy="48" r="7" class="mkf"/><path d="M23 48H36M60 48H73" class="mk"/><circle cx="48" cy="48" r="17" class="mka"/><path d="M48 39V57" class="mka"/></svg><h3>Trust by location</h3><p class="cost">Whatever gets inside a boundary is trusted there.</p><p class="fix"><span class="status s-inuse">in use</span>There is no inside. Every connection has its own keys and its own rule.</p></div>
-      <div class="blunder"><svg class="mark mark-island" viewBox="0 0 96 96" role="img" aria-label="A site inside its own ring. The link that leaves it is cut."><circle cx="40" cy="52" r="28" class="mka"/><rect x="27" y="39" width="26" height="26" rx="6" class="mkf"/><path d="M62 30L70 22M78 14L88 4" class="mk"/></svg><h3>A distant center</h3><p class="cost">A far cloud and a long link back to it: cut the link and the site stops, and the link can be found and followed.</p><p class="fix"><span class="status s-inuse">in use</span>Each site runs everything it needs on its own machines.</p><p class="fix"><span class="status s-designed">designed</span>A site keeps working with no link at all.</p></div>
+      <div class="blunder"><svg class="mark mark-island" viewBox="0 0 96 96" role="img" aria-label="A site inside its own ring. The link that leaves it is cut."><circle cx="40" cy="52" r="28" class="mka"/><rect x="27" y="39" width="26" height="26" rx="6" class="mkf"/><path d="M62 30L70 22M78 14L88 4" class="mk"/></svg><h3>A distant center</h3><p class="cost">A far cloud and a long link back to it: cut the link and the site stops, and the link can be found and followed.</p><p class="fix"><span class="status s-inuse">in use</span>Each site runs everything it needs on its own machines, and its machines keep talking with no link.</p><p class="fix"><span class="status s-designed">designed</span>Administration changes at a cut-off site.</p></div>
       <div class="blunder"><svg class="mark mark-ordinary" viewBox="0 0 96 96" role="img" aria-label="Three identical parts in a row. Any one can take the place of another."><rect x="8" y="34" width="22" height="28" rx="6" class="mkf"/><rect x="37" y="34" width="22" height="28" rx="6" class="mkf"/><rect x="66" y="34" width="22" height="28" rx="6" class="mkf"/><path d="M20 20Q48 4 76 20" class="mka"/><path d="M80 24L80 12L68 16Z" class="mkfa"/></svg><h3>Special parts</h3><p class="cost">Special encryption, special lines and special hardware mark who is there, and take months to replace.</p><p class="fix"><span class="status s-inuse">in use</span>Ordinary computers, a common open protocol, and any link that carries packets.</p></div>
       <div class="blunder"><svg class="mark mark-rebuild" viewBox="0 0 96 96" role="img" aria-label="A dashed outline of a shape, the same shape drawn solid again, and a turning arrow between them."><rect x="10" y="50" width="30" height="30" rx="6" class="mk mkd"/><rect x="54" y="50" width="30" height="30" rx="6" class="mkf"/><path d="M25 40A24 24 0 0 1 66 30" class="mka"/><path d="M70 44L71 27L57 34Z" class="mkfa"/></svg><h3>Recovery as a rare emergency</h3><p class="cost">A compromised system is cleaned in place and restored slowly, by a procedure that nobody practices.</p><p class="fix"><span class="status s-measured">measured</span>A whole site is rebuilt from its declaration in minutes, as a routine operation.</p></div>
     </div>
@@ -831,11 +832,10 @@ environments:
       </dl>
       <ul class="ev">
         <li><span class="status s-inuse">in use</span><span>nothing of a site is reachable from the public internet; every release is signed and verified</span></li>
-        <li><span class="status s-designed">designed</span><span>a site that keeps working with no link at all</span></li>
+        <li><span class="status s-inuse">in use</span><span>machines that have joined keep talking to each other with no link to any other site</span></li>
         <li><span class="status s-designed">designed</span><span>one signed bundle that carries a release to a site that is cut off</span></li>
       </ul>
-      <p class="incode"><a href="notes/#code-one-signed-bundle-that-carries-a-release-to-a-si">in the code</a></p>
-      <p class="incode"><a href="notes/#code-no-connection-without-a-declared-rule">in the code</a></p>
+      <p class="incode"><a href="notes/#code-machines-that-have-joined-keep-talking-with-no-l">in the code</a></p>
     </div>
     <figure class="full"><div class="frame"><svg class="viz wide" viewBox="0 0 1120 500" role="img" aria-label="Two drawings. First, an island with water all round it. Inside the island every party is joined freely to every other. Three small boats cross the water toward it: a drive, a maintenance laptop and an update. Second, an open field with no water and no shore: each party has its own identity and each connection between two parties has its own lock." font-family="var(--sans)">
 <defs><marker id="ag-ah" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="12" refX="11" refY="6" orient="auto"><path d="M1 1 L12 6 L1 11 z" fill="var(--ink)"/></marker></defs>
@@ -2327,6 +2327,7 @@ environments:
           <dt>Here</dt><dd class="here">A site is described by a declaration in a repository. One command builds the whole site from it, and the same command builds it again.</dd>
           <dt>For you</dt><dd class="you">A rebuild is an ordinary, practiced operation, not a painful reaction to a disaster. When you have a doubt about a machine, you rebuild it.</dd>
         </dl>
+      <p class="incode"><a href="notes/#code-a-whole-site-built-by-one-command">in the code</a></p>
       </div>
       <figure><div class="frame"><svg id="fig-rebuild" class="viz" viewBox="8 0 464 334" role="img" aria-label="A cycle. A declaration in a repository is built into a running site by one command; the build is 38 min 12 s of machine time. One command takes the site down again in 5 min 54 s. Every rebuild returns every machine to a known clean state.">
 <rect x="16" y="118" width="150" height="76" rx="8" class="bxa"/>
@@ -2389,13 +2390,13 @@ environments:
         <dt>For you</dt><dd class="you">A lost link does not stop a site, and a silent site is harder to find.</dd>
       </dl>
       <ul class="ev">
-        <li><span class="status s-designed">designed</span><span>goatcore, decision record 1165</span></li>
-        <li><span class="status s-built">built</span><span>the tests for mesh control and sign-in under a cut link</span></li>
+        <li><span class="status s-inuse">in use</span><span>machines that have joined keep talking to each other with no link to any other site</span></li>
+        <li><span class="status s-built">built</span><span>each site runs its own sign-in and mesh control, both tested with the link cut</span></li>
+        <li><span class="status s-designed">designed</span><span>changes made in the portal and the administration console at a site that is cut off, merged when the link returns</span></li>
       </ul>
-      <p class="incode"><a href="notes/#code-a-site-keeps-working-when-it-is-cut-off">in the code</a></p>
-      <p class="incode"><a href="notes/#code-a-whole-site-built-by-one-command">in the code</a></p>
+      <p class="incode"><a href="notes/#code-machines-that-have-joined-keep-talking-with-no-l">in the code</a></p>
     </div>
-    <figure><div class="frame"><svg id="fig-island" class="viz" viewBox="8 0 464 312" role="img" aria-label="A site whose link to the other sites is cut. Inside the site, sign-in, the mesh, data and access changes all keep running. Nothing has to leave the site for it to keep working.">
+    <figure><div class="frame"><svg id="fig-island" class="viz" viewBox="8 0 464 312" role="img" aria-label="A site whose link to the other sites is cut. Inside the site, sign-in, the mesh and data keep running. Access changes at a site that is cut off are designed, and drawn with a dashed outline. Nothing has to leave the site for it to keep working.">
 <rect x="16" y="16" width="150" height="56" rx="8" class="bx"/>
 <text x="91.0" y="50.0" text-anchor="middle" class="t" font-size="15" font-weight="700">the other sites</text>
 <path d="M166 44L214 44" class="ln" data-lint="nohead"/>
@@ -2414,9 +2415,8 @@ environments:
 <rect x="32" y="202" width="204" height="42" rx="6" class="bx"/>
 <path d="M46 221l4.5 4.5l8 -9.5" class="lna" data-lint="nohead"/>
 <text x="76" y="229" class="t" font-size="14.5">data</text>
-<rect x="244" y="202" width="204" height="42" rx="6" class="bx"/>
-<path d="M258 221l4.5 4.5l8 -9.5" class="lna" data-lint="nohead"/>
-<text x="288" y="229" class="t" font-size="14.5">access changes</text>
+<rect x="244" y="202" width="204" height="42" rx="6" class="bxd"/>
+<text x="258" y="229" class="tq" font-size="14.5">access changes: designed</text>
 <text x="240" y="296" text-anchor="middle" class="tq" font-size="14">Nothing has to leave the site for it to keep working.</text>
 </svg></div></figure>
   </div>
@@ -2435,10 +2435,10 @@ environments:
         <dt>For you</dt><dd class="you">You protect the other sites without switching off the severed one.</dd>
       </dl>
       <ul class="ev">
-        <li><span class="status s-designed">designed</span><span>goatcore, decision records 1205 and 1237</span></li>
-        <li><span class="status s-built">built</span><span>the sever directive, tested with a cut link</span></li>
+        <li><span class="status s-built">built</span><span>the hub's sever directive: nothing a severed site writes reaches another site, tested with the link cut</span></li>
+        <li><span class="status s-designed">designed</span><span>a severed site rejoins after it is built again and loaded from the hub</span></li>
       </ul>
-      <p class="incode"><a href="notes/#code-the-hub-severs-a-site-the-site-works-alone">in the code</a></p>
+      <p class="incode"><a href="notes/#code-the-hub-s-sever-directive-nothing-a-severed-site">in the code</a></p>
     </div>
     <figure><div class="frame"><svg id="fig-hub" class="viz" viewBox="8 0 464 330" role="img" aria-label="The hub, the site with authority, severs a site. The link between the severed site and the others is ended, and nothing the severed site writes afterward reaches another site. The severed site still works, alone, for the people there. To rejoin, it is built again and loaded from the hub.">
 <rect x="152" y="16" width="176" height="56" rx="8" class="bxa"/>
@@ -2676,7 +2676,10 @@ environments:
       <div class="sr" role="listitem"><span class="sw">Machines connect directly; a relay is a fallback</span><span class="sc"></span><span class="sc on s-inuse" data-s="in use" role="img" aria-label="in use"></span><span class="sc"></span><span class="sc"></span><span class="sc"></span></div>
       <div class="sr" role="listitem"><span class="sw">A deploy refuses what it cannot verify</span><span class="sc"></span><span class="sc on s-inuse" data-s="in use" role="img" aria-label="in use"></span><span class="sc"></span><span class="sc"></span><span class="sc"></span></div>
       <div class="sr" role="listitem"><span class="sw">Post-quantum key exchange preferred on the data fabric</span><span class="sc"></span><span class="sc on s-inuse" data-s="in use" role="img" aria-label="in use"></span><span class="sc"></span><span class="sc"></span><span class="sc"></span></div>
+      <div class="sr" role="listitem"><span class="sw">Machines that have joined keep talking with no link to any other site</span><span class="sc"></span><span class="sc on s-inuse" data-s="in use" role="img" aria-label="in use"></span><span class="sc"></span><span class="sc"></span><span class="sc"></span></div>
       <div class="sr" role="listitem"><span class="sw">A declared table of roles, enforced</span><span class="sc"></span><span class="sc"></span><span class="sc on s-built" data-s="built" role="img" aria-label="built"></span><span class="sc"></span><span class="sc"></span></div>
+      <div class="sr" role="listitem"><span class="sw">Each site runs its own sign-in and mesh control, tested with the link cut</span><span class="sc"></span><span class="sc"></span><span class="sc on s-built" data-s="built" role="img" aria-label="built"></span><span class="sc"></span><span class="sc"></span></div>
+      <div class="sr" role="listitem"><span class="sw">The hub&#x27;s sever directive: nothing a severed site writes reaches another site</span><span class="sc"></span><span class="sc"></span><span class="sc on s-built" data-s="built" role="img" aria-label="built"></span><span class="sc"></span><span class="sc"></span></div>
       <div class="sr" role="listitem"><span class="sw">Federation between two environments, set up and backed out by one command</span><span class="sc"></span><span class="sc"></span><span class="sc on s-built" data-s="built" role="img" aria-label="built"></span><span class="sc"></span><span class="sc"></span></div>
       <div class="sr" role="listitem"><span class="sw">A simple boundary node: one stream, one way, to one destination</span><span class="sc"></span><span class="sc"></span><span class="sc on s-built" data-s="built" role="img" aria-label="built"></span><span class="sc"></span><span class="sc"></span></div>
       <div class="sr" role="listitem"><span class="sw">Security records normalized to OCSF, and forwarded to your collector as CEF over syslog</span><span class="sc"></span><span class="sc"></span><span class="sc on s-built" data-s="built" role="img" aria-label="built"></span><span class="sc"></span><span class="sc"></span></div>
@@ -2687,8 +2690,8 @@ environments:
       <div class="sr" role="listitem"><span class="sw">Post-quantum key exchange between organizations</span><span class="sc"></span><span class="sc"></span><span class="sc"></span><span class="sc on s-designed" data-s="designed" role="img" aria-label="designed"></span><span class="sc"></span></div>
       <div class="sr" role="listitem"><span class="sw">Decoys on the data fabric, decoy credentials</span><span class="sc"></span><span class="sc"></span><span class="sc"></span><span class="sc on s-designed" data-s="designed" role="img" aria-label="designed"></span><span class="sc"></span></div>
       <div class="sr" role="listitem"><span class="sw">Secrets replaced as part of a rebuild</span><span class="sc"></span><span class="sc"></span><span class="sc"></span><span class="sc on s-designed" data-s="designed" role="img" aria-label="designed"></span><span class="sc"></span></div>
-      <div class="sr" role="listitem"><span class="sw">A site keeps working when it is cut off</span><span class="sc"></span><span class="sc"></span><span class="sc"></span><span class="sc on s-designed" data-s="designed" role="img" aria-label="designed"></span><span class="sc"></span></div>
-      <div class="sr" role="listitem"><span class="sw">The hub severs a site; the site works alone</span><span class="sc"></span><span class="sc"></span><span class="sc"></span><span class="sc on s-designed" data-s="designed" role="img" aria-label="designed"></span><span class="sc"></span></div>
+      <div class="sr" role="listitem"><span class="sw">Administration changes at a site that is cut off, merged when the link returns</span><span class="sc"></span><span class="sc"></span><span class="sc"></span><span class="sc on s-designed" data-s="designed" role="img" aria-label="designed"></span><span class="sc"></span></div>
+      <div class="sr" role="listitem"><span class="sw">A severed site rejoins after it is built again and loaded from the hub</span><span class="sc"></span><span class="sc"></span><span class="sc"></span><span class="sc on s-designed" data-s="designed" role="img" aria-label="designed"></span><span class="sc"></span></div>
       <div class="sr" role="listitem"><span class="sw">A site built again from a checked export</span><span class="sc"></span><span class="sc"></span><span class="sc"></span><span class="sc on s-designed" data-s="designed" role="img" aria-label="designed"></span><span class="sc"></span></div>
       <div class="sr" role="listitem"><span class="sw">One signed bundle that carries a release to a site that is cut off</span><span class="sc"></span><span class="sc"></span><span class="sc"></span><span class="sc on s-designed" data-s="designed" role="img" aria-label="designed"></span><span class="sc"></span></div>
       <div class="sr" role="listitem"><span class="sw">A standardized post-quantum key exchange for mesh tunnels; options are being evaluated</span><span class="sc"></span><span class="sc"></span><span class="sc"></span><span class="sc"></span><span class="sc on s-planned" data-s="planned" role="img" aria-label="planned"></span></div></div>

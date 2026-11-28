@@ -1,6 +1,6 @@
 """Scene: an air gap is one more boundary. One idea: the gap is a single line with trust inside it, and it is
 crossed by hand; against no single line, with every connection sealed on its own.
-Grades (goatcore main): a site running with no link: designed (decision record 1165; the tests for mesh control
+Grades (goatcore main): joined machines keep talking with no link: in use (decision record 0201); administration at a cut-off site: designed (decision record 1165; the tests for mesh control
 and sign-in under a cut link are built); nothing reachable from the public internet: in use (record 1192);
 signed, verified releases: in use; carrying releases to a cut-off site as one signed bundle: designed
 (decision record 1277, accepted, not built). No public case is cited."""
@@ -97,7 +97,7 @@ def html():
         "An air gap is one boundary with full trust inside, and it is crossed by hand with drives, laptops and updates. goat has no single line: every connection is sealed on its own, and a site can still run with no link.",
         "Isolation when you need it, without betting everything on it.",
         [("in use", "nothing of a site is reachable from the public internet; every release is signed and verified"),
-         ("designed", "a site that keeps working with no link at all"),
+         ("in use", "machines that have joined keep talking to each other with no link to any other site"),
          ("designed", "one signed bundle that carries a release to a site that is cut off")],
         figure_wide() + "\n" + figure_narrow(), mark())
 

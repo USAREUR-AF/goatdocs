@@ -46,7 +46,10 @@ STATUS = [
     ("Machines connect directly; a relay is a fallback", "in use"),
     ("A deploy refuses what it cannot verify", "in use"),
     ("Post-quantum key exchange preferred on the data fabric", "in use"),
+    ("Machines that have joined keep talking with no link to any other site", "in use"),
     ("A declared table of roles, enforced", "built"),
+    ("Each site runs its own sign-in and mesh control, tested with the link cut", "built"),
+    ("The hub's sever directive: nothing a severed site writes reaches another site", "built"),
     ("Federation between two environments, set up and backed out by one command", "built"),
     ("A simple boundary node: one stream, one way, to one destination", "built"),
     ("Security records normalized to OCSF, and forwarded to your collector as CEF over syslog", "built"),
@@ -57,8 +60,8 @@ STATUS = [
     ("Post-quantum key exchange between organizations", "designed"),
     ("Decoys on the data fabric, decoy credentials", "designed"),
     ("Secrets replaced as part of a rebuild", "designed"),
-    ("A site keeps working when it is cut off", "designed"),
-    ("The hub severs a site; the site works alone", "designed"),
+    ("Administration changes at a site that is cut off, merged when the link returns", "designed"),
+    ("A severed site rejoins after it is built again and loaded from the hub", "designed"),
     ("A site built again from a checked export", "designed"),
     ("One signed bundle that carries a release to a site that is cut off", "designed"),
     ("A standardized post-quantum key exchange for mesh tunnels; options are being evaluated", "planned"),
@@ -155,7 +158,7 @@ def status_grid():
 # Each scene links to the row of the code table that shows its claim: scene id -> the claim, in STATUS's words.
 IN_THE_CODE = {
     "position": "No connection without a declared rule",
-    "air-gap": "One signed bundle that carries a release to a site that is cut off",
+    "air-gap": "Machines that have joined keep talking with no link to any other site",
     "custody": "Every site runs on hardware its owner holds",
     "join": "No site has a public address",
     "after": "Machines connect directly; a relay is a fallback",
@@ -170,8 +173,8 @@ IN_THE_CODE = {
     "decoy": "Decoy names and web paths",
     "timing": "A site taken down by one command",
     "rebuild": "A whole site built by one command",
-    "island": "A site keeps working when it is cut off",
-    "hub": "The hub severs a site; the site works alone",
+    "island": "Machines that have joined keep talking with no link to any other site",
+    "hub": "The hub's sever directive: nothing a severed site writes reaches another site",
     "boundary": "Federation between two environments, set up and backed out by one command",
 }
 
@@ -256,11 +259,16 @@ def render():
     page = re.sub(measure, put, page)
     # the notes page: the scenes' own notes in page order, then the notes kept beside this script
     body = "\n".join(notes) + "\n" + read(HERE, "notes-own.html") + "\n" + code_table()
-    for sid, what in IN_THE_CODE.items():        # one small link in each scene, after its status rows
-        hit = re.search(r'<section class="scene[^"]*" id="%s">.*?<ul class="ev">.*?</ul>' % re.escape(sid), page, flags=re.S)
-        if not hit:
-            sys.exit(f"build.py: scene {sid} has no status rows to put the code link after")
-        page = page[:hit.end()] + f'\n      <p class="incode"><a href="notes/#{code_id(what)}">in the code</a></p>' + page[hit.end():]
+    for sid, what in IN_THE_CODE.items():        # ONE small link in each scene: after its status rows, or after its three blocks
+        sec = re.search(r'<section class="scene[^"]*" id="%s">.*?</section>' % re.escape(sid), page, flags=re.S)
+        if not sec:
+            sys.exit(f"build.py: no scene {sid} for its code link")
+        inner = re.search(r'<ul class="ev">.*?</ul>', sec.group(0), flags=re.S) or re.search(r'</dl>', sec.group(0))
+        at = sec.start() + inner.end()
+        page = page[:at] + f'\n      <p class="incode"><a href="notes/#{code_id(what)}">in the code</a></p>' + page[at:]
+    for sec in re.finditer(r'<section class="scene[^"]*" id="([^"]+)">.*?</section>', page, flags=re.S):
+        if sec.group(0).count('class="incode"') != 1:
+            sys.exit(f"build.py: scene {sec.group(1)} has {sec.group(0).count('class=\"incode\"')} code links; each scene has one")
     body = re.sub(r'(?<!<div class="tw">)<table>(.*?)</table>', r'<div class="tw"><table>\1</table></div>', body, flags=re.S)   # a wide table scrolls by itself
     toc = "".join(f'<a href="#{i}">{html.escape(t)}</a>' for i, t in re.findall(r'<section id="([^"]+)"><h2>([^<]+)</h2>', body))
     note = read(HERE, "notes-page.html")
