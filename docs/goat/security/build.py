@@ -41,13 +41,13 @@ STATUS = [
     ("Shared data sealed for named readers; the platform holds no key", "in use"),
     ("No central broker on the data fabric", "in use"),
     ("A deploy refuses what it cannot verify", "in use"),
-    ("Two key exchanges offered first on the data fabric", "in use"),
+    ("Post-quantum key exchange preferred on the data fabric", "in use"),
     ("A declared table of roles, enforced", "built"),
     ("A partner is verified without being granted anything", "built"),
     ("An identity can be revoked, a machine held for review", "built"),
-    ("Two key exchanges on mesh tunnels", "built"),
+    ("Post-quantum key exchange on mesh tunnels", "built"),
     ("Decoy names and web paths", "built"),
-    ("Two key exchanges between organizations", "designed"),
+    ("Post-quantum key exchange between organizations", "designed"),
     ("Decoys on the data fabric, decoy credentials", "designed"),
     ("Secrets replaced as part of a rebuild", "designed"),
     ("A site keeps working when it is cut off", "designed"),
@@ -108,7 +108,7 @@ def waterfall(rows, total, d, full):
                    f'<span class="wd">{clock(sec)}</span></li>')
         t += sec
     if full:
-        out.append(f'<li class="wsum"><span class="wn"><b>Whole site</b><small>The stages, and {dur(d["between_steps_s"])} between steps.</small></span>'
+        out.append(f'<li class="wsum"><span class="wn"><b>Whole site</b><small>all stages, plus {dur(d["between_steps_s"])} between them.</small></span>'
                    f'<span class="wt"><i style="left:0;width:100%"></i></span><span class="wd">{clock(total)}</span></li>')
     return "\n          ".join(out)
 

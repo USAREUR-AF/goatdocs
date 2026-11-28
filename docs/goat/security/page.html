@@ -29,21 +29,24 @@
 
 <main id="top">
 <section class="hero" aria-labelledby="name">
-<pre class="bgcode" aria-hidden="true">| C1 | A founder site goes from declared to verified
-     | in 60 minutes or less, a new node in 15,
-     | a burn-down in 15
-
-## Where the day goes
-
-Past buildouts took a day or more. Most of that
-time was not a play running. It was a run stopping
-on a defect, the defect being fixed on main, and
-the run resuming.
-
-| Targets | founder site declared -> verified
-          | <= 60 min; one new node <= 15 min;
-          | burn-down to nothing, records kept
-          | <= 15 min</pre>
+<pre class="bgcode" aria-hidden="true">schema: goatbuilder/v1
+preset: lite
+components:
+  netbird-mgmt:
+    declared_in: declared/pins.yaml
+  zenoh-router:
+    declared_in: declared/pins.yaml
+  portal:
+    declared_in: declared/pins.yaml
+environments:
+  - name: zagros
+    converger: push-ansible
+    sites:
+      - name: alpha
+        role: founder
+        classes:
+          core: {}
+          obs: {}</pre>
   <div class="wrap hero-grid">
     <div>
       <p class="prompt">&gt;_ goatbuilder standup zagros --site alpha<span class="cur" aria-hidden="true"></span></p>
@@ -64,7 +67,7 @@ the run resuming.
 
   <div class="wrap">
     <div class="numbers">
-      <div><span class="n" data-measure="build">-</span><span class="l">of machine time to build a whole site</span><code>run.json: every stage, measured on real machines</code></div>
+      <div><span class="n" data-measure="build">-</span><span class="l">of machine time to build a whole site</span><code>every stage of the build, measured on real machines</code></div>
       <div><span class="n" data-measure="down">-</span><span class="l">to take a site down</span><code>goatbuilder teardown --services, <span data-measure="down-checks">-</span> checks</code></div>
       <div><span class="n" data-measure="checks">-</span><span class="l">checks passed on the built site</span><code>the acceptance suite, the last stage of the build</code></div>
       <div><span class="n" data-measure="commands">-</span><span class="l">command builds a site, or builds it again</span><code>goatbuilder standup &lt;goatnet&gt; --site &lt;site&gt;</code></div>
@@ -75,7 +78,6 @@ the run resuming.
 <section class="scene center" id="position">
   <div class="wrap">
     <div class="say wide">
-      <p class="eyebrow">The idea</p>
       <h2>No inside, no outside</h2>
       <dl class="cols">
         <div><dt>Usually</dt><dd class="usual">Most defenses draw a few boundaries, sometimes only one, and those boundaries move slowly or never. Anything that gets inside one is trusted there.</dd></div>
@@ -94,7 +96,7 @@ the run resuming.
     <div class="blunders">
       <div class="blunder">{{MARK_OUTSIDE}}<h3>A door on the public internet</h3><p class="cost">A service or a gateway that anyone can reach is one that anyone can probe.</p><p class="fix"><span class="status s-inuse">in use</span>No service has a public address. The private overlay does not answer what it cannot authenticate.</p></div>
       <div class="blunder">{{MARK_ZERO_TRUST}}<h3>Trust by location</h3><p class="cost">Whatever gets inside a boundary is trusted there.</p><p class="fix"><span class="status s-inuse">in use</span>There is no inside. Every connection has its own keys and its own rule.</p></div>
-      <div class="blunder">{{MARK_ISLAND}}<h3>A distant center</h3><p class="cost">A far cloud and a long link back to it: cut the link and the site stops, and the link can be found and followed.</p><p class="fix"><span class="status s-inuse">in use</span>Each site runs everything it needs on its own machines, and is designed to work with no link at all.</p></div>
+      <div class="blunder">{{MARK_ISLAND}}<h3>A distant center</h3><p class="cost">A far cloud and a long link back to it: cut the link and the site stops, and the link can be found and followed.</p><p class="fix"><span class="status s-inuse">in use</span>Each site runs everything it needs on its own machines.</p><p class="fix"><span class="status s-designed">designed</span>A site keeps working with no link at all.</p></div>
       <div class="blunder">{{MARK_ORDINARY}}<h3>Special parts</h3><p class="cost">Special encryption, special lines and special hardware mark who is there, and take months to replace.</p><p class="fix"><span class="status s-inuse">in use</span>Ordinary computers, a common open protocol, and any link that carries packets.</p></div>
       <div class="blunder">{{MARK_REBUILD}}<h3>Recovery as a rare emergency</h3><p class="cost">A compromised system is cleaned in place and restored slowly, by a procedure that nobody practices.</p><p class="fix"><span class="status s-measured">measured</span>A whole site is rebuilt from its declaration in minutes, as a routine operation.</p></div>
     </div>
@@ -108,11 +110,11 @@ the run resuming.
     <div class="ideas">
         <a class="idea" href="#join">{{MARK_OUTSIDE}}<b>Little to find</b><span>Your services are not listed where an outsider can look.</span></a>
         <a class="idea" href="#silent">{{MARK_SILENT}}<b>A quiet protocol</b><span>A probe of your address gets no reply.</span></a>
-        <a class="idea" href="#zero-trust">{{MARK_ZERO_TRUST}}<b>Zero trust</b><span>Access is one list that you can read and change.</span></a>
-        <a class="idea" href="#readers">{{MARK_SEALED}}<b>Sealed data</b><span>Taking one server yields sealed data.</span></a>
+        <a class="idea" href="#zero-trust">{{MARK_ZERO_TRUST}}<b>Zero trust</b><span>Every connection is checked, and every rule is written down.</span></a>
+        <a class="idea" href="#readers">{{MARK_SEALED}}<b>Sealed data</b><span>A stolen server holds only sealed data.</span></a>
         <a class="idea" href="#chain">{{MARK_VERIFIED}}<b>Verified releases</b><span>A changed image is refused before it runs.</span></a>
         <a class="idea" href="#quantum">{{MARK_QUANTUM}}<b>Post-quantum</b><span>Traffic recorded today stays closed later.</span></a>
-        <a class="idea" href="#decoy">{{MARK_DECOY}}<b>Decoys</b><span>An alert from a decoy has one meaning.</span></a>
+        <a class="idea" href="#decoy">{{MARK_DECOY}}<b>Decoys</b><span>Touching a decoy raises an alarm.</span></a>
         <a class="idea" href="#rebuild">{{MARK_REBUILD}}<b>Rebuild</b><span>Every machine returns to a known clean state.</span></a>
         <a class="idea" href="#island">{{MARK_ISLAND}}<b>Stands alone</b><span>A lost link does not stop a site.</span></a>
         <a class="idea" href="#hub">{{MARK_HUB}}<b>A severed site</b><span>Cut from the others, it still works alone.</span></a>
@@ -129,7 +131,7 @@ the run resuming.
       <dl>
         <dt>Usually</dt><dd class="usual">Services have public addresses, protected by a filter and a login page. Anyone can find them and test them.</dd>
         <dt>Here</dt><dd class="here">A goatnet has one public name, and it is used only to join. A relay behind the name passes the encrypted connection to the site and cannot read it. The device presents a key that works once, and gets its identity and the list of parties it may reach.</dd>
-        <dt>For you</dt><dd class="you">Public means one name, used to join, and nothing else.</dd>
+        <dt>For you</dt><dd class="you">Only one name of yours is public, and it is used only to join.</dd>
       </dl>
       <ul class="ev">
         <li><span class="status s-inuse">in use</span><span>"No host site has a public address." goatcore, decision record 1192</span></li>
@@ -184,9 +186,9 @@ the run resuming.
       <h2>Being on the network grants nothing</h2>
       <dl>
         <dt>Usually</dt><dd class="usual">A device inside the network is trusted because of where it is.</dd>
-        <dt>Here</dt><dd class="here">Every request passes four checks. A person, a machine and a workload each prove who they are in their own way. A connection needs a declared rule, and with no rule there is no connection. A declared table says what each role may do. An identity can be revoked, and a machine can be held for review.</dd>
+        <dt>Here</dt><dd class="here">Every request passes four checks. Who is asking: a person, a machine and a program each prove their identity in their own way. Is there a rule: a connection needs a declared rule, and with no rule there is no connection. Is it allowed: a declared table says what each role may do. Is the identity still good: an identity can be revoked, and a machine can be held for review.</dd>
         <dd class="here" style="margin-top:10px">The rules in force are generated from a declaration that is reviewed like code. A partner's identities can be verified without being granted anything.</dd>
-        <dt>For you</dt><dd class="you">Access is one list that you can read, review and change.</dd>
+        <dt>For you</dt><dd class="you">Access is written down in one place that you can read, review and change.</dd>
       </dl>
       <ul class="ev">
         <li><span class="status s-inuse">in use</span><span>identities; declared rules, applied and checked by every stand-up</span></li>
@@ -206,10 +208,10 @@ the run resuming.
       <dl>
         <dt>Usually</dt><dd class="usual">A secret store can read every secret it holds, and a message broker can read every message. Whoever takes that server has all of it.</dd>
         <dt>Here</dt><dd class="here">A secret is encrypted on your device before it is stored, so the store cannot read it. Shared data is sealed for named readers, and the platform holds no key for it. The data fabric that carries it holds no key and has no central broker.</dd>
-        <dt>For you</dt><dd class="you">Taking one server yields sealed data.</dd>
+        <dt>For you</dt><dd class="you">A stolen server holds only sealed data.</dd>
       </dl>
       <ul class="ev">
-        <li><span class="status s-inuse">in use</span><span>the secret store; no central broker; sealing for named readers</span></li>
+        <li><span class="status s-inuse">in use</span><span>the secret store; no central broker; sealing for named readers, in use for the data sets an owner seals</span></li>
       </ul>
     </div>
     <figure><div class="frame">{{FIG_READERS}}</div></figure>
@@ -243,7 +245,7 @@ the run resuming.
       <h2>Traffic recorded today stays closed later</h2>
       <dl>
         <dt>Usually</dt><dd class="usual">Encrypted traffic can be recorded now and kept. A future quantum computer could open what today's key exchange protects.</dd>
-        <dt>Here</dt><dd class="here">The routers of the data fabric offer two key exchanges together first: the usual kind, and one built to resist that computer. A client that supports the pair gets it, and reading that traffic needs both to be broken. A client that does not support it connects the usual way.</dd>
+        <dt>Here</dt><dd class="here">The routers of the data fabric prefer a combined key exchange: the usual kind together with one built to resist a quantum computer. A client that supports the combination gets it, and reading that traffic means breaking both. A client that does not support it connects the usual way.</dd>
         <dt>For you</dt><dd class="you">Data that must stay private for years is protected against a later reader.</dd>
       </dl>
       <ul class="ev">
@@ -265,7 +267,7 @@ the run resuming.
       <dl>
         <dt>Usually</dt><dd class="usual">Detection depends on noticing unusual behavior among normal use, so quiet exploration can go unseen for a long time.</dd>
         <dt>Here</dt><dd class="here">A site carries decoys: names and web paths that no person or program has a reason to use. Any use of one is hostile, and the first use alerts the operator on call.</dd>
-        <dt>For you</dt><dd class="you">An alert from a decoy has one meaning.</dd>
+        <dt>For you</dt><dd class="you">An alert from a decoy means an intruder. Normal use never touches one.</dd>
       </dl>
       <ul class="ev">
         <li><span class="status s-built">built</span><span>decoy names and web paths</span></li>
@@ -302,11 +304,11 @@ the run resuming.
       </ol>
     </div>
     <div>
-      <p class="h3">Release 1.0 requires</p>
-      <ul class="ev">
-        <li><span class="status s-built">built</span><span>a first site, start to finish, in <span data-measure="req-site">-</span> or less</span></li>
-        <li><span class="status s-built">built</span><span>a machine added in <span data-measure="req-node">-</span> or less</span></li>
-        <li><span class="status s-measured">measured</span><span>a site taken down in <span data-measure="req-down">-</span> or less</span></li>
+      <p class="h3">Required for release 1.0</p>
+      <ul class="reqs">
+        <li>A first site, start to finish, in <span data-measure="req-site">-</span> or less: in progress.</li>
+        <li>A machine added in <span data-measure="req-node">-</span> or less: in progress.</li>
+        <li>A site taken down in <span data-measure="req-down">-</span> or less: measured, <span data-measure="down">-</span>.</li>
       </ul>
     </div>
     <div class="two">
@@ -337,7 +339,7 @@ the run resuming.
       <p class="eyebrow">9 &middot; Sites that stand alone</p>
       <h2>Cut off, a site keeps working, and it can stay silent</h2>
       <dl>
-        <dt>Usually</dt><dd class="usual">Sites depend on a central service and on a long link to it. When the link fails they stop. While it works, it can be found, jammed or followed.</dd>
+        <dt>Usually</dt><dd class="usual">Sites depend on a central service and on a long link to it. When the link fails they stop. While the link works, it can be found, jammed or followed.</dd>
         <dt>Here</dt><dd class="here">Every site runs the same services, and keeps admitting people, enrolling machines and changing access while it is cut off. A site that needs no link back does not have to transmit off-site at all.</dd>
         <dt>For you</dt><dd class="you">A lost link does not stop a site, and a site that sends nothing shows less in the radio spectrum, to signals collection and on the network.</dd>
       </dl>
@@ -359,7 +361,7 @@ the run resuming.
       <dl>
         <dt>Usually</dt><dd class="usual">A site that may be compromised stays connected until someone is sure, or it is shut down and the people there lose their systems.</dd>
         <dt>Here</dt><dd class="here">The hub can sever a site that it no longer trusts. From then on, nothing that site writes reaches any other site. The severed site keeps running locally, so the people there are not left without their systems. It rejoins only after it is built again and loaded from the hub.</dd>
-        <dt>For you</dt><dd class="you">Protecting the whole network does not destroy one of its parts.</dd>
+        <dt>For you</dt><dd class="you">You can cut one site off to protect the others, and the site that was cut off keeps working locally.</dd>
       </dl>
       <ul class="ev">
         <li><span class="status s-designed">designed</span><span>goatcore, decision records 1205 and 1237</span></li>
