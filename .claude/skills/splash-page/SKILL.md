@@ -61,7 +61,7 @@ mock, never invented data. What each live page uses:
 - a real capture decoded byte by byte (open-billie, first-bite, goat-transformers)
 - a session recorded against a running instance by `build.py` (saltlick, goat-client)
 - the real program, built to WebAssembly or embedded (goatrodeo, goat-transformers)
-- what crosses a boundary for one record (open-entity-gateway, zagros-moon-pod)
+- what crosses a boundary for one record (vendor-bridges, zagros-moon-pod)
 
 The lines already in the HTML are the frame shown without JavaScript and with reduced motion:
 pick the one frame that tells the story. `aria-label` on the stage says in full sentences

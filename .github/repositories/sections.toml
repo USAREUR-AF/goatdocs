@@ -39,7 +39,9 @@ repositories = [
   "octo-pod",
   "open-billie",
   "first-bite",
-  "open-entity-gateway",
+  "vendor-bridges",
+  "goatrope",
+  "scapegoat",
 ]
 
 [[section]]
