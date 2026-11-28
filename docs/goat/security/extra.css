@@ -1,0 +1,18 @@
+/* Layout: the goat pages' field-map sheet. A squared sheet in field olive; what is in use is
+   drawn in solid line and map green, what is designed is drawn dashed. State is shown by line
+   pattern and by weight, never by a warning color. System fonts only. */
+:root {
+  --paper: #f1f2e8; --panel: #fafbf3; --ink: #1b2118; --quiet: #525a4a; --rule: #d3d6c4; --grid: #e4e6d6; --line: #7f8770;
+  --accent: #1c6a3d; --accent-soft: #d9e8d3; --on-accent: #ffffff; --track: #1c6a3d; --track-2: #525a4a;
+  --good: #1c6a3d; --bad: #525a4a; --code-bg: #e8eadb; --hatch: #7f8770;
+  --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #12160f; --panel: #1a2016; --ink: #e6e9da; --quiet: #a7ae98; --rule: #2f3728; --grid: #1a1f16; --line: #7d866e;
+    --accent: #74cf93; --accent-soft: #1a3223; --on-accent: #0e140c; --track: #74cf93; --track-2: #a7ae98;
+    --good: #74cf93; --bad: #a7ae98; --code-bg: #0d110b; --hatch: #7d866e;
+  }
+}

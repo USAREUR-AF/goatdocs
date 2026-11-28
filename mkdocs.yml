@@ -41,13 +41,18 @@ exclude_docs: |
   goat/splash-page/extra-tail.css
   goat/splash-page/replay.js
   goat/splash-page/icon.svg
-  goat/rebuild/README.md
-  goat/rebuild/page.html
-  goat/rebuild/build.py
-  goat/rebuild/extra.css
-  goat/rebuild/extra-tail.css
-  goat/rebuild/replay.js
-  goat/rebuild/icon.svg
+  goat/security/README.md
+  goat/security/page.html
+  goat/security/build.py
+  goat/security/extra.css
+  goat/security/extra-tail.css
+  goat/security/replay.js
+  goat/security/icon.svg
+  goat/security/figures.py
+  goat/security/position_fig.py
+  goat/security/figs.css
+  goat/security/critique-log.md
+  goat/security/run.json
   goat/pages/README.md
   goat/pages/page.html
   goat/pages/build.py

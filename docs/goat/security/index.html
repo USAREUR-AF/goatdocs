@@ -1,0 +1,1515 @@
+<!-- Written by docs/goat/security/build.py from page.html, figures.py and run.json; edit those, then run the script. -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>goat security: hard to get into, easy to rebuild</title>
+<meta name="description" content="goat is hardened against intrusion at every connection, and built so that a whole site can be taken down and rebuilt from its declaration in minutes. This page shows the design in figures.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22 fill=%22none%22 stroke=%22%231b5e7a%22 stroke-width=%224%22 stroke-linecap=%22round%22%3E%3Ccircle cx=%2232%22 cy=%2236%22 r=%2222%22/%3E%3Cpath d=%22M32 36V22M32 36l9 6M26 6h12M32 6v8%22/%3E%3C/svg%3E">
+<style>
+/* Layout: the goat pages' field-map sheet. A squared sheet in field olive; what is in use is
+   drawn in solid line and map green, what is designed is drawn dashed. State is shown by line
+   pattern and by weight, never by a warning color. System fonts only. */
+:root {
+  --paper: #f1f2e8; --panel: #fafbf3; --ink: #1b2118; --quiet: #525a4a; --rule: #d3d6c4; --grid: #e4e6d6; --line: #7f8770;
+  --accent: #1c6a3d; --accent-soft: #d9e8d3; --on-accent: #ffffff; --track: #1c6a3d; --track-2: #525a4a;
+  --good: #1c6a3d; --bad: #525a4a; --code-bg: #e8eadb; --hatch: #7f8770;
+  --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #12160f; --panel: #1a2016; --ink: #e6e9da; --quiet: #a7ae98; --rule: #2f3728; --grid: #1a1f16; --line: #7d866e;
+    --accent: #74cf93; --accent-soft: #1a3223; --on-accent: #0e140c; --track: #74cf93; --track-2: #a7ae98;
+    --good: #74cf93; --bad: #a7ae98; --code-bg: #0d110b; --hatch: #7d866e;
+  }
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 17px/1.6 var(--sans); }
+a { color: var(--track); }
+a:focus-visible, button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+code, pre { font-family: var(--mono); }
+.wrap { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+@media (max-width: 600px) { .wrap { padding: 0 16px; } }
+
+/* top bar */
+.top { position: relative; z-index: 2; height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.brand { display: flex; align-items: center; gap: 10px; color: var(--ink); text-decoration: none; font: 700 16px var(--mono); }
+.brand img { width: 28px; height: 28px; }
+.top nav { display: flex; gap: 22px; font: 15px var(--mono); }
+.top nav a { color: var(--quiet); text-decoration: none; }
+.top nav a:hover { color: var(--ink); }
+@media (max-width: 720px) { .top nav a:not(.gh) { display: none; } }
+
+/* hero: fills the first screen; the numbers strip sits at its bottom edge */
+.hero { position: relative; overflow: hidden; min-height: calc(100svh - 64px); display: flex; flex-direction: column;
+  background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 32px 32px; background-position: -1px -1px; }
+.bgcode { position: absolute; inset: 0 0 auto auto; width: 62%; margin: 0; padding: 40px 0 0; color: var(--ink); opacity: .07;
+  font: 15px/1.7 var(--mono); white-space: pre; pointer-events: none; user-select: none;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 30%); mask-image: linear-gradient(90deg, transparent, #000 30%); }
+.hero-grid { position: relative; flex: 1; display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 40px; align-items: center; padding-top: 24px; padding-bottom: 28px; }
+.prompt { font: 600 16px var(--mono); color: var(--track); margin: 0 0 6px; }
+.prompt .cur { display: inline-block; width: .6em; height: 1.05em; vertical-align: -.15em; background: var(--accent); margin-left: 4px; animation: blink 1.1s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+.wordmark { font: 900 clamp(30px, 5.1vw, 80px)/1.02 var(--mono); letter-spacing: -0.04em; margin: 0; white-space: nowrap; }
+.page-title { font: 900 clamp(28px, 4.2vw, 56px)/1.08 var(--mono); letter-spacing: -0.03em; margin: 0; }
+.card h3 a { color: inherit; }
+.tagline { font-weight: 700; font-size: clamp(19px, 1.9vw, 25px); line-height: 1.3; color: var(--accent); margin: 14px 0 10px; }
+.lede { color: var(--quiet); margin: 0 0 24px; max-width: 38em; }
+.buttons { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; }
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 18px; border: 1px solid var(--rule); background: var(--panel);
+  color: var(--ink); font: 700 16px var(--sans); text-decoration: none; border-radius: 3px; }
+.btn svg { width: 18px; height: 18px; }
+.btn.star { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.btn:hover { border-color: var(--ink); }
+.cmd { display: flex; align-items: stretch; border: 1px solid var(--rule); background: var(--panel); border-radius: 3px; max-width: 640px; }
+.cmd pre { flex: 1; margin: 0; padding: 12px 14px; font-size: 14px; overflow-x: auto; white-space: pre-wrap; overflow-wrap: anywhere; min-width: 0; }
+.cmd .dollar { color: var(--good); user-select: none; }
+.copy { border: 0; border-left: 1px solid var(--rule); background: none; color: var(--accent); font: 700 14px var(--mono); padding: 0 16px; cursor: pointer; }
+
+
+/* numbers strip */
+.numbers { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--rule); background: var(--panel); margin-bottom: 14px; }
+.numbers > div { padding: 16px 20px; border-left: 1px solid var(--rule); min-width: 0; }
+.numbers > div:first-child { border-left: 0; }
+.numbers .n { display: block; font: 800 34px/1.1 var(--mono); color: var(--accent); }
+.numbers .l { display: block; font-weight: 700; }
+.numbers code { display: block; font-size: 11.5px; color: var(--quiet); overflow-wrap: anywhere; margin-top: 4px; }
+
+@media (max-width: 960px) {
+  .hero-grid { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  .bgcode { width: 100%; white-space: pre-wrap; overflow-wrap: anywhere; }
+  .numbers { grid-template-columns: repeat(2, 1fr); }
+  .numbers > div:nth-child(3) { border-left: 0; }
+  .numbers > div:nth-child(n+3) { border-top: 1px solid var(--rule); }
+}
+@media (max-width: 600px) {
+  .hero-grid { padding-top: 8px; }
+  .prompt { font-size: 14px; }
+  .bgcode { opacity: .045; }
+  .lede { font-size: 16px; margin-bottom: 18px; }
+  .btn { padding: 10px 14px; font-size: 15px; }
+  .cmd pre { font-size: 12.5px; }
+  .numbers .n { font-size: 26px; }
+  .numbers > div { padding: 12px 14px; }
+}
+
+/* sections */
+section.band { padding: 72px 0; border-top: 1px solid var(--rule); }
+h2 { font-size: clamp(26px, 3vw, 36px); line-height: 1.2; margin: 0 0 12px; letter-spacing: -0.01em; }
+h3 { font-size: 19px; margin: 0 0 6px; }
+.sub { color: var(--quiet); max-width: 46em; margin: 0 0 32px; }
+.cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.card { background: var(--panel); border: 1px solid var(--rule); border-top: 3px solid var(--accent); padding: 22px; border-radius: 3px; }
+.card p { margin: 0; color: var(--quiet); }
+.cards.four { grid-template-columns: repeat(4, 1fr); }
+@media (max-width: 1100px) { .cards.four { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 860px) { .cards, .cards.four { grid-template-columns: 1fr; } }
+.status { display: inline-block; font: 700 12px var(--mono); letter-spacing: .04em; text-transform: uppercase; color: var(--ink); border: 1px solid var(--quiet); border-radius: 2px; padding: 2px 7px; margin-bottom: 10px; }
+.after .status, .card p .status { margin: 0; vertical-align: 1px; }
+.after { margin: 28px 0 0; max-width: 46em; }
+.feature { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr); gap: 40px; align-items: start; }
+@media (max-width: 860px) { .feature { grid-template-columns: minmax(0, 1fr); } }
+figure { margin: 0; }
+figure img { width: 100%; height: auto; display: block; background: var(--panel); border: 1px solid var(--rule); border-radius: 3px; }
+figcaption { font-size: 14px; color: var(--quiet); margin-top: 8px; }
+.json { background: var(--code-bg); border: 1px solid var(--rule); padding: 12px 14px; font-size: 13px; overflow-x: auto; border-radius: 3px; white-space: pre-wrap; overflow-wrap: anywhere; }
+table { border-collapse: collapse; width: 100%; font-size: 15px; }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th { font-size: 13px; text-transform: uppercase; letter-spacing: .04em; color: var(--quiet); }
+td code { font-size: 13px; overflow-wrap: anywhere; }
+.scroll { overflow-x: auto; }
+.num { font-family: var(--mono); color: var(--accent); font-weight: 700; }
+pre.block { background: var(--code-bg); border: 1px solid var(--rule); padding: 14px; overflow-x: auto; font-size: 14px; border-radius: 3px; white-space: pre-wrap; overflow-wrap: anywhere; }
+/* a command shows whole: it wraps at spaces, continuation lines hang two characters in (more for an indented line) */
+.cmd pre .ln, pre.block .ln { display: block; padding-left: 2ch; text-indent: -2ch; }
+/* output wraps too, its continuation lines hang by --hang */
+.json .ln { display: block; padding-left: var(--hang, 2ch); text-indent: calc(-1 * var(--hang, 2ch)); }
+/* a word with a hyphen or slash moves to the next line whole, and breaks only if it alone is wider than the box */
+pre .ln .w { display: inline-block; max-width: 100%; text-indent: 0; }
+footer { border-top: 1px solid var(--rule); padding: 32px 0 48px; color: var(--quiet); font-size: 15px; }
+footer a { margin-right: 18px; }
+
+/* the first screen's stage: the real artifact, replayed */
+.stage { background: var(--panel); border: 1px solid var(--rule); border-radius: 4px; box-shadow: 0 1px 0 var(--rule); min-width: 0; }
+.stage-head { display: flex; justify-content: space-between; gap: 12px; padding: 8px 12px; border-bottom: 1px solid var(--rule); font: 13px var(--mono); color: var(--quiet); }
+.stage-head b { color: var(--ink); }
+.stage-head span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.stage-lines { margin: 0; padding: 10px 12px; min-height: calc(8 * 1.65em + 20px); background: var(--code-bg); font: 12.5px/1.65 var(--mono); color: var(--quiet); white-space: pre-wrap; overflow-wrap: anywhere; }
+.stage-lines .ev { color: var(--accent); font-weight: 700; }
+.stage-lines .in { color: var(--ink); }
+.stage-foot { padding: 8px 12px; font-size: 13px; color: var(--quiet); border-top: 1px solid var(--rule); }
+
+/* figures: fixed-layout SVG from figures.py, colored by these classes only */
+svg.viz { display: block; width: 100%; height: auto; font-family: var(--sans); }
+svg .t { fill: var(--ink); } svg .tq { fill: var(--quiet); } svg .ta { fill: var(--accent); }
+svg .bx { fill: var(--panel); stroke: var(--line); stroke-width: 1.25; }
+svg .bxp { fill: var(--code-bg); stroke: var(--rule); stroke-width: 1.25; }
+svg .bxa { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.5; }
+svg .bxk { fill: var(--panel); stroke: var(--ink); stroke-width: 2; }
+svg .bxd { fill: none; stroke: var(--line); stroke-width: 1.5; stroke-dasharray: 6 5; }
+svg .edge { fill: none; stroke: var(--ink); stroke-width: 3.5; }
+svg .edge2 { fill: none; stroke: var(--line); stroke-width: 1.5; }
+svg .ln { fill: none; stroke: var(--line); stroke-width: 1.5; }
+svg .lna { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+svg .lnd { fill: none; stroke: var(--line); stroke-width: 1.5; stroke-dasharray: 5 5; }
+svg .lka { fill: none; stroke: var(--accent); stroke-width: 2.2; }
+svg .stopbar { fill: none; stroke: var(--ink); stroke-width: 3; stroke-linecap: round; }
+svg .intr { fill: var(--paper); stroke: var(--ink); stroke-width: 2.5; stroke-linejoin: round; }
+svg .fl { fill: var(--line); } svg .fa { fill: var(--accent); }
+svg .halo { paint-order: stroke fill; stroke: var(--paper); stroke-width: 5px; stroke-linejoin: round; }
+svg .ton { fill: var(--on-accent); }
+
+/* the marks: one small drawing an idea, on one grid, one line weight */
+svg.mark { display: block; width: 72px; height: 72px; }
+svg.mark .mk { fill: none; stroke: var(--ink); stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+svg.mark .mka { fill: none; stroke: var(--accent); stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+svg.mark .mkf { fill: var(--accent-soft); stroke: var(--ink); stroke-width: 5; stroke-linejoin: round; }
+svg.mark .mkfa { fill: var(--accent); stroke: var(--accent); stroke-width: 3; stroke-linejoin: round; }
+svg.mark .mkfi { fill: var(--ink); }
+svg.mark .mkd { stroke-dasharray: 2 9; }
+svg.mark .mkt { stroke-width: 3.5; }
+svg .edge3 { fill: var(--panel); stroke: var(--ink); stroke-width: 2.5; }
+svg .lnon { fill: none; stroke: var(--on-accent); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+/* the first screen's site: a part is faint until its stage has run */
+svg .st { transition: opacity .35s; }
+svg .st.off { opacity: .1; }
+@media (prefers-reduced-motion: reduce) { svg .st { transition: none; } }
+svg .dot { fill: var(--ink); stroke: var(--paper); stroke-width: 2; }
+svg .knot { fill: var(--accent); stroke: var(--paper); stroke-width: 3; }
+svg .area { fill: var(--accent-soft); stroke: var(--ink); stroke-width: 3; }
+svg .gate { fill: none; stroke: var(--ink); stroke-width: 5; stroke-linecap: round; }
+svg .area2 { fill: var(--accent-soft); stroke: var(--ink); stroke-width: 3; filter: brightness(.93); }
+svg .gap { fill: var(--paper); } svg .gap2 { fill: var(--accent-soft); }
+svg .reach { fill: none; stroke: var(--ink); stroke-width: 2.4; stroke-dasharray: 2 7; stroke-linecap: round; }
+svg .arrival { fill: var(--paper); stroke: var(--ink); stroke-width: 2.6; stroke-dasharray: 3.4 3.4; }
+svg .link { fill: none; stroke: var(--accent); stroke-width: 3.2; stroke-linecap: round; }
+svg .lockring { fill: var(--paper); stroke: var(--accent); stroke-width: 2; }
+svg .idring { fill: none; stroke: var(--accent); stroke-width: 2; }
+svg.viz.narrow { display: none; }
+@media (max-width: 900px) { svg.viz.wide { display: none; } svg.viz.narrow { display: block; } }
+svg .linkd { fill: none; stroke: var(--accent); stroke-width: 3.2; stroke-linecap: round; stroke-dasharray: 3 8; }
+
+/* this page only */
+.under { font-size: 14px; color: var(--quiet); margin: 8px 0 0; max-width: 40em; }
+.wordmark { text-transform: lowercase; }
+.hero .lede { font-size: 18px; }
+
+/* the build on one clock: each stage starts where the one before it ended */
+.clock { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 10px; padding: 12px 14px 4px; font-family: var(--mono); }
+.clock .t { font-weight: 800; font-size: 38px; line-height: 1; color: var(--ink); font-variant-numeric: tabular-nums; }
+.clock .of { font-size: 13px; color: var(--quiet); }
+.wf { list-style: none; margin: 0; padding: 6px 14px 12px; }
+.wf li { display: grid; grid-template-columns: minmax(0, 15.5em) minmax(0, 1fr) 3.2em; align-items: center; gap: 10px; padding: 3px 0; }
+.wf .wn b { display: block; font: 600 13px/1.3 var(--sans); color: var(--ink); }
+.wf .wn small { display: block; font-size: 14px; line-height: 1.4; color: var(--quiet); font-weight: 400; margin-top: 2px; }
+.wf .wt { position: relative; height: 12px; background: var(--code-bg); border: 1px solid var(--rule); border-radius: 2px; }
+.wf .wt i { position: absolute; top: 0; bottom: 0; display: block; background: var(--accent); border-radius: 1px; transition: opacity .25s; }
+.wf .wd { font: 600 12.5px var(--mono); color: var(--quiet); text-align: right; font-variant-numeric: tabular-nums; }
+.wf li.off .wt i { opacity: 0; } .wf li.off .wn b, .wf li.off .wd { color: var(--rule); }
+.wf.full { padding: 0; }
+.wf.full li { grid-template-columns: minmax(0, 24em) minmax(0, 1fr) 3.4em; gap: 18px; padding: 10px 0; border-top: 1px solid var(--rule); align-items: start; }
+.wf.full .wn b { font-size: 16px; } .wf.full .wt { height: 16px; margin-top: 4px; } .wf.full .wd { font-size: 14px; color: var(--ink); margin-top: 3px; }
+.wf.full li.wsum .wt i { background: none; border: 2px solid var(--accent); }
+.wf.full li.wsum .wd { font-weight: 800; color: var(--accent); }
+@media (max-width: 700px) {
+  .wf li, .wf.full li { grid-template-columns: minmax(0, 1fr) 3.2em; gap: 2px 8px; }
+  .wf .wn { grid-column: 1 / -1; } .wf .wt { grid-column: 1; } .wf .wd { grid-column: 2; }
+  .wf.compact .wn b { font-size: 12.5px; }
+}
+@media (prefers-reduced-motion: reduce) { .wf .wt i { transition: none; } }
+.numbers .tg { display: block; font: 700 12.5px var(--mono); color: var(--ink); margin-top: 2px; }
+
+/* a scene: one idea, one figure */
+section.scene { padding: 88px 0; border-top: 1px solid var(--rule); }
+.scene .wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 64px; align-items: center; }
+.scene.flip .say { order: 2; }
+.scene .eyebrow { font: 700 13px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin: 0 0 10px; }
+.scene h2 { font-size: clamp(28px, 3.3vw, 42px); line-height: 1.12; letter-spacing: -0.015em; margin: 0 0 22px; }
+.scene dl { margin: 0; }
+.scene dt { font: 700 12.5px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--quiet); margin: 16px 0 3px; }
+.scene dd { margin: 0; font-size: 18px; line-height: 1.5; max-width: 30em; }
+.scene dd.here { color: var(--ink); } .scene dd.usual { color: var(--quiet); } .scene dd.you { font-weight: 600; }
+.scene .ev { margin: 20px 0 0; font: 13.5px/1.5 var(--mono); color: var(--quiet); max-width: 38em; }
+.scene .ev .status { margin: 0 8px 0 0; vertical-align: 1px; }
+.scene figure { max-width: 560px; width: 100%; justify-self: center; }
+.scene figure .frame { background: var(--paper); border: 1px solid var(--rule); border-radius: 6px; padding: 18px; }
+@media (max-width: 900px) {
+  section.scene { padding: 56px 0; }
+  .scene .wrap { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  .scene.flip .say { order: 0; }
+  .scene dd { font-size: 17px; }
+  .scene figure .frame { padding: 10px; }
+}
+.scene.center .wrap { grid-template-columns: minmax(0, 1fr); gap: 36px; }
+.scene.center .lead { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 64px; align-items: center; }
+@media (max-width: 900px) { .scene.center .lead { grid-template-columns: minmax(0, 1fr); gap: 28px; } }
+.facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; border: 1px solid var(--rule); background: var(--panel); }
+.facts > div { padding: 22px 24px; border-left: 1px solid var(--rule); }
+.facts > div:first-child { border-left: 0; }
+.facts .n { display: block; font: 800 clamp(30px, 4.4vw, 54px)/1.05 var(--mono); color: var(--accent); letter-spacing: -0.02em; }
+.facts .l { display: block; font-size: 17px; margin-top: 6px; }
+@media (max-width: 640px) { .facts { grid-template-columns: minmax(0, 1fr); } .facts > div + div { border-left: 0; border-top: 1px solid var(--rule); } }
+.reqs { display: flex; flex-wrap: wrap; gap: 10px 26px; margin: 0; padding: 0; list-style: none; font-size: 16px; }
+.reqs li .status { margin: 0 8px 0 0; vertical-align: 1px; }
+.h3 { font: 700 13px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--quiet); margin: 0 0 12px; }
+.two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 36px; }
+@media (max-width: 860px) { .two { grid-template-columns: minmax(0, 1fr); } }
+.two ul { margin: 0; padding: 0; list-style: none; }
+.two li { padding: 10px 0; border-top: 1px solid var(--rule); font-size: 16.5px; }
+.two li b { display: block; }
+.two li span.d { color: var(--quiet); }
+.two li .status { margin: 0 0 0 6px; vertical-align: 1px; }
+
+/* status words: by fill and border pattern, not by hue */
+.status { display: inline-block; font: 700 11.5px var(--mono); letter-spacing: .05em; text-transform: uppercase; color: var(--ink); border: 1px solid var(--quiet); border-radius: 2px; padding: 1px 6px; }
+.status.s-measured { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.status.s-built { background: var(--accent-soft); border-color: var(--accent); }
+.status.s-designed { border-style: dashed; }
+
+/* where each part stands: one row a part, one column a status */
+.sgrid { border: 1px solid var(--rule); background: var(--panel); }
+.sr { display: grid; grid-template-columns: minmax(0, 1fr) repeat(4, 8.2em); align-items: center; border-top: 1px solid var(--rule); }
+.sr:first-child { border-top: 0; }
+.sr .sw { padding: 9px 16px; font-size: 16px; }
+.sr .sh { font: 700 11.5px var(--mono); letter-spacing: .05em; text-transform: uppercase; color: var(--quiet); text-align: center; padding: 10px 4px; }
+.sr .sc { align-self: stretch; display: flex; align-items: center; justify-content: center; border-left: 1px solid var(--rule); }
+.sr .sc.on::before { content: ""; display: block; width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--ink); }
+.sr .sc.s-measured::before { background: var(--ink); }
+.sr .sc.s-built::before { background: var(--accent); border-color: var(--accent); }
+.sr .sc.s-built.off::before { background: none; border-color: var(--accent); }
+.sr .sc.s-designed::before { border-style: dashed; border-color: var(--line); }
+@media (max-width: 760px) {
+  .sr { grid-template-columns: minmax(0, 1fr) auto; }
+  .sr.shead { display: none; }
+  .sr .sc { display: none; border: 0; }
+  .sr .sc.on { display: flex; padding: 0 12px; }
+  .sr .sc.on::before { display: none; }
+  .sr .sc.on::after { content: attr(data-s); font: 700 11px var(--mono); letter-spacing: .04em; text-transform: uppercase; border: 1px solid var(--quiet); border-radius: 2px; padding: 1px 6px; color: var(--ink); white-space: nowrap; }
+  .sr .sc.s-measured::after { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .sr .sc.s-built::after { background: var(--accent-soft); border-color: var(--accent); }
+  .sr .sc.s-built.off::after { background: none; }
+  .sr .sc.s-designed::after { border-style: dashed; }
+  .sr .sw { padding: 9px 12px; font-size: 15px; }
+}
+.sr .sw { padding: 7px 16px; }
+.stage-head span:last-child { flex: none; }
+h2, .scene h2 { text-wrap: balance; }
+.scene dd, .scene .ev, .sub, .lede, .under, .wf small, .two li span.d { text-wrap: pretty; }
+@media (max-width: 900px) {
+  .scene figure .frame { padding: 8px 0; border-left: 0; border-right: 0; border-radius: 0; background: none; }
+}
+@media (max-width: 600px) { .stage .site { padding: 8px 4px 0; } }
+
+/* the marks beside each idea, and as the list of ideas */
+.mk-anchor { margin: 0 0 14px; }
+.mk-anchor svg.mark { width: 76px; height: 76px; }
+.marks { list-style: none; margin: 28px 0 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 18px 8px; max-width: 34em; }
+.marks a { display: block; color: var(--ink); text-decoration: none; font: 600 13px/1.3 var(--sans); }
+.marks a:hover span, .marks a:focus-visible span { text-decoration: underline; text-underline-offset: 3px; }
+.marks svg.mark { width: 48px; height: 48px; margin-bottom: 6px; }
+@media (max-width: 420px) { .marks { gap: 14px 6px; } .marks a { font-size: 12px; } .marks svg.mark { width: 42px; height: 42px; } }
+
+/* the first screen: the site, the clock, and the stage that is running */
+.stage .site { padding: 12px 12px 0; }
+.stage .clock { align-items: center; padding: 8px 14px 6px; }
+.stage .clock .of { display: flex; flex-direction: column; min-width: 0; }
+.stage .clock .of b { font: 700 14.5px/1.3 var(--sans); color: var(--ink); }
+.prog { padding: 0 14px 12px; }
+.prog .bar { position: relative; display: block; height: 8px; background: var(--code-bg); border: 1px solid var(--rule); border-radius: 2px; }
+.prog .bar i { position: absolute; top: 0; bottom: 0; display: block; }
+.prog .bar #pbar { left: 0; background: var(--accent); transition: width .3s linear; }
+.prog .bar i:not(#pbar) { width: 1px; background: var(--panel); opacity: .9; }
+@media (prefers-reduced-motion: reduce) { .prog .bar #pbar { transition: none; } }
+@media (max-width: 600px) { .stage .site { padding: 8px 4px 0; } }
+
+/* the position: its three answers side by side, then the figure at full width */
+.scene .say.wide { max-width: none; }
+.scene dl.cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 40px; }
+.scene dl.cols dd { max-width: none; }
+@media (max-width: 900px) { .scene dl.cols { grid-template-columns: minmax(0, 1fr); } }
+.scene figure.full { max-width: none; }
+.scene figure.full .frame { padding: 28px 32px; }
+@media (max-width: 900px) { .scene figure.full .frame { padding: 8px 0; } }
+
+/* the five habits: one panel each */
+.blunders { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 1100px) { .blunders { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 600px) { .blunders { grid-template-columns: minmax(0, 1fr); } }
+.blunder { background: var(--panel); border: 1px solid var(--rule); border-top: 3px solid var(--ink); border-radius: 3px; padding: 18px 18px 20px; display: flex; flex-direction: column; }
+.blunder svg.mark { width: 56px; height: 56px; margin-bottom: 12px; }
+.blunder h3 { font-size: 18px; line-height: 1.25; margin: 0 0 8px; }
+.blunder p { margin: 0; font-size: 15.5px; line-height: 1.45; }
+.blunder .cost { color: var(--quiet); padding-bottom: 12px; margin-bottom: 12px; border-bottom: 1px dashed var(--line); flex: 1; }
+.blunder .fix { color: var(--ink); }
+.blunder .fix .status { display: table; margin: 0 0 6px; }
+
+/* the ten ideas: a grid of tiles, each with its mark */
+.ideas { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 1100px) { .ideas { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (max-width: 860px) { .ideas { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; } }
+.idea { display: block; background: var(--panel); border: 1px solid var(--rule); border-radius: 3px; padding: 18px; color: var(--ink); text-decoration: none; }
+.idea:hover, .idea:focus-visible { border-color: var(--accent); }
+.idea svg.mark { width: 64px; height: 64px; margin-bottom: 12px; }
+.idea b { display: block; font-size: 17px; line-height: 1.25; margin-bottom: 4px; }
+.idea span { display: block; font-size: 14.5px; line-height: 1.4; color: var(--quiet); }
+@media (max-width: 420px) { .idea { padding: 14px; } .idea svg.mark { width: 52px; height: 52px; } .idea b { font-size: 15.5px; } .idea span { font-size: 13.5px; } }
+
+/* status lines: one status a row; a badge column of fixed width, then the text */
+ul.ev { list-style: none; margin: 22px 0 0; padding: 0; max-width: 36em; }
+ul.ev li { display: grid; grid-template-columns: 7.2em minmax(0, 1fr); gap: 0 14px; align-items: baseline; padding: 5px 0; }
+ul.ev li > .status { display: block; text-align: center; margin: 0; }
+ul.ev li > span:last-child { font: 15.5px/1.45 var(--sans); color: var(--quiet); }
+ul.ev code { font-size: 13.5px; }
+.status.s-inuse { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+.sr .sc.s-inuse::before { background: var(--accent); border-color: var(--accent); }
+.sr .sc.s-built::before { background: var(--accent-soft); border-color: var(--accent); }
+@media (max-width: 760px) {
+  .sr .sc.s-inuse::after { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+}
+
+</style>
+<style>/* goat-tree: the same strip on every goat landing page, back to the catalogue of them all */
+.goat-tree{font:600 13px/1.3 ui-monospace,"SF Mono",Menlo,Consolas,monospace;letter-spacing:.02em;padding:7px max(20px,env(safe-area-inset-left,0px));border-bottom:1px solid color-mix(in srgb,currentColor 18%,transparent);background:color-mix(in srgb,currentColor 5%,transparent)}
+.goat-tree a{color:inherit;text-decoration:none}.goat-tree a:hover,.goat-tree a:focus-visible{text-decoration:underline;text-underline-offset:3px}
+@media print{.goat-tree{display:none}}</style>
+</head>
+<body>
+<nav class="goat-tree" aria-label="goat pages"><a href="https://usareur-af.github.io/goatdocs/goat/pages/"><span aria-hidden="true">&larr;</span> All goat pages</a></nav>
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="#top"><img src="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22 fill=%22none%22 stroke=%22%231b5e7a%22 stroke-width=%224%22 stroke-linecap=%22round%22%3E%3Ccircle cx=%2232%22 cy=%2236%22 r=%2222%22/%3E%3Cpath d=%22M32 36V22M32 36l9 6M26 6h12M32 6v8%22/%3E%3C/svg%3E" width="28" height="28" alt="">goat security</a>
+    <nav aria-label="Sections">
+      <a href="#position">The idea</a><a href="#rebuild">Rebuild</a><a href="#status">Status</a><a href="#start">Try it</a>
+      <a href="../">goat</a>
+      <a class="gh" href="https://github.com/USAREUR-AF/goatcore">GitHub</a>
+    </nav>
+  </header>
+</div>
+
+<main id="top">
+<section class="hero" aria-labelledby="name">
+<pre class="bgcode" aria-hidden="true">| C1 | A founder site goes from declared to verified
+     | in 60 minutes or less, a new node in 15,
+     | a burn-down in 15
+
+## Where the day goes
+
+Past buildouts took a day or more. Most of that
+time was not a play running. It was a run stopping
+on a defect, the defect being fixed on main, and
+the run resuming.
+
+| Targets | founder site declared -> verified
+          | <= 60 min; one new node <= 15 min;
+          | burn-down to nothing, records kept
+          | <= 15 min</pre>
+  <div class="wrap hero-grid">
+    <div>
+      <p class="prompt">&gt;_ goatbuilder standup zagros --site alpha<span class="cur" aria-hidden="true"></span></p>
+      <h1 class="wordmark" id="name">security</h1>
+      <p class="tagline">Hard to get into. Easy to rebuild.</p>
+      <p class="lede">goat is hardened against intrusion at every connection. It is also built so that a whole site can be taken down and rebuilt from its declaration in minutes. A rebuild is an ordinary, practiced operation here, not a painful reaction to a disaster, and it returns every machine to a known clean state.</p>
+      <div class="buttons">
+        <a class="btn star" href="https://github.com/USAREUR-AF/goatcore"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M12 2.8l2.8 5.8 6.4.9-4.6 4.5 1.1 6.3L12 17.3l-5.7 3 1.1-6.3-4.6-4.5 6.4-.9z"/></svg>Star on GitHub</a>
+        <a class="btn" href="#position">The idea, in figures</a>
+        <a class="btn" href="#start">Try it</a>
+      </div>
+      <div class="cmd"><pre data-box="command"><span class="ln"><span class="dollar">$ </span><code id="c-start">./goatbuilder standup zagros <span class="w">--site</span> alpha <span class="w">--mock</span> "$WORK" <span class="w">--ack</span> "you" <span class="w">--yes</span></code></span></pre><button class="copy" type="button" data-copy="c-start">Copy</button></div>
+      <p class="under">A rehearsal of the build on the example in the repository. <a href="#start">Try it</a> has the lines that come before.</p>
+    </div>
+
+    <div class="stage" role="img" aria-label="A drawing of a whole site that builds itself in 12 stages: checks before anything changes, 0 min 28 s; machines prepared, disks encrypted, 3 min 7 s; secrets and certificates created, 0 min 4 s; management services started, 4 min 2 s; sign-in services and the first account, 4 min 25 s; relays in a cloud, 8 min 32 s; machines join the mesh, 1 min 14 s; data router and workload identity, 1 min 37 s; dashboard placed behind sign-in, 1 min 34 s; the administrator signs in, 1 min 51 s; access rules, service identities, portal, alarm, 8 min 9 s; checks that prove the site works, 1 min 39 s. The whole build is 38 min 12 s of machine time, measured on real machines. The site is then taken down again in 5 min 54 s, and built again.">
+      <div class="stage-head"><span><b>standup</b> &middot; one command</span><span id="phase">built</span></div>
+      <div class="site" aria-hidden="true"><svg id="fig-site" class="viz" viewBox="8 0 464 302" role="img" aria-label="A whole site: its machines, its services, its relays and its checks.">
+<g class="st" data-stage="1">
+<rect x="16" y="74" width="448" height="216" rx="14" class="edge2"/>
+<text x="30" y="96" class="tq" font-size="14">the site</text>
+</g>
+<g class="st" data-stage="2">
+<rect x="30" y="108" width="252" height="170" rx="8" class="bx"/>
+<text x="44" y="128" class="t" font-size="14" font-weight="700">core machine</text>
+<path d="M259.5 121V118a4.5 4.5 0 0 1 9 0V121" class="lka" data-lint="nohead"/>
+<rect x="256" y="121" width="16" height="11" rx="2" class="fa"/>
+<rect x="298" y="108" width="152" height="46" rx="8" class="bx"/>
+<text x="312" y="136" class="t" font-size="14" font-weight="700">monitoring</text>
+<path d="M427.5 130V127a4.5 4.5 0 0 1 9 0V130" class="lka" data-lint="nohead"/>
+<rect x="424" y="130" width="16" height="11" rx="2" class="fa"/>
+<rect x="298" y="162" width="152" height="46" rx="8" class="bx"/>
+<text x="312" y="190" class="t" font-size="14" font-weight="700">monitoring</text>
+<path d="M427.5 184V181a4.5 4.5 0 0 1 9 0V184" class="lka" data-lint="nohead"/>
+<rect x="424" y="184" width="16" height="11" rx="2" class="fa"/>
+</g>
+<g class="st" data-stage="3">
+<rect x="160" y="136" width="112" height="30" rx="5" class="bxa"/>
+<text x="216" y="156" text-anchor="middle" class="t" font-size="14">certificates</text>
+</g>
+<g class="st" data-stage="4">
+<rect x="42" y="136" width="112" height="30" rx="5" class="bxa"/>
+<text x="98" y="156" text-anchor="middle" class="t" font-size="14">management</text>
+</g>
+<g class="st" data-stage="5">
+<rect x="42" y="170" width="112" height="30" rx="5" class="bxa"/>
+<text x="98" y="190" text-anchor="middle" class="t" font-size="14">sign-in</text>
+</g>
+<g class="st" data-stage="6">
+<rect x="150" y="8" width="180" height="40" rx="8" class="bxa"/>
+<text x="240" y="33" text-anchor="middle" class="t" font-size="14" font-weight="700">relays in a cloud</text>
+<path d="M240 48L240 74" class="lna" data-lint="nohead"/>
+</g>
+<g class="st" data-stage="7">
+<path d="M282 131L298 131" class="lna" data-lint="nohead"/>
+<path d="M282 185L298 185" class="lna" data-lint="nohead"/>
+<path d="M374 154L374 162" class="lna" data-lint="nohead"/>
+</g>
+<g class="st" data-stage="8">
+<rect x="160" y="170" width="112" height="30" rx="5" class="bxa"/>
+<text x="216" y="190" text-anchor="middle" class="t" font-size="14">data router</text>
+<rect x="42" y="204" width="112" height="30" rx="5" class="bxa"/>
+<text x="98" y="224" text-anchor="middle" class="t" font-size="14">workloads</text>
+</g>
+<g class="st" data-stage="9">
+<rect x="160" y="204" width="112" height="30" rx="5" class="bxa"/>
+<text x="216" y="224" text-anchor="middle" class="t" font-size="14">dashboard</text>
+</g>
+<g class="st" data-stage="10">
+<rect x="298" y="222" width="152" height="56" rx="8" class="bxk"/>
+<circle cx="318" cy="242" r="5" class="fa"/><path d="M308 260a10 9 0 0 1 20 0z" class="fa"/>
+<text x="336" y="246" class="t" font-size="14" font-weight="700">administrator</text>
+<text x="336" y="264" class="tq" font-size="14">signed in</text>
+</g>
+<g class="st" data-stage="11">
+<rect x="42" y="238" width="112" height="30" rx="5" class="bxa"/>
+<text x="98" y="258" text-anchor="middle" class="t" font-size="14">access rules</text>
+<rect x="160" y="238" width="112" height="30" rx="5" class="bxa"/>
+<text x="216" y="258" text-anchor="middle" class="t" font-size="14">portal</text>
+<rect x="350" y="8" width="114" height="40" rx="8" class="bx"/>
+<text x="407" y="33" text-anchor="middle" class="t" font-size="14">alarm, off-site</text>
+</g>
+<g class="st" data-stage="12">
+<circle cx="440" cy="92" r="13" class="fa"/><path d="M433.5 92l4.5 4.5l8 -9" class="lnon" data-lint="nohead"/>
+<text x="420" y="97" text-anchor="end" class="t" font-size="14" font-weight="700">checked</text>
+</g>
+</svg></div>
+      <div class="clock" aria-hidden="true"><span class="t" id="clk">38:12</span><span class="of"><b id="step">The whole site is built and checked</b><span id="clk-of">minutes:seconds of machine time</span></span></div>
+      <div class="prog" aria-hidden="true"><span class="bar"><i id="pbar" style="width:100%"></i><i style="left:1.22%"></i><i style="left:9.38%"></i><i style="left:9.55%"></i><i style="left:20.11%"></i><i style="left:31.68%"></i><i style="left:54.01%"></i><i style="left:57.24%"></i><i style="left:61.47%"></i><i style="left:65.58%"></i><i style="left:70.42%"></i><i style="left:91.75%"></i></span></div>
+      <div class="stage-foot">One command builds the site; one command takes it down in 5 min 54 s; the same command builds it again. Times measured on real machines.</div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="numbers">
+      <div><span class="n" data-measure="build">38 min 12 s</span><span class="l">of machine time to build a whole site</span><code>run.json: every stage, measured on real machines</code></div>
+      <div><span class="n" data-measure="down">5 min 54 s</span><span class="l">to take a site down</span><code>goatbuilder teardown --services, <span data-measure="down-checks">57</span> checks</code></div>
+      <div><span class="n" data-measure="checks">42</span><span class="l">checks passed on the built site</span><code>the acceptance suite, the last stage of the build</code></div>
+      <div><span class="n" data-measure="commands">1</span><span class="l">command builds a site, or builds it again</span><code>goatbuilder standup &lt;goatnet&gt; --site &lt;site&gt;</code></div>
+    </div>
+  </div>
+</section>
+
+<section class="scene center" id="position">
+  <div class="wrap">
+    <div class="say wide">
+      <p class="eyebrow">The idea</p>
+      <h2>No inside, no outside</h2>
+      <dl class="cols">
+        <div><dt>Usually</dt><dd class="usual">Most defenses draw a few boundaries, sometimes only one, and those boundaries move slowly or never. Anything that gets inside one is trusted there.</dd></div>
+        <div><dt>Here</dt><dd class="here">goat draws none. Each connection between two parties, whether people, machines or programs, has its own keys and its own rule, set by who the two are and what they are doing. When either changes, the protection on that connection changes with it.</dd></div>
+        <div><dt>For you</dt><dd class="you">There is no trusted zone to get into.</dd></div>
+      </dl>
+    </div>
+    <figure class="full"><div class="frame"><style>
+.pf{--l0:#1f8a55;--l1:#11868c;--l2:#2a6fc0;--l3:#6b8f1a;--l4:#5c7183;--l5:#0f7460;--l6:#2f8fb8;--l7:#7f8f2a;--pf-net:#e4e6da;--pf-zone:#e6ecdf;--pf-one:#4d564f}
+@media (prefers-color-scheme: dark){.pf{--l0:#6fd39a;--l1:#4fc3c8;--l2:#6aa9ee;--l3:#a7d15a;--l4:#9fb4c6;--l5:#3fae86;--l6:#8fd0f0;--l7:#c5d98a;--pf-net:#232a20;--pf-zone:#1c2619;--pf-one:#b9c0b8}}
+.pf text{font-family:var(--sans)}
+</style>
+<svg class="viz wide pf" viewBox="0 0 1120 912" role="img" aria-label="Two drawings, one above the other. Above, a few fixed boundaries: one closed boundary with a door facing the public internet; inside it one network in which every party is joined to every other by the same kind of line, and three of those lines carry an extra lock added by an application. Below, no inside and no outside: there is no boundary and no door, and nothing answers from the public internet; the parties stand in small groups, most groups are joined into one network and one pair stands apart; every connection is drawn in its own colour and pattern, because each one is separately encrypted, authenticated and authorized.">
+<text x="24" y="30" font-size="22" font-weight="700" fill="var(--ink)">A few fixed boundaries</text>
+<rect x="0" y="46" width="1120" height="44" fill="var(--pf-net)"/>
+<text x="24" y="75" font-size="14.2" fill="var(--quiet)" letter-spacing="1.4">THE PUBLIC INTERNET</text>
+<rect x="224" y="134" width="672" height="236" rx="30" fill="var(--pf-zone)" stroke="var(--ink)" stroke-width="5"/>
+<rect x="534" y="128" width="52" height="12" fill="var(--pf-zone)"/>
+<path d="M534 124 v20 M586 124 v20" stroke="var(--ink)" stroke-width="5" stroke-linecap="round"/>
+<line x1="358" y1="96" x2="358" y2="120" stroke="var(--ink)" stroke-width="2.2" stroke-dasharray="2 6" stroke-linecap="round"/>
+<line x1="349" y1="120" x2="367" y2="120" stroke="var(--ink)" stroke-width="2.8" stroke-linecap="round"/>
+<line x1="547" y1="96" x2="547" y2="130" stroke="var(--ink)" stroke-width="2.2" stroke-dasharray="2 6" stroke-linecap="round"/>
+<path d="M541 121 L547 130 L553 121" fill="none" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<line x1="573" y1="96" x2="573" y2="130" stroke="var(--ink)" stroke-width="2.2" stroke-dasharray="2 6" stroke-linecap="round"/>
+<path d="M567 121 L573 130 L579 121" fill="none" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<line x1="762" y1="96" x2="762" y2="120" stroke="var(--ink)" stroke-width="2.2" stroke-dasharray="2 6" stroke-linecap="round"/>
+<line x1="753" y1="120" x2="771" y2="120" stroke="var(--ink)" stroke-width="2.8" stroke-linecap="round"/>
+<line x1="560.0" y1="177.8" x2="728.5" y2="196.5" stroke="var(--pf-one)" stroke-width="1.5"/>
+<line x1="560.0" y1="177.8" x2="818.1" y2="244.1" stroke="var(--pf-one)" stroke-width="1.5"/>
+<line x1="560.0" y1="177.8" x2="787.0" y2="298.1" stroke="var(--pf-one)" stroke-width="1.5"/>
+<line x1="560.0" y1="177.8" x2="649.6" y2="333.4" stroke="var(--pf-one)" stroke-width="1.5"/>
+<line x1="560.0" y1="177.8" x2="470.4" y2="333.4" stroke="var(--pf-one)" stroke-width="1.5"/>
+<line x1="560.0" y1="177.8" x2="333.0" y2="298.1" stroke="var(--pf-one)" stroke-width="1.5"/>
+<line x1="560.0" y1="177.8" x2="301.9" y2="244.1" stroke="var(--pf-one)" stroke-width="1.5"/>
+<line x1="560.0" y1="177.8" x2="391.5" y2="196.5" stroke="var(--pf-one)" stroke-width="1.5"/>
+<line x1="728.5" y1="196.5" x2="818.1" y2="244.1" stroke="var(--pf-one)" stroke-width="1.5"/>
+<line x1="728.5" y1="196.5" x2="787.0" y2="298.1" stroke="var(--pf-one)" stroke-width="1.5"/>
+<line x1="728.5" y1="196.5" x2="649.6" y2="333.4" stroke="var(--pf-one)" stroke-width="1.5"/>
+<line x1="728.5" y1="196.5" x2="470.4" y2="333.4" stroke="var(--pf-one)" stroke-width="1.5"/>
+<line x1="728.5" y1="196.5" x2="333.0" y2="298.1" stroke="var(--pf-one)" stroke-width="1.5"/>
+<line x1="728.5" y1="196.5" x2="301.9" y2="244.1" stroke="var(--pf-one)" stroke-width="1.5"/>
+<line x1="728.5" y1="196.5" x2="391.5" y2="196.5" stroke="var(--pf-one)" stroke-width="1.5"/>
+<line x1="818.1" y1="244.1" x2="787.0" y2="298.1" stroke="var(--pf-one)" stroke-width="1.5"/>
+<line x1="818.1" y1="244.1" x2="649.6" y2="333.4" stroke="var(--pf-one)" stroke-width="1.5"/>
+<line x1="818.1" y1="244.1" x2="470.4" y2="333.4" stroke="var(--pf-one)" stroke-width="1.5"/>
+<line x1="818.1" y1="244.1" x2="333.0" y2="298.1" stroke="var(--pf-one)" stroke-width="1.5"/>
+<line x1="818.1" y1="244.1" x2="301.9" y2="244.1" stroke="var(--pf-one)" stroke-width="1.5"/>
+<line x1="818.1" y1="244.1" x2="391.5" y2="196.5" stroke="var(--pf-one)" stroke-width="1.5"/>
+<line x1="787.0" y1="298.1" x2="649.6" y2="333.4" stroke="var(--pf-one)" stroke-width="1.5"/>
+<line x1="787.0" y1="298.1" x2="470.4" y2="333.4" stroke="var(--pf-one)" stroke-width="1.5"/>
+<line x1="787.0" y1="298.1" x2="333.0" y2="298.1" stroke="var(--pf-one)" stroke-width="1.5"/>
+<line x1="787.0" y1="298.1" x2="301.9" y2="244.1" stroke="var(--pf-one)" stroke-width="1.5"/>
+<line x1="787.0" y1="298.1" x2="391.5" y2="196.5" stroke="var(--pf-one)" stroke-width="1.5"/>
+<line x1="649.6" y1="333.4" x2="470.4" y2="333.4" stroke="var(--pf-one)" stroke-width="1.5"/>
+<line x1="649.6" y1="333.4" x2="333.0" y2="298.1" stroke="var(--pf-one)" stroke-width="1.5"/>
+<line x1="649.6" y1="333.4" x2="301.9" y2="244.1" stroke="var(--pf-one)" stroke-width="1.5"/>
+<line x1="649.6" y1="333.4" x2="391.5" y2="196.5" stroke="var(--pf-one)" stroke-width="1.5"/>
+<line x1="470.4" y1="333.4" x2="333.0" y2="298.1" stroke="var(--pf-one)" stroke-width="1.5"/>
+<line x1="470.4" y1="333.4" x2="301.9" y2="244.1" stroke="var(--pf-one)" stroke-width="1.5"/>
+<line x1="470.4" y1="333.4" x2="391.5" y2="196.5" stroke="var(--pf-one)" stroke-width="1.5"/>
+<line x1="333.0" y1="298.1" x2="301.9" y2="244.1" stroke="var(--pf-one)" stroke-width="1.5"/>
+<line x1="333.0" y1="298.1" x2="391.5" y2="196.5" stroke="var(--pf-one)" stroke-width="1.5"/>
+<line x1="301.9" y1="244.1" x2="391.5" y2="196.5" stroke="var(--pf-one)" stroke-width="1.5"/>
+<g transform="translate(773.3 220.3)"><circle r="12" fill="var(--pf-zone)" stroke="var(--pf-one)" stroke-width="2"/><rect x="-5" y="-1.5" width="10" height="8" rx="2" fill="var(--pf-one)"/><path d="M-3.1 -1.5 v-2.6 a3.1 3.1 0 0 1 6.2 0 v2.6" fill="none" stroke="var(--pf-one)" stroke-width="1.9"/></g>
+<g transform="translate(560.0 333.4)"><circle r="12" fill="var(--pf-zone)" stroke="var(--pf-one)" stroke-width="2"/><rect x="-5" y="-1.5" width="10" height="8" rx="2" fill="var(--pf-one)"/><path d="M-3.1 -1.5 v-2.6 a3.1 3.1 0 0 1 6.2 0 v2.6" fill="none" stroke="var(--pf-one)" stroke-width="1.9"/></g>
+<g transform="translate(346.7 220.3)"><circle r="12" fill="var(--pf-zone)" stroke="var(--pf-one)" stroke-width="2"/><rect x="-5" y="-1.5" width="10" height="8" rx="2" fill="var(--pf-one)"/><path d="M-3.1 -1.5 v-2.6 a3.1 3.1 0 0 1 6.2 0 v2.6" fill="none" stroke="var(--pf-one)" stroke-width="1.9"/></g>
+<circle cx="560.0" cy="177.8" r="9" fill="var(--ink)"/>
+<circle cx="728.5" cy="196.5" r="9" fill="var(--ink)"/>
+<circle cx="818.1" cy="244.1" r="9" fill="var(--ink)"/>
+<circle cx="787.0" cy="298.1" r="9" fill="var(--ink)"/>
+<circle cx="649.6" cy="333.4" r="9" fill="var(--ink)"/>
+<circle cx="470.4" cy="333.4" r="9" fill="var(--ink)"/>
+<circle cx="333.0" cy="298.1" r="9" fill="var(--ink)"/>
+<circle cx="301.9" cy="244.1" r="9" fill="var(--ink)"/>
+<circle cx="391.5" cy="196.5" r="9" fill="var(--ink)"/>
+<text x="24" y="402" font-size="16.5" fill="var(--quiet)">One boundary, with a door on the internet. Inside, every connection is alike and trusted. A few applications add a lock.</text>
+<line x1="0" y1="447" x2="1120" y2="447" stroke="var(--rule)" stroke-width="1.5"/>
+<text x="24" y="487" font-size="22" font-weight="700" fill="var(--ink)">No inside, no outside</text>
+<rect x="0" y="502.775" width="1120" height="44" fill="var(--pf-net)"/>
+<text x="24" y="532" font-size="14.2" fill="var(--quiet)" letter-spacing="1.4">THE PUBLIC INTERNET</text>
+<line x1="302" y1="552.775" x2="302" y2="576.775" stroke="var(--ink)" stroke-width="2.2" stroke-dasharray="2 6" stroke-linecap="round"/>
+<line x1="293" y1="576.775" x2="311" y2="576.775" stroke="var(--ink)" stroke-width="2.8" stroke-linecap="round"/>
+<line x1="470" y1="552.775" x2="470" y2="576.775" stroke="var(--ink)" stroke-width="2.2" stroke-dasharray="2 6" stroke-linecap="round"/>
+<line x1="461" y1="576.775" x2="479" y2="576.775" stroke="var(--ink)" stroke-width="2.8" stroke-linecap="round"/>
+<line x1="638" y1="552.775" x2="638" y2="576.775" stroke="var(--ink)" stroke-width="2.2" stroke-dasharray="2 6" stroke-linecap="round"/>
+<line x1="629" y1="576.775" x2="647" y2="576.775" stroke="var(--ink)" stroke-width="2.8" stroke-linecap="round"/>
+<line x1="818" y1="552.775" x2="818" y2="576.775" stroke="var(--ink)" stroke-width="2.2" stroke-dasharray="2 6" stroke-linecap="round"/>
+<line x1="809" y1="576.775" x2="827" y2="576.775" stroke="var(--ink)" stroke-width="2.8" stroke-linecap="round"/>
+<line x1="116.0" y1="647.8" x2="180.6" y2="639.3" stroke="var(--l0)" stroke-width="3.2" stroke-dasharray="2 7" stroke-linecap="round"/>
+<line x1="180.6" y1="639.3" x2="156.8" y2="693.7" stroke="var(--l1)" stroke-width="3.2" stroke-dasharray="12 5 2 5" stroke-linecap="round"/>
+<line x1="384.0" y1="633.2" x2="445.2" y2="622.4" stroke="var(--l2)" stroke-width="3.2" stroke-dasharray="3 4" stroke-linecap="round"/>
+<line x1="445.2" y1="622.4" x2="456.0" y2="672.8" stroke="var(--l3)" stroke-width="3.2" stroke-dasharray="9 6" stroke-linecap="round"/>
+<line x1="456.0" y1="672.8" x2="402.0" y2="683.6" stroke="var(--l4)" stroke-width="3.2" stroke-dasharray="5 5" stroke-linecap="round"/>
+<line x1="384.0" y1="633.2" x2="402.0" y2="683.6" stroke="var(--l5)" stroke-width="3.2" stroke-dasharray="8 4 2 4" stroke-linecap="round"/>
+<line x1="666.0" y1="649.8" x2="730.6" y2="641.3" stroke="var(--l6)" stroke-width="3.2" stroke-dasharray="1 6" stroke-linecap="round"/>
+<line x1="730.6" y1="641.3" x2="706.8" y2="695.7" stroke="var(--l7)" stroke-width="3.2" stroke-dasharray="14 6" stroke-linecap="round"/>
+<line x1="924.0" y1="637.2" x2="985.2" y2="626.4" stroke="var(--l0)" stroke-width="3.2" stroke-dasharray="2 7" stroke-linecap="round"/>
+<line x1="985.2" y1="626.4" x2="996.0" y2="676.8" stroke="var(--l1)" stroke-width="3.2" stroke-dasharray="12 5 2 5" stroke-linecap="round"/>
+<line x1="996.0" y1="676.8" x2="942.0" y2="687.6" stroke="var(--l2)" stroke-width="3.2" stroke-dasharray="3 4" stroke-linecap="round"/>
+<line x1="924.0" y1="637.2" x2="942.0" y2="687.6" stroke="var(--l3)" stroke-width="3.2" stroke-dasharray="9 6" stroke-linecap="round"/>
+<line x1="255.0" y1="821.8" x2="315.0" y2="797.8" stroke="var(--l4)" stroke-width="3.2" stroke-dasharray="5 5" stroke-linecap="round"/>
+<line x1="526.0" y1="799.8" x2="590.6" y2="791.3" stroke="var(--l5)" stroke-width="3.2" stroke-dasharray="8 4 2 4" stroke-linecap="round"/>
+<line x1="590.6" y1="791.3" x2="566.8" y2="845.7" stroke="var(--l6)" stroke-width="3.2" stroke-dasharray="1 6" stroke-linecap="round"/>
+<line x1="805.0" y1="822.8" x2="865.0" y2="798.8" stroke="var(--l7)" stroke-width="3.2" stroke-dasharray="14 6" stroke-linecap="round"/>
+<line x1="1018.0" y1="836.8" x2="1078.0" y2="812.8" stroke="var(--l0)" stroke-width="3.2" stroke-dasharray="2 7" stroke-linecap="round"/>
+<line x1="180.6" y1="639.3" x2="384.0" y2="633.2" stroke="var(--l1)" stroke-width="3.2" stroke-dasharray="12 5 2 5" stroke-linecap="round"/>
+<line x1="456.0" y1="672.8" x2="666.0" y2="649.8" stroke="var(--l2)" stroke-width="3.2" stroke-dasharray="3 4" stroke-linecap="round"/>
+<line x1="730.6" y1="641.3" x2="924.0" y2="637.2" stroke="var(--l3)" stroke-width="3.2" stroke-dasharray="9 6" stroke-linecap="round"/>
+<line x1="156.8" y1="693.7" x2="255.0" y2="821.8" stroke="var(--l4)" stroke-width="3.2" stroke-dasharray="5 5" stroke-linecap="round"/>
+<line x1="402.0" y1="683.6" x2="315.0" y2="797.8" stroke="var(--l5)" stroke-width="3.2" stroke-dasharray="8 4 2 4" stroke-linecap="round"/>
+<line x1="315.0" y1="797.8" x2="526.0" y2="799.8" stroke="var(--l6)" stroke-width="3.2" stroke-dasharray="1 6" stroke-linecap="round"/>
+<line x1="706.8" y1="695.7" x2="590.6" y2="791.3" stroke="var(--l7)" stroke-width="3.2" stroke-dasharray="14 6" stroke-linecap="round"/>
+<line x1="590.6" y1="791.3" x2="805.0" y2="822.8" stroke="var(--l0)" stroke-width="3.2" stroke-dasharray="2 7" stroke-linecap="round"/>
+<line x1="942.0" y1="687.6" x2="865.0" y2="798.8" stroke="var(--l1)" stroke-width="3.2" stroke-dasharray="12 5 2 5" stroke-linecap="round"/>
+<circle cx="116.0" cy="647.8" r="14.5" fill="var(--paper)" stroke="var(--l0)" stroke-width="2"/><circle cx="116.0" cy="647.8" r="8" fill="var(--ink)"/>
+<circle cx="180.6" cy="639.3" r="14.5" fill="var(--paper)" stroke="var(--l5)" stroke-width="2"/><circle cx="180.6" cy="639.3" r="8" fill="var(--ink)"/>
+<circle cx="156.8" cy="693.7" r="14.5" fill="var(--paper)" stroke="var(--l2)" stroke-width="2"/><circle cx="156.8" cy="693.7" r="8" fill="var(--ink)"/>
+<circle cx="384.0" cy="633.2" r="14.5" fill="var(--paper)" stroke="var(--l7)" stroke-width="2"/><circle cx="384.0" cy="633.2" r="8" fill="var(--ink)"/>
+<circle cx="445.2" cy="622.4" r="14.5" fill="var(--paper)" stroke="var(--l4)" stroke-width="2"/><circle cx="445.2" cy="622.4" r="8" fill="var(--ink)"/>
+<circle cx="456.0" cy="672.8" r="14.5" fill="var(--paper)" stroke="var(--l1)" stroke-width="2"/><circle cx="456.0" cy="672.8" r="8" fill="var(--ink)"/>
+<circle cx="402.0" cy="683.6" r="14.5" fill="var(--paper)" stroke="var(--l6)" stroke-width="2"/><circle cx="402.0" cy="683.6" r="8" fill="var(--ink)"/>
+<circle cx="666.0" cy="649.8" r="14.5" fill="var(--paper)" stroke="var(--l3)" stroke-width="2"/><circle cx="666.0" cy="649.8" r="8" fill="var(--ink)"/>
+<circle cx="730.6" cy="641.3" r="14.5" fill="var(--paper)" stroke="var(--l0)" stroke-width="2"/><circle cx="730.6" cy="641.3" r="8" fill="var(--ink)"/>
+<circle cx="706.8" cy="695.7" r="14.5" fill="var(--paper)" stroke="var(--l5)" stroke-width="2"/><circle cx="706.8" cy="695.7" r="8" fill="var(--ink)"/>
+<circle cx="924.0" cy="637.2" r="14.5" fill="var(--paper)" stroke="var(--l2)" stroke-width="2"/><circle cx="924.0" cy="637.2" r="8" fill="var(--ink)"/>
+<circle cx="985.2" cy="626.4" r="14.5" fill="var(--paper)" stroke="var(--l7)" stroke-width="2"/><circle cx="985.2" cy="626.4" r="8" fill="var(--ink)"/>
+<circle cx="996.0" cy="676.8" r="14.5" fill="var(--paper)" stroke="var(--l4)" stroke-width="2"/><circle cx="996.0" cy="676.8" r="8" fill="var(--ink)"/>
+<circle cx="942.0" cy="687.6" r="14.5" fill="var(--paper)" stroke="var(--l1)" stroke-width="2"/><circle cx="942.0" cy="687.6" r="8" fill="var(--ink)"/>
+<circle cx="255.0" cy="821.8" r="14.5" fill="var(--paper)" stroke="var(--l6)" stroke-width="2"/><circle cx="255.0" cy="821.8" r="8" fill="var(--ink)"/>
+<circle cx="315.0" cy="797.8" r="14.5" fill="var(--paper)" stroke="var(--l3)" stroke-width="2"/><circle cx="315.0" cy="797.8" r="8" fill="var(--ink)"/>
+<circle cx="526.0" cy="799.8" r="14.5" fill="var(--paper)" stroke="var(--l0)" stroke-width="2"/><circle cx="526.0" cy="799.8" r="8" fill="var(--ink)"/>
+<circle cx="590.6" cy="791.3" r="14.5" fill="var(--paper)" stroke="var(--l5)" stroke-width="2"/><circle cx="590.6" cy="791.3" r="8" fill="var(--ink)"/>
+<circle cx="566.8" cy="845.7" r="14.5" fill="var(--paper)" stroke="var(--l2)" stroke-width="2"/><circle cx="566.8" cy="845.7" r="8" fill="var(--ink)"/>
+<circle cx="805.0" cy="822.8" r="14.5" fill="var(--paper)" stroke="var(--l7)" stroke-width="2"/><circle cx="805.0" cy="822.8" r="8" fill="var(--ink)"/>
+<circle cx="865.0" cy="798.8" r="14.5" fill="var(--paper)" stroke="var(--l4)" stroke-width="2"/><circle cx="865.0" cy="798.8" r="8" fill="var(--ink)"/>
+<circle cx="1018.0" cy="836.8" r="14.5" fill="var(--paper)" stroke="var(--l1)" stroke-width="2"/><circle cx="1018.0" cy="836.8" r="8" fill="var(--ink)"/>
+<circle cx="1078.0" cy="812.8" r="14.5" fill="var(--paper)" stroke="var(--l6)" stroke-width="2"/><circle cx="1078.0" cy="812.8" r="8" fill="var(--ink)"/>
+<text x="24" y="889" font-size="16.5" fill="var(--quiet)">Hidden from the internet. Every connection is separately encrypted, authenticated and authorized.</text>
+</svg>
+<svg class="viz narrow pf" viewBox="0 0 464 1164" role="img" aria-label="Two drawings, one above the other. Above, a few fixed boundaries: one closed boundary with a door facing the public internet; inside it one network in which every party is joined to every other by the same kind of line, and three of those lines carry an extra lock added by an application. Below, no inside and no outside: there is no boundary and no door, and nothing answers from the public internet; the parties stand in small groups, most groups are joined into one network and one pair stands apart; every connection is drawn in its own colour and pattern, because each one is separately encrypted, authenticated and authorized.">
+<text x="16" y="25" font-size="17" font-weight="700" fill="var(--ink)">A few fixed boundaries</text>
+<rect x="0" y="41" width="464" height="38" fill="var(--pf-net)"/>
+<text x="16" y="66" font-size="12.0" fill="var(--quiet)" letter-spacing="1.4">THE PUBLIC INTERNET</text>
+<rect x="16" y="123" width="432" height="250" rx="30" fill="var(--pf-zone)" stroke="var(--ink)" stroke-width="5"/>
+<rect x="206" y="117" width="52" height="12" fill="var(--pf-zone)"/>
+<path d="M206 113 v20 M258 113 v20" stroke="var(--ink)" stroke-width="5" stroke-linecap="round"/>
+<line x1="102" y1="85" x2="102" y2="109" stroke="var(--ink)" stroke-width="2.2" stroke-dasharray="2 6" stroke-linecap="round"/>
+<line x1="93" y1="109" x2="111" y2="109" stroke="var(--ink)" stroke-width="2.8" stroke-linecap="round"/>
+<line x1="219" y1="85" x2="219" y2="119" stroke="var(--ink)" stroke-width="2.2" stroke-dasharray="2 6" stroke-linecap="round"/>
+<path d="M213 110 L219 119 L225 110" fill="none" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<line x1="245" y1="85" x2="245" y2="119" stroke="var(--ink)" stroke-width="2.2" stroke-dasharray="2 6" stroke-linecap="round"/>
+<path d="M239 110 L245 119 L251 110" fill="none" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<line x1="362" y1="85" x2="362" y2="109" stroke="var(--ink)" stroke-width="2.2" stroke-dasharray="2 6" stroke-linecap="round"/>
+<line x1="353" y1="109" x2="371" y2="109" stroke="var(--ink)" stroke-width="2.8" stroke-linecap="round"/>
+<line x1="232.0" y1="169.0" x2="363.7" y2="201.0" stroke="var(--pf-one)" stroke-width="1.5"/>
+<line x1="232.0" y1="169.0" x2="396.3" y2="272.9" stroke="var(--pf-one)" stroke-width="1.5"/>
+<line x1="232.0" y1="169.0" x2="305.1" y2="330.6" stroke="var(--pf-one)" stroke-width="1.5"/>
+<line x1="232.0" y1="169.0" x2="158.9" y2="330.6" stroke="var(--pf-one)" stroke-width="1.5"/>
+<line x1="232.0" y1="169.0" x2="67.7" y2="272.9" stroke="var(--pf-one)" stroke-width="1.5"/>
+<line x1="232.0" y1="169.0" x2="100.3" y2="201.0" stroke="var(--pf-one)" stroke-width="1.5"/>
+<line x1="363.7" y1="201.0" x2="396.3" y2="272.9" stroke="var(--pf-one)" stroke-width="1.5"/>
+<line x1="363.7" y1="201.0" x2="305.1" y2="330.6" stroke="var(--pf-one)" stroke-width="1.5"/>
+<line x1="363.7" y1="201.0" x2="158.9" y2="330.6" stroke="var(--pf-one)" stroke-width="1.5"/>
+<line x1="363.7" y1="201.0" x2="67.7" y2="272.9" stroke="var(--pf-one)" stroke-width="1.5"/>
+<line x1="363.7" y1="201.0" x2="100.3" y2="201.0" stroke="var(--pf-one)" stroke-width="1.5"/>
+<line x1="396.3" y1="272.9" x2="305.1" y2="330.6" stroke="var(--pf-one)" stroke-width="1.5"/>
+<line x1="396.3" y1="272.9" x2="158.9" y2="330.6" stroke="var(--pf-one)" stroke-width="1.5"/>
+<line x1="396.3" y1="272.9" x2="67.7" y2="272.9" stroke="var(--pf-one)" stroke-width="1.5"/>
+<line x1="396.3" y1="272.9" x2="100.3" y2="201.0" stroke="var(--pf-one)" stroke-width="1.5"/>
+<line x1="305.1" y1="330.6" x2="158.9" y2="330.6" stroke="var(--pf-one)" stroke-width="1.5"/>
+<line x1="305.1" y1="330.6" x2="67.7" y2="272.9" stroke="var(--pf-one)" stroke-width="1.5"/>
+<line x1="305.1" y1="330.6" x2="100.3" y2="201.0" stroke="var(--pf-one)" stroke-width="1.5"/>
+<line x1="158.9" y1="330.6" x2="67.7" y2="272.9" stroke="var(--pf-one)" stroke-width="1.5"/>
+<line x1="158.9" y1="330.6" x2="100.3" y2="201.0" stroke="var(--pf-one)" stroke-width="1.5"/>
+<line x1="67.7" y1="272.9" x2="100.3" y2="201.0" stroke="var(--pf-one)" stroke-width="1.5"/>
+<g transform="translate(380.0 237.0)"><circle r="12" fill="var(--pf-zone)" stroke="var(--pf-one)" stroke-width="2"/><rect x="-5" y="-1.5" width="10" height="8" rx="2" fill="var(--pf-one)"/><path d="M-3.1 -1.5 v-2.6 a3.1 3.1 0 0 1 6.2 0 v2.6" fill="none" stroke="var(--pf-one)" stroke-width="1.9"/></g>
+<g transform="translate(232.0 330.6)"><circle r="12" fill="var(--pf-zone)" stroke="var(--pf-one)" stroke-width="2"/><rect x="-5" y="-1.5" width="10" height="8" rx="2" fill="var(--pf-one)"/><path d="M-3.1 -1.5 v-2.6 a3.1 3.1 0 0 1 6.2 0 v2.6" fill="none" stroke="var(--pf-one)" stroke-width="1.9"/></g>
+<g transform="translate(84.0 237.0)"><circle r="12" fill="var(--pf-zone)" stroke="var(--pf-one)" stroke-width="2"/><rect x="-5" y="-1.5" width="10" height="8" rx="2" fill="var(--pf-one)"/><path d="M-3.1 -1.5 v-2.6 a3.1 3.1 0 0 1 6.2 0 v2.6" fill="none" stroke="var(--pf-one)" stroke-width="1.9"/></g>
+<circle cx="232.0" cy="169.0" r="8" fill="var(--ink)"/>
+<circle cx="363.7" cy="201.0" r="8" fill="var(--ink)"/>
+<circle cx="396.3" cy="272.9" r="8" fill="var(--ink)"/>
+<circle cx="305.1" cy="330.6" r="8" fill="var(--ink)"/>
+<circle cx="158.9" cy="330.6" r="8" fill="var(--ink)"/>
+<circle cx="67.7" cy="272.9" r="8" fill="var(--ink)"/>
+<circle cx="100.3" cy="201.0" r="8" fill="var(--ink)"/>
+<text x="16" y="403" font-size="14" fill="var(--quiet)">One boundary, with a door on the internet.</text>
+<text x="16" y="422" font-size="14" fill="var(--quiet)">Inside, every connection is alike and trusted.</text>
+<text x="16" y="441" font-size="14" fill="var(--quiet)">A few applications add a lock.</text>
+<line x1="0" y1="482" x2="464" y2="482" stroke="var(--rule)" stroke-width="1.5"/>
+<text x="16" y="517" font-size="17" font-weight="700" fill="var(--ink)">No inside, no outside</text>
+<rect x="0" y="532.7" width="464" height="38" fill="var(--pf-net)"/>
+<text x="16" y="558" font-size="12.0" fill="var(--quiet)" letter-spacing="1.4">THE PUBLIC INTERNET</text>
+<line x1="139" y1="576.7" x2="139" y2="600.7" stroke="var(--ink)" stroke-width="2.2" stroke-dasharray="2 6" stroke-linecap="round"/>
+<line x1="130" y1="600.7" x2="148" y2="600.7" stroke="var(--ink)" stroke-width="2.8" stroke-linecap="round"/>
+<line x1="232" y1="576.7" x2="232" y2="600.7" stroke="var(--ink)" stroke-width="2.2" stroke-dasharray="2 6" stroke-linecap="round"/>
+<line x1="223" y1="600.7" x2="241" y2="600.7" stroke="var(--ink)" stroke-width="2.8" stroke-linecap="round"/>
+<line x1="325" y1="576.7" x2="325" y2="600.7" stroke="var(--ink)" stroke-width="2.2" stroke-dasharray="2 6" stroke-linecap="round"/>
+<line x1="316" y1="600.7" x2="334" y2="600.7" stroke="var(--ink)" stroke-width="2.8" stroke-linecap="round"/>
+<line x1="80.0" y1="663.7" x2="137.0" y2="656.2" stroke="var(--l0)" stroke-width="3.2" stroke-dasharray="2 7" stroke-linecap="round"/>
+<line x1="137.0" y1="656.2" x2="116.0" y2="704.2" stroke="var(--l1)" stroke-width="3.2" stroke-dasharray="12 5 2 5" stroke-linecap="round"/>
+<line x1="315.0" y1="658.7" x2="366.0" y2="649.7" stroke="var(--l2)" stroke-width="3.2" stroke-dasharray="3 4" stroke-linecap="round"/>
+<line x1="366.0" y1="649.7" x2="375.0" y2="691.7" stroke="var(--l3)" stroke-width="3.2" stroke-dasharray="9 6" stroke-linecap="round"/>
+<line x1="375.0" y1="691.7" x2="330.0" y2="700.7" stroke="var(--l4)" stroke-width="3.2" stroke-dasharray="5 5" stroke-linecap="round"/>
+<line x1="315.0" y1="658.7" x2="330.0" y2="700.7" stroke="var(--l5)" stroke-width="3.2" stroke-dasharray="8 4 2 4" stroke-linecap="round"/>
+<line x1="82.0" y1="800.7" x2="133.0" y2="791.7" stroke="var(--l6)" stroke-width="3.2" stroke-dasharray="1 6" stroke-linecap="round"/>
+<line x1="133.0" y1="791.7" x2="142.0" y2="833.7" stroke="var(--l7)" stroke-width="3.2" stroke-dasharray="14 6" stroke-linecap="round"/>
+<line x1="142.0" y1="833.7" x2="97.0" y2="842.7" stroke="var(--l0)" stroke-width="3.2" stroke-dasharray="2 7" stroke-linecap="round"/>
+<line x1="82.0" y1="800.7" x2="97.0" y2="842.7" stroke="var(--l1)" stroke-width="3.2" stroke-dasharray="12 5 2 5" stroke-linecap="round"/>
+<line x1="318.0" y1="809.7" x2="375.0" y2="802.2" stroke="var(--l2)" stroke-width="3.2" stroke-dasharray="3 4" stroke-linecap="round"/>
+<line x1="375.0" y1="802.2" x2="354.0" y2="850.2" stroke="var(--l3)" stroke-width="3.2" stroke-dasharray="9 6" stroke-linecap="round"/>
+<line x1="90.0" y1="969.9" x2="146.0" y2="947.5" stroke="var(--l4)" stroke-width="3.2" stroke-dasharray="5 5" stroke-linecap="round"/>
+<line x1="300.0" y1="947.7" x2="357.0" y2="940.2" stroke="var(--l5)" stroke-width="3.2" stroke-dasharray="8 4 2 4" stroke-linecap="round"/>
+<line x1="357.0" y1="940.2" x2="336.0" y2="988.2" stroke="var(--l6)" stroke-width="3.2" stroke-dasharray="1 6" stroke-linecap="round"/>
+<line x1="206.0" y1="1079.1" x2="258.0" y2="1058.3" stroke="var(--l7)" stroke-width="3.2" stroke-dasharray="14 6" stroke-linecap="round"/>
+<line x1="137.0" y1="656.2" x2="315.0" y2="658.7" stroke="var(--l0)" stroke-width="3.2" stroke-dasharray="2 7" stroke-linecap="round"/>
+<line x1="116.0" y1="704.2" x2="133.0" y2="791.7" stroke="var(--l1)" stroke-width="3.2" stroke-dasharray="12 5 2 5" stroke-linecap="round"/>
+<line x1="330.0" y1="700.7" x2="318.0" y2="809.7" stroke="var(--l2)" stroke-width="3.2" stroke-dasharray="3 4" stroke-linecap="round"/>
+<line x1="142.0" y1="833.7" x2="318.0" y2="809.7" stroke="var(--l3)" stroke-width="3.2" stroke-dasharray="9 6" stroke-linecap="round"/>
+<line x1="142.0" y1="833.7" x2="146.0" y2="947.5" stroke="var(--l4)" stroke-width="3.2" stroke-dasharray="5 5" stroke-linecap="round"/>
+<line x1="354.0" y1="850.2" x2="357.0" y2="940.2" stroke="var(--l5)" stroke-width="3.2" stroke-dasharray="8 4 2 4" stroke-linecap="round"/>
+<line x1="146.0" y1="947.5" x2="300.0" y2="947.7" stroke="var(--l6)" stroke-width="3.2" stroke-dasharray="1 6" stroke-linecap="round"/>
+<circle cx="80.0" cy="663.7" r="13.5" fill="var(--paper)" stroke="var(--l0)" stroke-width="2"/><circle cx="80.0" cy="663.7" r="7" fill="var(--ink)"/>
+<circle cx="137.0" cy="656.2" r="13.5" fill="var(--paper)" stroke="var(--l5)" stroke-width="2"/><circle cx="137.0" cy="656.2" r="7" fill="var(--ink)"/>
+<circle cx="116.0" cy="704.2" r="13.5" fill="var(--paper)" stroke="var(--l2)" stroke-width="2"/><circle cx="116.0" cy="704.2" r="7" fill="var(--ink)"/>
+<circle cx="315.0" cy="658.7" r="13.5" fill="var(--paper)" stroke="var(--l7)" stroke-width="2"/><circle cx="315.0" cy="658.7" r="7" fill="var(--ink)"/>
+<circle cx="366.0" cy="649.7" r="13.5" fill="var(--paper)" stroke="var(--l4)" stroke-width="2"/><circle cx="366.0" cy="649.7" r="7" fill="var(--ink)"/>
+<circle cx="375.0" cy="691.7" r="13.5" fill="var(--paper)" stroke="var(--l1)" stroke-width="2"/><circle cx="375.0" cy="691.7" r="7" fill="var(--ink)"/>
+<circle cx="330.0" cy="700.7" r="13.5" fill="var(--paper)" stroke="var(--l6)" stroke-width="2"/><circle cx="330.0" cy="700.7" r="7" fill="var(--ink)"/>
+<circle cx="82.0" cy="800.7" r="13.5" fill="var(--paper)" stroke="var(--l3)" stroke-width="2"/><circle cx="82.0" cy="800.7" r="7" fill="var(--ink)"/>
+<circle cx="133.0" cy="791.7" r="13.5" fill="var(--paper)" stroke="var(--l0)" stroke-width="2"/><circle cx="133.0" cy="791.7" r="7" fill="var(--ink)"/>
+<circle cx="142.0" cy="833.7" r="13.5" fill="var(--paper)" stroke="var(--l5)" stroke-width="2"/><circle cx="142.0" cy="833.7" r="7" fill="var(--ink)"/>
+<circle cx="97.0" cy="842.7" r="13.5" fill="var(--paper)" stroke="var(--l2)" stroke-width="2"/><circle cx="97.0" cy="842.7" r="7" fill="var(--ink)"/>
+<circle cx="318.0" cy="809.7" r="13.5" fill="var(--paper)" stroke="var(--l7)" stroke-width="2"/><circle cx="318.0" cy="809.7" r="7" fill="var(--ink)"/>
+<circle cx="375.0" cy="802.2" r="13.5" fill="var(--paper)" stroke="var(--l4)" stroke-width="2"/><circle cx="375.0" cy="802.2" r="7" fill="var(--ink)"/>
+<circle cx="354.0" cy="850.2" r="13.5" fill="var(--paper)" stroke="var(--l1)" stroke-width="2"/><circle cx="354.0" cy="850.2" r="7" fill="var(--ink)"/>
+<circle cx="90.0" cy="969.9" r="13.5" fill="var(--paper)" stroke="var(--l6)" stroke-width="2"/><circle cx="90.0" cy="969.9" r="7" fill="var(--ink)"/>
+<circle cx="146.0" cy="947.5" r="13.5" fill="var(--paper)" stroke="var(--l3)" stroke-width="2"/><circle cx="146.0" cy="947.5" r="7" fill="var(--ink)"/>
+<circle cx="300.0" cy="947.7" r="13.5" fill="var(--paper)" stroke="var(--l0)" stroke-width="2"/><circle cx="300.0" cy="947.7" r="7" fill="var(--ink)"/>
+<circle cx="357.0" cy="940.2" r="13.5" fill="var(--paper)" stroke="var(--l5)" stroke-width="2"/><circle cx="357.0" cy="940.2" r="7" fill="var(--ink)"/>
+<circle cx="336.0" cy="988.2" r="13.5" fill="var(--paper)" stroke="var(--l2)" stroke-width="2"/><circle cx="336.0" cy="988.2" r="7" fill="var(--ink)"/>
+<circle cx="206.0" cy="1079.1" r="13.5" fill="var(--paper)" stroke="var(--l7)" stroke-width="2"/><circle cx="206.0" cy="1079.1" r="7" fill="var(--ink)"/>
+<circle cx="258.0" cy="1058.3" r="13.5" fill="var(--paper)" stroke="var(--l4)" stroke-width="2"/><circle cx="258.0" cy="1058.3" r="7" fill="var(--ink)"/>
+<text x="16" y="1127" font-size="14" fill="var(--quiet)">Hidden from the internet. Every connection is</text>
+<text x="16" y="1146" font-size="14" fill="var(--quiet)">separately encrypted, authenticated and authorized.</text>
+</svg></div></figure>
+  </div>
+</section>
+
+<section class="band" id="habits">
+  <div class="wrap">
+    <h2>Five habits that make a network easier to find, easier to enter and slower to recover</h2>
+    <p class="sub">Each one is common, and each one has a cost. goat is a private mesh overlay, hidden from the public internet, that is built without them.</p>
+    <div class="blunders">
+      <div class="blunder"><svg class="mark mark-outside" viewBox="0 0 96 96" role="img" aria-label="A building with no door on the street. The way in runs under the ground."><path d="M8 58H88" class="mk"/><path d="M30 58V28L50 14L70 28V58" class="mk"/><path d="M8 80Q50 92 50 58" class="mka mkd"/><circle cx="50" cy="42" r="5" class="mkfa"/></svg><h3>A door on the public internet</h3><p class="cost">A service or a gateway that anyone can reach is one that anyone can probe.</p><p class="fix"><span class="status s-inuse">in use</span>No service has a public address. The private overlay does not answer what it cannot authenticate.</p></div>
+      <div class="blunder"><svg class="mark mark-zero-trust" viewBox="0 0 96 96" role="img" aria-label="A line between two points, stopped at a gate in the middle."><circle cx="14" cy="48" r="7" class="mkf"/><circle cx="82" cy="48" r="7" class="mkf"/><path d="M23 48H36M60 48H73" class="mk"/><circle cx="48" cy="48" r="17" class="mka"/><path d="M48 39V57" class="mka"/></svg><h3>Trust by location</h3><p class="cost">Whatever gets inside a boundary is trusted there.</p><p class="fix"><span class="status s-inuse">in use</span>There is no inside. Every connection has its own keys and its own rule.</p></div>
+      <div class="blunder"><svg class="mark mark-island" viewBox="0 0 96 96" role="img" aria-label="A site inside its own ring. The link that leaves it is cut."><circle cx="40" cy="52" r="28" class="mka"/><rect x="27" y="39" width="26" height="26" rx="6" class="mkf"/><path d="M62 30L70 22M78 14L88 4" class="mk"/></svg><h3>A distant center</h3><p class="cost">A far cloud and a long link back to it: cut the link and the site stops, and the link can be found and followed.</p><p class="fix"><span class="status s-inuse">in use</span>Each site runs everything it needs on its own machines, and is designed to work with no link at all.</p></div>
+      <div class="blunder"><svg class="mark mark-ordinary" viewBox="0 0 96 96" role="img" aria-label="Three identical parts in a row. Any one can take the place of another."><rect x="8" y="34" width="22" height="28" rx="6" class="mkf"/><rect x="37" y="34" width="22" height="28" rx="6" class="mkf"/><rect x="66" y="34" width="22" height="28" rx="6" class="mkf"/><path d="M20 20Q48 4 76 20" class="mka"/><path d="M80 24L80 12L68 16Z" class="mkfa"/></svg><h3>Special parts</h3><p class="cost">Special encryption, special lines and special hardware mark who is there, and take months to replace.</p><p class="fix"><span class="status s-inuse">in use</span>Ordinary computers, a common open protocol, and any link that carries packets.</p></div>
+      <div class="blunder"><svg class="mark mark-rebuild" viewBox="0 0 96 96" role="img" aria-label="A dashed outline of a shape, the same shape drawn solid again, and a turning arrow between them."><rect x="10" y="50" width="30" height="30" rx="6" class="mk mkd"/><rect x="54" y="50" width="30" height="30" rx="6" class="mkf"/><path d="M25 40A24 24 0 0 1 66 30" class="mka"/><path d="M70 44L71 27L57 34Z" class="mkfa"/></svg><h3>Recovery as a rare emergency</h3><p class="cost">A compromised system is cleaned in place and restored slowly, by a procedure that nobody practices.</p><p class="fix"><span class="status s-measured">measured</span>A whole site is rebuilt from its declaration in minutes, as a routine operation.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="ideas">
+  <div class="wrap">
+    <h2>Ten ideas, each with its own figure</h2>
+    <p class="sub">Each section below shows what is usual, what goat does, and what that changes for the person who runs it.</p>
+    <div class="ideas">
+        <a class="idea" href="#join"><svg class="mark mark-outside" viewBox="0 0 96 96" role="img" aria-label="A building with no door on the street. The way in runs under the ground."><path d="M8 58H88" class="mk"/><path d="M30 58V28L50 14L70 28V58" class="mk"/><path d="M8 80Q50 92 50 58" class="mka mkd"/><circle cx="50" cy="42" r="5" class="mkfa"/></svg><b>Little to find</b><span>Your services are not listed where an outsider can look.</span></a>
+        <a class="idea" href="#silent"><svg class="mark mark-silent" viewBox="0 0 96 96" role="img" aria-label="A signal sent toward a point, and no answer coming back."><circle cx="74" cy="48" r="9" class="mkf"/><path d="M12 48H24" class="mk"/><path d="M34 30Q46 48 34 66" class="mk"/><path d="M48 22Q64 48 48 74" class="mk mkd"/></svg><b>A quiet protocol</b><span>A probe of your address gets no reply.</span></a>
+        <a class="idea" href="#zero-trust"><svg class="mark mark-zero-trust" viewBox="0 0 96 96" role="img" aria-label="A line between two points, stopped at a gate in the middle."><circle cx="14" cy="48" r="7" class="mkf"/><circle cx="82" cy="48" r="7" class="mkf"/><path d="M23 48H36M60 48H73" class="mk"/><circle cx="48" cy="48" r="17" class="mka"/><path d="M48 39V57" class="mka"/></svg><b>Zero trust</b><span>Access is one list that you can read and change.</span></a>
+        <a class="idea" href="#readers"><svg class="mark mark-sealed" viewBox="0 0 96 96" role="img" aria-label="A closed box held on a tray. Its key is somewhere else."><path d="M10 78H66M10 78V68M66 78V68" class="mk"/><rect x="18" y="36" width="40" height="34" rx="6" class="mkf"/><circle cx="38" cy="50" r="4.5" class="mkfi"/><path d="M38 54V61" class="mk"/><circle cx="76" cy="20" r="7" class="mka"/><path d="M76 27V46M76 38H84M76 46H82" class="mka"/></svg><b>Sealed data</b><span>Taking one server yields sealed data.</span></a>
+        <a class="idea" href="#chain"><svg class="mark mark-verified" viewBox="0 0 96 96" role="img" aria-label="A stamp with a check mark."><path d="M48 10L80 28V66L48 86L16 66V28Z" class="mkf"/><path d="M33 49L44 60L64 36" class="mka"/></svg><b>Verified releases</b><span>A changed image is refused before it runs.</span></a>
+        <a class="idea" href="#quantum"><svg class="mark mark-quantum" viewBox="0 0 96 96" role="img" aria-label="A padlock with two shackles, one inside the other."><path d="M24 46V34a24 24 0 0 1 48 0V46" class="mk"/><path d="M36 46V36a12 12 0 0 1 24 0V46" class="mka"/><rect x="16" y="46" width="64" height="40" rx="6" class="mkf"/><circle cx="48" cy="64" r="5" class="mkfi"/></svg><b>Post-quantum</b><span>Traffic recorded today stays closed later.</span></a>
+        <a class="idea" href="#decoy"><svg class="mark mark-decoy" viewBox="0 0 96 96" role="img" aria-label="A door standing by itself, with nothing around it, and a bell that rings."><path d="M6 84H90" class="mk mkd"/><rect x="26" y="20" width="34" height="64" rx="4" class="mkf"/><circle cx="51" cy="54" r="3.5" class="mkfi"/><path d="M72 34h16l-2.5 -3.5v-5a5.5 5.5 0 0 0 -11 0v5z" class="mkfa"/><path d="M68 16q-4 6 -1 12M92 16q4 6 1 12" class="mka mkt"/></svg><b>Decoys</b><span>An alert from a decoy has one meaning.</span></a>
+        <a class="idea" href="#rebuild"><svg class="mark mark-rebuild" viewBox="0 0 96 96" role="img" aria-label="A dashed outline of a shape, the same shape drawn solid again, and a turning arrow between them."><rect x="10" y="50" width="30" height="30" rx="6" class="mk mkd"/><rect x="54" y="50" width="30" height="30" rx="6" class="mkf"/><path d="M25 40A24 24 0 0 1 66 30" class="mka"/><path d="M70 44L71 27L57 34Z" class="mkfa"/></svg><b>Rebuild</b><span>Every machine returns to a known clean state.</span></a>
+        <a class="idea" href="#island"><svg class="mark mark-island" viewBox="0 0 96 96" role="img" aria-label="A site inside its own ring. The link that leaves it is cut."><circle cx="40" cy="52" r="28" class="mka"/><rect x="27" y="39" width="26" height="26" rx="6" class="mkf"/><path d="M62 30L70 22M78 14L88 4" class="mk"/></svg><b>Stands alone</b><span>A lost link does not stop a site.</span></a>
+        <a class="idea" href="#hub"><svg class="mark mark-hub" viewBox="0 0 96 96" role="img" aria-label="A hub with three links. One link is ended, and the site at its end is still there."><circle cx="48" cy="26" r="12" class="mkf"/><path d="M38 36L20 62M48 38V62" class="mk"/><path d="M58 36L66 48" class="mk"/><path d="M58 54L74 44" class="mka"/><circle cx="18" cy="72" r="8" class="mkf"/><circle cx="48" cy="72" r="8" class="mkf"/><circle cx="78" cy="72" r="8" class="mkf"/></svg><b>A severed site</b><span>Cut from the others, it still works alone.</span></a>
+    </div>
+  </div>
+</section>
+
+<section class="scene" id="join">
+  <div class="wrap">
+    <div class="say">
+      <div class="mk-anchor" aria-hidden="true"><svg class="mark mark-outside" viewBox="0 0 96 96" role="img" aria-label="A building with no door on the street. The way in runs under the ground."><path d="M8 58H88" class="mk"/><path d="M30 58V28L50 14L70 28V58" class="mk"/><path d="M8 80Q50 92 50 58" class="mka mkd"/><circle cx="50" cy="42" r="5" class="mkfa"/></svg></div>
+      <p class="eyebrow">1 &middot; Little to find: joining</p>
+      <h2>Joining happens once, through the only public name</h2>
+      <dl>
+        <dt>Usually</dt><dd class="usual">Services have public addresses, protected by a filter and a login page. Anyone can find them and test them.</dd>
+        <dt>Here</dt><dd class="here">A goatnet has one public name, and it is used only to join. A relay behind the name passes the encrypted connection to the site and cannot read it. The device presents a key that works once, and gets its identity and the list of parties it may reach.</dd>
+        <dt>For you</dt><dd class="you">Public means one name, used to join, and nothing else.</dd>
+      </dl>
+      <ul class="ev">
+        <li><span class="status s-inuse">in use</span><span>"No host site has a public address." goatcore, decision record 1192</span></li>
+      </ul>
+    </div>
+    <figure><div class="frame"><svg id="fig-join" class="viz" viewBox="8 0 464 332" role="img" aria-label="Joining, in four steps. One: a new device contacts the goatnet&#x27;s one public name. Two: a relay behind that name passes the encrypted connection through, and cannot read it. Three: the device presents a key that works once to the service that admits it, which is inside a site and has no address of its own. Four: the device gets its identity on the mesh, and the list of parties it may reach.">
+<rect x="338" y="30" width="126" height="124" rx="14" class="bxd"/>
+<text x="401" y="52" text-anchor="middle" class="tq" font-size="14">a site</text>
+<circle cx="401" cy="92" r="15" class="idring"/>
+<circle cx="401" cy="92" r="8.5" class="dot"/>
+<text x="401" y="126" text-anchor="middle" class="tq" font-size="14">admits it;</text>
+<text x="401" y="143" text-anchor="middle" class="tq" font-size="14">no address</text>
+<rect x="96" y="72" width="96" height="40" rx="20" class="bxa"/>
+<text x="144" y="97" text-anchor="middle" class="t" font-size="14" font-weight="700">public name</text>
+<path d="M222 78L300 78" class="ln" data-lint="nohead"/>
+<path d="M222 106L300 106" class="ln" data-lint="nohead"/>
+<text x="261" y="130" text-anchor="middle" class="t" font-size="14" font-weight="700">relay</text>
+<circle cx="40" cy="92" r="8.5" class="arrival"/>
+<text x="40" y="130" text-anchor="middle" class="t" font-size="14" font-weight="700">new device</text>
+<path d="M52 92L96 92" class="link" data-lint="nohead"/>
+<path d="M192 92L384 92" class="link"/>
+<path d="M384 92L374.0 97.0L374.0 87.0Z" class="fa"/>
+<g transform="translate(261 92)"><circle r="13" class="lockring"/><rect x="-5.5" y="-2" width="11" height="8.5" rx="2" class="fa"/><path d="M-3.4 -2v-2.8a3.4 3.4 0 0 1 6.8 0v2.8" class="lka" data-lint="nohead"/></g>
+<circle cx="74" cy="66" r="11" class="fa"/>
+<text x="74" y="71" text-anchor="middle" class="ton" font-size="14" font-weight="700">1</text>
+<circle cx="261" cy="54" r="11" class="fa"/>
+<text x="261" y="59" text-anchor="middle" class="ton" font-size="14" font-weight="700">2</text>
+<circle cx="320" cy="66" r="11" class="fa"/>
+<text x="320" y="71" text-anchor="middle" class="ton" font-size="14" font-weight="700">3</text>
+<path d="M388 100Q220 196 56 106" class="lna" data-lint="nohead"/>
+<path d="M64 112L52 104" class="lna"/>
+<path d="M52 104L63.1 105.4L57.5 113.7Z" class="fa"/>
+<circle cx="220" cy="166" r="11" class="fa"/>
+<text x="220" y="171" text-anchor="middle" class="ton" font-size="14" font-weight="700">4</text>
+<circle cx="28" cy="216" r="11" class="fa"/>
+<text x="28" y="221" text-anchor="middle" class="ton" font-size="14" font-weight="700">1</text>
+<text x="48" y="221" class="t" font-size="14">A new device contacts the goatnet&#x27;s one public name.</text>
+<circle cx="28" cy="246" r="11" class="fa"/>
+<text x="28" y="251" text-anchor="middle" class="ton" font-size="14" font-weight="700">2</text>
+<text x="48" y="251" class="t" font-size="14">A relay passes the encrypted connection through, unread.</text>
+<circle cx="28" cy="276" r="11" class="fa"/>
+<text x="28" y="281" text-anchor="middle" class="ton" font-size="14" font-weight="700">3</text>
+<text x="48" y="281" class="t" font-size="14">The device presents a key that works once.</text>
+<circle cx="28" cy="306" r="11" class="fa"/>
+<text x="28" y="311" text-anchor="middle" class="ton" font-size="14" font-weight="700">4</text>
+<text x="48" y="311" class="t" font-size="14">It gets its identity, and the list of parties it may reach.</text>
+</svg></div></figure>
+  </div>
+</section>
+
+<section class="scene flip" id="after">
+  <div class="wrap">
+    <div class="say">
+      <p class="eyebrow">1 &middot; Little to find: after joining</p>
+      <h2>After joining, devices talk directly and nothing is public</h2>
+      <dl>
+        <dt>Usually</dt><dd class="usual">Traffic goes through a central gateway that has a public address, and the gateway must stay up for anything to work.</dd>
+        <dt>Here</dt><dd class="here">Devices that have joined connect to each other directly, each connection encrypted by itself. A relay is used only when two devices cannot reach each other, and it carries traffic it cannot read. Services have names that exist only inside. The service that admitted a device is no longer in its path.</dd>
+        <dt>For you</dt><dd class="you">An outside observer sees encrypted packets between addresses, and your devices keep talking when the admitting service is unreachable.</dd>
+      </dl>
+      <ul class="ev">
+        <li><span class="status s-inuse">in use</span><span>"devices that have already joined keep talking" goatcore, decision record 0201</span></li>
+      </ul>
+    </div>
+    <figure><div class="frame"><svg id="fig-after" class="viz" viewBox="8 0 464 414" role="img" aria-label="After joining. Your device has direct encrypted connections to other devices, each connection with its own lock. Two devices that cannot reach each other directly are joined through a relay, which carries encrypted traffic it cannot read. Services are reached by names known only inside the mesh. The service that admitted the device is not in the path. From the internet, an observer sees encrypted packets between addresses, and nothing answers a probe.">
+<path d="M70 96L214 50" class="link" data-lint="nohead"/>
+<g transform="translate(142.0 73.0)"><circle r="13" class="lockring"/><rect x="-5.5" y="-2" width="11" height="8.5" rx="2" class="fa"/><path d="M-3.4 -2v-2.8a3.4 3.4 0 0 1 6.8 0v2.8" class="lka" data-lint="nohead"/></g>
+<path d="M70 96L150 206" class="link" data-lint="nohead"/>
+<g transform="translate(110.0 151.0)"><circle r="13" class="lockring"/><rect x="-5.5" y="-2" width="11" height="8.5" rx="2" class="fa"/><path d="M-3.4 -2v-2.8a3.4 3.4 0 0 1 6.8 0v2.8" class="lka" data-lint="nohead"/></g>
+<path d="M214 50L392 84" class="link" data-lint="nohead"/>
+<g transform="translate(303.0 67.0)"><circle r="13" class="lockring"/><rect x="-5.5" y="-2" width="11" height="8.5" rx="2" class="fa"/><path d="M-3.4 -2v-2.8a3.4 3.4 0 0 1 6.8 0v2.8" class="lka" data-lint="nohead"/></g>
+<path d="M150 206L330 212" class="link" data-lint="nohead"/>
+<g transform="translate(240.0 209.0)"><circle r="13" class="lockring"/><rect x="-5.5" y="-2" width="11" height="8.5" rx="2" class="fa"/><path d="M-3.4 -2v-2.8a3.4 3.4 0 0 1 6.8 0v2.8" class="lka" data-lint="nohead"/></g>
+<path d="M392 84L372 132" class="linkd" data-lint="nohead"/>
+<path d="M350 164L330 212" class="linkd" data-lint="nohead"/>
+<g transform="rotate(-66 361 148)"><path d="M341 138h40M341 158h40" class="ln" data-lint="nohead"/></g>
+<text x="398" y="152" class="t" font-size="14" font-weight="700">relay,</text>
+<text x="398" y="170" class="tq" font-size="14">if needed</text>
+<circle cx="70" cy="96" r="15" class="idring"/>
+<circle cx="70" cy="96" r="8.5" class="dot"/>
+<circle cx="214" cy="50" r="15" class="idring"/>
+<circle cx="214" cy="50" r="8.5" class="dot"/>
+<circle cx="392" cy="84" r="15" class="idring"/>
+<circle cx="392" cy="84" r="8.5" class="dot"/>
+<circle cx="150" cy="206" r="15" class="idring"/>
+<circle cx="150" cy="206" r="8.5" class="dot"/>
+<circle cx="330" cy="212" r="15" class="idring"/>
+<circle cx="330" cy="212" r="8.5" class="dot"/>
+<text x="70" y="66" text-anchor="middle" class="t" font-size="14" font-weight="700">your device</text>
+<rect x="16" y="250" width="250" height="56" rx="8" class="bx"/>
+<text x="30" y="275.0" class="t" font-size="15" font-weight="700">services</text>
+<text x="30" y="295.0" class="tq" font-size="14">names known only inside</text>
+<path d="M150 222L150 250" class="link" data-lint="nohead"/>
+<rect x="290" y="250" width="174" height="56" rx="8" class="bxd"/>
+<text x="377" y="274" text-anchor="middle" class="tq" font-size="14">admitting service</text>
+<text x="377" y="293" text-anchor="middle" class="tq" font-size="14">not in the path</text>
+<rect x="16" y="332" width="448" height="66" rx="8" class="bxp"/>
+<circle cx="46" cy="365" r="16" class="bx"/><path d="M35 365q11 -10 22 0q-11 10 -22 0z" class="ln" data-lint="nohead"/><circle cx="46" cy="365" r="3.2" class="fl"/>
+<text x="74" y="359" class="t" font-size="14" font-weight="700">From the internet: encrypted packets</text>
+<text x="74" y="379" class="tq" font-size="14">between addresses. Nothing answers a probe.</text>
+</svg></div></figure>
+  </div>
+</section>
+
+<section class="scene" id="silent">
+  <div class="wrap">
+    <div class="say">
+      <div class="mk-anchor" aria-hidden="true"><svg class="mark mark-silent" viewBox="0 0 96 96" role="img" aria-label="A signal sent toward a point, and no answer coming back."><circle cx="74" cy="48" r="9" class="mkf"/><path d="M12 48H24" class="mk"/><path d="M34 30Q46 48 34 66" class="mk"/><path d="M48 22Q64 48 48 74" class="mk mkd"/></svg></div>
+      <p class="eyebrow">2 &middot; A quiet, ordinary protocol</p>
+      <h2>A scan finds nothing listening</h2>
+      <dl>
+        <dt>Usually</dt><dd class="usual">Encryption made for one kind of user has its own equipment, ports and handshakes. Seeing it on a network says who is there.</dd>
+        <dt>Here</dt><dd class="here">The overlay's tunnels between machines use WireGuard, an open protocol that many ordinary VPN users also use, so its traffic does not mark the sender as a government system. A machine does not answer a packet that it cannot authenticate.</dd>
+        <dt>For you</dt><dd class="you">A stranger who probes your address gets no reply to learn from.</dd>
+      </dl>
+      <ul class="ev">
+        <li><span class="status s-inuse">in use</span><span>"The server does not even respond at all to an unauthorized client; it is silent and invisible." wireguard.com, Protocol</span></li>
+      </ul>
+    </div>
+    <figure><div class="frame"><svg id="fig-silent" class="viz" viewBox="8 0 464 278" role="img" aria-label="Two exchanges. A stranger sends a packet that the goat machine cannot authenticate, and gets no answer. A known machine sends a packet that the goat machine can authenticate, and the tunnel opens.">
+<rect x="16" y="16" width="150" height="62" rx="8" class="bxd"/>
+<text x="91.0" y="53.0" text-anchor="middle" class="t" font-size="15" font-weight="700">a stranger</text>
+<rect x="314" y="16" width="150" height="62" rx="8" class="bxk"/>
+<text x="389.0" y="53.0" text-anchor="middle" class="t" font-size="15" font-weight="700">a goat machine</text>
+<path d="M166 47L312 47" class="lnd"/>
+<path d="M312 47L302.0 52.0L302.0 42.0Z" class="fl"/>
+<text x="240" y="102" text-anchor="middle" class="tq" font-size="14">a packet it cannot authenticate</text>
+<text x="240" y="122" text-anchor="middle" class="t" font-size="15" font-weight="700">no answer</text>
+<rect x="16" y="154" width="150" height="62" rx="8" class="bx"/>
+<text x="91.0" y="191.0" text-anchor="middle" class="t" font-size="15" font-weight="700">a known machine</text>
+<rect x="314" y="154" width="150" height="62" rx="8" class="bxk"/>
+<text x="389.0" y="191.0" text-anchor="middle" class="t" font-size="15" font-weight="700">a goat machine</text>
+<path d="M166 176L312 176" class="lna"/>
+<path d="M312 176L302.0 181.0L302.0 171.0Z" class="fa"/>
+<path d="M314 196L168 196" class="lna"/>
+<path d="M168 196L178.0 191.0L178.0 201.0Z" class="fa"/>
+<text x="240" y="240" text-anchor="middle" class="tq" font-size="14">a packet it can authenticate</text>
+<text x="240" y="260" text-anchor="middle" class="t" font-size="15" font-weight="700">the tunnel opens</text>
+</svg></div></figure>
+  </div>
+</section>
+
+<section class="scene flip" id="zero-trust">
+  <div class="wrap">
+    <div class="say">
+      <div class="mk-anchor" aria-hidden="true"><svg class="mark mark-zero-trust" viewBox="0 0 96 96" role="img" aria-label="A line between two points, stopped at a gate in the middle."><circle cx="14" cy="48" r="7" class="mkf"/><circle cx="82" cy="48" r="7" class="mkf"/><path d="M23 48H36M60 48H73" class="mk"/><circle cx="48" cy="48" r="17" class="mka"/><path d="M48 39V57" class="mka"/></svg></div>
+      <p class="eyebrow">3 &middot; Zero trust</p>
+      <h2>Being on the network grants nothing</h2>
+      <dl>
+        <dt>Usually</dt><dd class="usual">A device inside the network is trusted because of where it is.</dd>
+        <dt>Here</dt><dd class="here">Every request passes four checks. A person, a machine and a workload each prove who they are in their own way. A connection needs a declared rule, and with no rule there is no connection. A declared table says what each role may do. An identity can be revoked, and a machine can be held for review.</dd>
+        <dd class="here" style="margin-top:10px">The rules in force are generated from a declaration that is reviewed like code. A partner's identities can be verified without being granted anything.</dd>
+        <dt>For you</dt><dd class="you">Access is one list that you can read, review and change.</dd>
+      </dl>
+      <ul class="ev">
+        <li><span class="status s-inuse">in use</span><span>identities; declared rules, applied and checked by every stand-up</span></li>
+        <li><span class="status s-built">built</span><span>the table of roles, revocation, review</span></li>
+      </ul>
+    </div>
+    <figure><div class="frame"><svg id="fig-identity" class="viz" viewBox="8 0 464 538" role="img" aria-label="A request from a person, a machine or a workload passes four checks before it reaches a service. One: who is asking; the identity is proven, each kind in its own way. Two: is there a declared rule; with no rule there is no connection, and a position on the network grants nothing. Three: may this role do this; a declared table of roles is enforced. Four: is the identity still in good standing, meaning not revoked and not held for review. A request that fails one check stops there.">
+<rect x="16" y="16" width="144" height="58" rx="8" class="bx"/>
+<text x="88.0" y="42.0" text-anchor="middle" class="t" font-size="15" font-weight="700">a person</text>
+<text x="88.0" y="62.0" text-anchor="middle" class="tq" font-size="14">signs in</text>
+<path d="M88 74L88 92" class="ln" data-lint="nohead"/>
+<rect x="168" y="16" width="144" height="58" rx="8" class="bx"/>
+<text x="240.0" y="42.0" text-anchor="middle" class="t" font-size="15" font-weight="700">a machine</text>
+<text x="240.0" y="62.0" text-anchor="middle" class="tq" font-size="14">its own key</text>
+<path d="M240 74L240 92" class="ln" data-lint="nohead"/>
+<rect x="320" y="16" width="144" height="58" rx="8" class="bx"/>
+<text x="392.0" y="42.0" text-anchor="middle" class="t" font-size="15" font-weight="700">a workload</text>
+<text x="392.0" y="62.0" text-anchor="middle" class="tq" font-size="14">a certificate</text>
+<path d="M392 74L392 92" class="ln" data-lint="nohead"/>
+<path d="M88 92L392 92" class="ln" data-lint="nohead"/>
+<path d="M240 92L240 112" class="ln"/>
+<path d="M240 112L235.0 102.0L245.0 102.0Z" class="fl"/>
+<rect x="16" y="114" width="448" height="62" rx="8" class="bxa"/>
+<circle cx="44" cy="145" r="14" class="fa"/>
+<text x="44" y="150" text-anchor="middle" class="ton" font-size="15" font-weight="700">1</text>
+<text x="70" y="141" class="t" font-size="15" font-weight="700">Who is asking?</text>
+<text x="70" y="160" class="tq" font-size="14">the identity is proven, each kind its own way</text>
+<path d="M240 176L240 190" class="lna"/>
+<path d="M240 190L235.0 180.0L245.0 180.0Z" class="fa"/>
+<rect x="16" y="192" width="448" height="62" rx="8" class="bxa"/>
+<circle cx="44" cy="223" r="14" class="fa"/>
+<text x="44" y="228" text-anchor="middle" class="ton" font-size="15" font-weight="700">2</text>
+<text x="70" y="219" class="t" font-size="15" font-weight="700">Is there a declared rule?</text>
+<text x="70" y="238" class="tq" font-size="14">no rule, no connection; position grants nothing</text>
+<path d="M240 254L240 268" class="lna"/>
+<path d="M240 268L235.0 258.0L245.0 258.0Z" class="fa"/>
+<rect x="16" y="270" width="448" height="62" rx="8" class="bxa"/>
+<circle cx="44" cy="301" r="14" class="fa"/>
+<text x="44" y="306" text-anchor="middle" class="ton" font-size="15" font-weight="700">3</text>
+<text x="70" y="297" class="t" font-size="15" font-weight="700">May this role do this?</text>
+<text x="70" y="316" class="tq" font-size="14">a declared table of roles, enforced</text>
+<path d="M240 332L240 346" class="lna"/>
+<path d="M240 346L235.0 336.0L245.0 336.0Z" class="fa"/>
+<rect x="16" y="348" width="448" height="62" rx="8" class="bxa"/>
+<circle cx="44" cy="379" r="14" class="fa"/>
+<text x="44" y="384" text-anchor="middle" class="ton" font-size="15" font-weight="700">4</text>
+<text x="70" y="375" class="t" font-size="15" font-weight="700">Still in good standing?</text>
+<text x="70" y="394" class="tq" font-size="14">not revoked, not held for review</text>
+<path d="M240 410L240 428" class="lna"/>
+<path d="M240 428L235.0 418.0L245.0 418.0Z" class="fa"/>
+<rect x="16" y="430" width="448" height="46" rx="8" class="bxk"/>
+<text x="240.0" y="459.0" text-anchor="middle" class="t" font-size="15" font-weight="700">the service</text>
+<text x="240" y="506" text-anchor="middle" class="tq" font-size="14">A request that fails one check stops there.</text>
+<text x="240" y="525" text-anchor="middle" class="tq" font-size="14">Rules 2 and 3 are generated from a reviewed declaration.</text>
+</svg></div></figure>
+  </div>
+</section>
+
+<section class="scene" id="readers">
+  <div class="wrap">
+    <div class="say">
+      <div class="mk-anchor" aria-hidden="true"><svg class="mark mark-sealed" viewBox="0 0 96 96" role="img" aria-label="A closed box held on a tray. Its key is somewhere else."><path d="M10 78H66M10 78V68M66 78V68" class="mk"/><rect x="18" y="36" width="40" height="34" rx="6" class="mkf"/><circle cx="38" cy="50" r="4.5" class="mkfi"/><path d="M38 54V61" class="mk"/><circle cx="76" cy="20" r="7" class="mka"/><path d="M76 27V46M76 38H84M76 46H82" class="mka"/></svg></div>
+      <p class="eyebrow">4 &middot; Sealed data</p>
+      <h2>One stolen server does not open everything</h2>
+      <dl>
+        <dt>Usually</dt><dd class="usual">A secret store can read every secret it holds, and a message broker can read every message. Whoever takes that server has all of it.</dd>
+        <dt>Here</dt><dd class="here">A secret is encrypted on your device before it is stored, so the store cannot read it. Shared data is sealed for named readers, and the platform holds no key for it. The data fabric that carries it holds no key and has no central broker.</dd>
+        <dt>For you</dt><dd class="you">Taking one server yields sealed data.</dd>
+      </dl>
+      <ul class="ev">
+        <li><span class="status s-inuse">in use</span><span>the secret store; no central broker; sealing for named readers</span></li>
+      </ul>
+    </div>
+    <figure><div class="frame"><svg id="fig-readers" class="viz" viewBox="8 0 464 312" role="img" aria-label="A secret is encrypted on your device before it reaches the secret store, which holds it and cannot read it. A shared message is sealed by the sender, carried by the data fabric, and opened only by a named reader. The fabric holds no key and has no central broker: machines pass the sealed message on.">
+<text x="16" y="24" class="t" font-size="16" font-weight="700">A secret</text>
+<rect x="16" y="36" width="186" height="70" rx="8" class="bx"/>
+<text x="30" y="68.0" class="t" font-size="15" font-weight="700">your device</text>
+<text x="30" y="88.0" class="tq" font-size="14">encrypts it first</text>
+<rect x="278" y="36" width="186" height="70" rx="8" class="bxp"/>
+<text x="292" y="68.0" class="t" font-size="15" font-weight="700">the secret store</text>
+<text x="292" y="88.0" class="tq" font-size="14">holds it, cannot read it</text>
+<path d="M202 80L276 80" class="lna"/>
+<path d="M276 80L266.0 85.0L266.0 75.0Z" class="fa"/>
+<path d="M234.5 59V56a4.5 4.5 0 0 1 9 0V59" class="lka" data-lint="nohead"/>
+<rect x="231" y="59" width="16" height="11" rx="2" class="fa"/>
+<text x="16" y="162" class="t" font-size="16" font-weight="700">A shared message</text>
+<rect x="16" y="174" width="132" height="70" rx="8" class="bx"/>
+<text x="30" y="206.0" class="t" font-size="15" font-weight="700">the sender</text>
+<text x="30" y="226.0" class="tq" font-size="14">seals it</text>
+<rect x="174" y="174" width="132" height="70" rx="8" class="bxp"/>
+<text x="188" y="206.0" class="t" font-size="15" font-weight="700">the fabric</text>
+<text x="188" y="226.0" class="tq" font-size="14">carries it</text>
+<rect x="332" y="174" width="132" height="70" rx="8" class="bx"/>
+<text x="346" y="206.0" class="t" font-size="15" font-weight="700">the reader</text>
+<text x="346" y="226.0" class="tq" font-size="14">named, opens it</text>
+<path d="M148 222L172 222" class="lna"/>
+<path d="M172 222L162.0 227.0L162.0 217.0Z" class="fa"/>
+<path d="M306 222L330 222" class="lna"/>
+<path d="M330 222L320.0 227.0L320.0 217.0Z" class="fa"/>
+<path d="M156.5 199V196a4.5 4.5 0 0 1 9 0V199" class="lka" data-lint="nohead"/>
+<rect x="153" y="199" width="16" height="11" rx="2" class="fa"/>
+<path d="M314.5 199V196a4.5 4.5 0 0 1 9 0V199" class="lka" data-lint="nohead"/>
+<rect x="311" y="199" width="16" height="11" rx="2" class="fa"/>
+<text x="240" y="276" text-anchor="middle" class="tq" font-size="14">The fabric holds no key and has no central broker:</text>
+<text x="240" y="295" text-anchor="middle" class="tq" font-size="14">machines pass the sealed message on.</text>
+</svg></div></figure>
+  </div>
+</section>
+
+<section class="scene flip" id="chain">
+  <div class="wrap">
+    <div class="say">
+      <div class="mk-anchor" aria-hidden="true"><svg class="mark mark-verified" viewBox="0 0 96 96" role="img" aria-label="A stamp with a check mark."><path d="M48 10L80 28V66L48 86L16 66V28Z" class="mkf"/><path d="M33 49L44 60L64 36" class="mka"/></svg></div>
+      <p class="eyebrow">5 &middot; Verified releases</p>
+      <h2>Nothing runs unless it is verified</h2>
+      <dl>
+        <dt>Usually</dt><dd class="usual">A machine runs whatever was last installed on it, and an image name can point to different content over time.</dd>
+        <dt>Here</dt><dd class="here">A signed list says which release runs where. Every image is named by its content hash. Before a deploy changes a machine, it checks the signature, the hash, the source and the order of stages.</dd>
+        <dt>For you</dt><dd class="you">A changed image or an edited configuration is refused before it reaches a machine.</dd>
+      </dl>
+      <ul class="ev">
+        <li><span class="status s-inuse">in use</span><span>goatbuilder 0.8.0: each refusal has an error code, and <code>goatbuilder explain &lt;code&gt;</code> gives the cause and the fix</span></li>
+      </ul>
+    </div>
+    <figure><div class="frame"><svg id="fig-chain" class="viz" viewBox="8 0 464 518" role="img" aria-label="The chain from a commit to a running machine. A commit is signed by its author. The release list, which says which release runs where, is signed. An image is named by its content hash. Before a deploy changes a machine it checks the signature on the release list, the content hash of every image, that the source matches the repository, and that the earlier stage runs this release. If one check fails, the deploy refuses and nothing changes.">
+<rect x="16" y="16" width="448" height="58" rx="8" class="bx"/>
+<text x="30" y="42.0" class="t" font-size="15" font-weight="700">a commit</text>
+<text x="30" y="62.0" class="tq" font-size="14">signed by its author</text>
+<path d="M240 74L240 94" class="ln"/>
+<path d="M240 94L235.0 84.0L245.0 84.0Z" class="fl"/>
+<rect x="16" y="96" width="448" height="58" rx="8" class="bx"/>
+<text x="30" y="122.0" class="t" font-size="15" font-weight="700">the release list</text>
+<text x="30" y="142.0" class="tq" font-size="14">signed: which release runs where</text>
+<path d="M240 154L240 174" class="ln"/>
+<path d="M240 174L235.0 164.0L245.0 164.0Z" class="fl"/>
+<rect x="16" y="176" width="448" height="58" rx="8" class="bx"/>
+<text x="30" y="202.0" class="t" font-size="15" font-weight="700">an image</text>
+<text x="30" y="222.0" class="tq" font-size="14">named by its content hash</text>
+<path d="M240 234L240 254" class="ln"/>
+<path d="M240 254L235.0 244.0L245.0 244.0Z" class="fl"/>
+<rect x="16" y="256" width="448" height="150" rx="8" class="bxa"/>
+<text x="30" y="282" class="t" font-size="15" font-weight="700">a deploy checks, before it changes a machine</text>
+<path d="M32 304l4.5 4.5l8 -9.5" class="lna" data-lint="nohead"/>
+<text x="56" y="310" class="t" font-size="14.5">the signature on the release list</text>
+<path d="M32 330l4.5 4.5l8 -9.5" class="lna" data-lint="nohead"/>
+<text x="56" y="336" class="t" font-size="14.5">the content hash of every image</text>
+<path d="M32 356l4.5 4.5l8 -9.5" class="lna" data-lint="nohead"/>
+<text x="56" y="362" class="t" font-size="14.5">the source matches the repository</text>
+<path d="M32 382l4.5 4.5l8 -9.5" class="lna" data-lint="nohead"/>
+<text x="56" y="388" class="t" font-size="14.5">the earlier stage runs this release</text>
+<path d="M240 406L240 426" class="lna"/>
+<path d="M240 426L235.0 416.0L245.0 416.0Z" class="fa"/>
+<rect x="16" y="428" width="448" height="46" rx="8" class="bxk"/>
+<text x="240.0" y="457.0" text-anchor="middle" class="t" font-size="15" font-weight="700">the machine</text>
+<text x="240" y="502" text-anchor="middle" class="tq" font-size="14">One check fails: the deploy refuses, and nothing changes.</text>
+</svg></div></figure>
+  </div>
+</section>
+
+<section class="scene" id="quantum">
+  <div class="wrap">
+    <div class="say">
+      <div class="mk-anchor" aria-hidden="true"><svg class="mark mark-quantum" viewBox="0 0 96 96" role="img" aria-label="A padlock with two shackles, one inside the other."><path d="M24 46V34a24 24 0 0 1 48 0V46" class="mk"/><path d="M36 46V36a12 12 0 0 1 24 0V46" class="mka"/><rect x="16" y="46" width="64" height="40" rx="6" class="mkf"/><circle cx="48" cy="64" r="5" class="mkfi"/></svg></div>
+      <p class="eyebrow">6 &middot; Post-quantum</p>
+      <h2>Traffic recorded today stays closed later</h2>
+      <dl>
+        <dt>Usually</dt><dd class="usual">Encrypted traffic can be recorded now and kept. A future quantum computer could open what today's key exchange protects.</dd>
+        <dt>Here</dt><dd class="here">The routers of the data fabric offer two key exchanges together first: the usual kind, and one built to resist that computer. A client that supports the pair gets it, and reading that traffic needs both to be broken. A client that does not support it connects the usual way.</dd>
+        <dt>For you</dt><dd class="you">Data that must stay private for years is protected against a later reader.</dd>
+      </dl>
+      <ul class="ev">
+        <li><span class="status s-inuse">in use</span><span>the data fabric</span></li>
+        <li><span class="status s-built">built</span><span>mesh tunnels</span></li>
+        <li><span class="status s-designed">designed</span><span>links between organizations</span></li>
+      </ul>
+    </div>
+    <figure><div class="frame"><svg id="fig-quantum" class="viz" viewBox="8 0 464 382" role="img" aria-label="Today two machines agree on a key, and a recorder keeps the encrypted traffic. Years later, with a quantum computer, a recording protected by one key exchange of the usual kind opens. A recording protected by two key exchanges, the usual kind and one built to resist that computer, stays closed, because both must be broken to read the traffic.">
+<text x="16" y="24" class="t" font-size="16" font-weight="700">Today</text>
+<rect x="16" y="36" width="160" height="62" rx="8" class="bx"/>
+<text x="96.0" y="64.0" text-anchor="middle" class="t" font-size="15" font-weight="700">two machines</text>
+<text x="96.0" y="84.0" text-anchor="middle" class="tq" font-size="14">agree on a key</text>
+<rect x="304" y="36" width="160" height="62" rx="8" class="bxd"/>
+<text x="384.0" y="64.0" text-anchor="middle" class="t" font-size="15" font-weight="700">a recorder</text>
+<text x="384.0" y="84.0" text-anchor="middle" class="tq" font-size="14">keeps the traffic</text>
+<path d="M176 67L302 67" class="ln"/>
+<path d="M302 67L292.0 72.0L292.0 62.0Z" class="fl"/>
+<text x="16" y="150" class="t" font-size="16" font-weight="700">Years later, with a quantum computer</text>
+<rect x="16" y="162" width="250" height="76" rx="8" class="bx"/>
+<text x="30" y="197.0" class="t" font-size="15" font-weight="700">one key exchange</text>
+<text x="30" y="217.0" class="tq" font-size="14">of the usual kind</text>
+<path d="M266 200L296 200" class="ln"/>
+<path d="M296 200L286.0 205.0L286.0 195.0Z" class="fl"/>
+<path d="M309.5 199V195a4.5 4.5 0 0 1 9 0" class="ln" data-lint="nohead"/><rect x="306" y="199" width="16" height="11" rx="2" class="fl"/>
+<text x="332" y="196" class="t" font-size="14">the recording</text>
+<text x="332" y="214" class="t" font-size="14">opens</text>
+<rect x="16" y="254" width="250" height="76" rx="8" class="bxa"/>
+<text x="30" y="280.0" class="t" font-size="15" font-weight="700">two key exchanges</text>
+<text x="30" y="300.0" class="tq" font-size="14">the usual kind, and one built</text>
+<text x="30" y="318.0" class="tq" font-size="14">to resist that computer</text>
+<path d="M266 292L296 292" class="lna"/>
+<path d="M296 292L286.0 297.0L286.0 287.0Z" class="fa"/>
+<path d="M309.5 291V288a4.5 4.5 0 0 1 9 0V291" class="lka" data-lint="nohead"/>
+<rect x="306" y="291" width="16" height="11" rx="2" class="fa"/>
+<text x="332" y="288" class="t" font-size="14">the recording</text>
+<text x="332" y="306" class="t" font-size="14">stays closed</text>
+<text x="240" y="364" text-anchor="middle" class="tq" font-size="14">Both must be broken to read the traffic.</text>
+</svg></div></figure>
+  </div>
+</section>
+
+<section class="scene flip" id="decoy">
+  <div class="wrap">
+    <div class="say">
+      <div class="mk-anchor" aria-hidden="true"><svg class="mark mark-decoy" viewBox="0 0 96 96" role="img" aria-label="A door standing by itself, with nothing around it, and a bell that rings."><path d="M6 84H90" class="mk mkd"/><rect x="26" y="20" width="34" height="64" rx="4" class="mkf"/><circle cx="51" cy="54" r="3.5" class="mkfi"/><path d="M72 34h16l-2.5 -3.5v-5a5.5 5.5 0 0 0 -11 0v5z" class="mkfa"/><path d="M68 16q-4 6 -1 12M92 16q4 6 1 12" class="mka mkt"/></svg></div>
+      <p class="eyebrow">7 &middot; Decoys</p>
+      <h2>A decoy raises an alarm on its first use</h2>
+      <dl>
+        <dt>Usually</dt><dd class="usual">Detection depends on noticing unusual behavior among normal use, so quiet exploration can go unseen for a long time.</dd>
+        <dt>Here</dt><dd class="here">A site carries decoys: names and web paths that no person or program has a reason to use. Any use of one is hostile, and the first use alerts the operator on call.</dd>
+        <dt>For you</dt><dd class="you">An alert from a decoy has one meaning.</dd>
+      </dl>
+      <ul class="ev">
+        <li><span class="status s-built">built</span><span>decoy names and web paths</span></li>
+        <li><span class="status s-designed">designed</span><span>decoys on the data fabric, decoy credentials</span></li>
+      </ul>
+    </div>
+    <figure><div class="frame"><svg id="fig-decoy" class="viz" viewBox="8 0 464 276" role="img" aria-label="A site offers real names, real web paths and real services, and also a decoy that nothing has a reason to use. When an intruder uses the decoy, the first use raises an alert, and the alert reaches the operator on call.">
+<text x="16" y="24" class="t" font-size="16" font-weight="700">What a site offers</text>
+<rect x="16" y="36" width="144" height="40" rx="6" class="bx"/>
+<text x="88" y="61" text-anchor="middle" class="tq" font-size="14">a real name</text>
+<rect x="168" y="36" width="144" height="40" rx="6" class="bx"/>
+<text x="240" y="61" text-anchor="middle" class="tq" font-size="14">a real web path</text>
+<rect x="320" y="36" width="144" height="40" rx="6" class="bx"/>
+<text x="392" y="61" text-anchor="middle" class="tq" font-size="14">a real service</text>
+<rect x="16" y="104" width="200" height="62" rx="6" class="bxd"/>
+<text x="116" y="130" text-anchor="middle" class="t" font-size="15" font-weight="700">a decoy</text>
+<text x="116" y="150" text-anchor="middle" class="tq" font-size="14">nothing uses it</text>
+<path d="M116 209L129 222L116 235L103 222Z" class="intr"/>
+<text x="116" y="254" text-anchor="middle" class="t" font-size="14" font-weight="700">intruder</text>
+<path d="M116 208L116 168" class="lna"/>
+<path d="M116 168L121.0 178.0L111.0 178.0Z" class="fa"/>
+<path d="M216 135L286 135" class="lna"/>
+<path d="M286 135L276.0 140.0L276.0 130.0Z" class="fa"/>
+<rect x="288" y="100" width="176" height="70" rx="8" class="bxa"/>
+<path d="M304 138h20l-3 -4v-5a7 7 0 0 0 -14 0v5z" class="fa"/><circle cx="314" cy="141.5" r="2.4" class="fa"/>
+<text x="338" y="130" class="t" font-size="15" font-weight="700">an alert</text>
+<text x="338" y="150" class="tq" font-size="14">on the first use</text>
+<path d="M376 170L376 206" class="lna"/>
+<path d="M376 206L371.0 196.0L381.0 196.0Z" class="fa"/>
+<rect x="288" y="208" width="176" height="52" rx="8" class="bxk"/>
+<text x="376.0" y="240.0" text-anchor="middle" class="t" font-size="15" font-weight="700">the operator on call</text>
+</svg></div></figure>
+  </div>
+</section>
+
+<section class="scene center" id="rebuild">
+  <div class="wrap">
+    <div class="lead">
+      <div class="say">
+        <div class="mk-anchor" aria-hidden="true"><svg class="mark mark-rebuild" viewBox="0 0 96 96" role="img" aria-label="A dashed outline of a shape, the same shape drawn solid again, and a turning arrow between them."><rect x="10" y="50" width="30" height="30" rx="6" class="mk mkd"/><rect x="54" y="50" width="30" height="30" rx="6" class="mkf"/><path d="M25 40A24 24 0 0 1 66 30" class="mka"/><path d="M70 44L71 27L57 34Z" class="mkfa"/></svg></div>
+      <p class="eyebrow">8 &middot; Rebuild</p>
+        <h2>A rebuild returns every machine to a known clean state</h2>
+        <dl>
+          <dt>Usually</dt><dd class="usual">A compromised machine is cleaned in place, and the cleaning is trusted. A full rebuild takes days, so it is avoided.</dd>
+          <dt>Here</dt><dd class="here">A site is described by a declaration in a repository. One command builds the whole site from it, and the same command builds it again: machines prepared and encrypted, services, relays, identity, the mesh, and checks that prove it works.</dd>
+          <dt>For you</dt><dd class="you">A rebuild is an ordinary, practiced operation, not a painful reaction to a disaster. When you have a doubt about a machine, you rebuild it.</dd>
+        </dl>
+      </div>
+      <figure><div class="frame"><svg id="fig-rebuild" class="viz" viewBox="8 0 464 334" role="img" aria-label="A cycle. A declaration in a repository is built into a running site by one command; the build is 38 min 12 s of machine time. One command takes the site down again in 5 min 54 s. Every rebuild returns every machine to a known clean state.">
+<rect x="16" y="118" width="150" height="76" rx="8" class="bxa"/>
+<text x="91.0" y="153.0" text-anchor="middle" class="t" font-size="15" font-weight="700">a declaration</text>
+<text x="91.0" y="173.0" text-anchor="middle" class="tq" font-size="14">in a repository</text>
+<rect x="314" y="118" width="150" height="76" rx="8" class="bxk"/>
+<text x="389.0" y="153.0" text-anchor="middle" class="t" font-size="15" font-weight="700">a running site</text>
+<text x="389.0" y="173.0" text-anchor="middle" class="tq" font-size="14">checked, in use</text>
+<path d="M91 116Q240 6 383 110" class="lna" data-lint="nohead"/>
+<path d="M377 104L389 116" class="lna"/>
+<path d="M389 116L378.4 112.5L385.5 105.4Z" class="fa"/>
+<path d="M389 196Q240 306 97 202" class="lna" data-lint="nohead"/>
+<path d="M103 208L91 196" class="lna"/>
+<path d="M91 196L101.6 199.5L94.5 206.6Z" class="fa"/>
+<text x="240" y="40" text-anchor="middle" class="t halo" font-size="15" font-weight="700" data-lint="halo">build</text>
+<text x="240" y="60" text-anchor="middle" class="ta halo" font-size="17" font-weight="700" data-lint="halo">38 min 12 s</text>
+<text x="240" y="254" text-anchor="middle" class="t halo" font-size="15" font-weight="700" data-lint="halo">take down</text>
+<text x="240" y="274" text-anchor="middle" class="ta halo" font-size="17" font-weight="700" data-lint="halo">5 min 54 s</text>
+<text x="240" y="152" text-anchor="middle" class="tq" font-size="14">one command</text>
+<text x="240" y="170" text-anchor="middle" class="tq" font-size="14">each way</text>
+<text x="240" y="316" text-anchor="middle" class="tq" font-size="14">Every rebuild returns every machine to a known clean state.</text>
+</svg></div></figure>
+    </div>
+    <div class="facts">
+      <div><span class="n" data-measure="build">38 min 12 s</span><span class="l">of machine time to build a whole site, measured on real machines</span></div>
+      <div><span class="n" data-measure="down">5 min 54 s</span><span class="l">to take a site down, measured on real machines</span></div>
+    </div>
+    <div>
+      <p class="h3">What one command builds, stage by stage (minutes:seconds)</p>
+      <ol class="wf full">
+          <li data-end="28"><span class="wn"><b>Checks before anything changes</b><small>The declaration is complete and the machines can be reached. Nothing is changed yet.</small></span><span class="wt"><i style="left:0.00%;width:1.22%"></i></span><span class="wd">0:28</span></li>
+          <li data-end="215"><span class="wn"><b>Machines prepared, disks encrypted</b><small>Each machine gets its baseline and its disk encryption.</small></span><span class="wt"><i style="left:1.22%;width:8.16%"></i></span><span class="wd">3:07</span></li>
+          <li data-end="219"><span class="wn"><b>Secrets and certificates created</b><small>The site&#x27;s own secrets and its certificates are created.</small></span><span class="wt"><i style="left:9.38%;width:0.90%"></i></span><span class="wd">0:04</span></li>
+          <li data-end="461"><span class="wn"><b>Management services started</b><small>The services that run the site start, and the site links to its relays.</small></span><span class="wt"><i style="left:9.55%;width:10.56%"></i></span><span class="wd">4:02</span></li>
+          <li data-end="726"><span class="wn"><b>Sign-in services and the first account</b><small>The identity provider starts, and the first account and joining key are made.</small></span><span class="wt"><i style="left:20.11%;width:11.56%"></i></span><span class="wd">4:25</span></li>
+          <li data-end="1238"><span class="wn"><b>Relays in a cloud</b><small>The relays that the site is reached through are set up.</small></span><span class="wt"><i style="left:31.68%;width:22.34%"></i></span><span class="wd">8:32</span></li>
+          <li data-end="1312"><span class="wn"><b>Machines join the mesh</b><small>Each machine joins with a key that works once, and its address is recorded.</small></span><span class="wt"><i style="left:54.01%;width:3.23%"></i></span><span class="wd">1:14</span></li>
+          <li data-end="1409"><span class="wn"><b>Data router and workload identity</b><small>Data can move, and workloads can be given certificates.</small></span><span class="wt"><i style="left:57.24%;width:4.23%"></i></span><span class="wd">1:37</span></li>
+          <li data-end="1503"><span class="wn"><b>Dashboard placed behind sign-in</b><small>The mesh dashboard is reachable only after sign-in.</small></span><span class="wt"><i style="left:61.47%;width:4.10%"></i></span><span class="wd">1:34</span></li>
+          <li data-end="1614"><span class="wn"><b>The administrator signs in</b><small>A person signs in for the first time.</small></span><span class="wt"><i style="left:65.58%;width:4.84%"></i></span><span class="wd">1:51</span></li>
+          <li data-end="2103"><span class="wn"><b>Access rules, service identities, portal, alarm</b><small>The declared access rules are applied and checked; the portal, onboarding and the off-site alarm start.</small></span><span class="wt"><i style="left:70.42%;width:21.34%"></i></span><span class="wd">8:09</span></li>
+          <li data-end="2202"><span class="wn"><b>Checks that prove the site works</b><small>An acceptance suite checks the running site.</small></span><span class="wt"><i style="left:91.75%;width:4.32%"></i></span><span class="wd">1:39</span></li>
+          <li class="wsum"><span class="wn"><b>Whole site</b><small>The stages, and 1 min 30 s between steps.</small></span><span class="wt"><i style="left:0;width:100%"></i></span><span class="wd">38:12</span></li>
+      </ol>
+    </div>
+    <div>
+      <p class="h3">Release 1.0 requires</p>
+      <ul class="ev">
+        <li><span class="status s-built">built</span><span>a first site, start to finish, in <span data-measure="req-site">60 min</span> or less</span></li>
+        <li><span class="status s-built">built</span><span>a machine added in <span data-measure="req-node">15 min</span> or less</span></li>
+        <li><span class="status s-measured">measured</span><span>a site taken down in <span data-measure="req-down">15 min</span> or less</span></li>
+      </ul>
+    </div>
+    <div class="two">
+      <div>
+        <p class="h3">A rebuild removes</p>
+        <ul>
+          <li><b>Programs and files left on a machine</b><span class="d">The machine is installed again and built from the declaration.</span></li>
+          <li><b>A machine's place on the mesh</b><span class="d">Each machine joins again with a key that works once.</span></li>
+          <li><b>Running services</b><span class="d">One command stops every service of a site and keeps the record of each.</span></li>
+        </ul>
+      </div>
+      <div>
+        <p class="h3">Other parts of the design handle</p>
+        <ul>
+          <li><b>A stolen secret</b><span class="d">A rebuild from an export carries no secret, password hash or private key from the old site; each is issued again.</span><span class="status s-designed">designed</span></li>
+          <li><b>A changed source or image</b><span class="d">The deploy checks refuse it.</span><span class="status s-inuse">in use</span></li>
+          <li><b>Data that was already copied</b><span class="d">Sealing for named readers limits what a copy reveals.</span><span class="status s-inuse">in use</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="scene" id="island">
+  <div class="wrap">
+    <div class="say">
+      <div class="mk-anchor" aria-hidden="true"><svg class="mark mark-island" viewBox="0 0 96 96" role="img" aria-label="A site inside its own ring. The link that leaves it is cut."><circle cx="40" cy="52" r="28" class="mka"/><rect x="27" y="39" width="26" height="26" rx="6" class="mkf"/><path d="M62 30L70 22M78 14L88 4" class="mk"/></svg></div>
+      <p class="eyebrow">9 &middot; Sites that stand alone</p>
+      <h2>Cut off, a site keeps working, and it can stay silent</h2>
+      <dl>
+        <dt>Usually</dt><dd class="usual">Sites depend on a central service and on a long link to it. When the link fails they stop. While it works, it can be found, jammed or followed.</dd>
+        <dt>Here</dt><dd class="here">Every site runs the same services, and keeps admitting people, enrolling machines and changing access while it is cut off. A site that needs no link back does not have to transmit off-site at all.</dd>
+        <dt>For you</dt><dd class="you">A lost link does not stop a site, and a site that sends nothing shows less in the radio spectrum, to signals collection and on the network.</dd>
+      </dl>
+      <ul class="ev">
+        <li><span class="status s-designed">designed</span><span>goatcore, decision record 1165</span></li>
+        <li><span class="status s-built">built</span><span>the tests for mesh control and sign-in under a cut link</span></li>
+      </ul>
+    </div>
+    <figure><div class="frame"><svg id="fig-island" class="viz" viewBox="8 0 464 312" role="img" aria-label="A site whose link to the other sites is cut. Inside the site, sign-in, the mesh, data and access changes all keep running. Nothing has to leave the site for it to keep working.">
+<rect x="16" y="16" width="150" height="56" rx="8" class="bx"/>
+<text x="91.0" y="50.0" text-anchor="middle" class="t" font-size="15" font-weight="700">the other sites</text>
+<path d="M166 44L214 44" class="ln" data-lint="nohead"/>
+<path d="M214 34L214 54" class="stopbar" data-lint="nohead"/>
+<path d="M246 34L246 54" class="stopbar" data-lint="nohead"/>
+<path d="M246 44L300 44L300 104" class="ln" data-lint="nohead"/>
+<text x="230" y="26" text-anchor="middle" class="t" font-size="14" font-weight="700">cut</text>
+<rect x="16" y="106" width="448" height="164" rx="16" class="area"/>
+<text x="32" y="132" class="t" font-size="16" font-weight="700">a site, by itself</text>
+<rect x="32" y="148" width="204" height="42" rx="6" class="bx"/>
+<path d="M46 167l4.5 4.5l8 -9.5" class="lna" data-lint="nohead"/>
+<text x="76" y="175" class="t" font-size="14.5">sign-in</text>
+<rect x="244" y="148" width="204" height="42" rx="6" class="bx"/>
+<path d="M258 167l4.5 4.5l8 -9.5" class="lna" data-lint="nohead"/>
+<text x="288" y="175" class="t" font-size="14.5">the mesh</text>
+<rect x="32" y="202" width="204" height="42" rx="6" class="bx"/>
+<path d="M46 221l4.5 4.5l8 -9.5" class="lna" data-lint="nohead"/>
+<text x="76" y="229" class="t" font-size="14.5">data</text>
+<rect x="244" y="202" width="204" height="42" rx="6" class="bx"/>
+<path d="M258 221l4.5 4.5l8 -9.5" class="lna" data-lint="nohead"/>
+<text x="288" y="229" class="t" font-size="14.5">access changes</text>
+<text x="240" y="296" text-anchor="middle" class="tq" font-size="14">Nothing has to leave the site for it to keep working.</text>
+</svg></div></figure>
+  </div>
+</section>
+
+<section class="scene flip" id="hub">
+  <div class="wrap">
+    <div class="say">
+      <div class="mk-anchor" aria-hidden="true"><svg class="mark mark-hub" viewBox="0 0 96 96" role="img" aria-label="A hub with three links. One link is ended, and the site at its end is still there."><circle cx="48" cy="26" r="12" class="mkf"/><path d="M38 36L20 62M48 38V62" class="mk"/><path d="M58 36L66 48" class="mk"/><path d="M58 54L74 44" class="mka"/><circle cx="18" cy="72" r="8" class="mkf"/><circle cx="48" cy="72" r="8" class="mkf"/><circle cx="78" cy="72" r="8" class="mkf"/></svg></div>
+      <p class="eyebrow">10 &middot; A severed site</p>
+      <h2>Severed, a site works alone</h2>
+      <dl>
+        <dt>Usually</dt><dd class="usual">A site that may be compromised stays connected until someone is sure, or it is shut down and the people there lose their systems.</dd>
+        <dt>Here</dt><dd class="here">The hub can sever a site that it no longer trusts. From then on, nothing that site writes reaches any other site. The severed site keeps running locally, so the people there are not left without their systems. It rejoins only after it is built again and loaded from the hub.</dd>
+        <dt>For you</dt><dd class="you">Protecting the whole network does not destroy one of its parts.</dd>
+      </dl>
+      <ul class="ev">
+        <li><span class="status s-designed">designed</span><span>goatcore, decision records 1205 and 1237</span></li>
+        <li><span class="status s-built">built</span><span>the sever directive, tested with a cut link</span></li>
+      </ul>
+    </div>
+    <figure><div class="frame"><svg id="fig-hub" class="viz" viewBox="8 0 464 330" role="img" aria-label="The hub, the site with authority, severs a site. The link between the severed site and the others is ended, and nothing the severed site writes afterward reaches another site. The severed site still works, alone, for the people there. To rejoin, it is built again and loaded from the hub.">
+<rect x="152" y="16" width="176" height="56" rx="8" class="bxa"/>
+<text x="240.0" y="41.0" text-anchor="middle" class="t" font-size="15" font-weight="700">the hub</text>
+<text x="240.0" y="61.0" text-anchor="middle" class="tq" font-size="14">the site with authority</text>
+<path d="M240 72L240 104" class="ln" data-lint="nohead"/>
+<path d="M96 104L384 104" class="ln" data-lint="nohead"/>
+<path d="M96 104L96 150" class="ln" data-lint="nohead"/>
+<rect x="16" y="152" width="160" height="76" rx="8" class="bx"/>
+<text x="96.0" y="187.0" text-anchor="middle" class="t" font-size="15" font-weight="700">a site</text>
+<text x="96.0" y="207.0" text-anchor="middle" class="tq" font-size="14">in the goatnet</text>
+<path d="M384 104L384 122" class="ln" data-lint="nohead"/>
+<path d="M373 122L395 122" class="stopbar" data-lint="nohead"/>
+<text x="398" y="127" class="t" font-size="14" font-weight="700">ended</text>
+<rect x="304" y="152" width="160" height="76" rx="8" class="bxk"/>
+<path d="M318 172l4.5 4.5l8 -9.5" class="lna" data-lint="nohead"/>
+<text x="342" y="180" class="t" font-size="15" font-weight="700">a severed site</text>
+<text x="384" y="204" text-anchor="middle" class="tq" font-size="14">still works, alone</text>
+<path d="M384 230Q384 286 250 286" class="lna" data-lint="nohead"/>
+<path d="M262 286L198 286" class="lna"/>
+<path d="M198 286L208.0 281.0L208.0 291.0Z" class="fa"/>
+<text x="330" y="312" text-anchor="middle" class="t" font-size="14" font-weight="700">to rejoin</text>
+<rect x="16" y="258" width="180" height="56" rx="8" class="bxa"/>
+<text x="106.0" y="283.0" text-anchor="middle" class="t" font-size="15" font-weight="700">built again</text>
+<text x="106.0" y="303.0" text-anchor="middle" class="tq" font-size="14">and loaded from the hub</text>
+<path d="M96 258L96 230" class="lna"/>
+<path d="M96 230L101.0 240.0L91.0 240.0Z" class="fa"/>
+</svg></div></figure>
+  </div>
+</section>
+
+<section class="band" id="status">
+  <div class="wrap">
+    <h2>Where each part stands</h2>
+    <p class="sub">Measured: a named run on real machines. In use: built and running by default. Built: in the tree, and not switched on by default. Designed: decided, and not built.</p>
+    <div class="sgrid" role="list" aria-label="The status of each part of the design"><div class="sr shead" aria-hidden="true"><span class="sw"></span><span class="sh">measured</span><span class="sh">in use</span><span class="sh">built</span><span class="sh">designed</span></div>
+      <div class="sr" role="listitem"><span class="sw">A whole site built by one command</span><span class="sc on s-measured" data-s="measured" role="img" aria-label="measured"></span><span class="sc"></span><span class="sc"></span><span class="sc"></span></div>
+      <div class="sr" role="listitem"><span class="sw">A site taken down by one command</span><span class="sc on s-measured" data-s="measured" role="img" aria-label="measured"></span><span class="sc"></span><span class="sc"></span><span class="sc"></span></div>
+      <div class="sr" role="listitem"><span class="sw">A private mesh overlay that rides on any link</span><span class="sc"></span><span class="sc on s-inuse" data-s="in use" role="img" aria-label="in use"></span><span class="sc"></span><span class="sc"></span></div>
+      <div class="sr" role="listitem"><span class="sw">Mesh tunnels on a common open protocol</span><span class="sc"></span><span class="sc on s-inuse" data-s="in use" role="img" aria-label="in use"></span><span class="sc"></span><span class="sc"></span></div>
+      <div class="sr" role="listitem"><span class="sw">No answer to a packet that cannot be authenticated</span><span class="sc"></span><span class="sc on s-inuse" data-s="in use" role="img" aria-label="in use"></span><span class="sc"></span><span class="sc"></span></div>
+      <div class="sr" role="listitem"><span class="sw">No site has a public address</span><span class="sc"></span><span class="sc on s-inuse" data-s="in use" role="img" aria-label="in use"></span><span class="sc"></span><span class="sc"></span></div>
+      <div class="sr" role="listitem"><span class="sw">Service names are known inside only</span><span class="sc"></span><span class="sc on s-inuse" data-s="in use" role="img" aria-label="in use"></span><span class="sc"></span><span class="sc"></span></div>
+      <div class="sr" role="listitem"><span class="sw">An identity for each person, machine and workload</span><span class="sc"></span><span class="sc on s-inuse" data-s="in use" role="img" aria-label="in use"></span><span class="sc"></span><span class="sc"></span></div>
+      <div class="sr" role="listitem"><span class="sw">No connection without a declared rule</span><span class="sc"></span><span class="sc on s-inuse" data-s="in use" role="img" aria-label="in use"></span><span class="sc"></span><span class="sc"></span></div>
+      <div class="sr" role="listitem"><span class="sw">Access rules generated from a reviewed declaration</span><span class="sc"></span><span class="sc on s-inuse" data-s="in use" role="img" aria-label="in use"></span><span class="sc"></span><span class="sc"></span></div>
+      <div class="sr" role="listitem"><span class="sw">The secret store cannot read what it holds</span><span class="sc"></span><span class="sc on s-inuse" data-s="in use" role="img" aria-label="in use"></span><span class="sc"></span><span class="sc"></span></div>
+      <div class="sr" role="listitem"><span class="sw">Shared data sealed for named readers; the platform holds no key</span><span class="sc"></span><span class="sc on s-inuse" data-s="in use" role="img" aria-label="in use"></span><span class="sc"></span><span class="sc"></span></div>
+      <div class="sr" role="listitem"><span class="sw">No central broker on the data fabric</span><span class="sc"></span><span class="sc on s-inuse" data-s="in use" role="img" aria-label="in use"></span><span class="sc"></span><span class="sc"></span></div>
+      <div class="sr" role="listitem"><span class="sw">A deploy refuses what it cannot verify</span><span class="sc"></span><span class="sc on s-inuse" data-s="in use" role="img" aria-label="in use"></span><span class="sc"></span><span class="sc"></span></div>
+      <div class="sr" role="listitem"><span class="sw">Two key exchanges offered first on the data fabric</span><span class="sc"></span><span class="sc on s-inuse" data-s="in use" role="img" aria-label="in use"></span><span class="sc"></span><span class="sc"></span></div>
+      <div class="sr" role="listitem"><span class="sw">A declared table of roles, enforced</span><span class="sc"></span><span class="sc"></span><span class="sc on s-built" data-s="built" role="img" aria-label="built"></span><span class="sc"></span></div>
+      <div class="sr" role="listitem"><span class="sw">A partner is verified without being granted anything</span><span class="sc"></span><span class="sc"></span><span class="sc on s-built" data-s="built" role="img" aria-label="built"></span><span class="sc"></span></div>
+      <div class="sr" role="listitem"><span class="sw">An identity can be revoked, a machine held for review</span><span class="sc"></span><span class="sc"></span><span class="sc on s-built" data-s="built" role="img" aria-label="built"></span><span class="sc"></span></div>
+      <div class="sr" role="listitem"><span class="sw">Two key exchanges on mesh tunnels</span><span class="sc"></span><span class="sc"></span><span class="sc on s-built" data-s="built" role="img" aria-label="built"></span><span class="sc"></span></div>
+      <div class="sr" role="listitem"><span class="sw">Decoy names and web paths</span><span class="sc"></span><span class="sc"></span><span class="sc on s-built" data-s="built" role="img" aria-label="built"></span><span class="sc"></span></div>
+      <div class="sr" role="listitem"><span class="sw">Two key exchanges between organizations</span><span class="sc"></span><span class="sc"></span><span class="sc"></span><span class="sc on s-designed" data-s="designed" role="img" aria-label="designed"></span></div>
+      <div class="sr" role="listitem"><span class="sw">Decoys on the data fabric, decoy credentials</span><span class="sc"></span><span class="sc"></span><span class="sc"></span><span class="sc on s-designed" data-s="designed" role="img" aria-label="designed"></span></div>
+      <div class="sr" role="listitem"><span class="sw">Secrets replaced as part of a rebuild</span><span class="sc"></span><span class="sc"></span><span class="sc"></span><span class="sc on s-designed" data-s="designed" role="img" aria-label="designed"></span></div>
+      <div class="sr" role="listitem"><span class="sw">A site keeps working when it is cut off</span><span class="sc"></span><span class="sc"></span><span class="sc"></span><span class="sc on s-designed" data-s="designed" role="img" aria-label="designed"></span></div>
+      <div class="sr" role="listitem"><span class="sw">The hub severs a site; the site works alone</span><span class="sc"></span><span class="sc"></span><span class="sc"></span><span class="sc on s-designed" data-s="designed" role="img" aria-label="designed"></span></div>
+      <div class="sr" role="listitem"><span class="sw">A site built again from a checked export</span><span class="sc"></span><span class="sc"></span><span class="sc"></span><span class="sc on s-designed" data-s="designed" role="img" aria-label="designed"></span></div></div>
+  </div>
+</section>
+
+<section class="band" id="start">
+  <div class="wrap">
+    <h2>Try it</h2>
+    <p class="sub">Build a site, take it down and build it again, on the example in the repository. It needs <code>git</code> and <code>curl</code>. The build and the teardown change nothing outside one temporary directory.</p>
+    <pre class="block" data-box="command"><span class="ln">git clone <span class="w">https://github.com/usareur-af/goatcore</span> &amp;&amp; cd goatcore
+</span><span class="ln">OS="$(uname -s | tr '[:upper:]' '[:lower:]')"; ARCH="$(uname -m | sed <span class="w">'s/x86_64/amd64/;</span> <span class="w">s/aarch64/arm64/')"</span>
+</span><span class="ln">curl <span class="w">-fsSL</span> <span class="w">-o</span> goatbuilder <span class="w">"https://github.com/usareur-af/goatcore/releases/download/goatbuilder/v0.8.0/goatbuilder-$OS-$ARCH"</span>
+</span><span class="ln">chmod +x goatbuilder
+</span><span class="ln">WORK="$(mktemp -d)/zagros"
+</span><span class="ln">cp <span class="w">-R</span> <span class="w">ops/goatbuilder/fixtures/goatnet-from-scratch/01-founder</span> "$WORK"
+</span><span class="ln">./goatbuilder standup zagros <span class="w">--site</span> alpha <span class="w">--mock</span> "$WORK" <span class="w">--ack</span> "you" <span class="w">--yes</span>
+</span><span class="ln">./goatbuilder teardown zagros <span class="w">--site</span> alpha <span class="w">--mock</span> "$WORK"
+</span><span class="ln">./goatbuilder standup zagros <span class="w">--site</span> alpha <span class="w">--mock</span> "$WORK" <span class="w">--ack</span> "you" <span class="w">--yes</span></span></pre>
+    <p>The build ends with <code>standup: ok (14 checks)</code> and the teardown with <code>teardown: ok (9 checks)</code>. On real machines the same commands run without <code>--mock</code> and print the time of every stage.</p>
+    <p><a href="../goatbuilder/">goatbuilder</a> &middot; <a href="../">goat, the whole system</a> &middot; <a href="https://github.com/USAREUR-AF/goatcore/blob/main/docs/design/goatbuilder-v1-gate.md">The requirements for release 1.0</a> &middot; <a href="https://github.com/USAREUR-AF/goatcore/blob/main/CONTRIBUTING.md">Contributing</a></p>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><a href="https://github.com/USAREUR-AF/goatcore">Repository</a><a href="https://github.com/USAREUR-AF/goatcore/blob/main/LICENSE">Apache License 2.0</a><a href="https://github.com/USAREUR-AF/goatcore/blob/main/SECURITY.md">Security policy</a></p>
+    <p>Portions written by U.S. Federal government employees within the scope of their employment are in the public domain in the United States. Part of <a href="https://github.com/USAREUR-AF/goatcore">goat</a>.</p>
+  </div>
+</footer>
+<script type="application/json" id="run-data">{"total":2292,"down":354,"ends":[28,215,219,461,726,1238,1312,1409,1503,1614,2103,2202],"names":["Checks before anything changes","Machines prepared, disks encrypted","Secrets and certificates created","Management services started","Sign-in services and the first account","Relays in a cloud","Machines join the mesh","Data router and workload identity","Dashboard placed behind sign-in","The administrator signs in","Access rules, service identities, portal, alarm","Checks that prove the site works"]}</script>
+<script>
+// Copy buttons, and the first screen's replay: one command builds a whole site, each stage
+// adding its part to the drawing on one clock; one command takes the site down; the same
+// command builds it again. The times are the JSON block that build.py writes from
+// run.json. With reduced motion, or without JavaScript, the page shows the finished site.
+(function () {
+  "use strict";
+  document.querySelectorAll("button.copy").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var text = document.getElementById(b.dataset.copy).textContent;
+      if (navigator.clipboard) navigator.clipboard.writeText(text).then(function () {
+        b.textContent = "Copied"; setTimeout(function () { b.textContent = "Copy"; }, 1600);
+      });
+    });
+  });
+
+  var src = document.getElementById("run-data"), fig = document.getElementById("fig-site");
+  if (!src || !fig) return;
+  if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  var R = JSON.parse(src.textContent), parts = fig.querySelectorAll(".st"), N = R.ends.length;
+  var clk = document.getElementById("clk"), of = document.getElementById("clk-of"), step = document.getElementById("step");
+  var phase = document.getElementById("phase"), bar = document.getElementById("pbar");
+  function clock(s) { var m = Math.floor(s / 60), r = Math.floor(s % 60); return m + ":" + (r < 10 ? "0" : "") + r; }
+  function show(n) { for (var i = 0; i < parts.length; i++) parts[i].classList.toggle("off", +parts[i].dataset.stage > n); }
+
+  var n = 0;
+  function build() {
+    n += 1; show(n);
+    var t = R.ends[n - 1];
+    clk.textContent = clock(n < N ? t : R.total);
+    bar.style.width = (100 * (n < N ? t : R.total) / R.total) + "%";
+    step.textContent = n < N ? R.names[n - 1] : "The whole site is built and checked";
+    phase.textContent = n < N ? "stage " + n + " of " + N : "built";
+    if (n < N) { setTimeout(build, 650 + 2600 * (R.ends[n] - t) / R.total); return; }
+    setTimeout(down, 4600);
+  }
+  function down() {
+    phase.textContent = "taking it down"; step.textContent = "One command takes the site down";
+    of.textContent = "minutes:seconds to take it down";
+    var t0 = Date.now(), ms = 1700;
+    (function fall() {
+      var f = Math.min(1, (Date.now() - t0) / ms);
+      show(Math.round(N * (1 - f)));
+      bar.style.width = (100 * (1 - f)) + "%";
+      clk.textContent = clock(R.down * f);
+      if (f < 1) { requestAnimationFrame(fall); return; }
+      phase.textContent = "taken down"; step.textContent = "Nothing is left running";
+      setTimeout(start, 2400);
+    })();
+  }
+  function start() {
+    n = 0; show(0); clk.textContent = "0:00"; bar.style.width = "0";
+    of.textContent = "minutes:seconds of machine time";
+    phase.textContent = "building"; step.textContent = "The same command builds it again";
+    setTimeout(build, 900);
+  }
+  show(0); clk.textContent = "0:00"; bar.style.width = "0"; phase.textContent = "building"; step.textContent = "One command, from the declaration";
+  setTimeout(build, 900);
+})();
+
+</script>
+</body>
+</html>
