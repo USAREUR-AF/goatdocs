@@ -79,6 +79,7 @@ environments:
   <div class="wrap">
     <div class="say wide">
       <h2>No inside, no outside</h2>
+      <p class="known"><i>Known as: zero trust, microsegmentation, deperimeterization</i></p>
       <dl class="cols">
         <div><dt>Usually</dt><dd class="usual">Most defenses draw a few boundaries, sometimes only one, and those boundaries move slowly or never. Anything that gets inside one is trusted there.</dd></div>
         <div><dt>Here</dt><dd class="here">goat draws none. Each connection between two parties, whether people, machines or programs, has its own keys and its own rule, set by who the two are and what they are doing. When either changes, the protection on that connection changes with it.</dd></div>
@@ -92,6 +93,7 @@ environments:
 <section class="band" id="habits">
   <div class="wrap">
     <h2>Five habits that make a network easier to find, easier to enter and slower to recover</h2>
+    <p class="known"><i>Known as: attack surface, single point of failure, signature management</i></p>
     <p class="sub">Each one is common, and each one has a cost. goat is a private mesh overlay, hidden from the public internet, that is built without them.</p>
     <div class="blunders">
       <div class="blunder">{{MARK_OUTSIDE}}<h3>A door on the public internet</h3><p class="cost">A service or a gateway that anyone can reach is one that anyone can probe.</p><p class="fix"><span class="status s-inuse">in use</span>No service has a public address. The private overlay does not answer what it cannot authenticate.</p></div>
@@ -105,13 +107,14 @@ environments:
 
 <section class="band" id="ideas">
   <div class="wrap">
-    <h2>Ten ideas, each with its own figure</h2>
+    <h2>The ideas, each with its own figure</h2>
     <p class="sub">Each section below shows what is usual, what goat does, and what that changes for the person who runs it.</p>
     <div class="ideas">
         <a class="idea" href="#join">{{MARK_OUTSIDE}}<b>Little to find</b><span>Your services are not listed where an outsider can look.</span></a>
         <a class="idea" href="#silent">{{MARK_SILENT}}<b>A quiet protocol</b><span>A probe of your address gets no reply.</span></a>
         <a class="idea" href="#zero-trust">{{MARK_ZERO_TRUST}}<b>Zero trust</b><span>Every connection is checked, and every rule is written down.</span></a>
         <a class="idea" href="#readers">{{MARK_SEALED}}<b>Sealed data</b><span>A stolen server holds only sealed data.</span></a>
+        <a class="idea" href="#layers">{{SCENE_MARK_LAYERS}}<b>Three layers</b><span>Breaking one layer shows the next layer, not your data.</span></a>
         <a class="idea" href="#chain">{{MARK_VERIFIED}}<b>Verified releases</b><span>A changed image is refused before it runs.</span></a>
         <a class="idea" href="#quantum">{{MARK_QUANTUM}}<b>Post-quantum</b><span>Traffic recorded today stays closed later.</span></a>
         <a class="idea" href="#decoy">{{MARK_DECOY}}<b>Decoys</b><span>Touching a decoy raises an alarm.</span></a>
@@ -126,8 +129,9 @@ environments:
   <div class="wrap">
     <div class="say">
       <div class="mk-anchor" aria-hidden="true">{{MARK_OUTSIDE}}</div>
-      <p class="eyebrow">1 &middot; Little to find: joining</p>
+      <p class="eyebrow">Little to find: joining</p>
       <h2>Joining happens once, through the only public name</h2>
+      <p class="known"><i>Known as: overlay network, software-defined perimeter, attack surface reduction</i></p>
       <dl>
         <dt>Usually</dt><dd class="usual">Services have public addresses, protected by a filter and a login page. Anyone can find them and test them.</dd>
         <dt>Here</dt><dd class="here">A goatnet has one public name, and it is used only to join. A relay behind the name passes the encrypted connection to the site and cannot read it. The device presents a key that works once, and gets its identity and the list of parties it may reach.</dd>
@@ -144,8 +148,9 @@ environments:
 <section class="scene flip" id="after">
   <div class="wrap">
     <div class="say">
-      <p class="eyebrow">1 &middot; Little to find: after joining</p>
+      <p class="eyebrow">Little to find: after joining</p>
       <h2>After joining, devices talk directly and nothing is public</h2>
+      <p class="known"><i>Known as: peer-to-peer mesh, overlay network, attack surface reduction</i></p>
       <dl>
         <dt>Usually</dt><dd class="usual">Traffic goes through a central gateway that has a public address, and the gateway must stay up for anything to work.</dd>
         <dt>Here</dt><dd class="here">Devices that have joined connect to each other directly, each connection encrypted by itself. A relay is used only when two devices cannot reach each other, and it carries traffic it cannot read. Services have names that exist only inside. The service that admitted a device is no longer in its path.</dd>
@@ -163,8 +168,9 @@ environments:
   <div class="wrap">
     <div class="say">
       <div class="mk-anchor" aria-hidden="true">{{MARK_SILENT}}</div>
-      <p class="eyebrow">2 &middot; A quiet, ordinary protocol</p>
+      <p class="eyebrow">A quiet, ordinary protocol</p>
       <h2>A scan finds nothing listening</h2>
+      <p class="known"><i>Known as: traffic analysis resistance, low probability of detection, attribution</i></p>
       <dl>
         <dt>Usually</dt><dd class="usual">Encryption made for one kind of user has its own equipment, ports and handshakes. Seeing it on a network says who is there.</dd>
         <dt>Here</dt><dd class="here">The overlay's tunnels between machines use WireGuard, an open protocol that many ordinary VPN users also use, so its traffic does not mark the sender as a government system. A machine does not answer a packet that it cannot authenticate.</dd>
@@ -182,8 +188,9 @@ environments:
   <div class="wrap">
     <div class="say">
       <div class="mk-anchor" aria-hidden="true">{{MARK_ZERO_TRUST}}</div>
-      <p class="eyebrow">3 &middot; Zero trust</p>
+      <p class="eyebrow">Zero trust</p>
       <h2>Being on the network grants nothing</h2>
+      <p class="known"><i>Known as: zero trust architecture (ZTA), least privilege, mutual authentication, policy as code</i></p>
       <dl>
         <dt>Usually</dt><dd class="usual">A device inside the network is trusted because of where it is.</dd>
         <dt>Here</dt><dd class="here">Every request passes four checks. Who is asking: a person, a machine and a program each prove their identity in their own way. Is there a rule: a connection needs a declared rule, and with no rule there is no connection. Is it allowed: a declared table says what each role may do. Is the identity still good: an identity can be revoked, and a machine can be held for review.</dd>
@@ -203,8 +210,9 @@ environments:
   <div class="wrap">
     <div class="say">
       <div class="mk-anchor" aria-hidden="true">{{MARK_SEALED}}</div>
-      <p class="eyebrow">4 &middot; Sealed data</p>
+      <p class="eyebrow">Sealed data</p>
       <h2>One stolen server does not open everything</h2>
+      <p class="known"><i>Known as: zero-knowledge storage, client-side encryption, end-to-end encryption</i></p>
       <dl>
         <dt>Usually</dt><dd class="usual">A secret store can read every secret it holds, and a message broker can read every message. Whoever takes that server has all of it.</dd>
         <dt>Here</dt><dd class="here">A secret is encrypted on your device before it is stored, so the store cannot read it. Shared data is sealed for named readers, and the platform holds no key for it. The data fabric that carries it holds no key and has no central broker.</dd>
@@ -218,12 +226,17 @@ environments:
   </div>
 </section>
 
+{{SCENE_LAYERS}}
+
+{{SCENE_PATH}}
+
 <section class="scene flip" id="chain">
   <div class="wrap">
     <div class="say">
       <div class="mk-anchor" aria-hidden="true">{{MARK_VERIFIED}}</div>
-      <p class="eyebrow">5 &middot; Verified releases</p>
+      <p class="eyebrow">Verified releases</p>
       <h2>Nothing runs unless it is verified</h2>
+      <p class="known"><i>Known as: software supply chain security, signed provenance, content addressing</i></p>
       <dl>
         <dt>Usually</dt><dd class="usual">A machine runs whatever was last installed on it, and an image name can point to different content over time.</dd>
         <dt>Here</dt><dd class="here">A signed list says which release runs where. Every image is named by its content hash. Before a deploy changes a machine, it checks the signature, the hash, the source and the order of stages.</dd>
@@ -241,8 +254,9 @@ environments:
   <div class="wrap">
     <div class="say">
       <div class="mk-anchor" aria-hidden="true">{{MARK_QUANTUM}}</div>
-      <p class="eyebrow">6 &middot; Post-quantum</p>
+      <p class="eyebrow">Post-quantum</p>
       <h2>Traffic recorded today stays closed later</h2>
+      <p class="known"><i>Known as: post-quantum cryptography (PQC), hybrid key exchange, harvest now, decrypt later</i></p>
       <dl>
         <dt>Usually</dt><dd class="usual">Encrypted traffic can be recorded now and kept. A future quantum computer could open what today's key exchange protects.</dd>
         <dt>Here</dt><dd class="here">The routers of the data fabric prefer a combined key exchange: the usual kind together with one built to resist a quantum computer. A client that supports the combination gets it, and reading that traffic means breaking both. A client that does not support it connects the usual way.</dd>
@@ -262,8 +276,9 @@ environments:
   <div class="wrap">
     <div class="say">
       <div class="mk-anchor" aria-hidden="true">{{MARK_DECOY}}</div>
-      <p class="eyebrow">7 &middot; Decoys</p>
+      <p class="eyebrow">Decoys</p>
       <h2>A decoy raises an alarm on its first use</h2>
+      <p class="known"><i>Known as: deception technology, honeytokens, canaries</i></p>
       <dl>
         <dt>Usually</dt><dd class="usual">Detection depends on noticing unusual behavior among normal use, so quiet exploration can go unseen for a long time.</dd>
         <dt>Here</dt><dd class="here">A site carries decoys: names and web paths that no person or program has a reason to use. Any use of one is hostile, and the first use alerts the operator on call.</dd>
@@ -283,8 +298,9 @@ environments:
     <div class="lead">
       <div class="say">
         <div class="mk-anchor" aria-hidden="true">{{MARK_REBUILD}}</div>
-      <p class="eyebrow">8 &middot; Rebuild</p>
+      <p class="eyebrow">Rebuild</p>
         <h2>A rebuild returns every machine to a known clean state</h2>
+      <p class="known"><i>Known as: immutable infrastructure, infrastructure as code, cyber recovery</i></p>
         <dl>
           <dt>Usually</dt><dd class="usual">A compromised machine is cleaned in place, and the cleaning is trusted. A full rebuild takes days, so it is avoided.</dd>
           <dt>Here</dt><dd class="here">A site is described by a declaration in a repository. One command builds the whole site from it, and the same command builds it again: machines prepared and encrypted, services, relays, identity, the mesh, and checks that prove it works.</dd>
@@ -336,8 +352,9 @@ environments:
   <div class="wrap">
     <div class="say">
       <div class="mk-anchor" aria-hidden="true">{{MARK_ISLAND}}</div>
-      <p class="eyebrow">9 &middot; Sites that stand alone</p>
+      <p class="eyebrow">Sites that stand alone</p>
       <h2>Cut off, a site keeps working, and it can stay silent</h2>
+      <p class="known"><i>Known as: disconnected operations (DDIL), local-first, partition tolerance, emission control</i></p>
       <dl>
         <dt>Usually</dt><dd class="usual">Sites depend on a central service and on a long link to it. When the link fails they stop. While the link works, it can be found, jammed or followed.</dd>
         <dt>Here</dt><dd class="here">Every site runs the same services, and keeps admitting people, enrolling machines and changing access while it is cut off. A site that needs no link back does not have to transmit off-site at all.</dd>
@@ -356,8 +373,9 @@ environments:
   <div class="wrap">
     <div class="say">
       <div class="mk-anchor" aria-hidden="true">{{MARK_HUB}}</div>
-      <p class="eyebrow">10 &middot; A severed site</p>
+      <p class="eyebrow">A severed site</p>
       <h2>Severed, a site works alone</h2>
+      <p class="known"><i>Known as: isolation, containment, cyber recovery</i></p>
       <dl>
         <dt>Usually</dt><dd class="usual">A site that may be compromised stays connected until someone is sure, or it is shut down and the people there lose their systems.</dd>
         <dt>Here</dt><dd class="here">The hub can sever a site that it no longer trusts. From then on, nothing that site writes reaches any other site. The severed site keeps running locally, so the people there are not left without their systems. It rejoins only after it is built again and loaded from the hub.</dd>
