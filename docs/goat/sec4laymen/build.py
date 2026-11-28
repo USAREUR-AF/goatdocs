@@ -132,8 +132,8 @@ def render():
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>sec4laymen: our security work, in plain words</title>
-<meta name="description" content="What the goat team builds and why it matters, explained with no technical background needed: a private network that a group can set up itself, keep hidden, and rebuild from a clean start.">
+<title>sec4laymen: our security work</title>
+<meta name="description" content="What the goat team builds and why it matters: a private network that a group can set up itself, keep hidden, and rebuild from a clean start.">
 <style>{CSS}</style>
 </head>
 <body>
@@ -141,10 +141,9 @@ def render():
 <div class="top"><div class="wrap"><a href="../">&larr; All goat pages</a><a href="../security/">The technical version</a></div></div>
 <header class="hero">
   <div class="wrap">
-    <p class="kicker">sec4laymen &middot; our work, in plain words</p>
+    <p class="kicker">sec4laymen</p>
     <h1>We build a private way for a group's computers to talk to each other.</h1>
     <p class="lede">The group can set it up itself, keep it hidden from strangers, and set it up again from a clean start with less than an hour of machine work.</p>
-    <p class="lede">This page is for our families and friends. You do not need any technical background, and every special word is explained the first time it appears.</p>
     <div class="btns"><a class="btn fill" href="#why">Start reading</a><a class="btn" href="#words">Words used here</a></div>
     <figure>{F.hero()}</figure>
   </div>
