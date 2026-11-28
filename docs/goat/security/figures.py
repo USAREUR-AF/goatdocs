@@ -402,13 +402,18 @@ def island_svg():
     for i, name in enumerate(["sign-in", "the mesh", "data", "access changes"]):
         x = 32 + (i % 2) * 212
         y = 148 + (i // 2) * 54
+        if name == "access changes":      # designed, not built: drawn dashed, with no tick
+            f.rect(x, y, 204, 42, "bxd", 6)
+            f.text(x + 14, y + 27, "access changes: designed", "tq", 14.5)
+            continue
         f.rect(x, y, 204, 42, "bx", 6)
         f.tick(x + 14, y + 13)
         f.text(x + 44, y + 27, name, "t", 14.5)
     f.text(240, 296, "Nothing has to leave the site for it to keep working.", "tq", 14, False, "middle")
     return f.svg("fig-island", 312,
-                 "A site whose link to the other sites is cut. Inside the site, sign-in, the mesh, data and access "
-                 "changes all keep running. Nothing has to leave the site for it to keep working.")
+                 "A site whose link to the other sites is cut. Inside the site, sign-in, the mesh and data keep "
+                 "running. Access changes at a site that is cut off are designed, and drawn with a dashed outline. "
+                 "Nothing has to leave the site for it to keep working.")
 
 
 def hub_svg():
