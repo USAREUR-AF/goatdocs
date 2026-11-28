@@ -61,11 +61,12 @@ STATUS = [
     ("A site keeps working when it is cut off", "designed"),
     ("The hub severs a site; the site works alone", "designed"),
     ("A site built again from a checked export", "designed"),
+    ("One signed bundle that carries a release to a site that is cut off", "designed"),
 ]
 ORDER = ["measured", "in use", "built", "designed"]
 
 # Scenes written as one module each in scenes/: the module returns its whole section and its mark.
-SCENES = ["layers", "path", "custody", "self_documenting", "boundary"]
+SCENES = ["layers", "path", "custody", "self_documenting", "boundary", "air_gap", "grade"]
 
 
 def read(*p):

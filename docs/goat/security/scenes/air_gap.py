@@ -27,7 +27,7 @@ def _island(f, cx, cy, r, labels=True, small=False):
         f.path(f"M{pts[a][0]:.1f} {pts[a][1]:.1f} L{pts[b][0]:.1f} {pts[b][1]:.1f}", stroke=QUIET, sw=1.6)
     for x, y in pts:
         f.party(x, y, 7, ring=False)
-    boats = [(205, "a drive"), (150, "a laptop"), (20, "an update")] if not small else [(215, "a drive"), (150, "a laptop"), (25, "an update")]
+    boats = [(205, "a drive"), (150, "a laptop"), (20, "an update")] if not small else [(215, "a drive"), (150, "a laptop"), (45, "an update")]
     for ang, lab in boats:
         a = math.radians(ang)
         bx, by = cx + (r + 38) * math.cos(a), cy + (r + 38) * math.sin(a)
@@ -106,5 +106,6 @@ def notes():
     return """<section id="air-gap"><h2>What an air gap does and does not do</h2>
 <p>A working system is rarely cut off for long. Data, updates and people have to get in and out, so the gap is crossed by hand, and those crossings are the least watched doors.</p>
 <p>Isolation slows updates, so the inside falls behind on fixes. It gives no help once something is inside.</p>
+<p>A documented case: in 2008 a compromise of classified United States military networks "began when an infected flash drive was inserted into a U.S. military laptop", and the code "spread undetected on both classified and unclassified systems", as the Deputy Secretary of Defense wrote (<a href="https://yalelawtech.org/wp-content/uploads/2010/09/defendinganewdomain.pdf">W. Lynn, Foreign Affairs, September 2010</a>).</p>
 <p>It suits a thing that changes rarely and talks to no one, such as a key kept offline. It does not suit a system of many connected parts that exchange data all the time.</p>
 </section>"""

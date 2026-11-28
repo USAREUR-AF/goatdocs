@@ -38,6 +38,6 @@ def html():
       <li><b>Most useful:</b> a gap in the design, a claim on this page that the code does not support, or a path we did not consider.</li>
       <li><b>No exploit is needed.</b> A report about a claim on this page is welcome as it is.</li>
     </ul>
-    <p class="actions"><a class="btn primary" href="{REPORT_URL}">Report privately</a></p>
+    <p class="actions"><a class="btn star" href="{REPORT_URL}">Report privately</a></p>
   </div>
 </section>'''
