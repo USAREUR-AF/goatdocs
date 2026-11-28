@@ -425,7 +425,7 @@ ul.ev code { font-size: 13.5px; }
   <a class="back" href="../">&larr; goat security</a>
   <h1>Notes and sources</h1>
   <p class="sub">The detail behind each section of the security page, and how each estimate was worked out.</p>
-  <nav class="toc" aria-label="Notes"><a href="#layers">The three layers</a><a href="#estimate">The path estimate</a><a href="#custody">Why a relay in a cloud is safe</a><a href="#join">Joining</a><a href="#zero-trust">The four checks</a><a href="#readers">Sealing for several readers</a><a href="#quantum">Post-quantum key exchange</a><a href="#island">A site that is cut off</a><a href="#rebuild">Rebuild</a></nav>
+  <nav class="toc" aria-label="Notes"><a href="#layers">The three layers</a><a href="#estimate">The path estimate</a><a href="#custody">Why a relay in a cloud is safe</a><a href="#evidence">What an assessor can read</a><a href="#boundary">The two boundary nodes</a><a href="#join">Joining</a><a href="#zero-trust">The four checks</a><a href="#readers">Sealing for several readers</a><a href="#quantum">Post-quantum key exchange</a><a href="#island">A site that is cut off</a><a href="#rebuild">Rebuild</a></nav>
 <section id="layers"><h2>The three layers</h2>
 <p>The mesh tunnel is WireGuard, with ChaCha20-Poly1305, between two machines. The data fabric link is TLS 1.3 between a program and a router, and it prefers a hybrid post-quantum key exchange. Sealing for named readers uses hybrid encryption, and the platform holds no key.</p>
 <p>The layers cover different spans. Sealing runs from the owner to the readers. The link and the tunnel each run between two ends on the owner's own machines.</p>
@@ -460,6 +460,15 @@ ul.ev code { font-size: 13.5px; }
 <section id="custody"><h2>Why a relay in a cloud is safe</h2>
 <p>A relay passes connections that are encrypted from end to end by the two parties that hold the keys. It holds no key, it cannot read or change what it carries, and it stores nothing.</p>
 <p>A relay can be replaced or moved at any time. Losing one loses no data and no identity.</p>
+</section>
+<section id="evidence"><h2>What an assessor can read</h2>
+<p>The declaration states the machines, the exact version of everything by content hash, the connections that are allowed, and who may do what. Every change is a signed, reviewed commit. Deploys and checks leave their own records.</p>
+<p>A collector on every machine gathers the system journal, the audit log, the data fabric's audit records and the access logs. It normalizes them to OCSF and sends them off the machine. A forwarder to an organization's own collector is switched on by setting one address. Services also emit events over OpenTelemetry.</p>
+<p>Vulnerability scans (ACAS), configuration baselines (STIG) and web application testing (Burp) are outside tools that an organization still runs.</p>
+</section>
+<section id="boundary"><h2>The two boundary nodes</h2>
+<p><b>Federation.</b> <code>goatbuilder federate &lt;partner&gt;</code> sets up a peering in one run and can back it out. Each side keeps its own environment and authority. Recognizing the other side is a separate check from authorizing it.</p>
+<p><b>Simple.</b> A dedicated machine sends released data as one plain UDP or TCP stream, one way, to one known destination. It meets the other side's encrypted gateway, and it stops sending if the tunnel is down. It is for a system that cannot join a data fabric.</p>
 </section>
 <section id="join"><h2>Joining</h2>
 <p>A device that joins presents a key that works once. It then gets its identity and the list of parties it may reach.</p>
