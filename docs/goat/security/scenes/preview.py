@@ -5,7 +5,7 @@ HERE = os.path.dirname(os.path.abspath(__file__)); PAGE = os.path.dirname(HERE)
 sys.path.insert(0, HERE)
 CHROME = os.environ.get("CHROME", "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome")
 OUT = os.path.join(HERE, "preview"); os.makedirs(OUT, exist_ok=True)
-ALL = ["layers", "path", "air_gap", "custody", "boundary", "self_documenting"]
+ALL = ["timing", "layers", "path", "air_gap", "custody", "boundary", "self_documenting"]
 
 
 def css(theme="light"):

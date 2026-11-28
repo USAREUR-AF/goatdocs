@@ -223,12 +223,45 @@ def mark():
 
 
 def html():
-    return scene(
+    s = scene(
         "path", "Three layers: the path", "Sealed once, and closed for the whole path",
         "end-to-end encryption, direct path, hairpin routing, encapsulation overhead",
-        "On large enterprise and government networks, each organization brings its own overlay and rides shared lines. Overlays stack. At each boundary between environments the traffic is unwrapped and wrapped again, and traffic between two sites overseas can be routed through gateways on another continent. Every stop adds delay, a place where it can fail, and a place where it is exposed.",
-        "Protection is applied at the ends and stays on. Machines connect directly to each other, so traffic takes the short path between them. No outside gateway or relay ever opens the traffic, and sealed data stays sealed from its owner to its readers. One common substrate means one set of layers, applied the same way everywhere, with no re-wrapping in the middle.",
-        "The same design choice makes traffic safer and faster.",
+        "Traffic between two sites is sent the long way round, through gateways that open it and seal it again at every stop.",
+        "Protection is applied once, at the two ends. Machines connect directly, and nothing in the middle opens the traffic.",
+        "Two machines side by side answer each other in about a millisecond, not a quarter of a second.",
         [("in use", "direct connections between machines; a relay only as a fallback, carrying what it cannot read")],
-        _path_wide() + "\n" + _path_narrow(), mark()).replace(
-        "  </div>\n</section>", ESTIMATE_HTML.replace("{FIG}", estimate_wide() + "\n" + estimate_narrow()).replace("{LOSS}", loss_wide() + "\n" + loss_narrow()) + "  </div>\n</section>")
+        _path_wide() + "\n" + _path_narrow(), mark())
+    est = ('    <figure class="full estimate"><div class="frame">\n'
+           + estimate_wide() + "\n" + estimate_narrow() + "\n" + loss_wide() + "\n" + loss_narrow() + "\n"
+           '      <p class="est-h">A rough estimate. <a href="notes/#estimate">How it was worked out.</a></p>\n    </div></figure>\n')
+    return s.replace("  </div>\n</section>", est + "  </div>\n</section>")
+
+
+def notes():
+    return """<section id="estimate"><h2>The path estimate</h2>
+<p>Every number here is an estimate from the assumptions below. None is a measurement.</p>
+<table>
+<tr><th>Case</th><th>Route</th><th>One way</th><th>Round trip</th></tr>
+<tr><td>Direct, machine to machine</td><td>about 15 km</td><td>under 1 ms</td><td>about 1 to 2 ms</td></tr>
+<tr><td>Through a regional relay</td><td>2 &times; 500 km &times; 1.5 = 1,500 km</td><td>about 7.5 ms</td><td>about 15 ms</td></tr>
+<tr><td>A typical government or military network (worked example)</td><td>2 &times; 6,700 km &times; 1.5 = about 20,000 km, plus 4 to 8 stops</td><td>about 105 to 115 ms</td><td>about 210 to 230 ms</td></tr>
+<tr><td>The same, over a satellite service whose ground entry point is on the far side of another continent</td><td>80 to 90 ms to the entry point, 35 to 50 ms through 6 to 10 stops, 80 to 90 ms back out</td><td>about 195 to 230 ms</td><td>about 390 to 460 ms</td></tr>
+</table>
+<h3>Assumptions</h3>
+<p>Light in optical fibre covers about 200 km per millisecond. A real route is about 1.5 times the straight-line distance. The two machines are 10 km apart, a regional relay is 500 km away, and the distant gateway is 6,700 km away.</p>
+<p>A middle stop that opens, inspects and seals traffic again costs about 1 to 2 ms. A satellite hop in low orbit adds about 10 to 20 ms. The far entry point is about 9,000 km away.</p>
+<h3>What the delay does</h3>
+<table>
+<tr><th></th><th>Direct</th><th>The long way</th><th>Over the satellite service</th></tr>
+<tr><td>A new secure connection (about three round trips)</td><td>about 5 ms</td><td>about 650 ms</td><td>about 1.2 to 1.4 s</td></tr>
+<tr><td>50 exchanges in sequence</td><td>about 0.1 s</td><td>about 11 s</td><td>about 20 to 23 s</td></tr>
+</table>
+<h3>With real links</h3>
+<p>A lost packet costs at least one more round trip to repair. When a timer has to run out first, the wait is set from the round-trip time and its variation, and it doubles with each repeated loss (RFC 6298).</p>
+<p>One connection sustains roughly 1.22 &times; packet size &divide; (round-trip time &times; the square root of the loss rate), after Mathis and others, 1997. With 1 percent loss and 1,460-byte packets that is about 70 megabits per second at 2 ms and about 0.3 megabits per second at 450 ms.</p>
+<p>Conversational voice is planned for about 150 ms one way (ITU-T G.114). Anything that expects an answer within a fixed short time fails once delay and retries pass that limit.</p>
+<h3>Stacked overlays</h3>
+<p>Encryption is not the cost: one processor core seals or opens on the order of 1 to 3 gigabytes per second. Each tunnel adds roughly 50 to 80 bytes to a 1,500-byte packet, so three stacked tunnels use more than a tenth of every packet.</p>
+<p>Eight stops that are each up 99.9 percent of the time give a path that is up about 99.2 percent, roughly 70 hours down in a year. Here the layers are applied at the ends only: six seal-or-open operations, and none in the middle.</p>
+<p>Satellite links commonly give a terminal no public address and accept no inbound connection. The mesh needs neither, because every machine connects outward.</p>
+</section>"""

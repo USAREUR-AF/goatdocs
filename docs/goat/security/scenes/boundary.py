@@ -181,12 +181,19 @@ def html():
     s = scene(
         "boundary", "The edge", "Two ways data crosses the edge",
         "federation, gateway, controlled release",
-        "Networks are joined to each other: a shared network, a firewall rule, a general gateway. What can cross is whatever the rule fails to stop.",
-        "Data enters or leaves only through a boundary node, and there are two kinds. A federation boundary node carries the sets of data that the owner released, over the data fabric, to another owner's environment. A simple boundary node carries one plain stream, one way, to one known destination, for a system that cannot join a data fabric.",
+        "Networks are joined, and what crosses is whatever a rule fails to stop.",
+        "Data crosses only through a boundary node. One kind carries released sets of data to another owner's environment; the other carries one plain stream, one way, to one known destination.",
         "You choose what leaves, to whom, and through which one machine.",
-        [("built", "federation between two environments: <code>goatbuilder federate &lt;partner&gt;</code> sets it up in one run and can back it out"),
+        [("built", "federation between two environments, set up and backed out by one command"),
          ("designed", "sealing data for named readers across a boundary between two environments"),
-         ("built", "the simple boundary node, as a machine type; it meets the other side's encrypted gateway and stops sending if the tunnel is down")],
+         ("built", "the simple boundary node, as a machine type")],
         "{F1}", mark())
     two = (fed_wide() + "\n" + fed_narrow() + '</div></figure>\n    <figure class="full"><div class="frame">' + simple_wide() + "\n" + simple_narrow())
     return s.replace("{F1}", two)
+
+
+def notes():
+    return """<section id="boundary"><h2>The two boundary nodes</h2>
+<p><b>Federation.</b> <code>goatbuilder federate &lt;partner&gt;</code> sets up a peering in one run and can back it out. Each side keeps its own environment and authority. Recognizing the other side is a separate check from authorizing it.</p>
+<p><b>Simple.</b> A dedicated machine sends released data as one plain UDP or TCP stream, one way, to one known destination. It meets the other side's encrypted gateway, and it stops sending if the tunnel is down. It is for a system that cannot join a data fabric.</p>
+</section>"""

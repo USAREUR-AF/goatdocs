@@ -35,3 +35,14 @@ Rendered with `preview.py` at 1120 and 464 wide, light and dark, and read at rea
 Not checked by a script: contrast of each tone against the page background (the figures use only the page's
 tokens, which the page's own checks cover), and the scene sections at 1440 and 390 px inside the page
 (`SCENE_SHOTS=1 python3 scenes/preview.py` renders them; the first lane's fitcheck should run after wiring).
+
+## Round 4: less prose
+The operator's rule of 28 Nov: a scene is a heading, the "Known as" line, three short blocks, the figure and the
+status rows; about 70 words of prose at most; everything else goes to an appendix. Every scene was cut to that
+(40 to 65 words each) and its leftover material moved to `notes()`. The path scene keeps its bars and loses its
+five paragraphs; the timing scene keeps one line per case and moves the sources to the appendix.
+
+| Figure | Defect | Fix |
+|---|---|---|
+| timing, wide | "416 days, 2011" was clipped at the right edge; the last value touched the band | Label anchored to its marker's left near the edge; taller band |
+| timing | Case marks on the axis would crowd the figure | Kept off the figure; the cases are one line each under it |

@@ -1,0 +1,49 @@
+<section id="join"><h2>Joining</h2>
+<p>A device that joins presents a key that works once. It then gets its identity and the list of parties it may reach.</p>
+<p>Services have names that exist only inside the goatnet. The service that admitted a device is not in the path of that device's traffic afterward.</p>
+</section>
+<section id="zero-trust"><h2>The four checks</h2>
+<div class="tw"><table>
+<tr><th>Check</th><th>What it means</th></tr>
+<tr><td>Who is asking</td><td>A person, a machine and a program each prove their identity in their own way.</td></tr>
+<tr><td>Is there a rule</td><td>A connection needs a declared rule. With no rule there is no connection.</td></tr>
+<tr><td>Is it allowed</td><td>A declared table says what each role may do.</td></tr>
+<tr><td>Is the identity still good</td><td>An identity can be revoked, and a machine can be held for review.</td></tr>
+</table></div>
+<p>The rules in force are generated from a declaration that is reviewed like code. A partner's identities can be verified without being granted anything.</p>
+</section>
+<section id="readers"><h2>Sealing for several readers</h2>
+<p>The owner seals a data set once. The key that opens it is then sealed separately for each named reader, with that reader's own key.</p>
+<p>So several readers can open the same data, each with a different key. A reader can be added or removed without changing anyone else's key.</p>
+<p>The platform holds no key for sealed data. The data fabric that carries it holds no key and has no central broker.</p>
+</section>
+<section id="quantum"><h2>Post-quantum key exchange</h2>
+<p>The routers of the data fabric prefer the combined key exchange. A client that does not support it connects the usual way.</p>
+<p>For mesh tunnels a post-quantum key exchange is built and not enabled. Its standardized replacement is being selected.</p>
+</section>
+<section id="island"><h2>A site that is cut off</h2>
+<p>A site that is cut off keeps admitting people, enrolling machines and changing access. This part is designed; the tests for mesh control and sign-in under a cut link are built.</p>
+<p>A site that sends nothing off-site gives less to find in the radio spectrum, to signals collection and on the network.</p>
+</section>
+<section id="rebuild"><h2>Rebuild</h2>
+<h3>Required for release 1.0</h3>
+<ul>
+<li>A first site, start to finish, in <span data-measure="req-site">-</span> or less: in progress.</li>
+<li>A machine added in <span data-measure="req-node">-</span> or less: in progress.</li>
+<li>A site taken down in <span data-measure="req-down">-</span> or less: measured, <span data-measure="down">-</span>.</li>
+</ul>
+<h3>What a rebuild removes</h3>
+<div class="tw"><table>
+<tr><th>Removed</th><th>How</th></tr>
+<tr><td>Programs and files left on a machine</td><td>The machine is installed again and built from the declaration.</td></tr>
+<tr><td>A machine's place on the mesh</td><td>Each machine joins again with a key that works once.</td></tr>
+<tr><td>Running services</td><td>One command stops every service of a site and keeps the record of each.</td></tr>
+</table></div>
+<h3>What other parts of the design handle</h3>
+<div class="tw"><table>
+<tr><th>Case</th><th>Handled by</th><th>Status</th></tr>
+<tr><td>A stolen secret</td><td>A rebuild from an export carries no secret, password hash or private key from the old site; each is issued again.</td><td>designed</td></tr>
+<tr><td>A changed source or image</td><td>The deploy checks refuse it.</td><td>in use</td></tr>
+<tr><td>Data that was already copied</td><td>Sealing for named readers limits what a copy reveals.</td><td>in use</td></tr>
+</table></div>
+</section>

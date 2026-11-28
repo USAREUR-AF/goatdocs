@@ -93,10 +93,18 @@ def html():
     return scene(
         "air-gap", "The idea, taken to its limit", "An air gap is one more boundary",
         "air gap, network isolation, perimeter security, removable-media transfer",
-        "A system is cut off from every other network and called safe. The air gap is treated as the strongest protection there is.",
-        "An air gap is the boundary idea taken to its limit: one line round everything, and full trust inside. A working system is rarely cut off for long. Data, updates and people have to get in and out, so the gap is crossed by hand, with a drive, a maintenance laptop or a vendor's update, and those crossings are the least watched doors. Isolation slows updates, so the inside falls behind on fixes. It gives no help once something is inside. It suits a thing that changes rarely and talks to no one, such as a key kept offline. It does not suit a system of many connected parts that exchange data all the time. goat has no single line to defend: every connection is checked and sealed on its own, a site can run with no link when it needs to, and every change arrives as a signed, verified release.",
+        "A system is cut off from every other network and called safe.",
+        "An air gap is one boundary with full trust inside, and it is crossed by hand with drives, laptops and updates. goat has no single line: every connection is sealed on its own, and a site can still run with no link.",
         "Isolation when you need it, without betting everything on it.",
-        [("in use", "nothing of a site is reachable from the public internet; every release is signed and verified before it runs"),
-         ("designed", "a site that keeps working with no link at all; the tests for mesh control and sign-in under a cut link are built"),
+        [("in use", "nothing of a site is reachable from the public internet; every release is signed and verified"),
+         ("designed", "a site that keeps working with no link at all"),
          ("designed", "one signed bundle that carries a release to a site that is cut off")],
         figure_wide() + "\n" + figure_narrow(), mark())
+
+
+def notes():
+    return """<section id="air-gap"><h2>What an air gap does and does not do</h2>
+<p>A working system is rarely cut off for long. Data, updates and people have to get in and out, so the gap is crossed by hand, and those crossings are the least watched doors.</p>
+<p>Isolation slows updates, so the inside falls behind on fixes. It gives no help once something is inside.</p>
+<p>It suits a thing that changes rarely and talks to no one, such as a key kept offline. It does not suit a system of many connected parts that exchange data all the time.</p>
+</section>"""

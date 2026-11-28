@@ -177,3 +177,5 @@ ul.ev code { font-size: 13.5px; }
   .sr .sc.s-inuse::after { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
 }
 .blunder .fix + .fix { margin-top: 12px; border-top: 0; padding-top: 0; }
+.scene .more { margin: 22px 0 0; font-size: 16px; }
+.estimate .est-h { margin: 14px 0 0; }
