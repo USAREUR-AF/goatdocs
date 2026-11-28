@@ -1,0 +1,50 @@
+
+/* figures: fixed-layout SVG from figures.py, colored by these classes only */
+svg.viz { display: block; width: 100%; height: auto; font-family: var(--sans); }
+svg .t { fill: var(--ink); } svg .tq { fill: var(--quiet); } svg .ta { fill: var(--accent); }
+svg .bx { fill: var(--panel); stroke: var(--line); stroke-width: 1.25; }
+svg .bxp { fill: var(--code-bg); stroke: var(--rule); stroke-width: 1.25; }
+svg .bxa { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.5; }
+svg .bxk { fill: var(--panel); stroke: var(--ink); stroke-width: 2; }
+svg .bxd { fill: none; stroke: var(--line); stroke-width: 1.5; stroke-dasharray: 6 5; }
+svg .edge { fill: none; stroke: var(--ink); stroke-width: 3.5; }
+svg .edge2 { fill: none; stroke: var(--line); stroke-width: 1.5; }
+svg .ln { fill: none; stroke: var(--line); stroke-width: 1.5; }
+svg .lna { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+svg .lnd { fill: none; stroke: var(--line); stroke-width: 1.5; stroke-dasharray: 5 5; }
+svg .lka { fill: none; stroke: var(--accent); stroke-width: 2.2; }
+svg .stopbar { fill: none; stroke: var(--ink); stroke-width: 3; stroke-linecap: round; }
+svg .intr { fill: var(--paper); stroke: var(--ink); stroke-width: 2.5; stroke-linejoin: round; }
+svg .fl { fill: var(--line); } svg .fa { fill: var(--accent); }
+svg .halo { paint-order: stroke fill; stroke: var(--paper); stroke-width: 5px; stroke-linejoin: round; }
+svg .ton { fill: var(--on-accent); }
+
+/* the marks: one small drawing an idea, on one grid, one line weight */
+svg.mark { display: block; width: 72px; height: 72px; }
+svg.mark .mk { fill: none; stroke: var(--ink); stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+svg.mark .mka { fill: none; stroke: var(--accent); stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+svg.mark .mkf { fill: var(--accent-soft); stroke: var(--ink); stroke-width: 5; stroke-linejoin: round; }
+svg.mark .mkfa { fill: var(--accent); stroke: var(--accent); stroke-width: 3; stroke-linejoin: round; }
+svg.mark .mkfi { fill: var(--ink); }
+svg.mark .mkd { stroke-dasharray: 2 9; }
+svg.mark .mkt { stroke-width: 3.5; }
+svg .edge3 { fill: var(--panel); stroke: var(--ink); stroke-width: 2.5; }
+svg .lnon { fill: none; stroke: var(--on-accent); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+/* the first screen's site: a part is faint until its stage has run */
+svg .st { transition: opacity .35s; }
+svg .st.off { opacity: .1; }
+@media (prefers-reduced-motion: reduce) { svg .st { transition: none; } }
+svg .dot { fill: var(--ink); stroke: var(--paper); stroke-width: 2; }
+svg .knot { fill: var(--accent); stroke: var(--paper); stroke-width: 3; }
+svg .area { fill: var(--accent-soft); stroke: var(--ink); stroke-width: 3; }
+svg .gate { fill: none; stroke: var(--ink); stroke-width: 5; stroke-linecap: round; }
+svg .area2 { fill: var(--accent-soft); stroke: var(--ink); stroke-width: 3; filter: brightness(.93); }
+svg .gap { fill: var(--paper); } svg .gap2 { fill: var(--accent-soft); }
+svg .reach { fill: none; stroke: var(--ink); stroke-width: 2.4; stroke-dasharray: 2 7; stroke-linecap: round; }
+svg .arrival { fill: var(--paper); stroke: var(--ink); stroke-width: 2.6; stroke-dasharray: 3.4 3.4; }
+svg .link { fill: none; stroke: var(--accent); stroke-width: 3.2; stroke-linecap: round; }
+svg .lockring { fill: var(--paper); stroke: var(--accent); stroke-width: 2; }
+svg .idring { fill: none; stroke: var(--accent); stroke-width: 2; }
+svg.viz.narrow { display: none; }
+@media (max-width: 900px) { svg.viz.wide { display: none; } svg.viz.narrow { display: block; } }
+svg .linkd { fill: none; stroke: var(--accent); stroke-width: 3.2; stroke-linecap: round; stroke-dasharray: 3 8; }

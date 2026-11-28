@@ -1,0 +1,262 @@
+{
+  "measured": "2026-11-28",
+  "where": "real machines",
+  "release": "goatbuilder 0.8.0, built from the main branch",
+  "stages": [
+    {
+      "name": "Checks before anything changes",
+      "does": "The declaration is complete and the machines can be reached. Nothing is changed yet.",
+      "steps": [
+        {
+          "name": "configuration check",
+          "seconds": 4
+        },
+        {
+          "name": "every input is set",
+          "seconds": 3
+        },
+        {
+          "name": "mesh access rules are declared",
+          "seconds": 0
+        },
+        {
+          "name": "route to the machines",
+          "seconds": 0
+        },
+        {
+          "name": "machine check",
+          "seconds": 21
+        }
+      ]
+    },
+    {
+      "name": "Machines prepared, disks encrypted",
+      "does": "Each machine gets its baseline and its disk encryption.",
+      "steps": [
+        {
+          "name": "machine baseline and disk encryption",
+          "seconds": 187
+        }
+      ]
+    },
+    {
+      "name": "Secrets and certificates created",
+      "does": "The site's own secrets and its certificates are created.",
+      "steps": [
+        {
+          "name": "per-site secrets generated",
+          "seconds": 0
+        },
+        {
+          "name": "certificates issued",
+          "seconds": 4
+        },
+        {
+          "name": "name snapshot signed",
+          "seconds": 0
+        }
+      ]
+    },
+    {
+      "name": "Management services started",
+      "does": "The services that run the site start, and the site links to its relays.",
+      "steps": [
+        {
+          "name": "management stack",
+          "seconds": 215
+        },
+        {
+          "name": "link to the relays",
+          "seconds": 27
+        }
+      ]
+    },
+    {
+      "name": "Sign-in services and the first account",
+      "does": "The identity provider starts, and the first account and joining key are made.",
+      "steps": [
+        {
+          "name": "sign-in services",
+          "seconds": 113
+        },
+        {
+          "name": "account seeded, first enrollment key",
+          "seconds": 152
+        }
+      ]
+    },
+    {
+      "name": "Relays in a cloud",
+      "does": "The relays that the site is reached through are set up.",
+      "steps": [
+        {
+          "name": "public certificate",
+          "seconds": 71
+        },
+        {
+          "name": "relay list from the declaration",
+          "seconds": 39
+        },
+        {
+          "name": "relay tier",
+          "seconds": 402
+        }
+      ]
+    },
+    {
+      "name": "Machines join the mesh",
+      "does": "Each machine joins with a key that works once, and its address is recorded.",
+      "steps": [
+        {
+          "name": "machines enrolled on the mesh",
+          "seconds": 17
+        },
+        {
+          "name": "mesh addresses recorded",
+          "seconds": 0
+        },
+        {
+          "name": "off-site alarm machine enrolled",
+          "seconds": 57
+        },
+        {
+          "name": "its mesh address recorded",
+          "seconds": 0
+        }
+      ]
+    },
+    {
+      "name": "Data router and workload identity",
+      "does": "Data can move, and workloads can be given certificates.",
+      "steps": [
+        {
+          "name": "data router",
+          "seconds": 59
+        },
+        {
+          "name": "workload identity server",
+          "seconds": 38
+        }
+      ]
+    },
+    {
+      "name": "Dashboard placed behind sign-in",
+      "does": "The mesh dashboard is reachable only after sign-in.",
+      "steps": [
+        {
+          "name": "mesh dashboard",
+          "seconds": 43
+        },
+        {
+          "name": "sign-in clients registered",
+          "seconds": 16
+        },
+        {
+          "name": "sign-in fence for the dashboard",
+          "seconds": 35
+        }
+      ]
+    },
+    {
+      "name": "The administrator signs in",
+      "does": "A person signs in for the first time.",
+      "steps": [
+        {
+          "name": "first sign-in",
+          "seconds": 111
+        }
+      ]
+    },
+    {
+      "name": "Access rules, service identities, portal, alarm",
+      "does": "The declared access rules are applied and checked; the portal, onboarding and the off-site alarm start.",
+      "steps": [
+        {
+          "name": "declared access rules applied",
+          "seconds": 53
+        },
+        {
+          "name": "site machines placed in their group",
+          "seconds": 87
+        },
+        {
+          "name": "live rules match the declaration",
+          "seconds": 2
+        },
+        {
+          "name": "service identities created",
+          "seconds": 8
+        },
+        {
+          "name": "service identities verified",
+          "seconds": 7
+        },
+        {
+          "name": "mesh account baseline",
+          "seconds": 20
+        },
+        {
+          "name": "mesh name service",
+          "seconds": 58
+        },
+        {
+          "name": "portal",
+          "seconds": 68
+        },
+        {
+          "name": "inputs for the later steps are set",
+          "seconds": 3
+        },
+        {
+          "name": "state mirror",
+          "seconds": 0
+        },
+        {
+          "name": "onboarding front desk",
+          "seconds": 24
+        },
+        {
+          "name": "onboarding runner",
+          "seconds": 35
+        },
+        {
+          "name": "key distribution for per-reader encryption",
+          "seconds": 46
+        },
+        {
+          "name": "synthetic publishers (declared off)",
+          "seconds": 0
+        },
+        {
+          "name": "off-site alarm watcher",
+          "seconds": 64
+        },
+        {
+          "name": "acceptance probe identity",
+          "seconds": 14
+        }
+      ]
+    },
+    {
+      "name": "Checks that prove the site works",
+      "does": "An acceptance suite checks the running site.",
+      "steps": [
+        {
+          "name": "acceptance suite",
+          "seconds": 99
+        }
+      ]
+    }
+  ],
+  "between_steps_s": 90,
+  "checks_passed": 42,
+  "teardown": {
+    "seconds": 354,
+    "checks": 57
+  },
+  "requirement": {
+    "first_site_s": 3600,
+    "machine_added_s": 900,
+    "site_down_s": 900
+  }
+}
