@@ -301,6 +301,7 @@
   ],
   "acceptance": {
     "at_s": 4860,
+    "approximate": true,
     "pass": 42,
     "fail": 0,
     "unknown": 2

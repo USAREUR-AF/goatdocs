@@ -60,6 +60,8 @@ def facts(d):
 def measures(d, f):
     acc, td = d["acceptance"], d["teardown"]
     over = acc["at_s"] - d["target_s"]
+    about = "about " if acc.get("approximate") else ""
+    lost = acc["at_s"] - f["clean_s"]
     return {
         "teardown": dur(td["seconds"]),
         "teardown-checks": str(td["checks"]),
@@ -67,11 +69,12 @@ def measures(d, f):
         "teardown-verdict": "met" if f["down_met"] else "not met",
         "signin": dur(d["person"]["done_at_s"]),
         "accept": dur(acc["at_s"]),
+        "accept-about": about + dur(acc["at_s"]),
         "accept-target": dur(d["target_s"]),
         "accept-verdict": "met" if f["met"] else "not met",
-        "accept-over": dur(abs(over)) + (" over the target" if over > 0 else " under the target"),
+        "accept-over": about + dur(abs(over)) + (" over the target" if over > 0 else " under the target"),
         "clean": dur(f["clean_s"]),
-        "lost": dur(acc["at_s"] - f["clean_s"]),
+        "lost": about + (dur(60 * round(lost / 60)) if about else dur(lost)),
         "unattended-steps": str(len(d["steps"])),
         "unattended": dur(d["unattended_total_s"]),
         "pass": str(acc["pass"]), "fail": str(acc["fail"]), "unknown": str(acc["unknown"]),
@@ -92,8 +95,8 @@ def stage(d, f, m):
         ("", f'{d["steps"][-1]["phase"]:02d}  {d["steps"][-1]["name"]}  {clock(d["steps"][-1]["seconds"])}'),
         ("", f'{d["person"]["phase"]}  {d["person"]["name"]}, done at {clock(d["person"]["done_at_s"])}'),
         ("st", f'{len(d["stops"])} stops; the last phase did not finish'),
-        ("ev", f'acceptance: {acc["pass"]} passed, {acc["fail"]} failed, {acc["unknown"]} undecided, at {clock(acc["at_s"])}'),
-        ("st" if not f["met"] else "ok", f'first site: {m["accept"]}; target {m["accept-target"]}: {m["accept-verdict"]}'),
+        ("ev", f'acceptance: {acc["pass"]} passed, {acc["fail"]} failed, {acc["unknown"]} undecided, at {m["accept-about"]}'),
+        ("st" if not f["met"] else "ok", f'first site: {m["accept-about"]}; target {m["accept-target"]}: {m["accept-verdict"]}'),
         ("", f'the same steps with no stop: {m["clean"]}'),
         ("ok" if f["down_met"] else "st", f'site taken down: {m["teardown"]}; target {m["teardown-target"]}: {m["teardown-verdict"]}'),
     ]
@@ -101,7 +104,7 @@ def stage(d, f, m):
     label = (
         f'A replay of run {d["run"]}, a first site built on real machines against a clock. The steps of phases 1 to 10 run '
         f'with no stop in {m["unattended"]}. The administrator signs in at {m["signin"]}. Then {m["stops"]} stops follow. '
-        f'The acceptance suite passes {m["accept"]} after the start, with {acc["pass"]} checks passed, {acc["fail"]} failed '
+        f'The acceptance suite passes {m["accept-about"]} after the start, with {acc["pass"]} checks passed, {acc["fail"]} failed '
         f'and {acc["unknown"]} undecided. The target is {m["accept-target"]}, so the target is {m["accept-verdict"]}. '
         f'A second bar shows the same steps with no stop: {m["clean"]}. A third bar shows a site taken down in '
         f'{m["teardown"]}, against a target of {m["teardown-target"]}.')
@@ -110,7 +113,7 @@ def stage(d, f, m):
       <div class="stage-head"><span><b>run {d["run"]}</b> &middot; a first site</span><span id="step">acceptance</span></div>
       <div class="clock" aria-hidden="true"><span class="t" id="clk">{clock(acc["at_s"])}</span><span class="of">minutes:seconds &middot; target {clock(d["target_s"])}</span></div>
       <div class="bars" aria-hidden="true">
-        <div class="brow"><div class="bl"><span>this run, start to passing acceptance</span><b id="v1">{m["accept"]}</b></div>
+        <div class="brow"><div class="bl"><span>this run, start to passing acceptance</span><b id="v1">{m["accept-about"]}</b></div>
           <div class="trk"><i class="run" id="b1" style="width:{pct(d["person"]["done_at_s"])}"></i><i class="lost" id="b1l" style="left:{pct(d["person"]["done_at_s"])};width:{pct(acc["at_s"] - d["person"]["done_at_s"])}"></i>{ticks}{target}</div></div>
         <div class="brow"><div class="bl"><span>the same steps with no stop</span><b id="v2">{m["clean"]}</b></div>
           <div class="trk"><i class="run" id="b2" style="width:{pct(f["clean_s"])}"></i>{target}</div></div>

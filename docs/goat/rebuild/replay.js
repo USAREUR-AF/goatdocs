@@ -44,9 +44,9 @@
     F.push([late[i].at_s, "st", "stop " + late[i].n + "  phase " + late[i].phase + ": " + late[i].reason, "stop " + late[i].n]);
   }
   if (!signed) signin();
-  var A = R.acceptance;
+  var A = R.acceptance, about = A.approximate ? "about " : "";
   F.push([A.at_s, "ev", "acceptance: " + A.pass + " passed, " + A.fail + " failed, " + A.unknown + " undecided", "acceptance"]);
-  F.push([A.at_s, R.met ? "ok" : "st", "first site: " + dur(A.at_s) + "; target " + dur(R.target) + ": " + verdict(R.met), "verdict"]);
+  F.push([A.at_s, R.met ? "ok" : "st", "first site: " + about + dur(A.at_s) + "; target " + dur(R.target) + ": " + verdict(R.met), "verdict"]);
   var END1 = F.length;
   F.push([A.at_s, "", "the same steps with no stop: " + dur(R.clean), "steps only"]);
   F.push([A.at_s, R.down_met ? "ok" : "st", "site taken down: " + dur(R.teardown.seconds) + "; target " + dur(R.teardown.target_s) + ": " + verdict(R.down_met), "teardown"]);
@@ -60,7 +60,7 @@
     b1.style.width = pct(Math.min(now, signedAt));
     b1l.style.left = pct(signedAt);
     b1l.style.width = pct(Math.max(0, now - signedAt));
-    v1.textContent = n >= END1 ? dur(A.at_s) : clock(now);
+    v1.textContent = n >= END1 ? about + dur(A.at_s) : clock(now);
     b2.style.width = n > END1 ? pct(R.clean) : "0";
     v2.textContent = n > END1 ? dur(R.clean) : "";
     b3.style.width = n > END1 + 1 ? pct(R.teardown.seconds) : "0";

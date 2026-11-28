@@ -35,5 +35,9 @@ a property changed, in which case edit its tile in `page.html`.
 | the same steps with no stop | `unattended_total_s` (the total the tool prints for phases 1 to 10), plus the sign-in without its stopped time, plus every `late_steps` entry. Each step's seconds is its `phase N took Ns` line in the run that passed it |
 | stops | one entry of `stops` for each time a person had to act before the run could continue |
 
-The status word on each tile is the status in the public document the tile links to. A tile
-names the least-built part of what its title claims.
+The status word on each tile is the status of that part in the public goatcore tree. A tile
+names the least-built part of what its title claims. The page describes each property by
+what it does and names no product; it links to the requirements list, where row C1 records
+the same times.
+
+`acceptance.approximate` marks an instant known to the minute; the page then prints "about".
