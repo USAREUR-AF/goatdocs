@@ -10,8 +10,8 @@ ALT = ("At the center, one declaration: a document listing the machines, the exa
        "allowed connections, who may do what, and the signed, reviewed changes. An arrow from it to the left builds "
        "the running system. An arrow from it to the right goes to the assessor, who reads the same files. The "
        "running system leaves records: deploy and check records, an audit trail, security events in OCSF, and "
-       "service events over OpenTelemetry. Those records flow to your monitoring platform, connected by setting "
-       "one address. Outside the system, drawn with dashed lines, are three checks that an organization still "
+       "service events over OpenTelemetry. The security events are forwarded to your monitoring platform as CEF "
+       "over syslog, by setting one address. Outside the system, drawn with dashed lines, are three checks that an organization still "
        "runs from outside: vulnerability scans, configuration baselines and web application testing.")
 
 DECL = ["the machines", "exact versions, by content hash", "the allowed connections", "who may do what", "signed, reviewed changes"]
@@ -72,7 +72,7 @@ def figure_wide():
     f.path("M812 361 H862", stroke=INK, sw=2.4, arrow=True)
     f.rect(872, 318, 208, 86, 10, PANEL, INK, 3)
     f.t(976, 352, "your monitoring", 16, 700, anchor="middle"); f.t(976, 373, "platform", 16, 700, anchor="middle")
-    f.t(976, 426, "connected by setting one address", 14, 400, QUIET, anchor="middle", italic=True)
+    f.t(976, 426, "as CEF over syslog, by one address", 14, 400, QUIET, anchor="middle", italic=True)
     # run from outside
     f.path("M20 462 H1100", stroke=LINE, sw=1.6, dash="6 6")
     f.t(40, 494, "RUN FROM OUTSIDE BY YOUR ORGANIZATION, AND STILL REQUIRED", 14, 700, QUIET, ls="1.4")
@@ -103,7 +103,7 @@ def figure_narrow():
     f.path("M164 756 V796", stroke=INK, sw=2.4, arrow=True)
     f.rect(14, 808, 300, 60, 10, PANEL, INK, 3)
     f.t(164, 844, "your monitoring platform", 16, 700, anchor="middle")
-    f.t(14, 894, "connected by setting one address", 14, 400, QUIET, italic=True)
+    f.t(14, 894, "forwarded as CEF over syslog, by setting one address", 14, 400, QUIET, italic=True)
     f.path("M8 924 H456", stroke=LINE, sw=1.6, dash="6 6")
     f.t(14, 952, "RUN FROM OUTSIDE BY YOUR", 13, 700, QUIET, ls="1.3"); f.t(14, 971, "ORGANIZATION, AND STILL REQUIRED", 13, 700, QUIET, ls="1.3")
     for k, (name, tool) in enumerate(OUTSIDE):
@@ -128,16 +128,16 @@ def html():
         "self-documenting", "Evidence", "The system documents itself",
         "compliance as code, continuous monitoring, audit trail, security information and event management (SIEM)",
         "A system's description is written by hand for an assessment, and it is out of date as soon as the system changes.",
-        "The system is built from a declaration, so the declaration is the description. Its logs are already in open formats, ready for your monitoring platform.",
+        "The system is built from a declaration, so the declaration is the description. Its security records are normalized to OCSF, kept in write-once storage, and forwarded to your collector as CEF over syslog by setting one address.",
         "Your evidence is current because it is the system.",
         [("built", "the declaration, the generated rules, the records and the audit trail, for assessors working under the Risk Management Framework and for security engineers"),
-         ("built", "security records in OCSF, sent off each machine, with a forwarder to your own collector")],
+         ("built", "security records normalized to OCSF and kept in write-once storage; the same stream forwarded to an organization's collector as CEF over syslog by setting one address")],
         figure_wide() + "\n" + figure_narrow(), mark())
 
 
 def notes():
     return """<section id="evidence"><h2>What an assessor can read</h2>
 <p>The declaration states the machines, the exact version of everything by content hash, the connections that are allowed, and who may do what. Every change is a signed, reviewed commit. Deploys and checks leave their own records.</p>
-<p>A collector on every machine gathers the system journal, the audit log, the data fabric's audit records and the access logs. It normalizes them to OCSF and sends them off the machine. A forwarder to an organization's own collector is switched on by setting one address. Services also emit events over OpenTelemetry.</p>
+<p>A collector on every machine gathers the system journal, the audit log, the data fabric's audit records and the access logs. It normalizes them to OCSF and keeps them in write-once storage. The same stream is forwarded to an organization's own collector, as CEF over syslog, by setting one address. Services also emit events over OpenTelemetry.</p>
 <p>Vulnerability scans (ACAS), configuration baselines (STIG) and web application testing (Burp) are outside tools that an organization still runs.</p>
 </section>"""

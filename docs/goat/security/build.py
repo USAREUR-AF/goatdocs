@@ -49,21 +49,21 @@ STATUS = [
     ("A declared table of roles, enforced", "built"),
     ("Federation between two environments, set up and backed out by one command", "built"),
     ("A simple boundary node: one stream, one way, to one destination", "built"),
-    ("Security records in an open format, with a forwarder to your own collector", "built"),
+    ("Security records normalized to OCSF, and forwarded to your collector as CEF over syslog", "built"),
     ("A partner is verified without being granted anything", "built"),
     ("An identity can be revoked, a machine held for review", "built"),
     ("A post-quantum key exchange for mesh tunnels, not enabled", "built"),
     ("Decoy names and web paths", "built"),
     ("Post-quantum key exchange between organizations", "designed"),
-    ("The standardized replacement for the mesh tunnels' post-quantum key exchange", "designed"),
     ("Decoys on the data fabric, decoy credentials", "designed"),
     ("Secrets replaced as part of a rebuild", "designed"),
     ("A site keeps working when it is cut off", "designed"),
     ("The hub severs a site; the site works alone", "designed"),
     ("A site built again from a checked export", "designed"),
     ("One signed bundle that carries a release to a site that is cut off", "designed"),
+    ("A standardized post-quantum key exchange for mesh tunnels; options are being evaluated", "planned"),
 ]
-ORDER = ["measured", "in use", "built", "designed"]
+ORDER = ["measured", "in use", "built", "designed", "planned"]
 
 # Scenes written as one module each in scenes/: the module returns its whole section and its mark.
 SCENES = ["layers", "path", "custody", "self_documenting", "boundary", "air_gap", "grade", "timing"]
@@ -165,7 +165,7 @@ IN_THE_CODE = {
     "layers": "Three layers of encryption, each with its own keys",
     "path": "Machines connect directly; a relay is a fallback",
     "chain": "A deploy refuses what it cannot verify",
-    "self-documenting": "Security records in an open format, with a forwarder to your own collector",
+    "self-documenting": "Security records normalized to OCSF, and forwarded to your collector as CEF over syslog",
     "quantum": "Post-quantum key exchange preferred on the data fabric",
     "decoy": "Decoy names and web paths",
     "timing": "A site taken down by one command",
@@ -186,14 +186,17 @@ def code_table():
     base = f'{d["repository"]}/blob/{d["commit"]}/'
 
     def links(items):
-        return "<br>".join(f'<a href="{base}{p}#L{a}-L{b_}">{html.escape(label)}</a>' if a != b_ else
-                           f'<a href="{base}{p}#L{a}">{html.escape(label)}</a>' for label, p, a, b_ in items)
+        def one(label, p, a, b_):
+            if p.startswith("https://"):
+                return f'<a href="{p}">{html.escape(label)}</a>'
+            return f'<a href="{base}{p}#L{a}' + (f'-L{b_}' if a != b_ else "") + f'">{html.escape(label)}</a>'
+        return "<br>".join(one(*i) for i in items)
     rows = []
     for n, (what, st) in enumerate(sorted(STATUS, key=lambda r: ORDER.index(r[1])), 1):
         c = by[what]
         note = f'<span class="cn">{html.escape(c["note"])}</span>' if c["note"] else ""
         code = links(c["code"]) + ("<br>" if c["code"] and note else "") + note
-        rows.append(f'<tr id="{code_id(what)}"><td>{html.escape(what)}</td><td>{st}</td><td>{code}</td><td>{links(c["test"]) or "none"}</td></tr>')
+        rows.append(f'<tr id="{code_id(what)}"><td>{html.escape(what)}</td><td>{st}</td><td>{code}</td><td>{links(c["test"]) or ("none" if c["code"] else "")}</td></tr>')
     return (f'<section id="code"><h2>Where each claim is shown in the code</h2>\n'
             f'<p>One row for each row of the status figure on the security page. Every link goes to the public repository at commit '
             f'<a href="{d["repository"]}/commit/{d["commit"]}"><code>{d["commit"][:8]}</code></a> of {d["date"]}, so the line numbers stay true.</p>\n'

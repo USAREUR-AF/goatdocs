@@ -11,12 +11,6 @@
      "crates/goatbuilder/src/main.rs",
      408,
      415
-    ],
-    [
-     "the record of the measurement",
-     "docs/design/goatbuilder-v1-gate.md",
-     99,
-     99
     ]
    ],
    "test": [
@@ -25,6 +19,12 @@
      "crates/goatbuilder/src/standup.rs",
      3017,
      3042
+    ],
+    [
+     "a founder site stood up in virtual machines",
+     "ops/e2e/vm/founder.sh",
+     31,
+     36
     ]
    ],
    "note": ""
@@ -37,12 +37,6 @@
      "crates/goatbuilder/src/standup.rs",
      2031,
      2041
-    ],
-    [
-     "the record of the measurement",
-     "docs/design/goatbuilder-v1-gate.md",
-     99,
-     99
     ]
    ],
    "test": [
@@ -63,10 +57,16 @@
      "docs/adr/1192-wg-cp0-paused-public-dns-entry-point.md",
      30,
      35
+    ],
+    [
+     "the relay's dispatch of port 443, which holds no key",
+     "ops/ansible/templates/haproxy-ingress.cfg.j2",
+     4,
+     18
     ]
    ],
    "test": [],
-   "note": "A property of how a goatnet is deployed. The decision record states that no host site has a public address."
+   "note": "A property of how a goatnet is deployed."
   },
   {
    "claim": "A cloud holds relays only, and a relay reads nothing",
@@ -118,13 +118,20 @@
     ]
    ],
    "test": [],
-   "note": "The tunnel code is WireGuard's and NetBird's, outside this repository."
+   "note": "The tunnel code is upstream."
   },
   {
    "claim": "No answer to a packet that cannot be authenticated",
-   "code": [],
+   "code": [
+    [
+     "the protocol's own description",
+     "https://www.wireguard.com/protocol/",
+     0,
+     0
+    ]
+   ],
    "test": [],
-   "note": "A property of the WireGuard protocol, not of goat's code: wireguard.com, Protocol."
+   "note": "A property of the protocol."
   },
   {
    "claim": "No site has a public address",
@@ -238,16 +245,9 @@
   },
   {
    "claim": "The secret store cannot read what it holds",
-   "code": [
-    [
-     "decision record 1212",
-     "docs/adr/1212-team-secrets-never-decryptable-on-the-server.md",
-     18,
-     18
-    ]
-   ],
+   "code": [],
    "test": [],
-   "note": "The link to code is left out by request; the decision record states the property."
+   "note": "No link, by request."
   },
   {
    "claim": "Shared data sealed for named readers; the platform holds no key",
@@ -338,7 +338,7 @@
      2145
     ]
    ],
-   "note": "The choice of the direct path is made by the NetBird client, outside this repository."
+   "note": "The client chooses the path."
   },
   {
    "claim": "A deploy refuses what it cannot verify",
@@ -459,7 +459,7 @@
    "note": ""
   },
   {
-   "claim": "Security records in an open format, with a forwarder to your own collector",
+   "claim": "Security records normalized to OCSF, and forwarded to your collector as CEF over syslog",
    "code": [
     [
      "records put into the OCSF schema",
@@ -468,14 +468,14 @@
      165
     ],
     [
-     "the forwarder to a collector, switched on by one setting",
+     "the forwarder to a collector, as CEF over syslog, switched on by one address",
      "ops/ansible/roles/goat-logship/templates/vector.yaml.j2",
      631,
      652
     ]
    ],
    "test": [],
-   "note": "The forwarder sends the records as CEF over syslog."
+   "note": ""
   },
   {
    "claim": "A partner is verified without being granted anything",
@@ -586,20 +586,20 @@
     ]
    ],
    "test": [],
-   "note": "Designed: the link is to the decision record."
+   "note": "Decision record."
   },
   {
-   "claim": "The standardized replacement for the mesh tunnels' post-quantum key exchange",
+   "claim": "A standardized post-quantum key exchange for mesh tunnels; options are being evaluated",
    "code": [
     [
-     "the note that tracks the upstream proposal",
+     "the note that tracks the options",
      "docs/design/upstream-netbird-wireguard-watch.md",
      51,
      51
     ]
    ],
    "test": [],
-   "note": "Designed: no decision record yet; the link is to the tracking note."
+   "note": ""
   },
   {
    "claim": "Decoys on the data fabric, decoy credentials",
@@ -612,7 +612,7 @@
     ]
    ],
    "test": [],
-   "note": "Designed: the link is to the design document."
+   "note": "Design document."
   },
   {
    "claim": "Secrets replaced as part of a rebuild",
@@ -625,7 +625,7 @@
     ]
    ],
    "test": [],
-   "note": "Designed: the link is to the decision record, which is proposed."
+   "note": "Decision record, proposed."
   },
   {
    "claim": "A site keeps working when it is cut off",
@@ -645,7 +645,7 @@
      22
     ]
    ],
-   "note": "Designed: the link is to the decision record. The test of the cut link is built."
+   "note": "Decision record; the test is built."
   },
   {
    "claim": "The hub severs a site; the site works alone",
@@ -671,7 +671,7 @@
      24
     ]
    ],
-   "note": "Designed: the directive and its test are built; no deployment applies it yet."
+   "note": "The directive and its test are built."
   },
   {
    "claim": "A site built again from a checked export",
@@ -684,7 +684,7 @@
     ]
    ],
    "test": [],
-   "note": "Designed: the link is to the decision record, which is proposed."
+   "note": "Decision record, proposed."
   },
   {
    "claim": "One signed bundle that carries a release to a site that is cut off",
@@ -697,7 +697,7 @@
     ]
    ],
    "test": [],
-   "note": "Designed: the link is to the decision record."
+   "note": "Decision record."
   }
  ]
 }
